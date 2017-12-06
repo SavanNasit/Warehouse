@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="0.2"
+            android:src="@drawable/ic_add_doc" />
+
+
+        <TextView
+            android:id="@+id/select_doc_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.6"
+            android:gravity="left|center"
+            android:text="awesome-file.jpg"
+            android:textColor="#8D8D8D"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/delete_selected_doc"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="0.2"
+            android:src="@drawable/ic_delete_row" />
+
+    </LinearLayout>
+
+    <!--   <View
+           android:layout_width="match_parent"
+           android:layout_height="0.5dp"
+           android:background="@color/home_page_text_gray"/>-->
+
+</LinearLayout>

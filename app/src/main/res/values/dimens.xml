@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="padding_list_row">10dp</dimen>
+    <dimen name="messages_padding_left">10dp</dimen>
+    <dimen name="icon_width_height">40dp</dimen>
+    <dimen name="msg_text_primary">16sp</dimen>
+    <dimen name="msg_text_secondary">10sp</dimen>
+    <dimen name="icon_star">25dp</dimen>
+    <dimen name="icon_text">22dp</dimen>
+    <dimen name="timestamp">12dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="tutorial_shared_element_translate_y">56dp</dimen>
+    <dimen name="tutorial_device_img_left_right_margin">32dp</dimen>
+
+    <!-- Recommended -->
+    <dimen name="recommended_margin">16dp</dimen>
+    <dimen name="recommended_category_offset">16dp</dimen>
+    <dimen name="recommended_text_size">20sp</dimen>
+    <dimen name="recommended_indicator_text">14sp</dimen>
+    <dimen name="recommended_indicator_margin">24dp</dimen>
+    <dimen name="recommended_margin_bottom">4dp</dimen>
+    <dimen name="deviceImagePadding">30dp</dimen>
+    <dimen name="space_size">40dp</dimen>
+    <dimen name="space_margin">0dp</dimen>
+
+
+    <dimen name="fastscroller_handle_corner">20dp</dimen>
+    <dimen name="fastscroller_handle_size">50dp</dimen>
+    <dimen name="fastscroller_reack_corner">3dp</dimen>
+    <dimen name="fastscroller_track_height">30dp</dimen>
+    <dimen name="fastscroller_track_width">6dp</dimen>
+    <dimen name="fastscroller_track_padding">2dp</dimen>
+    <dimen name="z_card">2dp</dimen>
+
+
+    <dimen name="activity_margin_half">8dp</dimen>
+    <!--lead info-->
+    <dimen name="collapse_layout_height">150dp</dimen>
+    <dimen name="margin_top">10dp</dimen>
+    <dimen name="recycler_view_height">150dp</dimen>
+    <dimen name="standard_12">12dp</dimen>
+    <dimen name="standard_23">23dp</dimen>
+    <dimen name="standard_55">55dp</dimen>
+    <dimen name="standard_100">100dp</dimen>
+    <dimen name="standard_145">145dp</dimen>
+    <dimen name="default_circle_indicator_radius">12</dimen>
+
+
+</resources>

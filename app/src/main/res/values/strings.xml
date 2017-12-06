@@ -1,0 +1,53 @@
+<resources>
+
+    <string name="app_name">Warehouse</string>
+    <string name="wifi_enabled">Wifi enabled</string>
+    <string name="mobile_enabled">Mobile data enabled</string>
+    <string name="not_connected_to_internet">Not connected to Internet</string>
+    <string name="error_domain">Couldn\'t connect to server</string>
+
+    <!--tasks-->
+    <string name="domain">check_service</string>
+    <string name="login">login</string>
+    <string name="invalid_domain">Please enter valid domain</string>
+
+    <!--domain activity-->
+    <string name="enter_domain">Please enter domain</string>
+    <string name="email">email</string>
+    <string name="valid_email_error">Please enter valid Email Id</string>
+    <string name="username_error">Please enter your Email Id</string>
+    <string name="password_error">Please enter your password</string>
+    <string name="credential_error">Email and Password does not matched</string>
+    <string name="intent">intent</string>
+    <string name="password">Password</string>
+    <!--password activity-->
+    <string name="try_again">Try again</string>
+
+    <string name="connected_to">You\'re connected to :</string>
+    <string name="running_orders_fragment">Running Orders</string>
+    <string name="select_warehouse">Select Warehouse</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="home_fragment">Home</string>
+    <string name="no_data_available">No data available</string>
+    <string name="running_orders_execute_fragment">Order Execution</string>
+    <string name="scan">Scan bar code</string>
+    <string name="order_item">Select Order Item</string>
+    <string name="upload"><u>Upload Documents</u></string>
+    <string name="dialog_from">dialogFrom</string>
+    <string name="manage_packages_fragment">Manage Packages</string>
+    <string name="actions">Actions</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="upload_doc">Upload a File</string>
+    <string name="package_history">Package History</string>
+    <string name="manage_gatepass_fragment">Manage GatePass</string>
+    <string name="manage_consignment_fragment">Manage Consignment</string>
+    <string name="recieve_consignment_fragment">Recieve Consignment</string>
+    <string name="items_inside_package">Items inside package</string>
+    <string name="click_back_to_exit">Please press again to close warehouse</string>
+    <string name="package_order_status">Package Order Status</string>
+    <string name="cancel_gatepass">Cancel Gatepass</string>
+    <string name="cancel_gatepass_message">Are you sure to cancel this gatepass?</string>
+    <string name="view_consignment">View Consignment</string>
+
+</resources>
