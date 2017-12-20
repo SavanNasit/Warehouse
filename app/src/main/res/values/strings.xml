@@ -79,6 +79,11 @@
     <string name="receive_directly">Receive Directly</string>
     <string name="receive_po">Receive PO</string>
     <string name="add_items">Add Items</string>
+    <string name="select_shipping_company">Select Shipping Company</string>
+    <string name="create_gatepass">Create Gatepass</string>
+    <string name="create">Create</string>
+    <string name="confirm_gatepass">Package Gate-Pass Authentication</string>
+    <string name="confirm">Confirm</string>
 
 
 </resources>

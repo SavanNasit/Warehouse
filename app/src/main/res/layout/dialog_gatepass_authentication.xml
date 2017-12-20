@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_vertical"
     android:background="@android:color/transparent">
 
@@ -18,30 +19,44 @@
         android:theme="@style/AppTheme">
 
         <TextView
-            android:id="@+id/cancel_gatepass_title"
+            android:id="@+id/dialog_gatepass_authentication_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/_10sdp"
             android:fontFamily="sans-serif"
-            android:text="@string/cancel_gatepass"
+            android:text="@string/confirm_gatepass"
             android:textAllCaps="false"
             android:textColor="@color/blueTurquoise"
             android:textSize="18sp"
             android:textStyle="normal" />
 
 
-        <TextView
-            android:id="@+id/cancel_gatepass_message"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="@dimen/_10sdp"
-            android:text="@string/cancel_gatepass_message"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="normal" />
+            android:layout_marginRight="@dimen/_12sdp"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:clipToPadding="false"
+            android:gravity="left|center"
+            app:hintTextAppearance="@style/CustomTextAppearance">
+
+            <AutoCompleteTextView
+                android:id="@+id/dialog_gatepass_authentication_delivery_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="left"
+                android:hint="Delivery User:"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/darkGray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/_10sdp"
+                />
+
+        </android.support.design.widget.TextInputLayout>
 
 
         <LinearLayout
@@ -59,12 +74,12 @@
                 android:layout_weight="0.5">
 
                 <Button
-                    android:id="@+id/btn_ok"
+                    android:id="@+id/dialog_gatepass_authentication_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/green"
                     android:elevation="10dp"
-                    android:text="@string/ok"
+                    android:text="@string/confirm"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
 
@@ -82,7 +97,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/dialog_gatepass_authentication_cancel"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_margin="10dp"

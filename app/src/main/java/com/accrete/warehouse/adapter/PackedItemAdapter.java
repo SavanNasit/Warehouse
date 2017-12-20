@@ -1,8 +1,7 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
