@@ -40,4 +40,19 @@
     <color name="bg_gray">#ececec</color>
 
     <color name="Black">#000000</color>
+    <color name="add_light_blue">#A1C3E2</color>
+    <color name="add_light_red">#D99797</color>
+    <color name="add_dark_blue">#4388C6</color>
+    <color name="add_dark_red">#C75659</color>
+
+    <!-- Order history status bg colors -->
+    <color name="orange_order">#F39C12 </color>
+    <color name="green_order">#17A286 </color>
+    <color name="blue_order">#2278AE </color>
+    <color name="red_order">#C75757 </color>
+    <color name="gray_order">#999999 </color>
+    <color name="blue_purchase_order">#5BC0DE </color>
+    <color name="green_purchase_order">#5CB85C </color>
+    <color name="red_purchase_order">#d9534f </color>
+    <color name="orange_purchase_order">#f0ad4e </color>
 </resources>

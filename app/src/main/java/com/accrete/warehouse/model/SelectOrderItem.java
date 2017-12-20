@@ -1,11 +1,83 @@
 package com.accrete.warehouse.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by poonam on 11/29/17.
  */
 
-public class SelectOrderItem {
+public class SelectOrderItem implements Parcelable{
+    @SerializedName("inventory")
+    @Expose
+    private String inventory;
+    @SerializedName("vendor")
+    @Expose
+    private String vendor;
+    @SerializedName("purchasedOn")
+    @Expose
+    private String purchasedOn;
+    @SerializedName("remark")
+    @Expose
+    private String remark;
+    @SerializedName("available_quantity")
+    @Expose
+    private String availableQuantity;
+    @SerializedName("allocated_quantity")
+    @Expose
+    private String allocatedQuantity;
+    @SerializedName("unit")
+    @Expose
+    private String unit;
+    @SerializedName("inventory_name")
+    @Expose
+    private String inventoryName;
+
+
+    public SelectOrderItem(){
+
+    }
+
+    protected SelectOrderItem(Parcel in) {
+        inventory = in.readString();
+        vendor = in.readString();
+        purchasedOn = in.readString();
+        remark = in.readString();
+        availableQuantity = in.readString();
+        if (in.readByte() == 0) {
+            allocatedQuantity = null;
+        } else {
+            allocatedQuantity = in.readString();
+        }
+        unit = in.readString();
+        inventoryName = in.readString();
+
+    }
+
+    public static final Creator<SelectOrderItem> CREATOR = new Creator<SelectOrderItem>() {
+        @Override
+        public SelectOrderItem createFromParcel(Parcel in) {
+            return new SelectOrderItem(in);
+        }
+
+        @Override
+        public SelectOrderItem[] newArray(int size) {
+            return new SelectOrderItem[size];
+        }
+    };
+
+
+    public String getInventoryName() {
+        return inventoryName;
+    }
+
+    public void setInventoryName(String inventoryName) {
+        this.inventoryName = inventoryName;
+    }
 
     public String getInventory() {
         return inventory;
@@ -47,12 +119,12 @@ public class SelectOrderItem {
         this.availableQuantity = availableQuantity;
     }
 
-    public String getAllotQuantity() {
-        return allotQuantity;
+    public String getAllocatedQuantity() {
+        return allocatedQuantity;
     }
 
-    public void setAllotQuantity(String allotQuantity) {
-        this.allotQuantity = allotQuantity;
+    public void setAllocatedQuantity(String allocatedQuantity) {
+        this.allocatedQuantity = allocatedQuantity;
     }
 
     public String getUnit() {
@@ -63,14 +135,25 @@ public class SelectOrderItem {
         this.unit = unit;
     }
 
-    String inventory;
-    String vendor;
-    String purchasedOn;
-    String remark;
-    String availableQuantity;
-    String allotQuantity;
-    String unit;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-
-
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(inventory);
+        dest.writeString(vendor);
+        dest.writeString(purchasedOn);
+        dest.writeString(remark);
+        dest.writeString(availableQuantity);
+        if (allocatedQuantity == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeString(allocatedQuantity);
+        }
+        dest.writeString(unit);
+        dest.writeString(inventoryName);
+    }
 }

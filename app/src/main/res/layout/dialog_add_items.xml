@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_items"
+        android:gravity="center"
+        android:layout_margin="@dimen/_10sdp"
+        android:textSize="@dimen/_15sdp"
+        android:textColor="@color/blueTurquoise"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/dialog_add_items_item_variation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Item Variation:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:textSize="@dimen/_10sdp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/dialog_add_items_receiving_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Receiving Quantity:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/dialog_add_items_receiving_unit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Unit:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/dialog_add_items_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Comment:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/dialog_add_items_expiry_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Expiry Date:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/dialog_add_items_reason_for_rejection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Reason for rejection:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/dialog_add_items_rejected_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Rejected Quantity:"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/dialog_add_items_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_70sdp"
+        android:layout_marginRight="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:background="@color/add_dark_red"
+        android:gravity="center"
+        android:padding="@dimen/_6sdp"
+        android:text="@string/add"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp" />
+</LinearLayout>

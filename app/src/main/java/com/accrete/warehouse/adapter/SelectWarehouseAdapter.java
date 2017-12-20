@@ -1,8 +1,6 @@
-package com.accrete.warehouse.navigationView;
+package com.accrete.warehouse.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +9,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.WarehouseList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,18 +18,17 @@ import java.util.List;
  * Created by poonam on 11/24/17.
  */
 
-class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouseAdapter.MyViewHolder> {
+public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouseAdapter.MyViewHolder> {
     private static CheckBox lastChecked = null;
     private static int lastCheckedPos = 0;
     private Context context;
-    private List<CheckBox> warehouseList;
-    private List<String> warehouseNameList;
+    private List<WarehouseList> warehouseLists;
     private SelectWarehouseAdapterListener listener;
 
 
-    public SelectWarehouseAdapter(Context context, List<String> warehouseNameList,SelectWarehouseAdapterListener listener) {
+    public SelectWarehouseAdapter(Context context, List<WarehouseList> warehouseList, SelectWarehouseAdapterListener listener) {
         this.context = context;
-        this.warehouseNameList = warehouseNameList;
+        this.warehouseLists = warehouseList;
         this.listener=listener;
     }
 
@@ -47,8 +44,8 @@ class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouseAdapter
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        //  WareHouse wareHouse = warehouseList.get(position);
-        holder.textWarehouse.setText(warehouseNameList.get(position));
+        final WarehouseList warehouse = warehouseLists.get(position);
+        holder.textWarehouse.setText(warehouse.getName());
         holder.checkboxWarehouse.setTag(new Integer(position));
         holder.checkboxWarehouse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +64,7 @@ class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouseAdapter
                     lastChecked = null;
                 }
 
-                applyClickEvents(warehouseNameList.get(clickedPos));
+                applyClickEvents(warehouseLists.get(clickedPos).getName(),warehouseLists.get(clickedPos).getChkid());
             }
         });
 
@@ -75,15 +72,15 @@ class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouseAdapter
 
     @Override
     public int getItemCount() {
-        return warehouseNameList.size();
+        return warehouseLists.size();
     }
 
     public interface SelectWarehouseAdapterListener {
-        void onMessageRowClicked(String position);
+        void onMessageRowClicked(String warehouseName, String warehouseChkId);
     }
 
-    private void applyClickEvents(String warehouseName) {
-                listener.onMessageRowClicked(warehouseName);
+    private void applyClickEvents(String warehouseName,String warehouseChkId) {
+                listener.onMessageRowClicked(warehouseName,warehouseChkId);
                // notifyDataSetChanged();
     }
 

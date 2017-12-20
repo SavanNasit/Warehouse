@@ -1,11 +1,16 @@
 package com.accrete.warehouse.navigationView;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,18 +26,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
 import com.accrete.warehouse.fragment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.ManagePackagesFragment;
+import com.accrete.warehouse.fragment.ReceiveAgainstPurchaseOrderFragment;
 import com.accrete.warehouse.fragment.ReceiveConsignmentFragment;
+import com.accrete.warehouse.fragment.ReceiveDirectlyFragment;
 import com.accrete.warehouse.fragment.RunningOrdersExecuteFragment;
 import com.accrete.warehouse.fragment.RunningOrdersFragment;
-import com.accrete.warehouse.model.ManageGatepass;
-import com.accrete.warehouse.model.RunningOrders;
+import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.PendingItems;
+import com.accrete.warehouse.model.SelectOrderItem;
+import com.accrete.warehouse.model.WarehouseList;
+import com.accrete.warehouse.rest.ApiClient;
+import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.google.gson.GsonBuilder;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -44,11 +57,25 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.accrete.warehouse.utils.Constants.accessToken;
+import static com.accrete.warehouse.utils.Constants.key;
+import static com.accrete.warehouse.utils.Constants.task;
+import static com.accrete.warehouse.utils.Constants.userId;
+import static com.accrete.warehouse.utils.Constants.version;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_RUNNING_ORDER_CALL_PERMISSIONS;
 
 
 public class DrawerActivity extends AppCompatActivity implements SelectWarehouseAdapter.SelectWarehouseAdapterListener {
     public static Drawer drawer;
+    List<WarehouseList> warehouseArrayList = new ArrayList<>();
     private FragmentRefreshListener fragmentRefreshListener;
     private AccountHeader headerResult = null;
     private ArrayList<String> drawerItemList = new ArrayList();
@@ -64,14 +91,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     public DrawerActivity() {
     }
 
-
-    public void setCallback(DrawerInterface drawerInterface) {
-        this.drawerInterfaceToSend = drawerInterface;
-    }
     public static void hideSoftKeyboard(Activity activity) {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
+    public void setCallback(DrawerInterface drawerInterface) {
+        this.drawerInterfaceToSend = drawerInterface;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +170,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 1) {
-                                dialogSelectWarehouse();
+                                getWarehouseList();
                             } else if (drawerItem.getIdentifier() == 2) {
                                 Fragment f = RunningOrdersFragment.newInstance(getString(R.string.running_orders_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
@@ -158,9 +184,17 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 Fragment manageConsignmentFragment = ManageConsignmentFragment.newInstance(getString(R.string.manage_consignment_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, manageConsignmentFragment).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 6) {
-                                Fragment receiveConsignmentFragment = ReceiveConsignmentFragment.newInstance(getString(R.string.recieve_consignment_fragment));
+                                Fragment receiveConsignmentFragment = ReceiveConsignmentFragment.newInstance(getString(R.string.receive_consignment_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, receiveConsignmentFragment).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 7) {
+                              /*  AppPreferences.setWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID,"");
+                                AppPreferences.setWarehouseDefaultName(DrawerActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME,"");
+                                AppPreferences.setUserId(DrawerActivity.this, AppUtils.USER_ID, null);
+                                AppPreferences.setUserName(DrawerActivity.this, AppUtils.USER_NAME, null);
+                                AppPreferences.setEmail(DrawerActivity.this, AppUtils.USER_EMAIL, null);
+                                AppPreferences.setPhoto(DrawerActivity.this, AppUtils.USER_PHOTO, null);*/
+                                AppPreferences.setIsLogin(DrawerActivity.this, AppUtils.ISLOGIN, false);
+                                AppPreferences.setIsUserFirstTime(DrawerActivity.this, AppUtils.USER_FIRST_TIME, false);
                                 Intent intentDomain = new Intent(DrawerActivity.this, DomainActivity.class);
                                 startActivity(intentDomain);
                                 finish();
@@ -202,20 +236,15 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         TextView textViewCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
         progressBarSelectWarehouse = (ProgressBar) dialogView.findViewById(R.id.dialog_select_warehouse_progress_bar);
         RecyclerView recyclerView = (RecyclerView) dialogView.findViewById(R.id.select_dialog_recycler_view);
-        List<String> warehouseList = new ArrayList<>();
-        warehouseList.add("Jp Nagar");
-        warehouseList.add("Kolkata");
-        warehouseList.add("Bangalore");
-        warehouseList.add("Delhi");
-        warehouseList.add("Agra");
-        warehouseList.add("Sri Nagar & Jammu Kashmir ......");
-        warehouseList.add("Sri Nagar & Jammu Kashmir ...... Sri Nagar & Jammu Kashmir");
+
 
         textViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DrawerActivity.this, " You have selected Warehouse: " + stringWarehouseName, Toast.LENGTH_SHORT).show();
                 dialogSelectWarehouse.dismiss();
+                Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
             }
         });
 
@@ -226,7 +255,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
             }
         });
-        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseList, this);
+        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         // recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -237,6 +266,57 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         if (!dialogSelectWarehouse.isShowing()) {
             dialogSelectWarehouse.show();
         }
+    }
+
+
+    private void getWarehouseList() {
+        if (warehouseArrayList.size() > 0) {
+            warehouseArrayList.clear();
+        }
+        task = getString(R.string.warehouse_list_task);
+
+        if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.getWarehouseList(version, key, task, userId, accessToken);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                // enquiryList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        for (WarehouseList warehouseList : apiResponse.getData().getWarehouseList()) {
+                            if (apiResponse.getData().getWarehouseList() != null) {
+                                warehouseArrayList.add(warehouseList);
+                                if (apiResponse.getData().getWarehouseList().size() > 0) {
+                                    AppPreferences.setWarehouseDefaultName(DrawerActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, apiResponse.getData().getWarehouseList().get(0).getName());
+                                    AppPreferences.setWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID, apiResponse.getData().getWarehouseList().get(0).getChkid());
+                                }
+                            }
+                        }
+
+                        dialogSelectWarehouse();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("warehouse:password", t.getMessage());
+            }
+        });
     }
 
 
@@ -265,6 +345,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             drawer.closeDrawer();
         } else {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+            Fragment currentReceiveFragment = getSupportFragmentManager().findFragmentById(R.id.receive_consignment_container);
             if (currentFragment instanceof RunningOrdersFragment) {
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(2);
@@ -285,8 +366,23 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 drawer.deselect(5);
                 drawer.setSelection(0);
 
+
             } else if (currentFragment instanceof ReceiveConsignmentFragment) {
-                // add your code here
+
+                getSupportFragmentManager().popBackStack();
+                drawer.deselect(6);
+                drawer.setSelection(0);
+
+
+            } else if (currentReceiveFragment instanceof ReceiveDirectlyFragment) {
+
+                getSupportFragmentManager().popBackStack();
+                drawer.deselect(6);
+                drawer.setSelection(0);
+
+
+            } else if (currentReceiveFragment instanceof ReceiveAgainstPurchaseOrderFragment) {
+
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(6);
                 drawer.setSelection(0);
@@ -336,9 +432,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
 
     @Override
-    public void onMessageRowClicked(String strWarehouseName) {
+    public void onMessageRowClicked(String strWarehouseName, String strWarehouseChkId) {
         stringWarehouseName = strWarehouseName;
-        AppPreferences.setWarehouseName(DrawerActivity.this, AppUtils.WAREHOUSE_NAME, strWarehouseName);
+        AppPreferences.setWarehouseDefaultName(DrawerActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, strWarehouseName);
+        AppPreferences.setWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID, strWarehouseChkId);
         //setCallback(strWarehouseName);
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
         if (currentFragment instanceof HomeFragment) {
@@ -359,6 +456,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 Log.e("NEW RUNNING ORDER", " " + requestCode + " " + resultCode);
                 ((RunningOrdersExecuteFragment) newCurrentFragment).getData(data.getStringExtra("scanResult"));
             }
+        } else if (resultCode == 1001) {
+            Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
+            if (newCurrentFragment instanceof RunningOrdersExecuteFragment) {
+                Log.e("Selected Order Item", " " + requestCode + " " + resultCode);
+                ((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"));
+            }
+
         }
     }
 
@@ -371,8 +475,89 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         this.fragmentRefreshListener = fragmentRefreshListener;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        Log.d("PERMISSION", "Permission callback for  call action");
+        switch (requestCode) {
+            case REQUEST_CODE_FOR_RUNNING_ORDER_CALL_PERMISSIONS: {
+                Map<String, Integer> perms = new HashMap<>();
+                // Initialize  with both permissions
+                perms.put(Manifest.permission.CALL_PHONE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_CONTACTS, PackageManager.PERMISSION_GRANTED);
+                // Fill with actual results nameTextView user
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+
+                    // Check for call permissions
+                    if (perms.get(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("PERMISSION", "Call and Phone services permission granted");
+
+                        // process the normal flow
+                        //else any one or both the permissions are not granted
+
+//                     Handling  Followup  Allow onclick in runtime permissions
+                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                        if (f instanceof RunningOrdersFragment) {
+                            ((RunningOrdersFragment) f).callAction();
+                        }
+                    } else {
+                        Log.d("PERMISSION", "Some permissions are not granted ask again ");
+                        //permission is denied (this is the first timeTextView, when "never ask again" is not checked) so ask again explaining the usage of permission
+//                        // shouldShowRequestPermissionRationale will return true
+                        //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
+
+                        }
+                        //permission is denied (and never ask again is  checked)
+                        //shouldShowRequestPermissionRationale will return false
+                        else {
+                            // handling never ask again and re directing to settings page.
+                            askUserToAllowPermissionFromSetting();
+                        }
+                    }
+                }
+            }
+            break;
+        }
+    }
+
+    public void askUserToAllowPermissionFromSetting() {
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        // set title
+        alertDialogBuilder.setTitle(R.string.permission_required);
+        // set dialog messageTextView
+        alertDialogBuilder
+                .setMessage(getString(R.string.request_permission_from_settings))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity;
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
+
+
     public interface FragmentRefreshListener {
         void onRefresh(String warehouseName);
     }
-
 }

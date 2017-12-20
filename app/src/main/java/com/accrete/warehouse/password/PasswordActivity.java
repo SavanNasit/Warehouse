@@ -1,22 +1,11 @@
 package com.accrete.warehouse.password;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -24,9 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,19 +21,14 @@ import android.widget.Toast;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.login.LoginActivity;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.WarehouseList;
 import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
-import com.accrete.warehouse.utils.ContentProvider;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,16 +46,16 @@ import static com.accrete.warehouse.utils.Constants.version;
  */
 
 public class PasswordActivity extends Activity implements View.OnClickListener, PasswordView {
-    private PasswordPresenter presenter;
     ProgressBar progressBar;
+    String userName, imageUrl;
+    String companyCode;
+    private PasswordPresenter presenter;
     private TextView textViewNext, textViewResetPassword;
     private EditText editTextpassword;
     private String email;
     private String password;
     private String status;
     private int progressStatus = 0;
-    String userName, imageUrl;
-    String companyCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +75,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
         editTextpassword = (EditText) findViewById(R.id.login_edittext_password);
         progressBar = (ProgressBar) findViewById(R.id.password_progress_bar);
         textViewNext.setOnClickListener(this);
-      
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(getResources().getColor(R.color.lightViolet));
@@ -153,8 +135,6 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         presenter.onDestroy();
@@ -173,12 +153,12 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void setPasswordError() {
-      //  CustomisedToast.error(PasswordActivity.this, getString(R.string.password_error), Toast.LENGTH_SHORT).show();
+        //  CustomisedToast.error(PasswordActivity.this, getString(R.string.password_error), Toast.LENGTH_SHORT).show();
         Toast.makeText(this, getString(R.string.password_error), Toast.LENGTH_SHORT).show();
     }
 
     public void setCredentialError() {
-     //   CustomisedToast.error(PasswordActivity.this, getString(R.string.credential_error), Toast.LENGTH_SHORT).show();
+        //   CustomisedToast.error(PasswordActivity.this, getString(R.string.credential_error), Toast.LENGTH_SHORT).show();
         Toast.makeText(this, getString(R.string.credential_error), Toast.LENGTH_SHORT).show();
     }
 
@@ -258,16 +238,14 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                 Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
                 ApiResponse apiResponse = (ApiResponse) response.body();
                 if (apiResponse.getSuccess()) {
-
-
                     //Global Shared Preferences
                     //AppPreferences.setIsLogin(PasswordActivity.this, AppUtils.ISLOGIN, true);
-                    AppPreferences.setUserId(PasswordActivity.this, AppUtils.USER_ID, userId);
-                    AppPreferences.setAccessToken(PasswordActivity.this, AppUtils.ACCESS_TOKEN, accessToken);
-                    AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, email);
-                    AppPreferences.setUserName(PasswordActivity.this, AppUtils.USER_NAME, userName);
+                    AppPreferences.setUserId(PasswordActivity.this, AppUtils.USER_ID, apiResponse.getData().getUserId());
+                    AppPreferences.setAccessToken(PasswordActivity.this, AppUtils.ACCESS_TOKEN, apiResponse.getData().getAccessToken());
+                    // AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, apiResponse.getData().get);
+                    AppPreferences.setUserName(PasswordActivity.this, AppUtils.USER_NAME, apiResponse.getData().getName());
                     AppPreferences.setPhoto(PasswordActivity.this, AppUtils.USER_PHOTO, imageUrl);
-                    AppPreferences.setCompanyCode(PasswordActivity.this, AppUtils.COMPANY_CODE, companyCode);
+                    AppPreferences.setCompanyCode(PasswordActivity.this, AppUtils.COMPANY_CODE, apiResponse.getData().getCompanyCode());
 
                   /*  ContentValues values = new ContentValues();
                     values.put(ContentProvider.login, "true");
@@ -276,6 +254,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     //Enable Button again
                     textViewNext.setEnabled(true);
                     AppPreferences.setIsLogin(PasswordActivity.this, AppUtils.ISLOGIN, true);
+                    getWarehouseList();
                     navigateToHome();
                 } else if (apiResponse.getSuccessCode().equals("10005")) {
                     progressBar.setVisibility(View.GONE);
@@ -283,7 +262,6 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     //Enable Button again
                     setCredentialError();
                     new Handler().postDelayed(new Runnable() {
-
                         @Override
                         public void run() {
                             textViewNext.setEnabled(true);
@@ -313,7 +291,49 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
 
     }
 
+    private void getWarehouseList() {
+        task = getString(R.string.warehouse_list_task);
 
+        if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.getWarehouseList(version, key, task, userId, accessToken);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                // enquiryList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        for (WarehouseList warehouseList : apiResponse.getData().getWarehouseList()) {
+                            if (apiResponse.getData().getWarehouseList() != null) {
+                                if (apiResponse.getData().getWarehouseList().size() > 0) {
+                                    AppPreferences.setWarehouseDefaultName(PasswordActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, apiResponse.getData().getWarehouseList().get(0).getName());
+                                    AppPreferences.setWarehouseDefaultCheckId(PasswordActivity.this, AppUtils.WAREHOUSE_CHK_ID, apiResponse.getData().getWarehouseList().get(0).getChkid());
+                                }
+                            }
+                        }
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("warehouse:password", t.getMessage());
+            }
+        });
+    }
 
 
 }

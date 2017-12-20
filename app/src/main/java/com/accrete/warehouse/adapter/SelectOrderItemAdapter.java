@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.SelectOrderItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,25 +45,53 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        SelectOrderItem selectOrderItem = selectOrderItems.get(position);
-        holder.listRowOrderItemInventory.setText(" (" + selectOrderItem.getInventory() + ")");
-        holder.listRowOrderItemPurchasedOn.setText(selectOrderItem.getPurchasedOn());
-        holder.listRowOrderItemVendor.setText(selectOrderItem.getVendor());
-        holder.listRowOrderItemAvailableQuantity.setText("Avl.Quantity: "+selectOrderItem.getAvailableQuantity());
-        holder.listRowOrderItemRemarks.setText("Remarks: "+selectOrderItem.getRemark());
-        holder.textViewUnit.setText(selectOrderItem.getUnit());
-        holder.listRowOrderItemEdtAllotQuantity.setText(selectOrderItem.getAllotQuantity());
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final SelectOrderItem selectOrderItem = selectOrderItems.get(position);
+        holder.listRowOrderItemInventory.setText(selectOrderItem.getInventory());
 
+
+        holder.listRowOrderItemAvailableQuantity.setText("Avl.Quantity: "+ selectOrderItem.getAvailableQuantity());
+        holder.textViewUnit.setText(selectOrderItem.getUnit());
+        holder.listRowOrderItemName.setText(selectOrderItem.getInventoryName());
+        holder.listRowOrderItemEdtAllotQuantity.setText(selectOrderItem.getAllocatedQuantity());
+
+
+        if(selectOrderItem.getVendor()!=null && !selectOrderItem.getVendor().isEmpty()){
+            holder.listRowOrderItemVendor.setVisibility(View.VISIBLE);
+            holder.listRowOrderItemVendor.setText(selectOrderItem.getVendor());
+        }else{
+            holder.listRowOrderItemVendor.setVisibility(View.GONE);
+        }
+
+        if(selectOrderItem.getRemark()!=null && !selectOrderItem.getRemark().isEmpty()){
+            holder.listRowOrderItemRemarks.setVisibility(View.VISIBLE);
+            holder.listRowOrderItemRemarks.setText(selectOrderItem.getRemark());
+            holder.listRowOrderItemRemarks.setText("Remarks: "+ selectOrderItem.getRemark());
+        }else{
+            holder.listRowOrderItemRemarks.setVisibility(View.GONE);
+        }
 
         holder.orderItemExecute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemExecute();
+                listener.onItemExecute(selectOrderItem.getInventoryName(),selectOrderItem.getAllocatedQuantity(),
+                        holder.listRowOrderItemEdtAllotQuantity.getText().toString(),selectOrderItem.getUnit());
             }
         });
 
         applyClickEvents(holder, position);
+
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            DateFormat outputFormat = new SimpleDateFormat("dd MMM, yyyy");
+            Date date = simpleDateFormat.parse(selectOrderItem.getPurchasedOn());
+            holder.listRowOrderItemPurchasedOn.setText(outputFormat.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -73,7 +105,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
 
     public interface SelectOrderItemsAdapterListener{
         void onItemRowClicked(int position);
-        void onItemExecute();
+        void onItemExecute(String inventoryName, String allocatedQuantity, String quantity, String unit);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -81,6 +113,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
         private TextView listRowOrderItemVendor;
         private TextView listRowOrderItemInventory;
         private TextView listRowOrderItemAvailableQuantity;
+        private TextView listRowOrderItemName;
         private EditText listRowOrderItemEdtAllotQuantity;
         private TextView listRowOrderItemRemarks;
         private LinearLayout orderItemExecute;
@@ -90,6 +123,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
             super(view);
 
             listRowOrderItemPurchasedOn = (TextView) view.findViewById(R.id.list_row_order_item_purchased_on);
+
             listRowOrderItemVendor = (TextView) view.findViewById(R.id.list_row_order_item_vendor);
             listRowOrderItemInventory = (TextView) view.findViewById(R.id.list_row_order_item_inventory);
             listRowOrderItemAvailableQuantity = (TextView) view.findViewById(R.id.list_row_order_item_available_quantity);
@@ -97,6 +131,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
             listRowOrderItemRemarks = (TextView) view.findViewById(R.id.list_row_order_item_remarks);
             orderItemExecute = (LinearLayout) view.findViewById(R.id.order_item_execute);
             textViewUnit = (TextView) view.findViewById(R.id.list_row_order_item_unit);
+            listRowOrderItemName = (TextView)view.findViewById(R.id.list_row_order_item_item_name);
         }
     }
 

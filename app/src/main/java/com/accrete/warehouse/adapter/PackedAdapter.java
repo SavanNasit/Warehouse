@@ -1,16 +1,25 @@
 package com.accrete.warehouse.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.Packed;
+import com.accrete.warehouse.utils.AppPreferences;
+import com.accrete.warehouse.utils.AppUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,9 +29,8 @@ import java.util.List;
 public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.MyViewHolder> {
     private Context context;
     private PackedAdapterListener listener;
-    private List<Packed> packedList = new ArrayList<>();
-
-    public PackedAdapter(Context context, List<Packed> packedList, PackedAdapterListener listener) {
+    private List<Packages> packedList = new ArrayList<>();
+    public PackedAdapter(Context context, List<Packages> packedList, PackedAdapterListener listener) {
         this.context = context;
         this.packedList = packedList;
         this.listener = listener;
@@ -35,18 +43,18 @@ public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.MyViewHold
         return new MyViewHolder(itemView);
     }
 
-
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-        Packed packed = packedList.get(position);
-        holder.listRowPackedPackageId.setText(packed.getPackageID());
-        holder.listRowPackedOrderId.setText(packed.getOrderId());
-        holder.listRowPackedInvoiceNumber.setText(packed.getInvoiceNumber());
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        final Packages packed = packedList.get(position);
+        holder.listRowPackedPackageId.setText(AppPreferences.getCompanyCode(context, AppUtils.COMPANY_CODE)+packed.getPacid());
+        holder.listRowPackedPackageId.setPaintFlags(holder.listRowPackedPackageId.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        holder.listRowPackedOrderId.setText(packed.getOid());
+        holder.listRowPackedInvoiceNumber.setText(packed.getInvoiceNo());
         holder.listRowPackedInvoiceDate.setText(packed.getInvoiceDate());
         holder.listRowPackedCustomerName.setText(packed.getCustomerName());
-        holder.listRowPackedPincode.setText(packed.getPincode());
-        holder.listRowPackedExpDod.setText(packed.getExpDOD());
-        //applyClickEvents(holder, position);
+        holder.listRowPackedPincode.setText(packed.getZipCode());
+        holder.listRowPackedExpDod.setText(packed.getToDate());
+
     }
 
     @Override
@@ -61,7 +69,6 @@ public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.MyViewHold
 
     public interface PackedAdapterListener {
         void onMessageRowClicked(int position);
-
         void onExecute();
     }
 
@@ -73,20 +80,19 @@ public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.MyViewHold
         private TextView listRowPackedCustomerName;
         private TextView listRowPackedPincode;
         private TextView listRowPackedExpDod;
-
-
+        private CheckBox listRowPackedCheckbox;
 
 
         public MyViewHolder(View view) {
             super(view);
-
-            listRowPackedPackageId = (TextView)view.findViewById( R.id.list_row_packed_package_id );
-            listRowPackedOrderId = (TextView)view.findViewById( R.id.list_row_packed_order_id );
-            listRowPackedInvoiceNumber = (TextView)view.findViewById( R.id.list_row_packed_invoice_number );
-            listRowPackedInvoiceDate = (TextView)view.findViewById( R.id.list_row_packed_invoice_date );
-            listRowPackedCustomerName = (TextView)view.findViewById( R.id.list_row_packed_customer_name );
-            listRowPackedPincode = (TextView)view.findViewById( R.id.list_row_packed_pincode );
-            listRowPackedExpDod = (TextView)view.findViewById( R.id.list_row_packed_exp_dod );
+            listRowPackedPackageId = (TextView) view.findViewById(R.id.list_row_packed_package_id);
+            listRowPackedOrderId = (TextView) view.findViewById(R.id.list_row_packed_order_id);
+            listRowPackedInvoiceNumber = (TextView) view.findViewById(R.id.list_row_packed_invoice_number);
+            listRowPackedInvoiceDate = (TextView) view.findViewById(R.id.list_row_packed_invoice_date);
+            listRowPackedCustomerName = (TextView) view.findViewById(R.id.list_row_packed_customer_name);
+            listRowPackedPincode = (TextView) view.findViewById(R.id.list_row_packed_pincode);
+            listRowPackedExpDod = (TextView) view.findViewById(R.id.list_row_packed_exp_dod);
+            listRowPackedCheckbox = (CheckBox) view.findViewById(R.id.list_row_package_checkbox);
         }
     }
 

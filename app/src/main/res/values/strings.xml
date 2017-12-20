@@ -30,7 +30,7 @@
     <string name="cancel">Cancel</string>
     <string name="home_fragment">Home</string>
     <string name="no_data_available">No data available</string>
-    <string name="running_orders_execute_fragment">Order Execution</string>
+    <string name="running_orders_execute_fragment">Execution For  </string>
     <string name="scan">Scan bar code</string>
     <string name="order_item">Select Order Item</string>
     <string name="upload"><u>Upload Documents</u></string>
@@ -42,12 +42,43 @@
     <string name="package_history">Package History</string>
     <string name="manage_gatepass_fragment">Manage GatePass</string>
     <string name="manage_consignment_fragment">Manage Consignment</string>
-    <string name="recieve_consignment_fragment">Recieve Consignment</string>
+    <string name="receive_consignment_fragment">Receive Consignment</string>
     <string name="items_inside_package">Items inside package</string>
     <string name="click_back_to_exit">Please press again to close warehouse</string>
     <string name="package_order_status">Package Order Status</string>
     <string name="cancel_gatepass">Cancel Gatepass</string>
     <string name="cancel_gatepass_message">Are you sure to cancel this gatepass?</string>
+    <string name="phone_number_not_valid_error">Phone number is not valid</string>
     <string name="view_consignment">View Consignment</string>
+    <string name="add">Add</string>
+    <string name="deliver">Deliver</string>
+    <string name="warehouse_list_task">warehouse/warehouse_list</string>
+    <string name="running_order_list_task">warehouse/running_orders</string>
+    <string name="permission_required">Permission Required:</string>
+    <string name="request_permission_from_settings">Kindly allow Permission From App Settings</string>
+    <string name="execute_order_task">warehouse/execute_select_order</string>
+    <string name="email_error">Email Id is not present</string>
+    <string name="mail_to">mailto</string>
+    <string name="choose_email_client">Choose an Email client :</string>
+    <string name="last_updated_date">1970-1-1</string>
+    <string name="no_internet_try_later">There is no internet connection right now. Please try again later.</string>
+    <string name="packed_packages_list_task">warehouse/packed_packages</string>
+    <string name="network_error">Please connect to internet</string>
+    <string name="isvid">isvid</string>
+    <string name="isid">isid</string>
+    <string name="iid">iid</string>
+    <string name="qty">qty</string>
+    <string name="oiid">oiid</string>
+    <string name="meaid">meaid</string>
+    <string name="name">name</string>
+    <string name="variation">variation</string>
+    <string name="unit">unit</string>
+    <string name="create_package_task">warehouse/create_package</string>
+    <string name="error_message_create_package">Please add one or more items to create package</string>
+    <string name="Rs">\u20B9</string>
+    <string name="receive_directly">Receive Directly</string>
+    <string name="receive_po">Receive PO</string>
+    <string name="add_items">Add Items</string>
+
 
 </resources>

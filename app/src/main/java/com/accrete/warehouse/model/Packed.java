@@ -8,6 +8,13 @@ public class Packed {
     private String packageID;
     private String orderId;
 
+    public boolean getSelected() {
+        return selected;
+    }
+
+    private boolean selected;
+
+
     public String getPackageID() {
         return packageID;
     }
@@ -68,5 +75,10 @@ public class Packed {
 
     public void setPincode(String pincode) {
         this.pincode = pincode;
+    }
+
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

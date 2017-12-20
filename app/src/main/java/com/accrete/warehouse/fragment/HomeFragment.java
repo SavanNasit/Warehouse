@@ -22,8 +22,9 @@ import static com.accrete.warehouse.navigationView.DrawerActivity.drawer;
  * Created by poonam on 11/24/17.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener ,DrawerInterface {
+public class HomeFragment extends Fragment implements View.OnClickListener, DrawerInterface {
     private static final String KEY_TITLE = "HomeFragment";
+    Drawer drawerSelection;
     private TextView textViewWarehouseTitle;
     private String warehouseName;
     private DrawerActivity drawerActivity;
@@ -34,7 +35,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
     private LinearLayout homeManageGatePassLayout;
     private LinearLayout homeManageConsignmentLayout;
     private LinearLayout homeReceiveConsignmentLayout;
-    Drawer drawerSelection;
 
     public static HomeFragment newInstance(String title) {
         HomeFragment f = new HomeFragment();
@@ -48,7 +48,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         initializeView(rootView);
-        textViewWarehouseTitle.setText(AppPreferences.getWarehouseName(getActivity(), AppUtils.WAREHOUSE_NAME));
+        if (AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME) != null &&
+                !AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME).isEmpty()) {
+            textViewWarehouseTitle.setText(AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME));
+        }
 
         ((DrawerActivity) getActivity()).setFragmentRefreshListener(new DrawerActivity.FragmentRefreshListener() {
             @Override
@@ -57,7 +60,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
                 textViewWarehouseTitle.setText(warehouseName);
             }
         });
-
 
 
         drawerActivity = new DrawerActivity();
@@ -159,7 +161,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
                 }
                 break;
             case R.id.home_receive_consignment_layout:
-                Fragment receiveConsignmentFragment = ReceiveConsignmentFragment.newInstance(getString(R.string.recieve_consignment_fragment));
+                Fragment receiveConsignmentFragment = ReceiveConsignmentFragment.newInstance(getString(R.string.receive_consignment_fragment));
                 getFragmentManager().beginTransaction().replace(R.id.home_container, receiveConsignmentFragment).commitAllowingStateLoss();
                 if (drawerSelection != null) {
                     drawerSelection.setSelection(6);

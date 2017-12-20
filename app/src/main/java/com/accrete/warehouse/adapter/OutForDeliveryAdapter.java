@@ -2,6 +2,7 @@ package com.accrete.warehouse.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,15 +42,15 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         OutForDelivery outForDelivery = outForDeliveryList.get(position);
-        holder.outForDeliveryPackageId.setText("(" + outForDelivery.getPackageId() + ")");
-        holder.outForDeliveryInvoiceNo.setText(outForDelivery.getInvoiceNumber());
+        holder.outForDeliveryPackageId.setText(outForDelivery.getPackageId());
+        holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        holder.outForDeliveryInvoiceNo.setText("Invoice No : "+outForDelivery.getInvoiceNumber());
         holder.outForDeliveryInvoiceDate.setText(outForDelivery.getInvoiceDate());
         holder.outForDeliveryCustomerName.setText(outForDelivery.getCustomerName());
         holder.outForDeliveryGatepassId.setText(outForDelivery.getGatePassId());
         holder.outForDeliveryOrderId.setText(outForDelivery.getOrderId());
-        holder.outForDeliveryExpDod.setText(outForDelivery.getExpdod());
-        holder.outForDeliveryUser.setText(outForDelivery.getDeliveryUser());
-
+        holder.outForDeliveryExpDod.setText("Exp Dod : "+outForDelivery.getExpdod());
+        holder.outForDeliveryUser.setText("Delivery User : "+outForDelivery.getDeliveryUser());
 
         holder.outForDeliveryContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +58,6 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
                 listener.onMessageRowClicked(position);
             }
         });
-
-
         //applyClickEvents(holder, position);
     }
 

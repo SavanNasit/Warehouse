@@ -22,31 +22,19 @@
             android:layout_gravity="center"
             android:gravity="left|center"
             android:text="Package ID"
-            android:textColor="#8D8D8D"
+            android:textColor="@color/blueTurquoise"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/out_for_delivery_invoice_no"
+            android:id="@+id/out_for_delivery_invoice_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:gravity="left|center"
-            android:text="Invoice No"
             android:textColor="#8D8D8D"
             android:textSize="14sp" />
-
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/out_for_delivery_invoice_date"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="left|center"
-        android:text="Invoice Date"
-        android:textColor="#8D8D8D"
-        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/out_for_delivery_customer_name"
@@ -56,25 +44,16 @@
         android:gravity="left|center"
         android:text="Customer Name"
         android:textColor="#8D8D8D"
+        android:textStyle="bold"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/out_for_delivery_gatepass_id"
+        android:id="@+id/out_for_delivery_invoice_no"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="left|center"
-        android:text="Gatepass Id"
-        android:textColor="#8D8D8D"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/out_for_delivery_order_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="left|center"
-        android:text="Order Id"
+        android:text="Invoice No"
         android:textColor="#8D8D8D"
         android:textSize="14sp" />
 
@@ -97,5 +76,39 @@
         android:text="Delivery User"
         android:textColor="#8D8D8D"
         android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+
+        <TextView
+            android:id="@+id/out_for_delivery_gatepass_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="left|center"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:textColor="#8D8D8D"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/primary"/>
+
+        <TextView
+            android:id="@+id/out_for_delivery_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:gravity="center"
+            android:textColor="#8D8D8D"
+            android:textSize="14sp" />
+    </LinearLayout>
+
 
 </LinearLayout>
