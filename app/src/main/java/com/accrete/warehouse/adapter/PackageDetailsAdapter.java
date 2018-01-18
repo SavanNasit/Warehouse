@@ -37,7 +37,12 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         PackageDetailsList packageDetailsList = packageDetailsLists.get(position);
-        holder.listRowPackageDetailsItem.setText(packageDetailsList.getItem());
+        if(holder.listRowPackageDetailsItem.length()>25){
+            holder.listRowPackageDetailsItem.setText(packageDetailsList.getItem().substring(0,25)+"...");
+        }else{
+            holder.listRowPackageDetailsItem.setText(packageDetailsList.getItem());
+        }
+
         holder.listRowPackageDetailsBatchNumber.setText(packageDetailsList.getBatchNumber());
         holder.listRowPackageDetailsQuantity.setText(packageDetailsList.getQuantity());
         holder.listRowPackageDetailsRemove.setOnClickListener(new View.OnClickListener() {

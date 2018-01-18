@@ -70,11 +70,11 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
 
         outForDelivery.setPackageId("RPDPAK20171128001687");
         outForDelivery.setInvoiceNumber("1343434");
-        outForDelivery.setInvoiceDate("1853");
-        outForDelivery.setCustomerName("2 pieces");
+        outForDelivery.setInvoiceDate("18 Sep, 2017");
+        outForDelivery.setCustomerName("Dr. Support dfefed");
         outForDelivery.setGatePassId("RPDPAKGP000466");
         outForDelivery.setOrderId("RPD23423100119");
-        outForDelivery.setExpdod("NA");
+        outForDelivery.setExpdod("22 Sep, 2017");
         outForDelivery.setDeliveryUser("Admin");
 
         outForDeliveryList.add(outForDelivery);

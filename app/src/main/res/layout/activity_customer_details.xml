@@ -32,6 +32,7 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/customer_details_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -61,6 +62,7 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/customer_details_email"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -91,6 +93,7 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/customer_details_mobile"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -129,6 +132,7 @@
         android:background="@color/green" />
 
     <TextView
+        android:id="@+id/customer_details_shipping_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -166,6 +170,7 @@
         android:background="@color/green" />
 
     <TextView
+        android:id="@+id/customer_details_billing_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

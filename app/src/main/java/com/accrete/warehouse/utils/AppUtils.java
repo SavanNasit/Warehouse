@@ -1,17 +1,17 @@
 package com.accrete.warehouse.utils;
 
+import java.util.Set;
+
 /**
  * Created by agt on 3/10/17.
  */
 
 public class AppUtils {
-    public final static String WAREHOUSE_NAME= "warehouseName";
-
-
-
     public final static String ISLOGIN = "islogin";
     public final static String USER_ID = "user_id";
     public final static String ACCESS_TOKEN = "access_token";
+    public final static String WAREHOUSE_CHK_ID= "defaultWarehouseChkId";
+    public final static String WAREHOUSE_DEFAULT_NAME = "defaultWarehouse";
     public final static String USER_SESSION_ID = "userSessionId";
     public final static String USER_NAME = "username";
     public final static String USER_EMAIL = "email";
@@ -57,4 +57,6 @@ public class AppUtils {
     public static final String USER_ADDRESS_LINE_ONE ="address_line_one" ;
     public static final String USER_ADDRESS_LINE_TWO ="address_line_two" ;
     public static final String TWO_STEP_VERIFICATION_STATUS = "two_step_status";
+    public static String ShippingBy = "shipping_by";
+    public static String ShippingType = "shipping_type";
 }

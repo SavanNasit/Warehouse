@@ -18,11 +18,11 @@
         android:theme="@style/AppTheme">
 
         <TextView
+            android:id="@+id/cancel_gatepass_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_margin="@dimen/_10sdp"
             android:fontFamily="sans-serif"
             android:text="@string/cancel_gatepass"
             android:textAllCaps="false"
@@ -31,13 +31,12 @@
             android:textStyle="normal" />
 
 
-
         <TextView
+            android:id="@+id/cancel_gatepass_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="05dp"
-            android:layout_marginTop="0dp"
+            android:layout_margin="@dimen/_10sdp"
             android:text="@string/cancel_gatepass_message"
             android:textAllCaps="false"
             android:textColor="@color/black"
@@ -81,7 +80,6 @@
                     android:visibility="visible" />
 
             </RelativeLayout>
-
 
             <Button
                 android:id="@+id/btn_cancel"

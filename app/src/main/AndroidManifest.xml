@@ -81,6 +81,8 @@
         <activity android:name=".ItemsInsidePackageActivity" />
         <activity android:name=".PackageOrderStatusActivity" />
         <activity android:name=".ViewConsignmentActivity" />
+        <activity android:name=".CreateGatepassActivity"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

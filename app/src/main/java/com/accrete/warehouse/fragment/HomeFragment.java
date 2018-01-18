@@ -1,5 +1,6 @@
 package com.accrete.warehouse.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.accrete.warehouse.CreateGatepassActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.navigationView.DrawerInterface;
@@ -22,8 +24,9 @@ import static com.accrete.warehouse.navigationView.DrawerActivity.drawer;
  * Created by poonam on 11/24/17.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener ,DrawerInterface {
+public class HomeFragment extends Fragment implements View.OnClickListener, DrawerInterface {
     private static final String KEY_TITLE = "HomeFragment";
+    Drawer drawerSelection;
     private TextView textViewWarehouseTitle;
     private String warehouseName;
     private DrawerActivity drawerActivity;
@@ -34,7 +37,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
     private LinearLayout homeManageGatePassLayout;
     private LinearLayout homeManageConsignmentLayout;
     private LinearLayout homeReceiveConsignmentLayout;
-    Drawer drawerSelection;
+    private LinearLayout homeCreateGatepassLayout;
+    private TextView homeRunningOrdersCount;
+    private TextView homeManagePackagesCount;
+    private TextView homeManageGatePassCount;
+    private TextView homeManageConsignmentCount;
+    private TextView homeReceiveConsignmentCount;
+
 
     public static HomeFragment newInstance(String title) {
         HomeFragment f = new HomeFragment();
@@ -48,7 +57,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         initializeView(rootView);
-        textViewWarehouseTitle.setText(AppPreferences.getWarehouseName(getActivity(), AppUtils.WAREHOUSE_NAME));
+        if (AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME) != null &&
+                !AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME).isEmpty()) {
+            textViewWarehouseTitle.setText(AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME));
+        }
 
         ((DrawerActivity) getActivity()).setFragmentRefreshListener(new DrawerActivity.FragmentRefreshListener() {
             @Override
@@ -58,14 +70,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
             }
         });
 
-
-
         drawerActivity = new DrawerActivity();
         drawerActivity.setCallback(this);
 
         return rootView;
     }
-
 
     @Override
     public void onResume() {
@@ -80,7 +89,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
                 .setTitle(getString(R.string.home_fragment));
 
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -108,12 +116,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
         homeManageGatePassLayout = (LinearLayout) rootview.findViewById(R.id.home_manage_gate_pass_layout);
         homeManageConsignmentLayout = (LinearLayout) rootview.findViewById(R.id.home_manage_consignment_layout);
         homeReceiveConsignmentLayout = (LinearLayout) rootview.findViewById(R.id.home_receive_consignment_layout);
+        homeRunningOrdersCount = (TextView) rootview.findViewById(R.id.home_running_orders_count);
+        homeManagePackagesCount = (TextView) rootview.findViewById(R.id.home_manage_packages_count);
+        homeManageGatePassCount = (TextView) rootview.findViewById(R.id.home_manage_gate_pass_count);
+        homeManageConsignmentCount = (TextView) rootview.findViewById(R.id.home_manage_consignment_count);
+        homeReceiveConsignmentCount = (TextView) rootview.findViewById(R.id.home_receive_consignment_count);
+        homeCreateGatepassLayout = (LinearLayout) rootview.findViewById(R.id.home_manage_create_gatepass);
 
         homeRunningOrdersLayout.setOnClickListener(this);
         homeManagePackagesLayout.setOnClickListener(this);
         homeManageGatePassLayout.setOnClickListener(this);
         homeManageConsignmentLayout.setOnClickListener(this);
         homeReceiveConsignmentLayout.setOnClickListener(this);
+        homeCreateGatepassLayout.setOnClickListener(this);
     }
 
 
@@ -123,7 +138,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
             case R.id.home_running_orders_layout:
                 Fragment runningOrdersFragment = RunningOrdersFragment.newInstance(getString(R.string.running_orders_fragment));
                 getFragmentManager().beginTransaction().replace(R.id.home_container, runningOrdersFragment).commitAllowingStateLoss();
-
                 if (drawerSelection != null) {
                     drawerSelection.setSelection(2);
                 } else {
@@ -159,13 +173,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,Draw
                 }
                 break;
             case R.id.home_receive_consignment_layout:
-                Fragment receiveConsignmentFragment = ReceiveConsignmentFragment.newInstance(getString(R.string.recieve_consignment_fragment));
+                Fragment receiveConsignmentFragment = ReceiveConsignmentFragment.newInstance(getString(R.string.receive_consignment_fragment));
                 getFragmentManager().beginTransaction().replace(R.id.home_container, receiveConsignmentFragment).commitAllowingStateLoss();
                 if (drawerSelection != null) {
                     drawerSelection.setSelection(6);
                 } else {
                     drawer.setSelection(6);
                 }
+                break;
+
+            case R.id.home_manage_create_gatepass:
+                Intent intentCreateGatepass = new Intent(getActivity(), CreateGatepassActivity.class);
+                startActivity(intentCreateGatepass);
                 break;
         }
     }

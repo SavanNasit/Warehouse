@@ -3,27 +3,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="10dp"
-    android:layout_width="wrap_content">
+    android:layout_width="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_marginLeft="@dimen/_18sdp"
+        android:layout_marginRight="@dimen/_18sdp"
         android:layout_height="wrap_content"
+        android:weightSum="3"
         >
 
         <ImageView
-            android:id="@+id/running_orders_call"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:paddingTop="4dp"
-            android:src="@drawable/ic_call"/>
+            android:id="@+id/running_orders_info"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:background="@color/home_page_gray"
+            android:src="@drawable/ic_customer_info"/>
 
         <ImageView
-            android:id="@+id/running_orders_info"
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_customer_info"/>
+            android:id="@+id/running_orders_call"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:padding="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:background="@color/home_page_gray"
+            android:src="@drawable/ic_call"/>
+
+
+
+        <ImageView
+            android:id="@+id/running_orders_email"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:padding="@dimen/_5sdp"
+            android:background="@color/home_page_gray"
+            android:src="@drawable/ic_customer_email"/>
 
     </LinearLayout>
 </LinearLayout>

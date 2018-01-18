@@ -67,7 +67,6 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         manageGatepassRecyclerView.setNestedScrollingEnabled(false);
         manageGatepassRecyclerView.setAdapter(manageGatePassAdapter);
 
-
         manageGatepass.setGatepassID("RPDORDG100138");
         manageGatepass.setPackages("1");
         manageGatepass.setDeliveryUser("Ms Poonam Kukreti");
@@ -85,8 +84,6 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         gatepassList.add(manageGatepass);
         gatepassList.add(manageGatepass);
         gatepassList.add(manageGatepass);
-
-
     }
 
 
