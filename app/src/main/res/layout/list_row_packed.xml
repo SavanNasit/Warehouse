@@ -3,21 +3,19 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-  >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="1"
-        >
+        android:weightSum="1">
 
         <CheckBox
             android:id="@+id/list_row_package_checkbox"
             android:layout_width="0dp"
-            android:layout_weight="0.1 "
             android:layout_height="match_parent"
+            android:layout_weight="0.1 "
             android:buttonTint="@color/primary"
             android:checked="false"
             android:visibility="visible" />
@@ -25,10 +23,11 @@
         <TextView
             android:id="@+id/list_row_packed_package_id"
             android:layout_width="0dp"
-            android:layout_weight="0.9"
             android:layout_height="match_parent"
-            android:textAllCaps="true"
+            android:layout_weight="0.9"
             android:gravity="left|center"
+            android:text="@string/create"
+            android:textAllCaps="true"
             android:textColor="@color/blueTurquoise"
             android:textSize="@dimen/_10sdp" />
 
@@ -39,8 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
+        android:layout_marginLeft="@dimen/_40sdp"
         android:maxLines="1"
-        android:layout_marginLeft="@dimen/_10sdp"
         android:textSize="@dimen/_9sdp"
         android:textStyle="bold" />
 
@@ -49,8 +48,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
+        android:layout_marginLeft="@dimen/_40sdp"
         android:maxLines="1"
-        android:layout_marginLeft="@dimen/_10sdp"
         android:textSize="@dimen/_9sdp"
         android:textStyle="bold" />
 
@@ -59,8 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
+        android:layout_marginLeft="@dimen/_40sdp"
         android:maxLines="1"
-        android:layout_marginLeft="@dimen/_10sdp"
         android:textSize="@dimen/_9sdp"
         android:textStyle="bold" />
 
@@ -69,16 +68,16 @@
         android:id="@+id/list_row_packed_order_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_40sdp"
         android:textAllCaps="true"
-        android:textSize="@dimen/_10sdp"/>
+        android:textSize="@dimen/_10sdp" />
 
 
     <TextView
         android:id="@+id/list_row_packed_invoice_number"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_40sdp"
         android:textColor="@color/home_page_text_gray"
         android:textSize="@dimen/_9sdp" />
 
@@ -86,8 +85,8 @@
         android:id="@+id/list_row_packed_exp_dod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_40sdp"
         android:textSize="@dimen/_10sdp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
 </LinearLayout>

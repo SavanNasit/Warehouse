@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.AddedItemsAdapter;
 import com.accrete.warehouse.adapter.PackedItemAdapter;
+import com.accrete.warehouse.adapter.PackedItemWithoutCheckboxAdapter;
 import com.accrete.warehouse.model.AlreadyAddedItem;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Packages;
@@ -51,12 +52,12 @@ import static com.accrete.warehouse.utils.Constants.version;
  * Created by poonam on 11/30/17.
  */
 
-public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, PackedItemAdapter.PackedItemAdapterListener, AddedItemsAdapter.AddedItemsAdapterListener {
+public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, PackedItemWithoutCheckboxAdapter.PackedItemAdapterListener {
 
     private SwipeRefreshLayout packedSwipeRefreshLayout;
     private RecyclerView packedRecyclerView;
     private TextView packedEmptyView, packedAdd, packedDeliver;
-    private PackedItemAdapter packedItemAdapter;
+    private PackedItemWithoutCheckboxAdapter packedItemAdapter;
     private List<PackedItem> packedList = new ArrayList<>();
     private Packages packages = new Packages();
     private boolean loading;
@@ -75,10 +76,10 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         packedSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.packed_swipe_refresh_layout);
         packedRecyclerView = (RecyclerView) rootView.findViewById(R.id.packed_recycler_view);
         packedEmptyView = (TextView) rootView.findViewById(R.id.packed_empty_view);
-        packedAdd = (TextView) rootView.findViewById(R.id.packed_text_add);
-        packedDeliver = (TextView) rootView.findViewById(R.id.packed_text_deliver);
+     /*   packedAdd = (TextView) rootView.findViewById(R.id.packed_text_add);
+        packedDeliver = (TextView) rootView.findViewById(R.id.packed_text_deliver);*/
 
-        packedItemAdapter = new PackedItemAdapter(getActivity(), packedList, this);
+        packedItemAdapter = new PackedItemWithoutCheckboxAdapter(getActivity(), packedList, this);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         packedRecyclerView.setLayoutManager(mLayoutManager);
         packedRecyclerView.setHasFixedSize(true);
@@ -86,11 +87,11 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         packedRecyclerView.setNestedScrollingEnabled(false);
         packedRecyclerView.setAdapter(packedItemAdapter);
 
-        packedAdd.setOnClickListener(new View.OnClickListener() {
+       /* packedAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 packedAdd.setBackgroundColor(getResources().getColor(R.color.add_dark_blue));
-                dialogAddPackages();
+               //dialogAddPackages();
             }
         });
         packedDeliver.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +101,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 dialogDeliverPackages();
             }
         });
-
+*/
         apiCall();
      /*  packedSwipeRefreshLayout.post(new Runnable() {
                @Override
@@ -150,7 +151,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         packedSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    private void dialogAddPackages() {
+ /*   private void dialogAddPackages() {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_add_packages, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -177,6 +178,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         dialogAddPackagesRecyclerView.setNestedScrollingEnabled(false);
         dialogAddPackagesRecyclerView.setAdapter(addedItemsAdapter);
 
+        dialogAddPackagesSelectShippingCompany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogCreateGatepass();
+            }
+        });
+
         addPackagesCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +204,95 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         dialogDeliver.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         if (!dialogDeliver.isShowing()) {
             dialogDeliver.show();
+        }
+    }*/
+
+    private void dialogCreateGatepass() {
+        View dialogView = View.inflate(getActivity(), R.layout.dialog_create_gatepass, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setCancelable(true);
+        final AlertDialog dialogCreateGatepass = builder.create();
+        dialogCreateGatepass.setCanceledOnTouchOutside(true);
+
+        LinearLayout linearLayout;
+        TextView cancelGatepassTitle;
+        AutoCompleteTextView dialogCreateGatepassShippingBy;
+        AutoCompleteTextView dialogCreateGatepassVehicleNumber;
+        AutoCompleteTextView dialogCreateGatepassShippingType;
+        AutoCompleteTextView dialogCreateGatepassShippingCompany;
+        Button btnOk;
+        ProgressBar cancelGatepassProgressBar;
+        Button btnCancel;
+
+        linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
+        cancelGatepassTitle = (TextView) dialogView.findViewById(R.id.cancel_gatepass_title);
+        dialogCreateGatepassShippingBy = (AutoCompleteTextView) dialogView.findViewById(R.id.dialog_create_gatepass_shipping_by);
+        dialogCreateGatepassVehicleNumber = (AutoCompleteTextView) dialogView.findViewById(R.id.dialog_create_gatepass_vehicle_number);
+        dialogCreateGatepassShippingType = (AutoCompleteTextView) dialogView.findViewById(R.id.dialog_create_gatepass_shipping_type);
+        dialogCreateGatepassShippingCompany = (AutoCompleteTextView) dialogView.findViewById(R.id.dialog_create_gatepass_shipping_company);
+        btnOk = (Button) dialogView.findViewById(R.id.btn_ok);
+        cancelGatepassProgressBar = (ProgressBar) dialogView.findViewById(R.id.cancel_gatepass_progress_bar);
+        btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogConfirmGatepass();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogCreateGatepass.dismiss();
+            }
+        });
+
+        dialogCreateGatepass.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (!dialogCreateGatepass.isShowing()) {
+            dialogCreateGatepass.show();
+        }
+    }
+
+    private void dialogConfirmGatepass() {
+        View dialogView = View.inflate(getActivity(), R.layout.dialog_gatepass_authentication, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setCancelable(true);
+        final AlertDialog dialogConfirmGatepass = builder.create();
+        dialogConfirmGatepass.setCanceledOnTouchOutside(true);
+        LinearLayout linearLayout;
+        TextView dialogGatepassAuthenticationTitle;
+        AutoCompleteTextView dialogGatepassAuthenticationDeliveryUser;
+        Button dialogGatepassAuthenticationConfirm;
+        ProgressBar cancelGatepassProgressBar;
+        Button dialogGatepassAuthenticationCancel;
+
+        linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
+        dialogGatepassAuthenticationTitle = (TextView) dialogView.findViewById(R.id.dialog_gatepass_authentication_title);
+        dialogGatepassAuthenticationDeliveryUser = (AutoCompleteTextView) dialogView.findViewById(R.id.dialog_gatepass_authentication_delivery_user);
+        dialogGatepassAuthenticationConfirm = (Button) dialogView.findViewById(R.id.dialog_gatepass_authentication_confirm);
+        cancelGatepassProgressBar = (ProgressBar) dialogView.findViewById(R.id.cancel_gatepass_progress_bar);
+        dialogGatepassAuthenticationCancel = (Button) dialogView.findViewById(R.id.dialog_gatepass_authentication_cancel);
+
+        dialogGatepassAuthenticationConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogConfirmGatepass.dismiss();
+            }
+        });
+
+        dialogGatepassAuthenticationCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogConfirmGatepass.dismiss();
+            }
+        });
+
+        dialogConfirmGatepass.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (!dialogConfirmGatepass.isShowing()) {
+            dialogConfirmGatepass.show();
         }
     }
 
@@ -266,7 +363,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void onExecute() {
+    public void onExecute(ArrayList<String> packageIdList) {
 
     }
 
@@ -283,7 +380,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getPackageDetails(version, key, task, userId, accessToken, chkid, updatedDate,
+        Call<ApiResponse> call = apiService.getPackageDetails(version, key, task, userId, accessToken, chkid,"1", updatedDate,
                 traversalValue);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));

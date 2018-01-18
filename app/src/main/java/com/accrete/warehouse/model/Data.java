@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.List;
 
 /**
  * Modified by poonam on 22/9/17.
@@ -41,11 +42,35 @@ public class Data {
     @Expose
     private List<PackedItem> packedItems = null;
 
+    @SerializedName("shipping_by")
+    @Expose
+    private List<ShippingBy> shippingBy = null;
+    @SerializedName("shipping_types")
+    @Expose
+    private List<ShippingType> shippingTypes = null;
+
+    public List<ShippingBy> getShippingBy() {
+        return shippingBy;
+    }
+
+    public void ListShippingBy(List<ShippingBy> shippingBy) {
+        this.shippingBy = shippingBy;
+    }
+
+    public List<ShippingType> getShippingTypes() {
+        return shippingTypes;
+    }
+
+    public void ListShippingTypes(List<ShippingType> shippingTypes) {
+        this.shippingTypes = shippingTypes;
+    }
+
+
     public List<PackedItem> getPackedItems() {
         return packedItems;
     }
 
-    public void setPackedItems(List<PackedItem> packedItems) {
+    public void ListPackedItems(List<PackedItem> packedItems) {
         this.packedItems = packedItems;
     }
 
@@ -53,7 +78,7 @@ public class Data {
         return runningOrderCount;
     }
 
-    public void setRunningOrderCount(String runningOrderCount) {
+    public void ListRunningOrderCount(String runningOrderCount) {
         this.runningOrderCount = runningOrderCount;
     }
 
@@ -61,7 +86,7 @@ public class Data {
         return companyCode;
     }
 
-    public void setCompanyCode(String companyCode) {
+    public void ListCompanyCode(String companyCode) {
         this.companyCode = companyCode;
     }
 
@@ -69,7 +94,7 @@ public class Data {
         return name;
     }
 
-    public void setName(String name) {
+    public void ListName(String name) {
         this.name = name;
     }
 
@@ -90,7 +115,7 @@ public class Data {
         return selectOrdersItems;
     }
 
-    public void setSelectOrdersItems(List<SelectOrderItem> selectOrdersItems) {
+    public void ListSelectOrdersItems(List<SelectOrderItem> selectOrdersItems) {
         this.selectOrdersItems = selectOrdersItems;
     }
 
@@ -111,7 +136,7 @@ public class Data {
         return waid;
     }
 
-    public void setWaid(String waid) {
+    public void ListWaid(String waid) {
         this.waid = waid;
     }
 
@@ -119,7 +144,7 @@ public class Data {
         return runningOrders;
     }
 
-    public void setRunningOrders(List<RunningOrder> runningOrders) {
+    public void ListRunningOrders(List<RunningOrder> runningOrders) {
         this.runningOrders = runningOrders;
     }
 
@@ -128,7 +153,7 @@ public class Data {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void ListUserId(String userId) {
         this.userId = userId;
     }
 
@@ -136,7 +161,7 @@ public class Data {
         return warehouseList;
     }
 
-    public void setWarehouseList(List<WarehouseList> warehouseList) {
+    public void ListWarehouseList(List<WarehouseList> warehouseList) {
         this.warehouseList = warehouseList;
     }
 }

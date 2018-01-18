@@ -42,7 +42,7 @@
             android:visibility="gone" />
 
     </android.support.design.widget.CoordinatorLayout>
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -72,7 +72,7 @@
             android:text="@string/deliver"
             android:textSize="@dimen/_10sdp"/>
 
-    </LinearLayout>
+    </LinearLayout>-->
     </LinearLayout>
 
 </FrameLayout>

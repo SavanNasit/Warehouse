@@ -415,7 +415,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName(items.get(i));
             items.add(String.valueOf(item2));
         }
-
         return items;
     }
 

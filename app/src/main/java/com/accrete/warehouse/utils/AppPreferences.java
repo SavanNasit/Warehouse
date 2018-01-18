@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.accrete.warehouse.model.ShippingBy;
+
 import java.util.List;
 import java.util.Set;
 
@@ -184,4 +186,6 @@ public class AppPreferences {
         edit.putStringSet(key, value);
         edit.commit();
     }
+
+
 }

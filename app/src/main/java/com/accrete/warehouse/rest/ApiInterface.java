@@ -138,6 +138,8 @@ public interface ApiInterface {
                                                 String accessToken,
                                         @Query("chkid")
                                                 String chkid,
+                                        @Query("type")
+                                                String type,
                                         @Query("last_fetch")
                                                 String lastFetch,
                                         @Query("traversal")

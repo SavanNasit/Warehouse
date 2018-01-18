@@ -68,6 +68,7 @@ public class PackedItem {
     @SerializedName("packageId")
     @Expose
     private String packageId;
+    private boolean selected;
 
     public String getPacid() {
         return pacid;
@@ -229,4 +230,11 @@ public class PackedItem {
         this.packageId = packageId;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 }

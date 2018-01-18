@@ -1,0 +1,227 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:weightSum="3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_weight="0.6"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:src="@drawable/ic_package_selection_filled" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.5"
+                android:gravity="center|top"
+                android:text="@string/package_selection"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:background="@color/home_page_text_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:src="@drawable/ic_create_gatepass_filled" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.5"
+                android:gravity="center|top"
+                android:text="@string/create_gatepass"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:background="@color/home_page_text_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:src="@drawable/ic_confirm_gatepass_unfilled" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.5"
+                android:gravity="center|top"
+                android:text="@string/confirm_gatepass_fragment"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2.2"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:orientation="vertical">
+
+
+            <AutoCompleteTextView
+                android:id="@+id/dialog_create_gatepass_shipping_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="left"
+                android:hint="Shipping By:"
+                android:maxLines="1"
+                android:background="@drawable/border_edittext_gray"
+                android:padding="@dimen/_10sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:textColor="@color/darkGray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/_10sdp" />
+
+
+
+            <EditText
+                android:id="@+id/dialog_create_gatepass_vehicle_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="left"
+                android:hint="Vehicle Number:"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/border_edittext_gray"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/darkGray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/_10sdp" />
+
+
+            <AutoCompleteTextView
+                android:id="@+id/dialog_create_gatepass_shipping_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="left"
+                android:hint="Shipping Type:"
+                android:background="@drawable/border_edittext_gray"
+                android:padding="@dimen/_10sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:textColor="@color/darkGray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/_10sdp" />
+
+
+            <AutoCompleteTextView
+                android:id="@+id/dialog_create_gatepass_shipping_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="left"
+                android:hint="Shipping Company:"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:background="@drawable/border_edittext_gray"
+                android:padding="@dimen/_10sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:textColor="@color/darkGray"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/_10sdp" />
+
+
+        <TextView
+            android:id="@+id/dialog_create_gatepass_back"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Back to Package Selection"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingRight="@dimen/_12sdp"
+            android:paddingLeft="@dimen/_12sdp"
+            android:drawableLeft="@drawable/ic_back_arrow"
+            android:textColor="@color/white"
+            android:background="@color/blueTurquoise"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.22"
+        android:background="@color/primary">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:gravity="center|center_vertical"
+            android:text="@string/create"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16sdp" />
+    </LinearLayout>
+</LinearLayout>

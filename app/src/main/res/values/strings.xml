@@ -84,6 +84,10 @@
     <string name="create">Create</string>
     <string name="confirm_gatepass">Package Gate-Pass Authentication</string>
     <string name="confirm">Confirm</string>
+    <string name="package_selection">Package Selection</string>
+    <string name="confirm_gatepass_fragment">Confirm Gatepass</string>
+    <string name="search">Search here..</string>
+    <string name="shipping_form_data">warehouse/fetch_shipping_form_data</string>
 
 
 </resources>

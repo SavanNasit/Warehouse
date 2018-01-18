@@ -21,13 +21,13 @@ import java.util.List;
  */
 
 
-public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.MyViewHolder> {
+public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<PackedItemWithoutCheckboxAdapter.MyViewHolder> {
     private Context context;
     private PackedItemAdapterListener listener;
     private List<PackedItem> packedList = new ArrayList<>();
     ArrayList<String> packageIdList = new ArrayList<>();
 
-    public PackedItemAdapter(Context context, List<PackedItem> packedList, PackedItemAdapterListener listener) {
+    public PackedItemWithoutCheckboxAdapter(Context context, List<PackedItem> packedList, PackedItemAdapterListener listener) {
         this.context = context;
         this.packedList = packedList;
         this.listener = listener;
@@ -43,6 +43,7 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final PackedItem packed = packedList.get(position);
+        holder.listRowPackedCheckbox.setVisibility(View.INVISIBLE);
         holder.listRowPackedPackageId.setText(packed.getPackageId());
         holder.listRowPackedPackageId.setPaintFlags(holder.listRowPackedPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         if (packed.getOid() != null && !packed.getOid().isEmpty()) {
@@ -87,29 +88,6 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
         } else {
             holder.listRowPackedExpDod.setVisibility(View.GONE);
         }
-
-
-        holder.listRowPackedCheckbox.setChecked(packedList.get(position).isSelected());
-
-        holder.listRowPackedCheckbox.setTag(packedList.get(position));
-
-
-        holder.listRowPackedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    packedList.get(position).setSelected(isChecked);
-                    packageIdList.add(packedList.get(position).getPacid());
-                }else{
-                    packageIdList.remove(packedList.get(position).getPacid());
-                }
-
-                applyClickEvents(holder,position,packageIdList);
-            }
-        });
-
-
-
     }
 
     @Override

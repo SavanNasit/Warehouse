@@ -1,5 +1,7 @@
 package com.accrete.warehouse.utils;
 
+import java.util.Set;
+
 /**
  * Created by agt on 3/10/17.
  */
@@ -55,4 +57,6 @@ public class AppUtils {
     public static final String USER_ADDRESS_LINE_ONE ="address_line_one" ;
     public static final String USER_ADDRESS_LINE_TWO ="address_line_two" ;
     public static final String TWO_STEP_VERIFICATION_STATUS = "two_step_status";
+    public static String ShippingBy = "shipping_by";
+    public static String ShippingType = "shipping_type";
 }
