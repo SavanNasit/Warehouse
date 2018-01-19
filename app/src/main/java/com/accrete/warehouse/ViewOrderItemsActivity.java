@@ -1,14 +1,40 @@
 package com.accrete.warehouse;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.OrderDetail;
+import com.accrete.warehouse.model.VendorData;
+import com.accrete.warehouse.rest.ApiClient;
+import com.accrete.warehouse.rest.ApiInterface;
+import com.accrete.warehouse.utils.AppPreferences;
+import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.NetworkUtil;
+import com.google.gson.GsonBuilder;
+
+import java.text.DecimalFormat;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.accrete.warehouse.utils.Constants.accessToken;
+import static com.accrete.warehouse.utils.Constants.key;
+import static com.accrete.warehouse.utils.Constants.task;
+import static com.accrete.warehouse.utils.Constants.userId;
+import static com.accrete.warehouse.utils.Constants.version;
 
 /**
  * Created by agt on 19/1/18.
@@ -53,11 +79,16 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
     private RelativeLayout layoutConsignmentDetails;
     private RecyclerView recyclerViewConsignmentDetails;
     private TextView textviewConsignmentDetailsEmpty;
+    private String purOrId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_order_items);
+        if (getIntent() != null && getIntent().hasExtra(getString(R.string.purOrId))) {
+            purOrId = getIntent().getStringExtra(getString(R.string.purOrId));
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -111,6 +142,170 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
         layoutConsignmentDetails = (RelativeLayout) findViewById(R.id.layout_consignmentDetails);
         recyclerViewConsignmentDetails = (RecyclerView) findViewById(R.id.recycler_view_consignmentDetails);
         textviewConsignmentDetailsEmpty = (TextView) findViewById(R.id.textview_consignmentDetails_empty);
+
+        if (!NetworkUtil.getConnectivityStatusString(ViewOrderItemsActivity.this).equals(getString(R.string.not_connected_to_internet))) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getOrderDetails(purOrId);
+                }
+            }, 200);
+        } else {
+            Toast.makeText(ViewOrderItemsActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
+    private void getOrderDetails(String purOrId) {
+        task = getString(R.string.fetch_purchase_order_info);
+        userId = AppPreferences.getUserId(ViewOrderItemsActivity.this, AppUtils.USER_ID);
+        accessToken = AppPreferences.getAccessToken(ViewOrderItemsActivity.this, AppUtils.ACCESS_TOKEN);
+        ApiClient.BASE_URL = AppPreferences.getLastDomain(ViewOrderItemsActivity.this, AppUtils.DOMAIN);
+
+        final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call call = apiService.viewOrderDetails(version, key, task, userId, accessToken,
+                AppPreferences.getWarehouseDefaultCheckId(ViewOrderItemsActivity.this, AppUtils.WAREHOUSE_CHK_ID), purOrId);
+        Log.v("Request", String.valueOf(call));
+        Log.v("url", String.valueOf(call.request().url()));
+
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                ApiResponse apiResponse = (ApiResponse) response.body();
+                if (apiResponse.getSuccess()) {
+
+                    setDataIntoView(apiResponse.getData().getVendorData(),
+                            apiResponse.getData().getOrderDetail());
+
+                } else if (apiResponse.getSuccessCode().equals("10005")) {
+                    Toast.makeText(ViewOrderItemsActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if (apiResponse.getSuccessCode().equals("10006")) {
+                    Toast.makeText(ViewOrderItemsActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                   /* new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            coordinatorLayoutMain.setVisibility(View.VISIBLE);
+                        }
+                    }, 100);*/
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Toast.makeText(ViewOrderItemsActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+
+        });
+    }
+
+    public void setDataIntoView(VendorData vendorData, OrderDetail orderDetail) {
+        DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
+
+        //Vendor Details
+        if (vendorData.getName() != null && !vendorData.getName().isEmpty()) {
+            nameLayout.setVisibility(View.VISIBLE);
+            nameTextView.setText(vendorData.getName());
+        } else {
+            nameLayout.setVisibility(View.GONE);
+        }
+
+        if (vendorData.getMobile() != null && !vendorData.getMobile().isEmpty()) {
+            contactNoLayout.setVisibility(View.VISIBLE);
+            contactNoTextView.setText(vendorData.getMobile());
+        } else {
+            contactNoLayout.setVisibility(View.GONE);
+        }
+
+        if (vendorData.getEmail() != null && !vendorData.getEmail().isEmpty()) {
+            emailLayout.setVisibility(View.VISIBLE);
+            emailTextView.setText(vendorData.getEmail());
+        } else {
+            emailLayout.setVisibility(View.GONE);
+        }
+
+        if (vendorData.getAddress() != null && !vendorData.getAddress().isEmpty()) {
+            addressLayout.setVisibility(View.VISIBLE);
+            addressTextView.setText(vendorData.getAddress());
+        } else {
+            addressLayout.setVisibility(View.GONE);
+        }
+
+
+        //Order Details
+        if (orderDetail.getOrderId() != null && !orderDetail.getOrderId().isEmpty()) {
+            orderIdLayout.setVisibility(View.VISIBLE);
+            orderIdTextView.setText(orderDetail.getOrderId());
+        } else {
+            orderIdLayout.setVisibility(View.GONE);
+        }
+
+        if (orderDetail.getStatus() != null && !orderDetail.getStatus().isEmpty()) {
+            GradientDrawable drawable = (GradientDrawable) statusTextView.getBackground();
+            statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
+            statusLayout.setVisibility(View.VISIBLE);
+            statusTextView.setText(orderDetail.getStatus());
+
+          /*  if (orderDetail.getStatus().equals("Created")) {
+                drawable.setColor(getResources().getColor(R.color.green_purchase_order));
+            } else if (orderDetail.getStatus().equals("Partial Received")) {
+                drawable.setColor(getResources().getColor(R.color.blue_purchase_order));
+            } else if (orderDetail.getStatus().equals("Received")) {
+                drawable.setColor(getResources().getColor(R.color.blue_purchase_order));
+            } else if (orderDetail.getStatus().equals("Cancelled")) {
+                drawable.setColor(getResources().getColor(R.color.red_purchase_order));
+            } else if (orderDetail.getStatus().equals("Closed")) {
+                drawable.setColor(getResources().getColor(R.color.red_purchase_order));
+            } else if (orderDetail.getStatus().equals("Pending")) {
+                drawable.setColor(getResources().getColor(R.color.orange_purchase_order));
+            } else if (orderDetail.getStatus().equals("Expected Delivery")) {
+                drawable.setColor(getResources().getColor(R.color.gray_order));
+            } else if (orderDetail.getStatus().equals("Pending Transportation")) {
+                drawable.setColor(getResources().getColor(R.color.gray_order));
+            }
+*/
+        } else {
+            statusLayout.setVisibility(View.GONE);
+        }
+
+        if (orderDetail.getSubTotal() != null && !orderDetail.getSubTotal().isEmpty()) {
+            subTotalLayout.setVisibility(View.VISIBLE);
+            subTotalTextView.setText(getString(R.string.Rs) + " " + formatter.format(ParseDouble(orderDetail.getSubTotal())));
+        } else {
+            subTotalLayout.setVisibility(View.GONE);
+        }
+
+        if (orderDetail.getTotal() != null && !orderDetail.getTotal().isEmpty()) {
+            totalLayout.setVisibility(View.VISIBLE);
+            totalTextView.setText(getString(R.string.Rs) + " " + formatter.format(ParseDouble(orderDetail.getTotal())));
+        } else {
+            totalLayout.setVisibility(View.GONE);
+        }
+
+        if (orderDetail.getRoundOff() != null && !orderDetail.getRoundOff().isEmpty()) {
+            roundOffLayout.setVisibility(View.VISIBLE);
+            roundOffTextView.setText(getString(R.string.Rs) + " " + formatter.format(ParseDouble(orderDetail.getRoundOff())));
+        } else {
+            roundOffLayout.setVisibility(View.GONE);
+        }
+
+        if (orderDetail.getPayable() != null && !orderDetail.getPayable().isEmpty()) {
+            payableLayout.setVisibility(View.VISIBLE);
+            payableTextView.setText(getString(R.string.Rs) + " " + formatter.format(ParseDouble(orderDetail.getPayable())));
+        } else {
+            payableLayout.setVisibility(View.GONE);
+        }
+    }
+
+    //To deal with empty string of amount
+    double ParseDouble(String strNumber) {
+        if (strNumber != null && strNumber.length() > 0) {
+            try {
+                return Double.parseDouble(strNumber);
+            } catch (Exception e) {
+                return -1;   // or some value to mark this field is wrong. or make a function validates field first ...
+            }
+        } else return 0;
+    }
 }

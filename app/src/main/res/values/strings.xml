@@ -122,4 +122,6 @@
     <string name="consignment_details_subtitle">List of the consignments related to the PO</string>
     <string name="task_manage_gatepass">warehouse/fetch_gatepass_list</string>
     <string name="task_cancel_gatepass">warehouse/cancel_gatepass</string>
+    <string name="purOrId">purchaseOrderId</string>
+    <string name="fetch_purchase_order_info">purchase_order/fetch_purchase_order_info</string>
 </resources>

@@ -83,7 +83,8 @@
         <activity android:name=".ViewConsignmentActivity" />
         <activity
             android:name=".ViewOrderItemsActivity"
-            android:theme="@style/MyMaterialTheme" />
+            android:theme="@style/MyMaterialTheme"
+            android:label="View Order Items"/>
         <activity
             android:name=".CreateGatepassActivity"
             android:windowSoftInputMode="adjustPan" />
