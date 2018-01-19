@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.manageConsignment;
 
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;

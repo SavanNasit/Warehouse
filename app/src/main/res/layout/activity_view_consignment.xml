@@ -29,7 +29,7 @@
         android:clipToPadding="false"
         android:gravity="center_vertical"
         android:padding="@dimen/standard_12"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/manage_consignment_goods_receipt_print"

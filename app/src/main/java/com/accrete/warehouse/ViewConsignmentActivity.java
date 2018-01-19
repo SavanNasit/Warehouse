@@ -100,6 +100,8 @@ public class ViewConsignmentActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.container, consignmentMainTabFragment);
         fragmentTransaction.commit();
 
+        floatingActionButton.setVisibility(View.VISIBLE);
+        floatingActionButton.setEnabled(true);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

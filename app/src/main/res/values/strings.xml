@@ -117,4 +117,6 @@
     <string name="received_details_subtitle">Details of the ordered items, which are received</string>
     <string name="consignment_details_title">Consignment Details</string>
     <string name="consignment_details_subtitle">List of the consignments related to the PO</string>
+    <string name="purOrId">purchaseOrderId</string>
+    <string name="fetch_purchase_order_info">purchase_order/fetch_purchase_order_info</string>
 </resources>
