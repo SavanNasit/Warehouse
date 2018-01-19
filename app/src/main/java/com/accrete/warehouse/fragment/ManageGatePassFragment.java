@@ -67,23 +67,6 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         manageGatepassRecyclerView.setNestedScrollingEnabled(false);
         manageGatepassRecyclerView.setAdapter(manageGatePassAdapter);
 
-        manageGatepass.setGatepassID("RPDORDG100138");
-        manageGatepass.setPackages("1");
-        manageGatepass.setDeliveryUser("Ms Poonam Kukreti");
-        manageGatepass.setGeneratedOn("18 Sep, 2017");
-        manageGatepass.setGatepassStatus("Running");
-        manageGatepass.setShippingCompanyName("AGT Pvt Ltd");
-        manageGatepass.setShippingType("Internal");
-
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
-        gatepassList.add(manageGatepass);
     }
 
 

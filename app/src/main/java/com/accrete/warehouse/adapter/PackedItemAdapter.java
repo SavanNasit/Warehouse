@@ -123,6 +123,11 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
         listener.onExecute(packageIdList);
     }
 
+    public void filterList(List<PackedItem> filteredData) {
+        this.packedList = filteredData;
+        notifyDataSetChanged();
+    }
+
     public interface PackedItemAdapterListener {
         void onMessageRowClicked(int position);
         void onExecute(ArrayList<String> packageIdList);

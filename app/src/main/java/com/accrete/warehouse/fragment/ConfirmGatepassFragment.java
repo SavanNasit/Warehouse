@@ -2,7 +2,6 @@ package com.accrete.warehouse.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.accrete.warehouse.CreateGatepassActivity.createGatepassViewpager;
+import static com.accrete.warehouse.fragment.CreatePassMainTabFragment.createGatepassViewpager;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
@@ -46,12 +46,14 @@ import static com.accrete.warehouse.utils.Constants.version;
 
 public class ConfirmGatepassFragment extends Fragment {
     List<DeliveryUserList> deliveryUserLists = new ArrayList<>();
-    ArrayList<String> usernameList = new ArrayList<>();
+    List<String> usernameList = new ArrayList<>();
+    String uid, pacid, pacshtid, chkid, scompid, vehicle;
     private AutoCompleteTextView dialogGatepassAuthenticationDeliveryUser;
     private TextView dialogGatepassBack;
     private LinearLayout dialogGatepassConfirm;
     private String strDeliveryUser;
     private ArrayAdapter arrayAdapterDeliveryUser;
+    private String shippingBy;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,14 +70,17 @@ public class ConfirmGatepassFragment extends Fragment {
         dialogGatepassAuthenticationDeliveryUser.setAdapter(arrayAdapterDeliveryUser);
 
 
-           /* dialogGatepassAuthenticationDeliveryUser.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+
+        dialogGatepassAuthenticationDeliveryUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (usernameList.size() > 0) {
                     dialogGatepassAuthenticationDeliveryUser.showDropDown();
                 }
-            });
-*/
-    /*        dialogGatepassAuthenticationDeliveryUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            }
+        });
+
+/*         dialogGatepassAuthenticationDeliveryUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus) {
@@ -90,9 +95,22 @@ public class ConfirmGatepassFragment extends Fragment {
                     }
                 }
 
-            });
-*/
+            });*/
 
+
+
+
+        dialogGatepassConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (uid != null && !uid.isEmpty()) {
+                    createGatePass(uid, pacid, pacshtid, scompid, vehicle, shippingBy);
+                } else {
+                    Toast.makeText(getActivity(), "Please Select the delivery user", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         dialogGatepassBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,19 +132,13 @@ public class ConfirmGatepassFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Code to be executed after desired time
-                            Activity activity = getActivity();
-                            if (activity != null && isAdded()) {
-                                getDeliveryUser(dialogGatepassAuthenticationDeliveryUser.getText().toString().trim());
-                                if (usernameList.size() > 0) {
-                                    dialogGatepassAuthenticationDeliveryUser.showDropDown();
-                                }
-                            }
-                        }
-                    }, 200);
+
+                    //Code to be executed after desired time
+                    Activity activity = getActivity();
+                    if (activity != null && isAdded()) {
+                        getDeliveryUser(dialogGatepassAuthenticationDeliveryUser.getText().toString().trim());
+                    }
+
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
@@ -136,12 +148,50 @@ public class ConfirmGatepassFragment extends Fragment {
         return rootView;
     }
 
+    private void createGatePass(String uid, String pacid, String pacshtid, String scompid, String vehicle, String shippingBy) {
+        task = getString(R.string.create_gatepass_task);
+        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
+            chkid = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.createGatePass(version, key, task, userId, accessToken, uid,
+                pacid, pacshtid, scompid, chkid, "0", "0", shippingBy, vehicle);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        Toast.makeText(getActivity(), "Gatepass created successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.d("error", t.getMessage());
+
+            }
+        });
+    }
+
 
     private void getDeliveryUser(String searchText) {
         task = getString(R.string.task_delivery_user);
-    /*    if (deliveryUserLists.size() > 0) {
-            deliveryUserLists.clear();
-        }*/
+
 
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
@@ -161,18 +211,39 @@ public class ConfirmGatepassFragment extends Fragment {
                 try {
                     if (apiResponse.getSuccess()) {
                         for (DeliveryUserList deliveryUserList : apiResponse.getData().getDeliveryUserList()) {
-                            deliveryUserLists.add(deliveryUserList);
-
+                            if (deliveryUserList.getName() != null && !deliveryUserList.getName().isEmpty()) {
+                                if (deliveryUserLists.size() > 0) {
+                                    deliveryUserLists.clear();
+                                    usernameList.clear();
+                                }
+                                deliveryUserLists.add(deliveryUserList);
+                                usernameList.add(deliveryUserList.getName());
+                                Log.d("username", deliveryUserList.getName());
+                            }
                         }
 
-                        if(usernameList.size()>0) {
-                          usernameList.clear();
-                        }
-                        for (int i = 0; i < deliveryUserLists.size(); i++) {
-                            usernameList.add(deliveryUserLists.get(i).getName());
-                        }
-
+                        arrayAdapterDeliveryUser = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, usernameList);
+                        arrayAdapterDeliveryUser.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        dialogGatepassAuthenticationDeliveryUser.setAdapter(arrayAdapterDeliveryUser);
                         arrayAdapterDeliveryUser.notifyDataSetChanged();
+
+                        dialogGatepassAuthenticationDeliveryUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if(deliveryUserLists.size()>0){
+                                    uid = deliveryUserLists.get(position).getId();
+                                }
+                            }
+                        });
+
+
+
+                    /*    if(usernameList.size()>0) {
+                          usernameList.clear();
+                        }*/
+                       /* for (int i = 0; i < deliveryUserLists.size(); i++) {
+                            usernameList.add(deliveryUserLists.get(i).getName());
+                        }*/
 
                     }
 
@@ -187,5 +258,13 @@ public class ConfirmGatepassFragment extends Fragment {
 
             }
         });
+    }
+
+    public void getData(String strPacid, String strPacdelgatpactid, String strPacshtid, String strShippingCompanyId, String sirVehicleNumber) {
+        pacid = strPacid;
+        shippingBy = strPacdelgatpactid;
+        pacshtid = strPacshtid;
+        scompid = strShippingCompanyId;
+        vehicle = sirVehicleNumber;
     }
 }

@@ -146,20 +146,19 @@ public interface ApiInterface {
                                                 String traversal);
 
 
-
     @GET("?urlq=service")
     Call<ApiResponse> getDeliveryUserList(@Query("version")
-                                                String version,
-                                        @Query("key")
-                                                String key,
-                                        @Query("task")
-                                                String task,
-                                        @Query("user_id")
-                                                String userid,
-                                        @Query("access_token")
-                                                String accessToken,
-                                        @Query("search")
-                                                String search);
+                                                  String version,
+                                          @Query("key")
+                                                  String key,
+                                          @Query("task")
+                                                  String task,
+                                          @Query("user_id")
+                                                  String userid,
+                                          @Query("access_token")
+                                                  String accessToken,
+                                          @Query("search")
+                                                  String search);
 
     @GET("?urlq=service")
     Call<ApiResponse> getConsignmentLists(@Query("version")
@@ -181,17 +180,62 @@ public interface ApiInterface {
 
     @GET("?urlq=service")
     Call<ApiResponse> getConsignmentDetails(@Query("version")
-                                                  String version,
-                                          @Query("key")
-                                                  String key,
-                                          @Query("task")
-                                                  String task,
-                                          @Query("user_id")
-                                                  String userid,
-                                          @Query("access_token")
-                                                  String accessToken,
-                                          @Query("chkid")
-                                                  String chkid,
+                                                    String version,
+                                            @Query("key")
+                                                    String key,
+                                            @Query("task")
+                                                    String task,
+                                            @Query("user_id")
+                                                    String userid,
+                                            @Query("access_token")
+                                                    String accessToken,
+                                            @Query("chkid")
+                                                    String chkid,
                                             @Query("iscid")
                                                     String iscid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getGatepassShippingInfo(@Query("version")
+                                                      String version,
+                                              @Query("key")
+                                                      String key,
+                                              @Query("task")
+                                                      String task,
+                                              @Query("user_id")
+                                                      String userid,
+                                              @Query("access_token")
+                                                      String accessToken,
+                                              @Query("pacshtid")
+                                                      String pacshtid);
+
+
+    @GET("?urlq=service")
+    Call<ApiResponse> createGatePass(@Query("version")
+                                             String version,
+                                     @Query("key")
+                                             String key,
+                                     @Query("task")
+                                             String task,
+                                     @Query("user_id")
+                                             String userid,
+                                     @Query("access_token")
+                                             String accessToken,
+                                     @Query("uid")
+                                             String uid,
+                                     @Query("pacid")
+                                             String pacid,
+                                     @Query("pacshtid")
+                                             String pacshtid,
+                                     @Query("scompid")
+                                             String scompid,
+                                     @Query("chkid")
+                                             String chkid,
+                                     @Query("etid")
+                                             String etid,
+                                     @Query("smstid")
+                                             String smstid,
+                                     @Query("by")
+                                             String by,
+                                     @Query("vehicle")
+                                             String vehicle);
 }
