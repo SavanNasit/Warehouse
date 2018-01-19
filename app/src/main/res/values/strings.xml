@@ -120,4 +120,6 @@
     <string name="received_details_subtitle">Details of the ordered items, which are received</string>
     <string name="consignment_details_title">Consignment Details</string>
     <string name="consignment_details_subtitle">List of the consignments related to the PO</string>
+    <string name="task_manage_gatepass">warehouse/fetch_gatepass_list</string>
+    <string name="task_cancel_gatepass">warehouse/cancel_gatepass</string>
 </resources>

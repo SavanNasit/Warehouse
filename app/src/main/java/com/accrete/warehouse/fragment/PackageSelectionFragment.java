@@ -114,7 +114,7 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
 
             @Override
             public void afterTextChanged(Editable s) {
-              //  filter(packageSelectionEditSearchView.getText().toString());
+                //  filter(packageSelectionEditSearchView.getText().toString());
             }
         });
 
@@ -175,8 +175,8 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
                 filterdNames.add(packedList.get(i));
             }
         }
-           //calling a method of the adapter class and passing the filtered list
-            packedItemAdapter.filterList(filterdNames);
+        //calling a method of the adapter class and passing the filtered list
+        packedItemAdapter.filterList(filterdNames);
 
 
 
@@ -284,14 +284,23 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
                     if (apiResponse.getSuccess()) {
                         packageSelectionRecyclerView.setVisibility(View.VISIBLE);
                         textViewEmptyView.setVisibility(View.GONE);
-
                         for (PackedItem packedItem : apiResponse.getData().getPackedItems()) {
                             packedList.add(packedItem);
+                        }
+                        if (packedList.size() > 0) {
+                        } else {
+                            textViewEmptyView.setText(getString(R.string.no_data_available));
+                            packageSelectionRecyclerView.setVisibility(View.GONE);
+                            textViewEmptyView.setVisibility(View.VISIBLE);
                         }
                         packedItemAdapter.notifyDataSetChanged();
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
                             textViewEmptyView.setText(getString(R.string.no_data_available));
+                            packageSelectionRecyclerView.setVisibility(View.GONE);
+                            textViewEmptyView.setVisibility(View.VISIBLE);
+                        }else if(apiResponse.getSuccessCode().equals("20004")){
+                            textViewEmptyView.setText(apiResponse.getMessage());
                             packageSelectionRecyclerView.setVisibility(View.GONE);
                             textViewEmptyView.setVisibility(View.VISIBLE);
                         }

@@ -460,6 +460,11 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                             packedRecyclerView.setVisibility(View.GONE);
                             packedEmptyView.setVisibility(View.VISIBLE);
                             packedSwipeRefreshLayout.setVisibility(View.GONE);
+                        }else if(apiResponse.getSuccessCode().equals("20004")){
+                            packedEmptyView.setText(apiResponse.getMessage());
+                            packedRecyclerView.setVisibility(View.GONE);
+                            packedEmptyView.setVisibility(View.VISIBLE);
+                            packedSwipeRefreshLayout.setVisibility(View.GONE);
                         }
                     }
                     if (packedSwipeRefreshLayout != null && packedSwipeRefreshLayout.isRefreshing()) {

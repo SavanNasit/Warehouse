@@ -3,6 +3,7 @@ package com.accrete.warehouse.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.DeliveryUserList;
 import com.accrete.warehouse.rest.ApiClient;
@@ -170,6 +172,10 @@ public class ConfirmGatepassFragment extends Fragment {
                 try {
                     if (apiResponse.getSuccess()) {
                         Toast.makeText(getActivity(), "Gatepass created successfully", Toast.LENGTH_SHORT).show();
+                        ManageGatePassFragment manageGatePassFragment = new ManageGatePassFragment();
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.confirm_gatepass_container, manageGatePassFragment).addToBackStack(null).commit();
                     } else {
                         Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }

@@ -1,3 +1,9 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/confirm_gatepass_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -177,3 +183,4 @@
             android:textSize="@dimen/_16sdp" />
     </LinearLayout>
 </LinearLayout>
+</FrameLayout>

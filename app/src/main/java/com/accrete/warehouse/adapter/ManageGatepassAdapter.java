@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.model.ManageGatepass;
+import com.accrete.warehouse.model.GatepassList;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ import java.util.List;
 public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAdapter.MyViewHolder> {
 
     private Context context;
-    private List<ManageGatepass> gatepassList;
+    private List<GatepassList> gatepassList;
     private ManageGatepassAdapterrListener listener;
 
-    public ManageGatepassAdapter(Context context, List<ManageGatepass> gatepassList, ManageGatepassAdapterrListener listener) {
+    public ManageGatepassAdapter(Context context, List<GatepassList> gatepassList, ManageGatepassAdapterrListener listener) {
         this.context = context;
         this.gatepassList = gatepassList;
         this.listener = listener;
@@ -39,20 +39,20 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        ManageGatepass manageGatepass = gatepassList.get(position);
-        holder.listRowManageGatepassGatepassId.setText("(" + manageGatepass.getGatepassID() + ")");
+        GatepassList manageGatepass = gatepassList.get(position);
+        holder.listRowManageGatepassGatepassId.setText("(" + manageGatepass.getGatePassId() + ")");
         holder.listRowManageGatepassShippingCompanyName.setText(manageGatepass.getShippingCompanyName());
-        holder.listRowManageGatepassGenerateOn.setText(manageGatepass.getGeneratedOn());
+        holder.listRowManageGatepassGenerateOn.setText(manageGatepass.getCreatedOn());
         holder.listRowManageGatepassPackages.setText(manageGatepass.getPackages());
-        holder.listRowManageGatepassDeliveryUser.setText(manageGatepass.getDeliveryUser());
+        holder.listRowManageGatepassDeliveryUser.setText(manageGatepass.getUserName());
         holder.listRowManageGatepassStatus.setText(manageGatepass.getGatepassStatus());
         holder.listRowManageGatepassShippingType.setText(manageGatepass.getShippingType());
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               applyClickEvents(position);
-           }
+                applyClickEvents(position);
+            }
         });
     }
 

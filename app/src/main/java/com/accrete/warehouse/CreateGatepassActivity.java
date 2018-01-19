@@ -15,7 +15,6 @@ import com.accrete.warehouse.fragment.ConfirmGatepassFragment;
 import com.accrete.warehouse.fragment.CreatePassMainTabFragment;
 import com.accrete.warehouse.fragment.GatepassFragment;
 import com.accrete.warehouse.fragment.PackageSelectionFragment;
-import com.accrete.warehouse.fragment.consignment.ConsignmentMainTabFragment;
 import com.accrete.warehouse.model.ShippingBy;
 import com.accrete.warehouse.model.ShippingType;
 import com.accrete.warehouse.utils.NonSwipeableViewPager;
