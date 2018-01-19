@@ -108,6 +108,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Draw
     }
 
     private void initializeView(View rootview) {
+
         textViewWarehouseTitle = (TextView) rootview.findViewById(R.id.activity_drawer_warehouse_name);
         drawerLinearLayoutMain = (LinearLayout) rootview.findViewById(R.id.drawer_linear_layout_main);
         activityDrawerWarehouseName = (TextView) rootview.findViewById(R.id.activity_drawer_warehouse_name);

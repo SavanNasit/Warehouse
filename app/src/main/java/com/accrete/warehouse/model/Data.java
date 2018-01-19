@@ -111,6 +111,20 @@ public class Data {
     @Expose
     private List<SelectOrderItem> selectOrdersItems = null;
 
+
+    @SerializedName("delivery_user_list")
+    @Expose
+    private List<DeliveryUserList> deliveryUserList = null;
+
+    public List<DeliveryUserList> getDeliveryUserList() {
+        return deliveryUserList;
+    }
+
+    public void setDeliveryUserList(List<DeliveryUserList> deliveryUserList) {
+        this.deliveryUserList = deliveryUserList;
+    }
+
+
     public List<SelectOrderItem> getSelectOrdersItems() {
         return selectOrdersItems;
     }

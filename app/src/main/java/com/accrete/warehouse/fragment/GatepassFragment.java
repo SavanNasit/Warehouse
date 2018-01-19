@@ -1,18 +1,20 @@
 package com.accrete.warehouse.fragment;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.accrete.warehouse.CreateGatepassActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.ShippingBy;
 import com.accrete.warehouse.model.ShippingType;
@@ -38,9 +40,10 @@ public class GatepassFragment extends Fragment {
     private List<ShippingBy> shippingByList = new ArrayList<>();
     private ArrayList<String> arrayListShippingType = new ArrayList<>();
     private ArrayList<String> arrayListShippingBy = new ArrayList<>();
-    private ArrayAdapter arrayAdapterShippingType,arrayAdapterShippingBy;
+    private ArrayAdapter arrayAdapterShippingType, arrayAdapterShippingBy;
     private String strShippingType;
     private String strShippingBy;
+    private LinearLayout dialogCreateGatepass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,20 +55,34 @@ public class GatepassFragment extends Fragment {
         return rootView;
     }
 
-    public void setShippingData(List<String> packageIdList, List<ShippingType> shippingTypes, List<ShippingBy> shippingBy) {
+    public void setShippingData(List<String> packageIdList, List<ShippingType> shippingTypes, List<ShippingBy> shippingBy
+                             ) {
         // Toast.makeText(getActivity(), "hello PK", Toast.LENGTH_SHORT).show();
         packageIdAddList = packageIdList;
-        shippingTypesList=shippingTypes;
-        shippingByList=shippingBy;
-
+        shippingTypesList = shippingTypes;
+        shippingByList = shippingBy;
+        Activity activity = getActivity();
+        if(activity != null) {
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.detach(GatepassFragment.this).attach(GatepassFragment.this).commit();
+        }
+        Log.d("hello ppp", packageIdAddList.size() + " " + shippingTypesList.size() + " " + shippingByList.size());
     }
 
     private void findViews(View rootView) {
-        dialogCreateGatepassShippingBy = (AutoCompleteTextView)rootView.findViewById(R.id.dialog_create_gatepass_shipping_by);
-        dialogCreateGatepassVehicleNumber = (EditText)rootView.findViewById(R.id.dialog_create_gatepass_vehicle_number);
-        dialogCreateGatepassShippingType = (AutoCompleteTextView)rootView.findViewById(R.id.dialog_create_gatepass_shipping_type);
-        dialogCreateGatepassShippingCompany = (AutoCompleteTextView)rootView.findViewById(R.id.dialog_create_gatepass_shipping_company);
-        dialogCreateGatepassBack = (TextView)rootView.findViewById(R.id.dialog_create_gatepass_back);
+        dialogCreateGatepassShippingBy = (AutoCompleteTextView) rootView.findViewById(R.id.dialog_create_gatepass_shipping_by);
+        dialogCreateGatepassVehicleNumber = (EditText) rootView.findViewById(R.id.dialog_create_gatepass_vehicle_number);
+        dialogCreateGatepassShippingType = (AutoCompleteTextView) rootView.findViewById(R.id.dialog_create_gatepass_shipping_type);
+        dialogCreateGatepassShippingCompany = (AutoCompleteTextView) rootView.findViewById(R.id.dialog_create_gatepass_shipping_company);
+        dialogCreateGatepassBack = (TextView) rootView.findViewById(R.id.dialog_create_gatepass_back);
+        dialogCreateGatepass = (LinearLayout) rootView.findViewById(R.id.dialog_create_gatepass);
+
+        dialogCreateGatepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGatepassViewpager.setCurrentItem(2);
+            }
+        });
 
 
         for (int i = 0; i < shippingByList.size(); i++) {
@@ -79,15 +96,18 @@ public class GatepassFragment extends Fragment {
             arrayListShippingType.add(shippingTypesList.get(i).getName());
         }
 
+
         arrayAdapterShippingType = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, arrayListShippingType);
         arrayAdapterShippingType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dialogCreateGatepassShippingType.setAdapter(arrayAdapterShippingType);
-        arrayAdapterShippingType.notifyDataSetChanged();
+        //  dialogCreateGatepassShippingType.setAdapter(arrayAdapterShippingType);
+        //  arrayAdapterShippingType.notifyDataSetChanged();
 
         arrayAdapterShippingBy = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, arrayListShippingBy);
-        arrayAdapterShippingType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        arrayAdapterShippingBy.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dialogCreateGatepassShippingBy.setAdapter(arrayAdapterShippingType);
-        arrayAdapterShippingBy.notifyDataSetChanged();
+        // arrayAdapterShippingBy.notifyDataSetChanged();
+
+
 
         dialogCreateGatepassShippingType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +123,7 @@ public class GatepassFragment extends Fragment {
             }
         });
 
-        dialogCreateGatepassShippingType .setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        dialogCreateGatepassShippingType.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {

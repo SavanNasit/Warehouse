@@ -88,6 +88,7 @@
     <string name="confirm_gatepass_fragment">Confirm Gatepass</string>
     <string name="search">Search here..</string>
     <string name="shipping_form_data">warehouse/fetch_shipping_form_data</string>
+    <string name="task_delivery_user">warehouse/search_delivery_users</string>
 
 
 </resources>

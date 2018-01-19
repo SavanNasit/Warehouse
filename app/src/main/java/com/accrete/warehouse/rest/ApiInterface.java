@@ -144,4 +144,21 @@ public interface ApiInterface {
                                                 String lastFetch,
                                         @Query("traversal")
                                                 String traversal);
+
+
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getDeliveryUserList(@Query("version")
+                                                String version,
+                                        @Query("key")
+                                                String key,
+                                        @Query("task")
+                                                String task,
+                                        @Query("user_id")
+                                                String userid,
+                                        @Query("access_token")
+                                                String accessToken,
+                                        @Query("search")
+                                                String search);
+
 }

@@ -102,7 +102,7 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
         packageSelectionRecyclerView.setNestedScrollingEnabled(false);
         packageSelectionRecyclerView.setAdapter(packedItemAdapter);
 
-   /*     packageSelectionEditSearchView.addTextChangedListener(new TextWatcher() {
+        packageSelectionEditSearchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -118,7 +118,7 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
             public void afterTextChanged(Editable s) {
 
             }
-        });*/
+        });
 
         //Scroll Listener
         packageSelectionRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -255,14 +255,14 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        createGatepassViewpager.setCurrentItem(1);
                        // dataToSend(packageIdListToAdd,apiResponse.getData().getShippingTypes(),apiResponse.getData().getShippingBy());
                       /*  PackageSelectionFragment packageSelectionFragment =
                                 (PackageSelectionFragment) createGatepassViewpager.getAdapter().instantiateItem(createGatepassViewpager, createGatepassViewpager.getCurrentItem());
                         packageSelectionFragment.dataToSend(packageIdListToAdd,apiResponse.getData().getShippingTypes(),apiResponse.getData().getShippingBy());
                       */
-
                         ((CreateGatepassActivity)getActivity()).getResult(packageIdListToAdd,apiResponse.getData().getShippingTypes(),apiResponse.getData().getShippingBy());
+                        createGatepassViewpager.setCurrentItem(1);
+
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
 
