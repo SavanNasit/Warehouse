@@ -104,5 +104,17 @@
     <string name="fetch_packages">warehouse/fetch_packages</string>
     <string name="packed_packages">warehouse/packed_packages</string>
 
+    <!-- Receive Consignments -->
+    <string name="fetch_purchase_orders">purchase_order/fetch_purchase_orders</string>
+    <string name="fa_truck">&#xf0d1;</string>
 
+    <!-- Purchase Order -->
+    <string name="vendor_details_title">Vendor Details</string>
+    <string name="vendor_details_subtitle">Details of the vendor</string>
+    <string name="order_details_title">Order Details</string>
+    <string name="order_details_subtitle">Details of the order</string>
+    <string name="received_details_title">Received Details</string>
+    <string name="received_details_subtitle">Details of the ordered items, which are received</string>
+    <string name="consignment_details_title">Consignment Details</string>
+    <string name="consignment_details_subtitle">List of the consignments related to the PO</string>
 </resources>

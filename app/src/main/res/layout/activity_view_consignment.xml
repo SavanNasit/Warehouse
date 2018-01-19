@@ -16,7 +16,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_below="@+id/toolbar"></FrameLayout>
 
     <LinearLayout
@@ -31,7 +30,6 @@
         android:gravity="center_vertical"
         android:padding="@dimen/standard_12"
         android:visibility="visible">
-
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/manage_consignment_goods_receipt_print"

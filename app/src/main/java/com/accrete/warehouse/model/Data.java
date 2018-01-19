@@ -81,6 +81,17 @@ public class Data {
     @SerializedName("iscid")
     @Expose
     private String iscid;
+    @SerializedName("purchase_orders")
+    @Expose
+    private List<PurchaseOrder> purchaseOrders = null;
+
+    public List<PurchaseOrder> getPurchaseOrders() {
+        return purchaseOrders;
+    }
+
+    public void setPurchaseOrders(List<PurchaseOrder> purchaseOrders) {
+        this.purchaseOrders = purchaseOrders;
+    }
 
     public String getFilename() {
         return filename;
