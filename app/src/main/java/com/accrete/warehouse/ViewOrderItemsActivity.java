@@ -242,12 +242,12 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
         }
 
         if (orderDetail.getStatus() != null && !orderDetail.getStatus().isEmpty()) {
-            GradientDrawable drawable = (GradientDrawable) statusTextView.getBackground();
             statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
+            GradientDrawable drawable = (GradientDrawable) statusTextView.getBackground();
             statusLayout.setVisibility(View.VISIBLE);
             statusTextView.setText(orderDetail.getStatus());
 
-          /*  if (orderDetail.getStatus().equals("Created")) {
+            if (orderDetail.getStatus().equals("Created")) {
                 drawable.setColor(getResources().getColor(R.color.green_purchase_order));
             } else if (orderDetail.getStatus().equals("Partial Received")) {
                 drawable.setColor(getResources().getColor(R.color.blue_purchase_order));
@@ -264,7 +264,7 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
             } else if (orderDetail.getStatus().equals("Pending Transportation")) {
                 drawable.setColor(getResources().getColor(R.color.gray_order));
             }
-*/
+
         } else {
             statusLayout.setVisibility(View.GONE);
         }
