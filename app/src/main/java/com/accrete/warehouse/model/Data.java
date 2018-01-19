@@ -69,6 +69,50 @@ public class Data {
     @SerializedName("transportationData")
     @Expose
     private TransportationData transportationData;
+    @SerializedName("inventoryData")
+    @Expose
+    private List<Inventory> inventoryData = null;
+    @SerializedName("packageItems")
+    @Expose
+    private List<PackageItem> packageItems = null;
+    @SerializedName("filename")
+    @Expose
+    private String filename;
+    @SerializedName("iscid")
+    @Expose
+    private String iscid;
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getIscid() {
+        return iscid;
+    }
+
+    public void setIscid(String iscid) {
+        this.iscid = iscid;
+    }
+
+    public List<PackageItem> getPackageItems() {
+        return packageItems;
+    }
+
+    public void setPackageItems(List<PackageItem> packageItems) {
+        this.packageItems = packageItems;
+    }
+
+    public List<Inventory> getInventoryData() {
+        return inventoryData;
+    }
+
+    public void setInventoryData(List<Inventory> inventoryData) {
+        this.inventoryData = inventoryData;
+    }
 
     public ConsignmentData getConsignmentData() {
         return consignmentData;

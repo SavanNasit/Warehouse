@@ -1,0 +1,104 @@
+package com.accrete.warehouse.adapter;
+
+import android.content.Context;
+import android.graphics.Paint;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.PackedItem;
+
+import java.util.List;
+
+/**
+ * Created by agt on 19/1/18.
+ */
+
+public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgainstStockAdapter.MyViewHolder> {
+    private Context context;
+    private List<PackedItem> packedItemList;
+    private PackedAgainstAdapterListener listener;
+
+    public PackedAgainstStockAdapter(Context context, List<PackedItem> packedItemList, PackedAgainstAdapterListener listener) {
+        this.context = context;
+        this.packedItemList = packedItemList;
+        this.listener = listener;
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_row_packed_against, parent, false);
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        PackedItem packedItem = packedItemList.get(position);
+        holder.packageIdTextView.setText(packedItem.getPackageId());
+        holder.packageIdTextView.setPaintFlags(holder.packageIdTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        holder.invoiceNoTextView.setText("Invoice No : " + packedItem.getInvoiceNo());
+        holder.invoiceDateTextView.setText(packedItem.getInvoiceDate());
+        holder.customerNameTextView.setText(packedItem.getCustomerName());
+        if (packedItem.getToDate() != null && !packedItem.getToDate().isEmpty()) {
+            holder.expDodTextView.setText("Exp Dod : " + packedItem.getToDate());
+        } else {
+            holder.expDodTextView.setText("Exp Dod : N/A ");
+        }
+        if (packedItem.getZipCode() != null && !packedItem.getZipCode().isEmpty()) {
+            holder.zipCodeTextView.setText(packedItem.getZipCode());
+        } else {
+            holder.zipCodeTextView.setText("ZIp Code : N/A ");
+        }
+
+        holder.containerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onMessageRowClicked(position);
+            }
+        });
+        //applyClickEvents(holder, position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return packedItemList.size();
+
+    }
+
+    private void applyClickEvents(MyViewHolder holder, final int position) {
+        listener.onMessageRowClicked(position);
+    }
+
+    public interface PackedAgainstAdapterListener {
+        void onMessageRowClicked(int position);
+
+        void onExecute();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        private TextView packageIdTextView;
+        private TextView invoiceDateTextView;
+        private TextView customerNameTextView;
+        private TextView invoiceNoTextView;
+        private TextView expDodTextView;
+        private TextView zipCodeTextView;
+        private LinearLayout containerLayout;
+
+        public MyViewHolder(View view) {
+            super(view);
+            containerLayout = (LinearLayout) view.findViewById(R.id.container_layout);
+            packageIdTextView = (TextView) view.findViewById(R.id.package_id_textView);
+            invoiceDateTextView = (TextView) view.findViewById(R.id.invoice_date_textView);
+            customerNameTextView = (TextView) view.findViewById(R.id.customer_name_textView);
+            invoiceNoTextView = (TextView) view.findViewById(R.id.invoice_no_textView);
+            expDodTextView = (TextView) view.findViewById(R.id.exp_dod_textView);
+            zipCodeTextView = (TextView) view.findViewById(R.id.zipCode_textView);
+        }
+    }
+
+}

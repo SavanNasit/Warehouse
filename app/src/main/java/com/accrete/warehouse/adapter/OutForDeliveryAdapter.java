@@ -1,6 +1,5 @@
 package com.accrete.warehouse.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.model.OutForDelivery;
+import com.accrete.warehouse.model.PackageItem;
 
 import java.util.List;
 
@@ -20,13 +19,11 @@ import java.util.List;
  */
 
 public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAdapter.MyViewHolder> {
-    Activity activity;
     private Context context;
-    private List<OutForDelivery> outForDeliveryList;
-    private int mExpandedPosition = -1;
+    private List<PackageItem> outForDeliveryList;
     private OutForDeliveryAdapterListener listener;
 
-    public OutForDeliveryAdapter(Context context, List<OutForDelivery> outForDeliveryList, OutForDeliveryAdapterListener listener) {
+    public OutForDeliveryAdapter(Context context, List<PackageItem> outForDeliveryList, OutForDeliveryAdapterListener listener) {
         this.context = context;
         this.outForDeliveryList = outForDeliveryList;
         this.listener = listener;
@@ -41,16 +38,20 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        OutForDelivery outForDelivery = outForDeliveryList.get(position);
-        holder.outForDeliveryPackageId.setText(outForDelivery.getPackageId());
-        holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        holder.outForDeliveryInvoiceNo.setText("Invoice No : "+outForDelivery.getInvoiceNumber());
-        holder.outForDeliveryInvoiceDate.setText(outForDelivery.getInvoiceDate());
-        holder.outForDeliveryCustomerName.setText(outForDelivery.getCustomerName());
-        holder.outForDeliveryGatepassId.setText(outForDelivery.getGatePassId());
-        holder.outForDeliveryOrderId.setText(outForDelivery.getOrderId());
-        holder.outForDeliveryExpDod.setText("Exp Dod : "+outForDelivery.getExpdod());
-        holder.outForDeliveryUser.setText("Delivery User : "+outForDelivery.getDeliveryUser());
+        PackageItem packageItem = outForDeliveryList.get(position);
+        holder.outForDeliveryPackageId.setText(packageItem.getPackageId());
+        holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packageItem.getInvoiceNo());
+        holder.outForDeliveryInvoiceDate.setText(packageItem.getInvoiceDate());
+        holder.outForDeliveryCustomerName.setText(packageItem.getCustomerName());
+        holder.outForDeliveryGatepassId.setText(packageItem.getPacdelgatid());
+        holder.outForDeliveryOrderId.setText(packageItem.getOrderId());
+        if (packageItem.getToDate() != null && !packageItem.getToDate().isEmpty()) {
+            holder.outForDeliveryExpDod.setText("Exp Dod : " + packageItem.getToDate());
+        } else {
+            holder.outForDeliveryExpDod.setText("Exp Dod : N/A ");
+        }
+        holder.outForDeliveryUser.setText("Delivery User : " + packageItem.getName());
 
         holder.outForDeliveryContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +74,7 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
 
     public interface OutForDeliveryAdapterListener {
         void onMessageRowClicked(int position);
+
         void onExecute();
     }
 

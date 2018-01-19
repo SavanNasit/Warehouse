@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.receiveConsignment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +23,7 @@ import java.util.List;
  */
 
 public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements PurchaseOrderAdapter.PurchaseOrderAdapterListener {
+    private static String KEY_TITLE = "receive_po";
     PurchaseOrder purchaseOrder = new PurchaseOrder();
     private SwipeRefreshLayout receiveAgainstPurchaseOrderSwipeRefreshLayout;
     private RecyclerView receiveAgainstPurchaseOrderRecyclerView;
@@ -30,22 +31,19 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
     private PurchaseOrderAdapter purchaseOrderAdapter;
     private List<PurchaseOrder> puchaseOrderList = new ArrayList<>();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_receive_against_purchase_order, container, false);
-        findViews(rootView);
-        return rootView;
-    }
-
-
-    private static String KEY_TITLE ="receive_po";
-
     public static ReceiveAgainstPurchaseOrderFragment newInstance(String title) {
         ReceiveAgainstPurchaseOrderFragment f = new ReceiveAgainstPurchaseOrderFragment();
         Bundle args = new Bundle();
         args.putString(KEY_TITLE, title);
         f.setArguments(args);
         return (f);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_receive_against_purchase_order, container, false);
+        findViews(rootView);
+        return rootView;
     }
 
     private void findViews(View rootView) {

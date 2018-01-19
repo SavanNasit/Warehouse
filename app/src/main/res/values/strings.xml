@@ -93,6 +93,16 @@
     <string name="fetch_consignments">warehouse/fetch_consignments</string>
     <string name="iscid">iscid</string>
     <string name="consignment_info">warehouse/fetch_consignment_info</string>
+    <string name="fetch_consignment_inventories">warehouse/fetch_receive_consignment_inventories</string>
+    <string name="download_consignment_receipt">warehouse/print_consignment_goods_receipt</string>
+    <string name="download_goods_receipt">Download goods receipt</string>
+    <string name="download_receipt_confirm_msg">Are you sure to download receipt?</string>
+    <string name="yes">Yes</string>
+    <string name="no_cancel">No, cancel</string>
+
+    <!-- Manage Packages -->
+    <string name="fetch_packages">warehouse/fetch_packages</string>
+    <string name="packed_packages">warehouse/packed_packages</string>
 
 
 </resources>

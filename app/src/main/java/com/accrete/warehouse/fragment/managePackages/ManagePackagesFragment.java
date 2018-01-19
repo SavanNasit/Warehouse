@@ -1,7 +1,6 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.managePackages;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.fragment.PendingItemsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +70,7 @@ public class ManagePackagesFragment extends Fragment {
 
     private void setupViewPagerExecute(ViewPager viewPagerExecute) {
         PackedFragment packedFragment = new PackedFragment();
+        PackedAgainstStockFragment packedAgainstStockFragment = new PackedAgainstStockFragment();
         OutForDeliveryFragment outForDeliveryFragment = new OutForDeliveryFragment();
         DeliveredFragment deliveredFragment = new DeliveredFragment();
         AttemptFailedFragment attemptFailedFragment = new AttemptFailedFragment();
@@ -78,6 +79,7 @@ public class ManagePackagesFragment extends Fragment {
 
         viewPagerExecuteAdapter adapter = new viewPagerExecuteAdapter(getChildFragmentManager());
         adapter.addFragment(packedFragment, "Packed");
+        adapter.addFragment(packedAgainstStockFragment, "Packed Against Stock Request");
         adapter.addFragment(outForDeliveryFragment, "Out for Delivery");
         adapter.addFragment(deliveredFragment, "Delivered");
         adapter.addFragment(attemptFailedFragment, "Attempt Failed");

@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.managePackages;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -100,7 +100,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
         });
 */
-        apiCall();
+        doRefresh();
 
         //Scroll Listener
         packedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -357,11 +357,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     getPackageDetailsList(getString(R.string.last_updated_date), "1");
                     packedRecyclerView.setVisibility(View.VISIBLE);
                     packedEmptyView.setVisibility(View.GONE);
+                    packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 }
             }, 00);
         } else {
             packedRecyclerView.setVisibility(View.GONE);
             packedEmptyView.setVisibility(View.VISIBLE);
+            packedSwipeRefreshLayout.setVisibility(View.GONE);
             packedEmptyView.setText(getString(R.string.no_internet_try_later));
         }
     }
@@ -429,10 +431,12 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         if (packedList != null && packedList.size() == 0) {
                             packedEmptyView.setVisibility(View.VISIBLE);
                             packedRecyclerView.setVisibility(View.GONE);
+                            packedSwipeRefreshLayout.setVisibility(View.GONE);
                             //  customerOrderFabAdd.setVisibility(View.GONE);
                         } else {
                             packedEmptyView.setVisibility(View.GONE);
                             packedRecyclerView.setVisibility(View.VISIBLE);
+                            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
                             //   customerOrderFabAdd.setVisibility(View.VISIBLE);
                         }
                         if (packedSwipeRefreshLayout != null &&
@@ -455,6 +459,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                             packedEmptyView.setText(getString(R.string.no_data_available));
                             packedRecyclerView.setVisibility(View.GONE);
                             packedEmptyView.setVisibility(View.VISIBLE);
+                            packedSwipeRefreshLayout.setVisibility(View.GONE);
                         }
                     }
                     if (packedSwipeRefreshLayout != null && packedSwipeRefreshLayout.isRefreshing()) {
@@ -484,12 +489,14 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
             packedRecyclerView.setVisibility(View.VISIBLE);
             packedEmptyView.setVisibility(View.GONE);
+            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
             packedSwipeRefreshLayout.setRefreshing(true);
             //  customerOrderFabAdd.setVisibility(View.VISIBLE);
 
         } else {
             packedRecyclerView.setVisibility(View.GONE);
             packedEmptyView.setVisibility(View.VISIBLE);
+            packedSwipeRefreshLayout.setVisibility(View.GONE);
             packedEmptyView.setText(getString(R.string.no_internet_try_later));
             packedSwipeRefreshLayout.setRefreshing(false);
         }

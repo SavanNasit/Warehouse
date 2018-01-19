@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.receiveConsignment;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
