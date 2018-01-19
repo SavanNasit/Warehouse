@@ -129,6 +129,7 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
     @Override
     public void onMessageRowClicked(int position, String orderId, String orderText) {
         Intent intent = new Intent(getActivity(), ViewOrderItemsActivity.class);
+        intent.putExtra(getString(R.string.purOrId), purchaseOrderList.get(position).getPurorid());
         startActivity(intent);
     }
 

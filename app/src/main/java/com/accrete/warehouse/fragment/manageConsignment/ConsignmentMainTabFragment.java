@@ -1,54 +1,23 @@
 package com.accrete.warehouse.fragment.manageConsignment;
 
-import android.Manifest;
-import android.app.DownloadManager;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.fragment.DetailsFragment;
-import com.accrete.warehouse.model.ApiResponse;
-import com.accrete.warehouse.rest.ApiClient;
-import com.accrete.warehouse.rest.ApiInterface;
-import com.accrete.warehouse.utils.AppPreferences;
-import com.accrete.warehouse.utils.AppUtils;
-import com.accrete.warehouse.utils.NetworkUtil;
 import com.accrete.warehouse.widgets.SmartFragmentStatePagerAdapter;
-import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.accrete.warehouse.utils.Constants.accessToken;
-import static com.accrete.warehouse.utils.Constants.key;
-import static com.accrete.warehouse.utils.Constants.task;
-import static com.accrete.warehouse.utils.Constants.userId;
-import static com.accrete.warehouse.utils.Constants.version;
 
 /**
  * Created by agt on 18/1/18.

@@ -84,6 +84,50 @@ public class Data {
     @SerializedName("purchase_orders")
     @Expose
     private List<PurchaseOrder> purchaseOrders = null;
+    @SerializedName("vendorData")
+    @Expose
+    private VendorData vendorData;
+    @SerializedName("orderDetail")
+    @Expose
+    private OrderDetail orderDetail;
+    @SerializedName("receivedDetails")
+    @Expose
+    private List<List<ReceivedDetail>> receivedDetails = null;
+    @SerializedName("consignmentDetails")
+    @Expose
+    private List<ConsignmentDetail> consignmentDetails = null;
+
+    public VendorData getVendorData() {
+        return vendorData;
+    }
+
+    public void setVendorData(VendorData vendorData) {
+        this.vendorData = vendorData;
+    }
+
+    public OrderDetail getOrderDetail() {
+        return orderDetail;
+    }
+
+    public void setOrderDetail(OrderDetail orderDetail) {
+        this.orderDetail = orderDetail;
+    }
+
+    public List<List<ReceivedDetail>> getReceivedDetails() {
+        return receivedDetails;
+    }
+
+    public void setReceivedDetails(List<List<ReceivedDetail>> receivedDetails) {
+        this.receivedDetails = receivedDetails;
+    }
+
+    public List<ConsignmentDetail> getConsignmentDetails() {
+        return consignmentDetails;
+    }
+
+    public void setConsignmentDetails(List<ConsignmentDetail> consignmentDetails) {
+        this.consignmentDetails = consignmentDetails;
+    }
 
     public List<PurchaseOrder> getPurchaseOrders() {
         return purchaseOrders;

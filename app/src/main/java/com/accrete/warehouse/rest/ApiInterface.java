@@ -254,4 +254,20 @@ public interface ApiInterface {
                                                      String chkid,
                                              @Query("iscid")
                                                      String iscid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> viewOrderDetails(@Query("version")
+                                               String version,
+                                       @Query("key")
+                                               String key,
+                                       @Query("task")
+                                               String task,
+                                       @Query("user_id")
+                                               String userid,
+                                       @Query("access_token")
+                                               String accessToken,
+                                       @Query("chkid")
+                                               String chkid,
+                                       @Query("purorid")
+                                               String purOrId);
 }
