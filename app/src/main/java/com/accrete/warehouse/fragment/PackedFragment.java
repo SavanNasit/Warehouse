@@ -21,10 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.adapter.AddedItemsAdapter;
-import com.accrete.warehouse.adapter.PackedItemAdapter;
 import com.accrete.warehouse.adapter.PackedItemWithoutCheckboxAdapter;
-import com.accrete.warehouse.model.AlreadyAddedItem;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PackedItem;
@@ -63,7 +60,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private boolean loading;
     private int lastVisibleItem, totalItemCount;
     private int visibleThreshold = 2;
-
+    private String dataChanged;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,25 +100,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
 */
         apiCall();
-     /*  packedSwipeRefreshLayout.post(new Runnable() {
-               @Override
-               public void run() {
-                   String  status = NetworkUtil.getConnectivityStatusString(getActivity());
-                   if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                       loading = true;
-                       new Handler().postDelayed(new Runnable() {
-                           @Override
-                           public void run() {
-                               getPackageDetailsList(getString(R.string.last_updated_date), "1");
-                           }
-                       }, 00);
-                   } else {
-                       packedRecyclerView.setVisibility(View.GONE);
-                       packedEmptyView.setVisibility(View.VISIBLE);
-                       packedEmptyView.setText(getString(R.string.no_internet_try_later));
-                   }
-               }
-    });*/
 
         //Scroll Listener
         packedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -368,7 +346,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    private void getPackageDetailsList(String updatedDate, String traversalValue) {
+    private void getPackageDetailsList(final String updatedDate, final String traversalValue) {
         task = getString(R.string.packed_packages_list_task);
         String chkid = null;
 
@@ -380,7 +358,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getPackageDetails(version, key, task, userId, accessToken, chkid,"1", updatedDate,
+        Call<ApiResponse> call = apiService.getPackageDetails(version, key, task, userId, accessToken, chkid, "1", updatedDate,
                 traversalValue);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
@@ -391,14 +369,57 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
-                    if (apiResponse.getSuccess()) {
-                        packedRecyclerView.setVisibility(View.VISIBLE);
-                        packedEmptyView.setVisibility(View.GONE);
+                    if (apiResponse.getSuccess())
 
-                        for (PackedItem packedItem : apiResponse.getData().getPackedItems()) {
-                            packedList.add(packedItem);
+                    {
+                        for (final PackedItem packedItem : apiResponse.getData().getPackedItems()) {
+                            if (packedItem != null) {
+                                if (traversalValue.equals("2")) {
+                                    if (!updatedDate.equals(packedItem.getCreatedTs())) {
+                                        packedList.add(packedItem);
+                                    }
+                                    dataChanged = "yes";
+                                } else if (traversalValue.equals("1")) {
+                                    if (packedSwipeRefreshLayout != null &&
+                                            packedSwipeRefreshLayout.isRefreshing()) {
+                                        // To remove duplicacy of a new item
+                                        if (!updatedDate.equals(packedItem.getCreatedTs())) {
+                                            packedList.add(0, packedItem);
+                                        }
+                                    } else {
+                                        if (!updatedDate.equals(packedItem.getCreatedTs())) {
+                                            packedList.add(packedItem);
+                                        }
+                                    }
+                                    dataChanged = "yes";
+                                }
+                            }
                         }
-                        packedItemAdapter.notifyDataSetChanged();
+                        loading = false;
+                        if (packedList != null && packedList.size() == 0) {
+                            packedEmptyView.setVisibility(View.VISIBLE);
+                            packedRecyclerView.setVisibility(View.GONE);
+                            //  customerOrderFabAdd.setVisibility(View.GONE);
+                        } else {
+                            packedEmptyView.setVisibility(View.GONE);
+                            packedRecyclerView.setVisibility(View.VISIBLE);
+                            //   customerOrderFabAdd.setVisibility(View.VISIBLE);
+                        }
+                        if (packedSwipeRefreshLayout != null &&
+                                packedSwipeRefreshLayout.isRefreshing()) {
+                            packedSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (traversalValue.equals("2")) {
+                            packedItemAdapter.notifyDataSetChanged();
+                            if (dataChanged != null && dataChanged.equals("yes")) {
+                                // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
+                            }
+                        } else if (traversalValue.equals("1")) {
+                            if (dataChanged != null && dataChanged.equals("yes")) {
+                                packedItemAdapter.notifyDataSetChanged();
+                                packedRecyclerView.smoothScrollToPosition(0);
+                            }
+                        }
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
                             packedEmptyView.setText(getString(R.string.no_data_available));
@@ -418,7 +439,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("wh:packageDetails", t.getMessage());
             }
         });
     }

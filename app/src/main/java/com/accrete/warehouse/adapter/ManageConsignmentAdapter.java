@@ -1,6 +1,7 @@
 package com.accrete.warehouse.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.model.ManageConsignment;
+import com.accrete.warehouse.model.Consignment;
 
 import java.util.List;
 
@@ -19,12 +20,12 @@ import java.util.List;
 
 public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsignmentAdapter.MyViewHolder> {
     private Context context;
-    private List<ManageConsignment> manageConsignmentList;
+    private List<Consignment> consignmentList;
     private ManageConsignmentAdapterListener listener;
 
-    public ManageConsignmentAdapter(Context context, List<ManageConsignment> manageConsignmentList, ManageConsignmentAdapterListener listener) {
+    public ManageConsignmentAdapter(Context context, List<Consignment> consignmentList, ManageConsignmentAdapterListener listener) {
         this.context = context;
-        this.manageConsignmentList = manageConsignmentList;
+        this.consignmentList = consignmentList;
         this.listener = listener;
     }
 
@@ -38,17 +39,38 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        ManageConsignment manageConsignment = manageConsignmentList.get(position);
-        holder.listRowManageConsignmentConsignmentId.setText(manageConsignment.getConsignmentID());
-        holder.listRowManageConsignmentPurchaseOrder.setText(manageConsignment.getPurchaseOrder());
-        holder.listRowManageConsignmentInvoiceNumber.setText(manageConsignment.getInvoiceNumber());
+        Consignment manageConsignment = consignmentList.get(position);
+        holder.listRowManageConsignmentConsignmentId.setText(manageConsignment.getConsignmentId());
+        holder.listRowManageConsignmentPurchaseOrder.setText(manageConsignment.getPurchaseNumber());
+        holder.listRowManageConsignmentInvoiceNumber.setText(manageConsignment.getPurchaseOrderID());
         holder.listRowManageConsignmentInvoiceDate.setText(manageConsignment.getInvoiceDate());
         holder.listRowManageConsignmentPurchaseOrderDate.setText(manageConsignment.getPurchaseOrderDate());
         holder.listRowManageConsignmentVendor.setText(manageConsignment.getVendor());
         holder.listRowManageConsignmentWarehouse.setText(manageConsignment.getWarehouse());
-        holder.listRowManageConsignmentReceivedOn.setText(manageConsignment.getReceivedOn());
-        holder.listRowManageConsignmentStatus.setText(manageConsignment.getStatus());
+        holder.listRowManageConsignmentReceivedOn.setText(manageConsignment.getCreatedTs());
 
+        //Statuses
+        holder.listRowManageConsignmentStatus.setBackgroundResource(R.drawable.tags_rounded_corner);
+
+        GradientDrawable drawable = (GradientDrawable) holder.listRowManageConsignmentStatus.getBackground();
+        if (manageConsignment.getIscsid() != null) {
+            if (manageConsignment.getIscsid().equals("1")) {
+                drawable.setColor(context.getResources().getColor(R.color.green_purchase_order));
+                holder.listRowManageConsignmentStatus.setText("Active");
+            } else if (manageConsignment.getIscsid().equals("2")) {
+                drawable.setColor(context.getResources().getColor(R.color.red_purchase_order));
+                holder.listRowManageConsignmentStatus.setText("Inactive");
+            } else if (manageConsignment.getIscsid().equals("3")) {
+                drawable.setColor(context.getResources().getColor(R.color.gray_order));
+                holder.listRowManageConsignmentStatus.setText("Delete");
+            } else if (manageConsignment.getIscsid().equals("4")) {
+                drawable.setColor(context.getResources().getColor(R.color.gray_order));
+                holder.listRowManageConsignmentStatus.setText("Freezed");
+            } else if (manageConsignment.getIscsid().equals("5")) {
+                drawable.setColor(context.getResources().getColor(R.color.blue_purchase_order));
+                holder.listRowManageConsignmentStatus.setText("Payment Approved");
+            }
+        }
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,8 +81,7 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
 
     @Override
     public int getItemCount() {
-        return manageConsignmentList.size();
-
+        return consignmentList.size();
     }
 
     private void applyClickEvents(final int position) {
@@ -89,7 +110,7 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
 
         public MyViewHolder(View view) {
             super(view);
-            layout=(LinearLayout)view.findViewById(R.id.linear_layout_manage_consignment);
+            layout = (LinearLayout) view.findViewById(R.id.linear_layout_manage_consignment);
             listRowManageConsignmentConsignmentId = (TextView) view.findViewById(R.id.list_row_manage_consignment_consignment_id);
             listRowManageConsignmentPurchaseOrder = (TextView) view.findViewById(R.id.list_row_manage_consignment_purchase_order);
             listRowManageConsignmentInvoiceNumber = (TextView) view.findViewById(R.id.list_row_manage_consignment_invoice_number);
