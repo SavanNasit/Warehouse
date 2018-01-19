@@ -90,5 +90,10 @@
     <string name="shipping_form_data">warehouse/fetch_shipping_form_data</string>
     <string name="task_delivery_user">warehouse/search_delivery_users</string>
 
+    <!-- Manage Consignments -->
+    <string name="fetch_consignments">warehouse/fetch_consignments</string>
+    <string name="iscid">iscid</string>
+    <string name="consignment_info">warehouse/fetch_consignment_info</string>
+
 
 </resources>

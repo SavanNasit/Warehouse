@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-import java.util.List;
 
 /**
  * Modified by poonam on 22/9/17.
@@ -48,6 +47,60 @@ public class Data {
     @SerializedName("shipping_types")
     @Expose
     private List<ShippingType> shippingTypes = null;
+    @SerializedName("consignments")
+    @Expose
+    private List<Consignment> consignments = null;
+    @SerializedName("company_code")
+
+    @Expose
+    private String companyCode;
+    @SerializedName("user_name")
+    @Expose
+    private String name;
+    @SerializedName("select_orders_items")
+    @Expose
+    private List<SelectOrderItem> selectOrdersItems = null;
+    @SerializedName("consignmentData")
+    @Expose
+    private ConsignmentData consignmentData;
+    @SerializedName("vendorTransportationData")
+    @Expose
+    private VendorTransportationData vendorTransportationData;
+    @SerializedName("transportationData")
+    @Expose
+    private TransportationData transportationData;
+
+    public ConsignmentData getConsignmentData() {
+        return consignmentData;
+    }
+
+    public void setConsignmentData(ConsignmentData consignmentData) {
+        this.consignmentData = consignmentData;
+    }
+
+    public VendorTransportationData getVendorTransportationData() {
+        return vendorTransportationData;
+    }
+
+    public void setVendorTransportationData(VendorTransportationData vendorTransportationData) {
+        this.vendorTransportationData = vendorTransportationData;
+    }
+
+    public TransportationData getTransportationData() {
+        return transportationData;
+    }
+
+    public void setTransportationData(TransportationData transportationData) {
+        this.transportationData = transportationData;
+    }
+
+    public List<Consignment> getConsignments() {
+        return consignments;
+    }
+
+    public void setConsignments(List<Consignment> consignments) {
+        this.consignments = consignments;
+    }
 
     public List<ShippingBy> getShippingBy() {
         return shippingBy;
@@ -64,7 +117,6 @@ public class Data {
     public void ListShippingTypes(List<ShippingType> shippingTypes) {
         this.shippingTypes = shippingTypes;
     }
-
 
     public List<PackedItem> getPackedItems() {
         return packedItems;
