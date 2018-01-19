@@ -1,12 +1,10 @@
 package com.accrete.warehouse.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -19,7 +17,7 @@ import java.util.List;
  * Created by poonam on 12/6/17.
  */
 
-public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyViewHolder>  {
+public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyViewHolder> {
     private Context context;
     private InventoryAdapterListener listener;
     private List<Inventory> inventoryList = new ArrayList<>();
@@ -43,10 +41,10 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
         Inventory inventory = inventoryList.get(position);
         holder.listRowInventoryId.setText(inventory.getInventoryID());
         holder.listRowInventoryItem.setText(inventory.getItem());
-        holder.listRowInventorySkucode.setText(inventory.getSKUCode());
+        holder.listRowInventorySkucode.setText(inventory.getSkuCode());
         holder.listRowInventoryReceivedQuantity.setText(inventory.getReceivedQuantity());
         holder.listRowInventoryAvailableStock.setText(inventory.getAvailableStock());
-      //  holder.selectDocName.setText("(" + docList.get(position)+ ")");
+        //  holder.selectDocName.setText("(" + docList.get(position)+ ")");
         //applyClickEvents(holder, position);
     }
 
@@ -62,6 +60,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
 
     public interface InventoryAdapterListener {
         void onMessageRowClicked(int position);
+
         void onExecute();
     }
 
@@ -75,11 +74,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
 
         public MyViewHolder(View view) {
             super(view);
-            listRowInventoryId = (TextView)view.findViewById( R.id.list_row_inventory_id );
-            listRowInventoryItem = (TextView)view.findViewById( R.id.list_row_inventory_item );
-            listRowInventorySkucode = (TextView)view.findViewById( R.id.list_row_inventory_skucode );
-            listRowInventoryReceivedQuantity = (TextView)view.findViewById( R.id.list_row_inventory_received_quantity );
-            listRowInventoryAvailableStock = (TextView)view.findViewById( R.id.list_row_inventory_available_stock );
+            listRowInventoryId = (TextView) view.findViewById(R.id.list_row_inventory_id);
+            listRowInventoryItem = (TextView) view.findViewById(R.id.list_row_inventory_item);
+            listRowInventorySkucode = (TextView) view.findViewById(R.id.list_row_inventory_skucode);
+            listRowInventoryReceivedQuantity = (TextView) view.findViewById(R.id.list_row_inventory_received_quantity);
+            listRowInventoryAvailableStock = (TextView) view.findViewById(R.id.list_row_inventory_available_stock);
         }
     }
 

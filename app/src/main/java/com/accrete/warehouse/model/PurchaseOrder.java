@@ -11,6 +11,54 @@ public class PurchaseOrder {
     @SerializedName("purorid")
     @Expose
     private String purorid;
+    @SerializedName("invoice_number")
+    @Expose
+    private String invoiceNumber;
+    @SerializedName("vendor_name")
+    @Expose
+    private String vendorName;
+    @SerializedName("discount_amount")
+    @Expose
+    private String discountAmount;
+    @SerializedName("amount_after_discount")
+    @Expose
+    private String amountAfterDiscount;
+    @SerializedName("order_id")
+    @Expose
+    private String orderId;
+    @SerializedName("warehouse_name")
+    @Expose
+    private String warehouseName;
+    @SerializedName("waid")
+    @Expose
+    private String waid;
+    @SerializedName("amount")
+    @Expose
+    private String amount;
+    @SerializedName("tax")
+    @Expose
+    private String tax;
+    @SerializedName("amount_after_tax")
+    @Expose
+    private String amountAfterTax;
+    @SerializedName("payable_amount")
+    @Expose
+    private String payableAmount;
+    @SerializedName("created_by")
+    @Expose
+    private String createdBy;
+    @SerializedName("created_ts")
+    @Expose
+    private String createdTs;
+    @SerializedName("status_name")
+    @Expose
+    private String statusName;
+    @SerializedName("purorsid")
+    @Expose
+    private String purorsid;
+    @SerializedName("purchase_order_id")
+    @Expose
+    private String purchaseOrderId;
 
     public String getPurorid() {
         return purorid;
@@ -115,41 +163,4 @@ public class PurchaseOrder {
     public void setPurchaseOrderId(String purchaseOrderId) {
         this.purchaseOrderId = purchaseOrderId;
     }
-
-    @SerializedName("order_id")
-    @Expose
-    private String orderId;
-    @SerializedName("warehouse_name")
-    @Expose
-    private String warehouseName;
-    @SerializedName("waid")
-    @Expose
-    private String waid;
-    @SerializedName("amount")
-    @Expose
-    private String amount;
-    @SerializedName("tax")
-    @Expose
-    private String tax;
-    @SerializedName("amount_after_tax")
-    @Expose
-    private String amountAfterTax;
-    @SerializedName("payable_amount")
-    @Expose
-    private String payableAmount;
-    @SerializedName("created_by")
-    @Expose
-    private String createdBy;
-    @SerializedName("created_ts")
-    @Expose
-    private String createdTs;
-    @SerializedName("status_name")
-    @Expose
-    private String statusName;
-    @SerializedName("purorsid")
-    @Expose
-    private String purorsid;
-    @SerializedName("purchase_order_id")
-    @Expose
-    private String purchaseOrderId;
 }

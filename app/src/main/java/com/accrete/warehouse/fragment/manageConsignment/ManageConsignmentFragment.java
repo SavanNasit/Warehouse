@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.manageConsignment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -229,7 +229,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
 
 
 
-   /* public void downloadVoucherDialog(final String cuId, final String avid, final String date, final String fileName) {
+   /* public void downloadReceiptDialog(final String cuId, final String avid, final String date, final String fileName) {
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_voucher, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)

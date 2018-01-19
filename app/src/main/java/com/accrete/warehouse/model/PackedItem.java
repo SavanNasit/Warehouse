@@ -8,10 +8,20 @@ import com.google.gson.annotations.SerializedName;
  */
 public class PackedItem {
 
+    @SerializedName("crereqappacsid")
+    @Expose
+    private String crereqappacsid;
+    @SerializedName("crereqappac")
+    @Expose
+    private String crereqappac;
+    @SerializedName("company_id")
+    @Expose
+    private String companyId;
     @SerializedName("pacid")
     @Expose
     private String pacid;
     @SerializedName("invid")
+
     @Expose
     private String invid;
     @SerializedName("pacshsid")
@@ -65,10 +75,122 @@ public class PackedItem {
     @SerializedName("stockreqid")
     @Expose
     private String stockreqid;
+    @SerializedName("order_payment_type")
+    @Expose
+    private String orderPaymentType;
+    @SerializedName("order_payment_type_text")
+    @Expose
+    private String orderPaymentTypeText;
+    @SerializedName("payment_status")
+    @Expose
+    private String paymentStatus;
+    @SerializedName("payment_status_id")
+    @Expose
+    private String paymentStatusId;
+    @SerializedName("pending_invoice_amount")
+    @Expose
+    private String pendingInvoiceAmount;
+    @SerializedName("order_type_cash_pending_amount")
+    @Expose
+    private String orderTypeCashPendingAmount;
+    @SerializedName("invoice_payable_amount")
+    @Expose
+    private String invoicePayableAmount;
+    @SerializedName("invoice_paid_amount")
+    @Expose
+    private String invoicePaidAmount;
     @SerializedName("packageId")
     @Expose
     private String packageId;
     private boolean selected;
+
+    public String getCrereqappacsid() {
+        return crereqappacsid;
+    }
+
+    public void setCrereqappacsid(String crereqappacsid) {
+        this.crereqappacsid = crereqappacsid;
+    }
+
+    public String getCrereqappac() {
+        return crereqappac;
+    }
+
+    public void setCrereqappac(String crereqappac) {
+        this.crereqappac = crereqappac;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getOrderPaymentType() {
+        return orderPaymentType;
+    }
+
+    public void setOrderPaymentType(String orderPaymentType) {
+        this.orderPaymentType = orderPaymentType;
+    }
+
+    public String getOrderPaymentTypeText() {
+        return orderPaymentTypeText;
+    }
+
+    public void setOrderPaymentTypeText(String orderPaymentTypeText) {
+        this.orderPaymentTypeText = orderPaymentTypeText;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentStatusId() {
+        return paymentStatusId;
+    }
+
+    public void setPaymentStatusId(String paymentStatusId) {
+        this.paymentStatusId = paymentStatusId;
+    }
+
+    public String getPendingInvoiceAmount() {
+        return pendingInvoiceAmount;
+    }
+
+    public void setPendingInvoiceAmount(String pendingInvoiceAmount) {
+        this.pendingInvoiceAmount = pendingInvoiceAmount;
+    }
+
+    public String getOrderTypeCashPendingAmount() {
+        return orderTypeCashPendingAmount;
+    }
+
+    public void setOrderTypeCashPendingAmount(String orderTypeCashPendingAmount) {
+        this.orderTypeCashPendingAmount = orderTypeCashPendingAmount;
+    }
+
+    public String getInvoicePayableAmount() {
+        return invoicePayableAmount;
+    }
+
+    public void setInvoicePayableAmount(String invoicePayableAmount) {
+        this.invoicePayableAmount = invoicePayableAmount;
+    }
+
+    public String getInvoicePaidAmount() {
+        return invoicePaidAmount;
+    }
+
+    public void setInvoicePaidAmount(String invoicePaidAmount) {
+        this.invoicePaidAmount = invoicePaidAmount;
+    }
 
     public String getPacid() {
         return pacid;

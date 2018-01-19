@@ -160,6 +160,7 @@ public interface ApiInterface {
                                           @Query("search")
                                                   String search);
 
+
     @GET("?urlq=service")
     Call<ApiResponse> getConsignmentLists(@Query("version")
                                                   String version,
@@ -238,4 +239,80 @@ public interface ApiInterface {
                                              String by,
                                      @Query("vehicle")
                                              String vehicle);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getInventoryList(@Query("version")
+                                               String version,
+                                       @Query("key")
+                                               String key,
+                                       @Query("task")
+                                               String task,
+                                       @Query("user_id")
+                                               String userid,
+                                       @Query("access_token")
+                                               String accessToken,
+                                       @Query("iscid")
+                                               String iscid,
+                                       @Query("last_fetch")
+                                               String lastFetch,
+                                       @Query("traversal")
+                                               String traversal);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getOutForDeliveryList(@Query("version")
+                                                    String version,
+                                            @Query("key")
+                                                    String key,
+                                            @Query("task")
+                                                    String task,
+                                            @Query("user_id")
+                                                    String userid,
+                                            @Query("access_token")
+                                                    String accessToken,
+                                            @Query("chkid")
+                                                    String chkid,
+                                            @Query("last_fetch")
+                                                    String lastFetch,
+                                            @Query("traversal")
+                                                    String traversal,
+                                            @Query("status1")
+                                                    String status1,
+                                            @Query("status2")
+                                                    String status2);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getPackedAgainstStock(@Query("version")
+                                                    String version,
+                                            @Query("key")
+                                                    String key,
+                                            @Query("task")
+                                                    String task,
+                                            @Query("user_id")
+                                                    String userid,
+                                            @Query("access_token")
+                                                    String accessToken,
+                                            @Query("chkid")
+                                                    String chkid,
+                                            @Query("last_fetch")
+                                                    String lastFetch,
+                                            @Query("traversal")
+                                                    String traversal,
+                                            @Query("type")
+                                                    String type);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> downloadConsignmentPDF(@Query("version")
+                                                     String version,
+                                             @Query("key")
+                                                     String key,
+                                             @Query("task")
+                                                     String task,
+                                             @Query("user_id")
+                                                     String userid,
+                                             @Query("access_token")
+                                                     String accessToken,
+                                             @Query("chkid")
+                                                     String chkid,
+                                             @Query("iscid")
+                                                     String iscid);
 }

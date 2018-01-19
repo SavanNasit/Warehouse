@@ -129,6 +129,15 @@
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/textView_receive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/fa_truck"
+                android:textSize="@dimen/_15sdp" />
         </LinearLayout>
     </LinearLayout>
 

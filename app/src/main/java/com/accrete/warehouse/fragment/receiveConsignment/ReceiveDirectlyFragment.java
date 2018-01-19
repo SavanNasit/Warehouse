@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.receiveConsignment;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,11 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.adapter.PendingItemsAdapter;
 import com.accrete.warehouse.adapter.ReceiveItemsAdapter;
-import com.accrete.warehouse.model.ManageConsignment;
+import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.model.ReceiveSubItems;
-import com.accrete.warehouse.utils.NetworkUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.accrete.warehouse.CreateGatepassActivity;
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
+import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
+import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
 import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.navigationView.DrawerInterface;
 import com.accrete.warehouse.utils.AppPreferences;
