@@ -144,4 +144,37 @@ public interface ApiInterface {
                                                 String lastFetch,
                                         @Query("traversal")
                                                 String traversal);
+    @GET("?urlq=service")
+    Call<ApiResponse> getConsignmentLists(@Query("version")
+                                                  String version,
+                                          @Query("key")
+                                                  String key,
+                                          @Query("task")
+                                                  String task,
+                                          @Query("user_id")
+                                                  String userid,
+                                          @Query("access_token")
+                                                  String accessToken,
+                                          @Query("chkid")
+                                                  String chkid,
+                                          @Query("last_fetch")
+                                                  String lastFetch,
+                                          @Query("traversal")
+                                                  String traversal);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getConsignmentDetails(@Query("version")
+                                                  String version,
+                                          @Query("key")
+                                                  String key,
+                                          @Query("task")
+                                                  String task,
+                                          @Query("user_id")
+                                                  String userid,
+                                          @Query("access_token")
+                                                  String accessToken,
+                                          @Query("chkid")
+                                                  String chkid,
+                                            @Query("iscid")
+                                                    String iscid);
 }
