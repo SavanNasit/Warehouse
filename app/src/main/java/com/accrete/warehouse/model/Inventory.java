@@ -1,22 +1,38 @@
 package com.accrete.warehouse.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by poonam on 12/6/17.
  */
 
 public class Inventory {
-    private String availableStock;
+    @SerializedName("inventoryID")
+    @Expose
     private String inventoryID;
+    @SerializedName("item")
+    @Expose
     private String item;
-    private String SKUCode;
+    @SerializedName("sku_code")
+    @Expose
+    private String skuCode;
+    @SerializedName("received_quantity")
+    @Expose
     private String receivedQuantity;
+    @SerializedName("available_stock")
+    @Expose
+    private String availableStock;
+    @SerializedName("created_ts")
+    @Expose
+    private String createdTs;
 
-    public String getAvailableStock() {
-        return availableStock;
+    public String getCreatedTs() {
+        return createdTs;
     }
 
-    public void setAvailableStock(String availableStock) {
-        this.availableStock = availableStock;
+    public void setCreatedTs(String createdTs) {
+        this.createdTs = createdTs;
     }
 
     public String getInventoryID() {
@@ -35,12 +51,12 @@ public class Inventory {
         this.item = item;
     }
 
-    public String getSKUCode() {
-        return SKUCode;
+    public String getSkuCode() {
+        return skuCode;
     }
 
-    public void setSKUCode(String SKUCode) {
-        this.SKUCode = SKUCode;
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
     }
 
     public String getReceivedQuantity() {
@@ -49,5 +65,13 @@ public class Inventory {
 
     public void setReceivedQuantity(String receivedQuantity) {
         this.receivedQuantity = receivedQuantity;
+    }
+
+    public String getAvailableStock() {
+        return availableStock;
+    }
+
+    public void setAvailableStock(String availableStock) {
+        this.availableStock = availableStock;
     }
 }

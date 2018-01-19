@@ -1,16 +1,13 @@
 package com.accrete.warehouse.adapter;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.model.OutForDelivery;
 import com.accrete.warehouse.model.ReceiveSubItems;
 
 import java.util.ArrayList;

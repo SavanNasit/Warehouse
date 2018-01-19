@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.managePackages;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -51,6 +51,7 @@ import static com.accrete.warehouse.utils.Constants.version;
 
 public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, PackedItemWithoutCheckboxAdapter.PackedItemAdapterListener {
 
+    String status = "";
     private SwipeRefreshLayout packedSwipeRefreshLayout;
     private RecyclerView packedRecyclerView;
     private TextView packedEmptyView, packedAdd, packedDeliver;
@@ -99,7 +100,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
         });
 */
-        apiCall();
+        doRefresh();
 
         //Scroll Listener
         packedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -127,6 +128,16 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
 
         packedSwipeRefreshLayout.setOnRefreshListener(this);
+
+        //Load data after getting connection
+        packedEmptyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (packedEmptyView.getText().toString().trim().equals(getString(R.string.no_internet_try_later))) {
+                    doRefresh();
+                }
+            }
+        });
     }
 
  /*   private void dialogAddPackages() {
@@ -184,6 +195,26 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             dialogDeliver.show();
         }
     }*/
+
+    public void doRefresh() {
+        if (packedList != null && packedList.size() == 0) {
+            status = NetworkUtil.getConnectivityStatusString(getActivity());
+            if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                loading = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        packedEmptyView.setText(getString(R.string.no_data_available));
+                        getPackageDetailsList(getString(R.string.last_updated_date), "1");
+                    }
+                }, 200);
+            } else {
+                packedRecyclerView.setVisibility(View.GONE);
+                packedEmptyView.setVisibility(View.VISIBLE);
+                packedEmptyView.setText(getString(R.string.no_internet_try_later));
+            }
+        }
+    }
 
     private void dialogCreateGatepass() {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_create_gatepass, null);
@@ -326,11 +357,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     getPackageDetailsList(getString(R.string.last_updated_date), "1");
                     packedRecyclerView.setVisibility(View.VISIBLE);
                     packedEmptyView.setVisibility(View.GONE);
+                    packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 }
             }, 00);
         } else {
             packedRecyclerView.setVisibility(View.GONE);
             packedEmptyView.setVisibility(View.VISIBLE);
+            packedSwipeRefreshLayout.setVisibility(View.GONE);
             packedEmptyView.setText(getString(R.string.no_internet_try_later));
         }
     }
@@ -344,7 +377,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onExecute(ArrayList<String> packageIdList) {
 
     }
-
 
     private void getPackageDetailsList(final String updatedDate, final String traversalValue) {
         task = getString(R.string.packed_packages_list_task);
@@ -399,10 +431,12 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         if (packedList != null && packedList.size() == 0) {
                             packedEmptyView.setVisibility(View.VISIBLE);
                             packedRecyclerView.setVisibility(View.GONE);
+                            packedSwipeRefreshLayout.setVisibility(View.GONE);
                             //  customerOrderFabAdd.setVisibility(View.GONE);
                         } else {
                             packedEmptyView.setVisibility(View.GONE);
                             packedRecyclerView.setVisibility(View.VISIBLE);
+                            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
                             //   customerOrderFabAdd.setVisibility(View.VISIBLE);
                         }
                         if (packedSwipeRefreshLayout != null &&
@@ -425,6 +459,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                             packedEmptyView.setText(getString(R.string.no_data_available));
                             packedRecyclerView.setVisibility(View.GONE);
                             packedEmptyView.setVisibility(View.VISIBLE);
+                            packedSwipeRefreshLayout.setVisibility(View.GONE);
                         }
                     }
                     if (packedSwipeRefreshLayout != null && packedSwipeRefreshLayout.isRefreshing()) {
@@ -445,19 +480,25 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void onRefresh() {
-        String status = NetworkUtil.getConnectivityStatusString(getActivity());
+        status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            loading = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getPackageDetailsList(getString(R.string.last_updated_date), "1");
-                }
-            }, 00);
+            if (packedList != null && packedList.size() > 0) {
+                getPackageDetailsList(packedList.get(0).getCreatedTs(), "1");
+            } else {
+                getPackageDetailsList(getString(R.string.last_updated_date), "1");
+            }
+            packedRecyclerView.setVisibility(View.VISIBLE);
+            packedEmptyView.setVisibility(View.GONE);
+            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
+            packedSwipeRefreshLayout.setRefreshing(true);
+            //  customerOrderFabAdd.setVisibility(View.VISIBLE);
+
         } else {
             packedRecyclerView.setVisibility(View.GONE);
             packedEmptyView.setVisibility(View.VISIBLE);
+            packedSwipeRefreshLayout.setVisibility(View.GONE);
             packedEmptyView.setText(getString(R.string.no_internet_try_later));
+            packedSwipeRefreshLayout.setRefreshing(false);
         }
 
     }

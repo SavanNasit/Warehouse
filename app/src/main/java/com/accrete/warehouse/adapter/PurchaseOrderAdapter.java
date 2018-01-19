@@ -2,6 +2,7 @@ package com.accrete.warehouse.adapter;
 
 import android.app.Activity;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
@@ -31,6 +32,7 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
     private String venId;
     private SimpleDateFormat simpleDateFormat;
     private PurchaseOrderAdapterListener listener;
+    private Typeface fontAwesomeFont;
 
     public PurchaseOrderAdapter(Activity activity, List<PurchaseOrder> purchaseOrderList,
                                 PurchaseOrderAdapterListener listener) {
@@ -47,6 +49,17 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         return new MyViewHolder(itemView);
     }
 
+    //To deal with empty string of amount
+    double ParseDouble(String strNumber) {
+        if (strNumber != null && strNumber.length() > 0) {
+            try {
+                return Double.parseDouble(strNumber);
+            } catch (Exception e) {
+                return -1;   // or some value to mark this field is wrong. or make a function validates field first ...
+            }
+        } else return 0;
+    }
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final PurchaseOrder purchaseOrder = purchaseOrderList.get(position);
@@ -58,10 +71,10 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         holder.wareHouseTextView.setText(purchaseOrder.getWarehouseName());
         holder.wareHouseTextView.setVisibility(View.INVISIBLE);
 
-        double amount = Double.parseDouble(purchaseOrder.getAmount());
-        double tax = Double.parseDouble(purchaseOrder.getTax());
-        double amountAfterTax = Double.parseDouble(purchaseOrder.getAmountAfterTax());
-        double payableAmount = Double.parseDouble(purchaseOrder.getPayableAmount());
+        double amount = ParseDouble(purchaseOrder.getAmount());
+        double tax = ParseDouble(purchaseOrder.getTax());
+        double amountAfterTax = ParseDouble(purchaseOrder.getAmountAfterTax());
+        double payableAmount = ParseDouble(purchaseOrder.getPayableAmount());
         DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
 
         holder.amountTextView.setText("Amount\n" + activity.getString(R.string.Rs) + " " + formatter.format(amount));
@@ -85,33 +98,54 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         holder.statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
 
         GradientDrawable drawable = (GradientDrawable) holder.statusTextView.getBackground();
-
         if (purchaseOrder.getPurorsid().equals("1")) {
             drawable.setColor(activity.getResources().getColor(R.color.green_purchase_order));
             holder.statusTextView.setText("Created");
+            holder.textViewReceive.setEnabled(true);
+            holder.textViewReceive.setVisibility(View.VISIBLE);
         } else if (purchaseOrder.getPurorsid().equals("2")) {
             drawable.setColor(activity.getResources().getColor(R.color.blue_purchase_order));
             holder.statusTextView.setText("Partial Received");
+            holder.textViewReceive.setEnabled(true);
+            holder.textViewReceive.setVisibility(View.VISIBLE);
         } else if (purchaseOrder.getPurorsid().equals("3")) {
             drawable.setColor(activity.getResources().getColor(R.color.blue_purchase_order));
             holder.statusTextView.setText("Received");
+            holder.textViewReceive.setEnabled(false);
+            holder.textViewReceive.setVisibility(View.GONE);
         } else if (purchaseOrder.getPurorsid().equals("4")) {
             drawable.setColor(activity.getResources().getColor(R.color.red_purchase_order));
             holder.statusTextView.setText("Cancelled");
+            holder.textViewReceive.setEnabled(false);
+            holder.textViewReceive.setVisibility(View.GONE);
         } else if (purchaseOrder.getPurorsid().equals("5")) {
             drawable.setColor(activity.getResources().getColor(R.color.red_purchase_order));
             holder.statusTextView.setText("Closed");
+            holder.textViewReceive.setEnabled(false);
+            holder.textViewReceive.setVisibility(View.GONE);
         } else if (purchaseOrder.getPurorsid().equals("6")) {
             drawable.setColor(activity.getResources().getColor(R.color.orange_purchase_order));
             holder.statusTextView.setText("Pending");
+            holder.textViewReceive.setEnabled(false);
+            holder.textViewReceive.setVisibility(View.GONE);
         } else if (purchaseOrder.getPurorsid().equals("7")) {
             drawable.setColor(activity.getResources().getColor(R.color.gray_order));
             holder.statusTextView.setText("Expected Delivery");
+            holder.textViewReceive.setEnabled(true);
+            holder.textViewReceive.setVisibility(View.VISIBLE);
         } else if (purchaseOrder.getPurorsid().equals("8")) {
             drawable.setColor(activity.getResources().getColor(R.color.gray_order));
             holder.statusTextView.setText("Pending Transportation");
+            holder.textViewReceive.setEnabled(false);
+            holder.textViewReceive.setVisibility(View.GONE);
         }
 
+        holder.textViewReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         //Click Item
         applyClickEvents(holder, position, purchaseOrder.getOrderId(), purchaseOrder.getPurchaseOrderId());
     }
@@ -140,7 +174,7 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         private TextView dateTextView;
         private TextView statusTextView, amountTextView, wareHouseTextView;
         private TextView payableAmountTextView;
-        private TextView createdByTextView, taxTextView, amountTaxTextView;
+        private TextView createdByTextView, taxTextView, amountTaxTextView, textViewReceive;
 
         public MyViewHolder(View view) {
             super(view);
@@ -154,6 +188,10 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
             createdByTextView = (TextView) view.findViewById(R.id.createdBy_textView);
             taxTextView = (TextView) view.findViewById(R.id.tax_textView);
             amountTaxTextView = (TextView) view.findViewById(R.id.amount_tax_textView);
+            textViewReceive = (TextView) view.findViewById(R.id.textView_receive);
+
+            fontAwesomeFont = Typeface.createFromAsset(activity.getAssets(), "font/fontawesome-webfont.ttf");
+            textViewReceive.setTypeface(fontAwesomeFont);
         }
     }
 }
