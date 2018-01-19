@@ -51,6 +51,7 @@ import static com.accrete.warehouse.utils.Constants.version;
 
 public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, PackedItemWithoutCheckboxAdapter.PackedItemAdapterListener {
 
+    String status = "";
     private SwipeRefreshLayout packedSwipeRefreshLayout;
     private RecyclerView packedRecyclerView;
     private TextView packedEmptyView, packedAdd, packedDeliver;
@@ -127,6 +128,16 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
 
         packedSwipeRefreshLayout.setOnRefreshListener(this);
+
+        //Load data after getting connection
+        packedEmptyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (packedEmptyView.getText().toString().trim().equals(getString(R.string.no_internet_try_later))) {
+                    doRefresh();
+                }
+            }
+        });
     }
 
  /*   private void dialogAddPackages() {
@@ -184,6 +195,26 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             dialogDeliver.show();
         }
     }*/
+
+    public void doRefresh() {
+        if (packedList != null && packedList.size() == 0) {
+            status = NetworkUtil.getConnectivityStatusString(getActivity());
+            if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                loading = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        packedEmptyView.setText(getString(R.string.no_data_available));
+                        getPackageDetailsList(getString(R.string.last_updated_date), "1");
+                    }
+                }, 200);
+            } else {
+                packedRecyclerView.setVisibility(View.GONE);
+                packedEmptyView.setVisibility(View.VISIBLE);
+                packedEmptyView.setText(getString(R.string.no_internet_try_later));
+            }
+        }
+    }
 
     private void dialogCreateGatepass() {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_create_gatepass, null);
@@ -345,7 +376,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     }
 
-
     private void getPackageDetailsList(final String updatedDate, final String traversalValue) {
         task = getString(R.string.packed_packages_list_task);
         String chkid = null;
@@ -445,19 +475,23 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void onRefresh() {
-        String status = NetworkUtil.getConnectivityStatusString(getActivity());
+        status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            loading = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getPackageDetailsList(getString(R.string.last_updated_date), "1");
-                }
-            }, 00);
+            if (packedList != null && packedList.size() > 0) {
+                getPackageDetailsList(packedList.get(0).getCreatedTs(), "1");
+            } else {
+                getPackageDetailsList(getString(R.string.last_updated_date), "1");
+            }
+            packedRecyclerView.setVisibility(View.VISIBLE);
+            packedEmptyView.setVisibility(View.GONE);
+            packedSwipeRefreshLayout.setRefreshing(true);
+            //  customerOrderFabAdd.setVisibility(View.VISIBLE);
+
         } else {
             packedRecyclerView.setVisibility(View.GONE);
             packedEmptyView.setVisibility(View.VISIBLE);
             packedEmptyView.setText(getString(R.string.no_internet_try_later));
+            packedSwipeRefreshLayout.setRefreshing(false);
         }
 
     }
