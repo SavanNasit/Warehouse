@@ -163,6 +163,8 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
         if (runningOrderList != null && runningOrderList.size() > 0) {
             runningOrderList.clear();
         }
+
+        runningOrdersSwipeRefreshLayout.setRefreshing(false);
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
             accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);

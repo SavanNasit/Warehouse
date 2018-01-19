@@ -124,20 +124,13 @@
         android:orientation="vertical">
 
 
-            <AutoCompleteTextView
+            <Spinner
                 android:id="@+id/dialog_create_gatepass_shipping_by"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:gravity="left"
-                android:hint="Shipping By:"
-                android:maxLines="1"
-                android:background="@drawable/border_edittext_gray"
-                android:padding="@dimen/_10sdp"
                 android:layout_margin="@dimen/_10sdp"
-                android:textColor="@color/darkGray"
-                android:textColorHint="@color/gray"
-                android:textSize="@dimen/_10sdp" />
+                android:background="@drawable/spinner_bg"
+                />
 
 
 
@@ -149,7 +142,7 @@
                 android:gravity="left"
                 android:hint="Vehicle Number:"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/_10sdp"
+                android:padding="@dimen/_7sdp"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="@drawable/border_edittext_gray"
                 android:inputType="textCapSentences"
@@ -159,36 +152,22 @@
                 android:textSize="@dimen/_10sdp" />
 
 
-            <AutoCompleteTextView
+            <Spinner
                 android:id="@+id/dialog_create_gatepass_shipping_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:gravity="left"
-                android:hint="Shipping Type:"
-                android:background="@drawable/border_edittext_gray"
-                android:padding="@dimen/_10sdp"
                 android:layout_margin="@dimen/_10sdp"
-                android:textColor="@color/darkGray"
-                android:textColorHint="@color/gray"
-                android:textSize="@dimen/_10sdp" />
+                android:background="@drawable/spinner_bg"
+               />
 
 
-            <AutoCompleteTextView
+            <Spinner
                 android:id="@+id/dialog_create_gatepass_shipping_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:gravity="left"
-                android:hint="Shipping Company:"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:maxLines="1"
-                android:background="@drawable/border_edittext_gray"
-                android:padding="@dimen/_10sdp"
                 android:layout_margin="@dimen/_10sdp"
-                android:textColor="@color/darkGray"
-                android:textColorHint="@color/gray"
+                android:background="@drawable/spinner_bg"
+                android:visibility="gone"
                 android:textSize="@dimen/_10sdp" />
 
 
@@ -210,6 +189,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/dialog_create_gatepass"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.22"

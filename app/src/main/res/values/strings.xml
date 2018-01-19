@@ -88,11 +88,14 @@
     <string name="confirm_gatepass_fragment">Confirm Gatepass</string>
     <string name="search">Search here..</string>
     <string name="shipping_form_data">warehouse/fetch_shipping_form_data</string>
+    <string name="task_delivery_user">warehouse/search_delivery_users</string>
 
     <!-- Manage Consignments -->
     <string name="fetch_consignments">warehouse/fetch_consignments</string>
     <string name="iscid">iscid</string>
     <string name="consignment_info">warehouse/fetch_consignment_info</string>
+    <string name="gatepass_shipping_company_info">warehouse/fetch_package_shipping_companyInfo</string>
+    <string name="create_gatepass_task">warehouse/create_gatepass</string>
     <string name="fetch_consignment_inventories">warehouse/fetch_receive_consignment_inventories</string>
     <string name="download_consignment_receipt">warehouse/print_consignment_goods_receipt</string>
     <string name="download_goods_receipt">Download goods receipt</string>
@@ -117,6 +120,8 @@
     <string name="received_details_subtitle">Details of the ordered items, which are received</string>
     <string name="consignment_details_title">Consignment Details</string>
     <string name="consignment_details_subtitle">List of the consignments related to the PO</string>
+    <string name="task_manage_gatepass">warehouse/fetch_gatepass_list</string>
+    <string name="task_cancel_gatepass">warehouse/cancel_gatepass</string>
     <string name="purOrId">purchaseOrderId</string>
     <string name="fetch_purchase_order_info">purchase_order/fetch_purchase_order_info</string>
 </resources>

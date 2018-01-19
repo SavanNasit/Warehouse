@@ -285,7 +285,11 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
                             Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else if (apiResponse.getSuccessCode().equals("10006")) {
                             Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                         }else if(apiResponse.getSuccessCode().equals("20004")){
+                        packageDetailsEmptyView.setText(apiResponse.getMessage());
+                        packageDetailsRecyclerView.setVisibility(View.GONE);
+                        packageDetailsEmptyView.setVisibility(View.VISIBLE);
+                    }
                     }
 
                 } catch (Exception e) {
