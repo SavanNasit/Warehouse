@@ -1,3 +1,9 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/confirm_gatepass_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -119,10 +125,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_40sdp"
-        android:layout_weight="2.2">
+        android:layout_weight="1.2">
 
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/dialog_gatepass_authentication_delivery_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,9 +137,6 @@
             android:fontFamily="sans-serif"
             android:gravity="left"
             android:hint="Delivery User:"
-            android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:maxLines="1"
             android:padding="@dimen/_10sdp"
             android:textColor="@color/darkGray"
             android:textColorHint="@color/gray"
@@ -141,8 +144,30 @@
 
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/_60sdp"
+        android:layout_marginRight="@dimen/_60sdp"
+        android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/dialog_gatepass_back"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="Back to Create Gatepass"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingRight="@dimen/_12sdp"
+        android:paddingLeft="@dimen/_12sdp"
+        android:drawableLeft="@drawable/ic_back_arrow"
+        android:textColor="@color/white"
+        android:background="@color/blueTurquoise"/>
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/dialog_gatepass_confirm"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.20"
@@ -158,3 +183,4 @@
             android:textSize="@dimen/_16sdp" />
     </LinearLayout>
 </LinearLayout>
+</FrameLayout>

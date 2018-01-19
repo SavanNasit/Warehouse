@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class Data {
 
+
+
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -50,16 +52,7 @@ public class Data {
     @SerializedName("consignments")
     @Expose
     private List<Consignment> consignments = null;
-    @SerializedName("company_code")
 
-    @Expose
-    private String companyCode;
-    @SerializedName("user_name")
-    @Expose
-    private String name;
-    @SerializedName("select_orders_items")
-    @Expose
-    private List<SelectOrderItem> selectOrdersItems = null;
     @SerializedName("consignmentData")
     @Expose
     private ConsignmentData consignmentData;
@@ -169,6 +162,32 @@ public class Data {
         this.inventoryData = inventoryData;
     }
 
+
+    @SerializedName("shipping_company")
+    @Expose
+    private List<ShippingCompany> shippingCompany = null;
+
+    @SerializedName("gatepassList")
+    @Expose
+    private List<GatepassList> gatepassList = null;
+
+    public List<GatepassList> getGatepassList() {
+        return gatepassList;
+    }
+
+    public void setGatepassList(List<GatepassList> gatepassList) {
+        this.gatepassList = gatepassList;
+    }
+
+    public List<ShippingCompany> getShippingCompany() {
+        return shippingCompany;
+    }
+
+    public void setShippingCompany(List<ShippingCompany> shippingCompany) {
+        this.shippingCompany = shippingCompany;
+    }
+
+
     public ConsignmentData getConsignmentData() {
         return consignmentData;
     }
@@ -248,6 +267,33 @@ public class Data {
     public void ListName(String name) {
         this.name = name;
     }
+
+    @SerializedName("company_code")
+    @Expose
+    private String companyCode;
+
+    @SerializedName("user_name")
+    @Expose
+    private String name;
+
+
+    @SerializedName("select_orders_items")
+    @Expose
+    private List<SelectOrderItem> selectOrdersItems = null;
+
+
+    @SerializedName("delivery_user_list")
+    @Expose
+    private List<DeliveryUserList> deliveryUserList = null;
+
+    public List<DeliveryUserList> getDeliveryUserList() {
+        return deliveryUserList;
+    }
+
+    public void setDeliveryUserList(List<DeliveryUserList> deliveryUserList) {
+        this.deliveryUserList = deliveryUserList;
+    }
+
 
     public List<SelectOrderItem> getSelectOrdersItems() {
         return selectOrdersItems;
