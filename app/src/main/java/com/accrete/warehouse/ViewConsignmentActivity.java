@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,7 @@ public class ViewConsignmentActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
     private DownloadManager downloadManager;
     private ProgressBar progressBar;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +75,16 @@ public class ViewConsignmentActivity extends AppCompatActivity {
         findViews();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     private void findViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.manage_consignment_goods_receipt_print);
+        linearLayout = (LinearLayout) findViewById(R.id.layout_btn);
         toolbar.setTitle(getString(R.string.view_consignment));
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
@@ -100,6 +109,7 @@ public class ViewConsignmentActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.container, consignmentMainTabFragment);
         fragmentTransaction.commit();
 
+        linearLayout.setVisibility(View.VISIBLE);
         floatingActionButton.setVisibility(View.VISIBLE);
         floatingActionButton.setEnabled(true);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

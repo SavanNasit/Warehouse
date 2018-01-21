@@ -55,4 +55,5 @@
     <color name="green_purchase_order">#5CB85C </color>
     <color name="red_purchase_order">#d9534f </color>
     <color name="orange_purchase_order">#f0ad4e </color>
+    <color name="sky_blue_bg">#D9EDF7</color>
 </resources>

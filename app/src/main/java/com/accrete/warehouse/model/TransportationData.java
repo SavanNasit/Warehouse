@@ -8,21 +8,24 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class TransportationData {
-    @SerializedName("vendorName")
+    @SerializedName("vendor_name")
     @Expose
     private String vendorName;
-    @SerializedName("lrnumber")
+    @SerializedName("lrNumber")
     @Expose
-    private String lrnumber;
+    private String lrNumber;
     @SerializedName("vehicleNumber")
     @Expose
     private String vehicleNumber;
-    @SerializedName("exceptedDate")
+    @SerializedName("expectedDate")
     @Expose
-    private String exceptedDate;
+    private String expectedDate;
     @SerializedName("weight")
     @Expose
     private String weight;
+    @SerializedName("vendor_id")
+    @Expose
+    private String vendorId;
 
     public String getVendorName() {
         return vendorName;
@@ -32,12 +35,12 @@ public class TransportationData {
         this.vendorName = vendorName;
     }
 
-    public String getLrnumber() {
-        return lrnumber;
+    public String getLrNumber() {
+        return lrNumber;
     }
 
-    public void setLrnumber(String lrnumber) {
-        this.lrnumber = lrnumber;
+    public void setLrNumber(String lrNumber) {
+        this.lrNumber = lrNumber;
     }
 
     public String getVehicleNumber() {
@@ -48,12 +51,12 @@ public class TransportationData {
         this.vehicleNumber = vehicleNumber;
     }
 
-    public String getExceptedDate() {
-        return exceptedDate;
+    public String getExpectedDate() {
+        return expectedDate;
     }
 
-    public void setExceptedDate(String exceptedDate) {
-        this.exceptedDate = exceptedDate;
+    public void setExpectedDate(String expectedDate) {
+        this.expectedDate = expectedDate;
     }
 
     public String getWeight() {
@@ -62,5 +65,13 @@ public class TransportationData {
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public String getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(String vendorId) {
+        this.vendorId = vendorId;
     }
 }

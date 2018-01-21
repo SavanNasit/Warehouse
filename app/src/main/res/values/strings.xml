@@ -110,6 +110,32 @@
     <!-- Receive Consignments -->
     <string name="fetch_purchase_orders">purchase_order/fetch_purchase_orders</string>
     <string name="fa_truck">&#xf0d1;</string>
+    <string name="title_activity_poreceive_consignment">Receive Consignment</string>
+    <string name="purchaseOrder_details_title">Purchase Order details</string>
+    <string name="purchaseOrder_details_subtitle">Purchase Order information</string>
+    <string name="vendor_title">Vendor:</string>
+    <string name="purchase_details">Purchase Details</string>
+    <string name="inputing_purchase_details">You will be inputing purchase details</string>
+    <string name="receive_date_title">Receive Date:</string>
+    <string name="expected_date_title">Expected Date:</string>
+    <string name="invoice_number_title">Invoice Number:</string>
+    <string name="invoice_date_title">Invoice Date:</string>
+    <string name="list_items_consignment_title">List of Items in Consignment</string>
+    <string name="list_items_consignment_subTitle">You will be inputing all items information receiving in this consignment</string>
+    <string name="transportation_details_title">Transportation Details</string>
+    <string name="transportation_details_subtitle">Add transportation vendor details and payment amount</string>
+    <string name="transporter_title">Transporter</string>
+    <string name="weight">Weight</string>
+    <string name="lr_number">LR Number</string>
+    <string name="search_vendor">Search Vendor</string>
+    <string name="vehicle_number">Vehicle Number</string>
+    <string name="fetch_receive_consignment_prefilled_data">warehouse/fetch_receive_consignment_formdata</string>
+    <string name="vendor_search_task">vendor/search_vendor</string>
+    <string name="quotation_search_item">quotation/search_item</string>
+    <string name="task_products_details">warehouse/fetch_selected_consignment_item_info</string>
+    <string name="task_receive_consignment">warehouse/receive_consignment</string>
+    <string name="back_selection">Back to selection</string>
+    <string name="add_item">Add item</string>
 
     <!-- Purchase Order -->
     <string name="vendor_details_title">Vendor Details</string>
@@ -134,4 +160,5 @@
     <string name="invoice_download_title">Download Invoice</string>
     <string name="download_gatepass_invoice_confirm_msg">Are you sure to download invoice?</string>
     <string name="package_history_gatepass_list_task">warehouse/fetch_package_history</string>
+
 </resources>

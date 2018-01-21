@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PackedItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,8 +46,14 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
         holder.packageIdTextView.setText(packedItem.getPackageId());
         holder.packageIdTextView.setPaintFlags(holder.packageIdTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.invoiceNoTextView.setText("Invoice No : " + packedItem.getInvoiceNo());
-        holder.invoiceDateTextView.setText(packedItem.getInvoiceDate());
-        holder.customerNameTextView.setText(packedItem.getCustomerName());
+
+        if (packedItem.getCustomerName() != null && !packedItem.getCustomerName().isEmpty()
+                && packedItem.getCustomerName().toString().trim().length() != 0) {
+            holder.customerNameTextView.setText(packedItem.getCustomerName());
+            holder.customerNameTextView.setVisibility(View.VISIBLE);
+        } else {
+            holder.customerNameTextView.setVisibility(View.GONE);
+        }
         if (packedItem.getToDate() != null && !packedItem.getToDate().isEmpty()) {
             holder.expDodTextView.setText("Exp Dod : " + packedItem.getToDate());
         } else {
@@ -62,6 +72,15 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
             }
         });
         //applyClickEvents(holder, position);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM, yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDate = targetFormat.parse(packedItem.getInvoiceDate());
+            holder.invoiceDateTextView.setText(formatter.format(startDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -85,6 +85,7 @@ public class DetailsFragment extends Fragment {
     private String chkId, iscId;
     private LinearLayout stockRequestLayout;
     private TextView stockRequestTextView;
+    private LinearLayout mainLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,6 +103,7 @@ public class DetailsFragment extends Fragment {
     }
 
     private void findViews(View v) {
+        mainLayout = (LinearLayout) v.findViewById(R.id.mainLayout);
         containerIdLayout = (LinearLayout) v.findViewById(R.id.containerId_layout);
         containerIdTextView = (TextView) v.findViewById(R.id.containerId_textView);
         authorizedByLayout = (LinearLayout) v.findViewById(R.id.authorizedBy_layout);
@@ -141,6 +143,7 @@ public class DetailsFragment extends Fragment {
         expectedDateTextView = (TextView) v.findViewById(R.id.expectedDate_textView);
         weightLayout = (LinearLayout) v.findViewById(R.id.weight_layout);
         weightTextView = (TextView) v.findViewById(R.id.weight_textView);
+        mainLayout.setVisibility(View.GONE);
 
         chkId = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
 
@@ -352,8 +355,8 @@ public class DetailsFragment extends Fragment {
         }
 
         //LR Number
-        if (transportationData.getLrnumber() != null && !transportationData.getLrnumber().isEmpty()) {
-            lrNumberTextView.setText(transportationData.getLrnumber());
+        if (transportationData.getLrNumber() != null && !transportationData.getLrNumber().isEmpty()) {
+            lrNumberTextView.setText(transportationData.getLrNumber());
             lrNumberLayout.setVisibility(View.VISIBLE);
         } else {
             lrNumberLayout.setVisibility(View.GONE);
@@ -368,8 +371,8 @@ public class DetailsFragment extends Fragment {
         }
 
         //Expected Date
-        if (transportationData.getExceptedDate() != null && !transportationData.getExceptedDate().isEmpty()) {
-            expectedDateTextView.setText(transportationData.getExceptedDate());
+        if (transportationData.getExpectedDate() != null && !transportationData.getExpectedDate().isEmpty()) {
+            expectedDateTextView.setText(transportationData.getExpectedDate());
             expectedDateLayout.setVisibility(View.VISIBLE);
         } else {
             expectedDateLayout.setVisibility(View.GONE);
@@ -385,10 +388,10 @@ public class DetailsFragment extends Fragment {
         }
 
         if (transportationData != null && ((transportationData.getWeight() != null &&
-                !transportationData.getWeight().isEmpty()) || (transportationData.getExceptedDate() != null &&
-                !transportationData.getExceptedDate().isEmpty()) || (transportationData.getVehicleNumber() != null &&
-                !transportationData.getVehicleNumber().isEmpty()) || (transportationData.getLrnumber() != null &&
-                !transportationData.getLrnumber().isEmpty()) || (transportationData.getVendorName() != null &&
+                !transportationData.getWeight().isEmpty()) || (transportationData.getExpectedDate() != null &&
+                !transportationData.getExpectedDate().isEmpty()) || (transportationData.getVehicleNumber() != null &&
+                !transportationData.getVehicleNumber().isEmpty()) || (transportationData.getLrNumber() != null &&
+                !transportationData.getLrNumber().isEmpty()) || (transportationData.getVendorName() != null &&
                 !transportationData.getVendorName().isEmpty()))) {
             transportationSubTitleTextView.setVisibility(View.VISIBLE);
             transportationTitleTextView.setVisibility(View.VISIBLE);
@@ -398,6 +401,9 @@ public class DetailsFragment extends Fragment {
             transportationTitleTextView.setVisibility(View.GONE);
             transportationTitleView.setVisibility(View.GONE);
         }
+
+
+        mainLayout.setVisibility(View.VISIBLE);
 
     }//To deal with empty string of amount
 

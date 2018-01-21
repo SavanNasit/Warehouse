@@ -11,7 +11,6 @@ import java.util.List;
 public class Data {
 
 
-
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -59,9 +58,6 @@ public class Data {
     @SerializedName("vendorTransportationData")
     @Expose
     private VendorTransportationData vendorTransportationData;
-    @SerializedName("transportationData")
-    @Expose
-    private TransportationData transportationData;
     @SerializedName("inventoryData")
     @Expose
     private List<Inventory> inventoryData = null;
@@ -85,7 +81,7 @@ public class Data {
     private OrderDetail orderDetail;
     @SerializedName("receivedDetails")
     @Expose
-    private List<List<ReceivedDetail>> receivedDetails = null;
+    private List<ReceivedDetail> receivedDetails = null;
     @SerializedName("consignmentDetails")
     @Expose
     private List<ConsignmentDetail> consignmentDetails = null;
@@ -123,6 +119,104 @@ public class Data {
         this.gatePassData = gatePassData;
     }
 
+    @SerializedName("shipping_company")
+    @Expose
+    private List<ShippingCompany> shippingCompany = null;
+    @SerializedName("gatepassList")
+    @Expose
+    private List<GatepassList> gatepassList = null;
+    @SerializedName("company_code")
+    @Expose
+    private String companyCode;
+    @SerializedName("user_name")
+    @Expose
+    private String name;
+    @SerializedName("select_orders_items")
+    @Expose
+    private List<SelectOrderItem> selectOrdersItems = null;
+    @SerializedName("delivery_user_list")
+    @Expose
+    private List<DeliveryUserList> deliveryUserList = null;
+
+    @SerializedName("purchaseOrderData")
+    @Expose
+    private PurchaseOrderData purchaseOrderData;
+    @SerializedName("purchaseDetails")
+    @Expose
+    private PurchaseDetails purchaseDetails;
+    @SerializedName("consignment_items")
+    @Expose
+    private List<ConsignmentItem> consignmentItems = null;
+    @SerializedName("transportationData")
+    @Expose
+    private TransportationData transportationData;
+    @SerializedName("isExistTransportationDetails")
+    @Expose
+    private String isExistTransportationDetails;
+    @SerializedName("vendors")
+    @Expose
+    private List<Vendor> vendors = null;
+    @SerializedName("item_list")
+    @Expose
+    private List<ItemList> itemList = null;
+    @SerializedName("consignment_item")
+    @Expose
+    private ConsignmentItem consignmentItem;
+
+    public ConsignmentItem getConsignmentItem() {
+        return consignmentItem;
+    }
+
+    public void setConsignmentItem(ConsignmentItem consignmentItem) {
+        this.consignmentItem = consignmentItem;
+    }
+    public List<ItemList> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(List<ItemList> itemList) {
+        this.itemList = itemList;
+    }
+
+    public List<Vendor> getVendors() {
+        return vendors;
+    }
+
+    public void setVendors(List<Vendor> vendors) {
+        this.vendors = vendors;
+    }
+
+    public String getIsExistTransportationDetails() {
+        return isExistTransportationDetails;
+    }
+
+    public void setIsExistTransportationDetails(String isExistTransportationDetails) {
+        this.isExistTransportationDetails = isExistTransportationDetails;
+    }
+
+    public PurchaseOrderData getPurchaseOrderData() {
+        return purchaseOrderData;
+    }
+
+    public void setPurchaseOrderData(PurchaseOrderData purchaseOrderData) {
+        this.purchaseOrderData = purchaseOrderData;
+    }
+
+    public PurchaseDetails getPurchaseDetails() {
+        return purchaseDetails;
+    }
+
+    public void setPurchaseDetails(PurchaseDetails purchaseDetails) {
+        this.purchaseDetails = purchaseDetails;
+    }
+
+    public List<ConsignmentItem> getConsignmentItems() {
+        return consignmentItems;
+    }
+
+    public void setConsignmentItems(List<ConsignmentItem> consignmentItems) {
+        this.consignmentItems = consignmentItems;
+    }
 
     public VendorData getVendorData() {
         return vendorData;
@@ -140,11 +234,11 @@ public class Data {
         this.orderDetail = orderDetail;
     }
 
-    public List<List<ReceivedDetail>> getReceivedDetails() {
+    public List<ReceivedDetail> getReceivedDetails() {
         return receivedDetails;
     }
 
-    public void setReceivedDetails(List<List<ReceivedDetail>> receivedDetails) {
+    public void setReceivedDetails(List<ReceivedDetail> receivedDetails) {
         this.receivedDetails = receivedDetails;
     }
 
@@ -196,15 +290,6 @@ public class Data {
         this.inventoryData = inventoryData;
     }
 
-
-    @SerializedName("shipping_company")
-    @Expose
-    private List<ShippingCompany> shippingCompany = null;
-
-    @SerializedName("gatepassList")
-    @Expose
-    private List<GatepassList> gatepassList = null;
-
     public List<GatepassList> getGatepassList() {
         return gatepassList;
     }
@@ -220,7 +305,6 @@ public class Data {
     public void setShippingCompany(List<ShippingCompany> shippingCompany) {
         this.shippingCompany = shippingCompany;
     }
-
 
     public ConsignmentData getConsignmentData() {
         return consignmentData;
@@ -301,24 +385,6 @@ public class Data {
     public void ListName(String name) {
         this.name = name;
     }
-
-    @SerializedName("company_code")
-    @Expose
-    private String companyCode;
-
-    @SerializedName("user_name")
-    @Expose
-    private String name;
-
-
-    @SerializedName("select_orders_items")
-    @Expose
-    private List<SelectOrderItem> selectOrdersItems = null;
-
-
-    @SerializedName("delivery_user_list")
-    @Expose
-    private List<DeliveryUserList> deliveryUserList = null;
 
     public List<DeliveryUserList> getDeliveryUserList() {
         return deliveryUserList;

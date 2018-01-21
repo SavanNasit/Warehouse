@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,8 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.adapter.OrderConsignmentDetailsAdapter;
+import com.accrete.warehouse.adapter.OrderReceivedDetailsAdapter;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.ConsignmentDetail;
 import com.accrete.warehouse.model.OrderDetail;
+import com.accrete.warehouse.model.ReceivedDetail;
 import com.accrete.warehouse.model.VendorData;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
@@ -25,6 +31,8 @@ import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +88,10 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
     private RecyclerView recyclerViewConsignmentDetails;
     private TextView textviewConsignmentDetailsEmpty;
     private String purOrId;
+    private OrderConsignmentDetailsAdapter orderConsignmentDetailsAdapter;
+    private OrderReceivedDetailsAdapter orderReceivedDetailsAdapter;
+    private List<ConsignmentDetail> consignmentDetailList = new ArrayList<ConsignmentDetail>();
+    private List<ReceivedDetail> receivedDetailList = new ArrayList<ReceivedDetail>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,6 +155,24 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
         recyclerViewConsignmentDetails = (RecyclerView) findViewById(R.id.recycler_view_consignmentDetails);
         textviewConsignmentDetailsEmpty = (TextView) findViewById(R.id.textview_consignmentDetails_empty);
 
+        //Order Consignment Details adapter
+        orderConsignmentDetailsAdapter = new OrderConsignmentDetailsAdapter(this, consignmentDetailList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerViewConsignmentDetails.setLayoutManager(mLayoutManager);
+        recyclerViewConsignmentDetails.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerViewConsignmentDetails.setAdapter(orderConsignmentDetailsAdapter);
+
+        //Order Received Details adapter
+        orderReceivedDetailsAdapter = new OrderReceivedDetailsAdapter(this, receivedDetailList);
+        RecyclerView.LayoutManager mLayoutManagerReceived = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerViewReceivedDetails.setLayoutManager(mLayoutManagerReceived);
+        recyclerViewReceivedDetails.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerViewReceivedDetails.setAdapter(orderReceivedDetailsAdapter);
+
+        //Smooth Scroll
+        recyclerViewConsignmentDetails.setNestedScrollingEnabled(false);
+        recyclerViewReceivedDetails.setNestedScrollingEnabled(false);
+
         if (!NetworkUtil.getConnectivityStatusString(ViewOrderItemsActivity.this).equals(getString(R.string.not_connected_to_internet))) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -177,6 +207,38 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
 
                     setDataIntoView(apiResponse.getData().getVendorData(),
                             apiResponse.getData().getOrderDetail());
+
+                    for (final ConsignmentDetail consignmentDetail : apiResponse.getData().getConsignmentDetails()) {
+                        if (apiResponse.getData().getConsignmentDetails() != null) {
+                            consignmentDetailList.add(consignmentDetail);
+                        }
+                    }
+
+                    if (!consignmentDetailList.isEmpty() && !consignmentDetailList.equals("null") && consignmentDetailList.size()>0) {
+                        recyclerViewConsignmentDetails.setVisibility(View.VISIBLE);
+                        textviewConsignmentDetailsEmpty.setVisibility(View.GONE);
+                        orderConsignmentDetailsAdapter.notifyDataSetChanged();
+                    } else {
+                        recyclerViewConsignmentDetails.setVisibility(View.GONE);
+                        textviewConsignmentDetailsEmpty.setVisibility(View.VISIBLE);
+                        textviewConsignmentDetailsEmpty.setText("No data available");
+                    }
+
+                    for (final ReceivedDetail receivedDetail : apiResponse.getData().getReceivedDetails()) {
+                        if (apiResponse.getData().getReceivedDetails() != null) {
+                            receivedDetailList.add(receivedDetail);
+                        }
+                    }
+                    if (!receivedDetailList.isEmpty() && !receivedDetailList.equals("null") && receivedDetailList.size()>0) {
+                        recyclerViewReceivedDetails.setVisibility(View.VISIBLE);
+                        textviewReceivedDetailsEmpty.setVisibility(View.GONE);
+                        orderReceivedDetailsAdapter.notifyDataSetChanged();
+                    } else {
+                        recyclerViewReceivedDetails.setVisibility(View.GONE);
+                        textviewReceivedDetailsEmpty.setVisibility(View.VISIBLE);
+                        textviewReceivedDetailsEmpty.setText("No date available");
+                    }
+
 
                 } else if (apiResponse.getSuccessCode().equals("10005")) {
                     Toast.makeText(ViewOrderItemsActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -242,12 +304,12 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
         }
 
         if (orderDetail.getStatus() != null && !orderDetail.getStatus().isEmpty()) {
-            GradientDrawable drawable = (GradientDrawable) statusTextView.getBackground();
             statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
+            GradientDrawable drawable = (GradientDrawable) statusTextView.getBackground();
             statusLayout.setVisibility(View.VISIBLE);
             statusTextView.setText(orderDetail.getStatus());
 
-          /*  if (orderDetail.getStatus().equals("Created")) {
+            if (orderDetail.getStatus().equals("Created")) {
                 drawable.setColor(getResources().getColor(R.color.green_purchase_order));
             } else if (orderDetail.getStatus().equals("Partial Received")) {
                 drawable.setColor(getResources().getColor(R.color.blue_purchase_order));
@@ -264,7 +326,7 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
             } else if (orderDetail.getStatus().equals("Pending Transportation")) {
                 drawable.setColor(getResources().getColor(R.color.gray_order));
             }
-*/
+
         } else {
             statusLayout.setVisibility(View.GONE);
         }
