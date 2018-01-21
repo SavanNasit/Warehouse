@@ -286,7 +286,7 @@
                 android:text="@string/invoice_number_title"
                 android:textSize="@dimen/_10sdp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/invoice_number_value_textView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_36sdp"
@@ -443,17 +443,16 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/transporter_value_editText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:hint="@string/transporter_title"
-                        android:longClickable="false"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
                         android:textSize="@dimen/_12sdp"
                         android:theme="@style/Autocomplete" />
 
@@ -485,10 +484,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:hint="@string/weight"
-                    android:longClickable="false"
                     android:textSize="@dimen/_12sdp"
                     android:theme="@style/Autocomplete" />
 
@@ -511,10 +507,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:hint="@string/lr_number"
-                    android:longClickable="false"
                     android:textSize="@dimen/_12sdp"
                     android:theme="@style/Autocomplete" />
 
@@ -537,10 +530,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:hint="@string/vehicle_number"
-                    android:longClickable="false"
                     android:textSize="@dimen/_12sdp"
                     android:theme="@style/Autocomplete" />
 

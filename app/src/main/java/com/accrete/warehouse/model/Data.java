@@ -122,6 +122,27 @@ public class Data {
     @SerializedName("vendors")
     @Expose
     private List<Vendor> vendors = null;
+    @SerializedName("item_list")
+    @Expose
+    private List<ItemList> itemList = null;
+    @SerializedName("consignment_item")
+    @Expose
+    private ConsignmentItem consignmentItem;
+
+    public ConsignmentItem getConsignmentItem() {
+        return consignmentItem;
+    }
+
+    public void setConsignmentItem(ConsignmentItem consignmentItem) {
+        this.consignmentItem = consignmentItem;
+    }
+    public List<ItemList> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(List<ItemList> itemList) {
+        this.itemList = itemList;
+    }
 
     public List<Vendor> getVendors() {
         return vendors;

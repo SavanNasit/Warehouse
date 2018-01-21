@@ -3,6 +3,8 @@ package com.accrete.warehouse.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by agt on 20/1/18.
  */
@@ -16,7 +18,6 @@ public class ConsignmentItem {
     private String name;
     @SerializedName("iid")
     @Expose
-
     private String iid;
     @SerializedName("type")
     @Expose
@@ -32,7 +33,83 @@ public class ConsignmentItem {
     private String receiveQuantity;
     @SerializedName("measurements")
     @Expose
-    private String measurements;
+    private List<Measurement> measurements = null;
+    @SerializedName("box_qnty")
+    @Expose
+    private String boxQnty;
+    @SerializedName("unit")
+    @Expose
+    private String unit;
+    private String price;
+    private String unitId;
+    private String comment;
+    private String expiryDate;
+    private String rejectedQuantity;
+    private String reasonRejection;
+
+    public String getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(String unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getRejectedQuantity() {
+        return rejectedQuantity;
+    }
+
+    public void setRejectedQuantity(String rejectedQuantity) {
+        this.rejectedQuantity = rejectedQuantity;
+    }
+
+    public String getReasonRejection() {
+        return reasonRejection;
+    }
+
+    public void setReasonRejection(String reasonRejection) {
+        this.reasonRejection = reasonRejection;
+    }
+
+    public String getBoxQnty() {
+        return boxQnty;
+    }
+
+    public void setBoxQnty(String boxQnty) {
+        this.boxQnty = boxQnty;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     public String getIsvid() {
         return isvid;
@@ -90,11 +167,11 @@ public class ConsignmentItem {
         this.receiveQuantity = receiveQuantity;
     }
 
-    public String getMeasurements() {
+    public List<Measurement> getMeasurements() {
         return measurements;
     }
 
-    public void setMeasurements(String measurements) {
+    public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
     }
 }

@@ -8,24 +8,47 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class PurchaseOrderData {
+
     @SerializedName("poid")
     @Expose
     private String poid;
+    @SerializedName("purorid")
+    @Expose
+    private String purorid;
     @SerializedName("authorizedBy")
     @Expose
     private String authorizedBy;
+    @SerializedName("authorizedById")
+    @Expose
+    private String authorizedById;
     @SerializedName("vendorName")
     @Expose
     private String vendorName;
     @SerializedName("vendorId")
     @Expose
     private String vendorId;
-    @SerializedName("status")
-    @Expose
-    private String status;
     @SerializedName("purorsid")
     @Expose
     private String purorsid;
+    @SerializedName("status")
+    @Expose
+    private String status;
+
+    public String getPurorid() {
+        return purorid;
+    }
+
+    public void setPurorid(String purorid) {
+        this.purorid = purorid;
+    }
+
+    public String getAuthorizedById() {
+        return authorizedById;
+    }
+
+    public void setAuthorizedById(String authorizedById) {
+        this.authorizedById = authorizedById;
+    }
 
     public String getPurorsid() {
         return purorsid;

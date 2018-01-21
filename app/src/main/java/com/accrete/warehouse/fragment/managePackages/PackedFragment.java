@@ -401,9 +401,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
-                    if (apiResponse.getSuccess())
-
-                    {
+                    if (apiResponse.getSuccess()) {
                         for (final PackedItem packedItem : apiResponse.getData().getPackedItems()) {
                             if (packedItem != null) {
                                 if (traversalValue.equals("2")) {
@@ -430,14 +428,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         loading = false;
                         if (packedList != null && packedList.size() == 0) {
                             packedEmptyView.setVisibility(View.VISIBLE);
+                            packedEmptyView.setText("No data available");
                             packedRecyclerView.setVisibility(View.GONE);
                             packedSwipeRefreshLayout.setVisibility(View.GONE);
-                            //  customerOrderFabAdd.setVisibility(View.GONE);
                         } else {
                             packedEmptyView.setVisibility(View.GONE);
-                            packedRecyclerView.setVisibility(View.VISIBLE);
                             packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
-                            //   customerOrderFabAdd.setVisibility(View.VISIBLE);
+                            packedRecyclerView.setVisibility(View.VISIBLE);
                         }
                         if (packedSwipeRefreshLayout != null &&
                                 packedSwipeRefreshLayout.isRefreshing()) {
@@ -446,7 +443,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         if (traversalValue.equals("2")) {
                             packedItemAdapter.notifyDataSetChanged();
                             if (dataChanged != null && dataChanged.equals("yes")) {
-                                // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
                             }
                         } else if (traversalValue.equals("1")) {
                             if (dataChanged != null && dataChanged.equals("yes")) {
@@ -455,18 +451,32 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                             }
                         }
                     } else {
-                        if (apiResponse.getSuccessCode().equals("10001")) {
-                            packedEmptyView.setText(getString(R.string.no_data_available));
-                            packedRecyclerView.setVisibility(View.GONE);
+                        if (packedList != null && packedList.size() == 0) {
                             packedEmptyView.setVisibility(View.VISIBLE);
-                            packedSwipeRefreshLayout.setVisibility(View.GONE);
-                        }else if(apiResponse.getSuccessCode().equals("20004")){
-                            packedEmptyView.setText(apiResponse.getMessage());
+                            packedEmptyView.setText("No data available");
                             packedRecyclerView.setVisibility(View.GONE);
-                            packedEmptyView.setVisibility(View.VISIBLE);
                             packedSwipeRefreshLayout.setVisibility(View.GONE);
+                        } else {
+                            packedEmptyView.setVisibility(View.GONE);
+                            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                            packedRecyclerView.setVisibility(View.VISIBLE);
+                        }
+                        if (packedSwipeRefreshLayout != null &&
+                                packedSwipeRefreshLayout.isRefreshing()) {
+                            packedSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (traversalValue.equals("2")) {
+                            packedItemAdapter.notifyDataSetChanged();
+                            if (dataChanged != null && dataChanged.equals("yes")) {
+                            }
+                        } else if (traversalValue.equals("1")) {
+                            if (dataChanged != null && dataChanged.equals("yes")) {
+                                packedItemAdapter.notifyDataSetChanged();
+                                packedRecyclerView.smoothScrollToPosition(0);
+                            }
                         }
                     }
+
                     if (packedSwipeRefreshLayout != null && packedSwipeRefreshLayout.isRefreshing()) {
                         packedSwipeRefreshLayout.setRefreshing(false);
                     }

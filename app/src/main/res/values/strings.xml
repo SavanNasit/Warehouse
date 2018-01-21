@@ -131,6 +131,11 @@
     <string name="vehicle_number">Vehicle Number</string>
     <string name="fetch_receive_consignment_prefilled_data">warehouse/fetch_receive_consignment_formdata</string>
     <string name="vendor_search_task">vendor/search_vendor</string>
+    <string name="quotation_search_item">quotation/search_item</string>
+    <string name="task_products_details">warehouse/fetch_selected_consignment_item_info</string>
+    <string name="task_receive_consignment">warehouse/receive_consignment</string>
+    <string name="back_selection">Back to selection</string>
+    <string name="add_item">Add item</string>
 
     <!-- Purchase Order -->
     <string name="vendor_details_title">Vendor Details</string>

@@ -363,5 +363,35 @@ public interface ApiInterface {
                     String name
     );
 
+    @GET("?urlq=service")
+    Call<ApiResponse> searchItem(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("search")
+                    String name
+    );
 
+    @GET("?urlq=service")
+    Call<ApiResponse> getSearchedProductsDetails(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("id")
+                    String id
+    );
 }

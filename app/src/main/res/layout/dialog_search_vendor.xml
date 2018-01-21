@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <AutoCompleteTextView
-        android:id="@+id/vendor_search_autoCompleteTextView"
+        android:id="@+id/search_autoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_8sdp"

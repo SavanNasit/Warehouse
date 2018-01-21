@@ -3,75 +3,69 @@
     android:id="@+id/receive_consignment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     android:weightSum="1">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/white"
+        android:orientation="vertical"
         android:weightSum="1">
-    <!--<android.support.design.widget.TabLayout
-        android:id="@+id/tabs_receive_consignment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabBackground="@color/home_page_gray"
-        app:tabIndicatorColor="@color/primary"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/primary"
-        app:tabTextColor="@color/home_page_text_gray" />
+        <!--<android.support.design.widget.TabLayout
+            android:id="@+id/tabs_receive_consignment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@color/home_page_gray"
+            app:tabIndicatorColor="@color/primary"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/primary"
+            app:tabTextColor="@color/home_page_text_gray" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager_receive_consignment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.25">
-
-        <TextView
-            android:id="@+id/fragment_receive_consignment_receive_directly"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager_receive_consignment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_12sdp"
-            android:background="@color/add_light_red"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:gravity="center"
-            android:text="Receive Directly"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.25">
-
-        <TextView
-            android:id="@+id/fragment_receive_consignment_receive_po"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/_12sdp"
-            android:background="@color/accent"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:gravity="center"
-            android:text="Receive PO"/>
+            android:layout_height="0dp"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:id="@+id/fragment_receive_consignment_receive_directly"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/add_light_red"
+                android:gravity="center"
+                android:text="Receive Directly"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:id="@+id/fragment_receive_consignment_receive_po"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/accent"
+                android:gravity="center"
+                android:text="Receive PO"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
-
-
-</LinearLayout>
 
 </FrameLayout>
