@@ -359,9 +359,7 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                     }
                 }, 200);
             } else {
-                deliveredRecyclerView.setVisibility(View.GONE);
                 deliveredEmptyView.setVisibility(View.VISIBLE);
-                deliveredSwipeRefreshLayout.setVisibility(View.GONE);
                 deliveredEmptyView.setText(getString(R.string.no_internet_try_later));
             }
         }
@@ -416,12 +414,8 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                         loading = false;
                         if (deliveredList != null && deliveredList.size() == 0) {
                             deliveredEmptyView.setVisibility(View.VISIBLE);
-                            deliveredRecyclerView.setVisibility(View.GONE);
-                            deliveredSwipeRefreshLayout.setVisibility(View.GONE);
                         } else {
                             deliveredEmptyView.setVisibility(View.GONE);
-                            deliveredRecyclerView.setVisibility(View.VISIBLE);
-                            deliveredSwipeRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (deliveredSwipeRefreshLayout != null &&
                                 deliveredSwipeRefreshLayout.isRefreshing()) {
@@ -441,12 +435,8 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                         loading = false;
                         if (deliveredList != null && deliveredList.size() == 0) {
                             deliveredEmptyView.setVisibility(View.VISIBLE);
-                            deliveredRecyclerView.setVisibility(View.GONE);
-                            deliveredSwipeRefreshLayout.setVisibility(View.GONE);
                         } else {
                             deliveredEmptyView.setVisibility(View.GONE);
-                            deliveredRecyclerView.setVisibility(View.VISIBLE);
-                            deliveredSwipeRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (deliveredSwipeRefreshLayout != null && deliveredSwipeRefreshLayout.isRefreshing()) {
                             deliveredSwipeRefreshLayout.setRefreshing(false);
@@ -489,15 +479,11 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
             } else {
                 getDeliveredList(getString(R.string.last_updated_date), "1");
             }
-            deliveredRecyclerView.setVisibility(View.VISIBLE);
-            deliveredSwipeRefreshLayout.setVisibility(View.VISIBLE);
             deliveredEmptyView.setVisibility(View.GONE);
             deliveredSwipeRefreshLayout.setRefreshing(true);
 
         } else {
-            deliveredRecyclerView.setVisibility(View.GONE);
             deliveredEmptyView.setVisibility(View.VISIBLE);
-            deliveredSwipeRefreshLayout.setVisibility(View.GONE);
             deliveredEmptyView.setText(getString(R.string.no_internet_try_later));
             deliveredSwipeRefreshLayout.setRefreshing(false);
         }

@@ -361,9 +361,7 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
                     }
                 }, 200);
             } else {
-                deliveryFailedRecyclerView.setVisibility(View.GONE);
                 deliveryFailedEmptyView.setVisibility(View.VISIBLE);
-                deliveryFailedRefreshLayout.setVisibility(View.GONE);
                 deliveryFailedEmptyView.setText(getString(R.string.no_internet_try_later));
             }
         }
@@ -418,12 +416,8 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
                         loading = false;
                         if (deliveryFailedList != null && deliveryFailedList.size() == 0) {
                             deliveryFailedEmptyView.setVisibility(View.VISIBLE);
-                            deliveryFailedRecyclerView.setVisibility(View.GONE);
-                            deliveryFailedRefreshLayout.setVisibility(View.GONE);
                         } else {
                             deliveryFailedEmptyView.setVisibility(View.GONE);
-                            deliveryFailedRefreshLayout.setVisibility(View.VISIBLE);
-                            deliveryFailedRecyclerView.setVisibility(View.VISIBLE);
                         }
                         if (deliveryFailedRefreshLayout != null &&
                                 deliveryFailedRefreshLayout.isRefreshing()) {
@@ -443,12 +437,8 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
                         loading = false;
                         if (deliveryFailedList != null && deliveryFailedList.size() == 0) {
                             deliveryFailedEmptyView.setVisibility(View.VISIBLE);
-                            deliveryFailedRecyclerView.setVisibility(View.GONE);
-                            deliveryFailedRefreshLayout.setVisibility(View.GONE);
                         } else {
                             deliveryFailedEmptyView.setVisibility(View.GONE);
-                            deliveryFailedRecyclerView.setVisibility(View.VISIBLE);
-                            deliveryFailedRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (deliveryFailedRefreshLayout != null && deliveryFailedRefreshLayout.isRefreshing()) {
                             deliveryFailedRefreshLayout.setRefreshing(false);
@@ -491,15 +481,11 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
             } else {
                 getAttemptFailedList(getString(R.string.last_updated_date), "1");
             }
-            deliveryFailedRecyclerView.setVisibility(View.VISIBLE);
             deliveryFailedEmptyView.setVisibility(View.GONE);
             deliveryFailedRefreshLayout.setRefreshing(true);
-            deliveryFailedRefreshLayout.setVisibility(View.VISIBLE);
 
         } else {
-            deliveryFailedRecyclerView.setVisibility(View.GONE);
             deliveryFailedEmptyView.setVisibility(View.VISIBLE);
-            deliveryFailedRefreshLayout.setVisibility(View.GONE);
             deliveryFailedEmptyView.setText(getString(R.string.no_internet_try_later));
             deliveryFailedRefreshLayout.setRefreshing(false);
         }

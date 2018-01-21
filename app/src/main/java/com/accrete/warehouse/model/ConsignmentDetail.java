@@ -20,6 +20,17 @@ public class ConsignmentDetail {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("iscid")
+    @Expose
+    private String iscid;
+
+    public String getIscid() {
+        return iscid;
+    }
+
+    public void setIscid(String iscid) {
+        this.iscid = iscid;
+    }
 
     public String getConsignmentID() {
         return consignmentID;

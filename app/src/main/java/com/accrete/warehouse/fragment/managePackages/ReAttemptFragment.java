@@ -419,12 +419,8 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
                         loading = false;
                         if (reAttemptList != null && reAttemptList.size() == 0) {
                             reAttemptEmptyView.setVisibility(View.VISIBLE);
-                            reAattemptRecyclerView.setVisibility(View.GONE);
-                            reAttemptRefreshLayout.setVisibility(View.GONE);
                         } else {
                             reAttemptEmptyView.setVisibility(View.GONE);
-                            reAttemptRefreshLayout.setVisibility(View.VISIBLE);
-                            reAattemptRecyclerView.setVisibility(View.VISIBLE);
                         }
                         if (reAttemptRefreshLayout != null &&
                                 reAttemptRefreshLayout.isRefreshing()) {
@@ -444,12 +440,8 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
                         loading = false;
                         if (reAttemptList != null && reAttemptList.size() == 0) {
                             reAttemptEmptyView.setVisibility(View.VISIBLE);
-                            reAattemptRecyclerView.setVisibility(View.GONE);
-                            reAttemptRefreshLayout.setVisibility(View.GONE);
                         } else {
                             reAttemptEmptyView.setVisibility(View.GONE);
-                            reAattemptRecyclerView.setVisibility(View.VISIBLE);
-                            reAttemptRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (reAttemptRefreshLayout != null && reAttemptRefreshLayout.isRefreshing()) {
                             reAttemptRefreshLayout.setRefreshing(false);
@@ -492,15 +484,11 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
             } else {
                 getReAttemptList(getString(R.string.last_updated_date), "1");
             }
-            reAattemptRecyclerView.setVisibility(View.VISIBLE);
             reAttemptEmptyView.setVisibility(View.GONE);
             reAttemptRefreshLayout.setRefreshing(true);
-            reAttemptRefreshLayout.setVisibility(View.VISIBLE);
 
         } else {
-            reAattemptRecyclerView.setVisibility(View.GONE);
             reAttemptEmptyView.setVisibility(View.VISIBLE);
-            reAttemptRefreshLayout.setVisibility(View.GONE);
             reAttemptEmptyView.setText(getString(R.string.no_internet_try_later));
             reAttemptRefreshLayout.setRefreshing(false);
         }

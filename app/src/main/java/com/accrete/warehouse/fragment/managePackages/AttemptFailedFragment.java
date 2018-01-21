@@ -362,9 +362,7 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                     }
                 }, 200);
             } else {
-                attemptFailedRecyclerView.setVisibility(View.GONE);
                 attemptFailedEmptyView.setVisibility(View.VISIBLE);
-                attemptFailedRefreshLayout.setVisibility(View.GONE);
                 attemptFailedEmptyView.setText(getString(R.string.no_internet_try_later));
             }
         }
@@ -419,12 +417,8 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                         loading = false;
                         if (attemptFailedList != null && attemptFailedList.size() == 0) {
                             attemptFailedEmptyView.setVisibility(View.VISIBLE);
-                            attemptFailedRecyclerView.setVisibility(View.GONE);
-                            attemptFailedRefreshLayout.setVisibility(View.GONE);
                         } else {
                             attemptFailedEmptyView.setVisibility(View.GONE);
-                            attemptFailedRefreshLayout.setVisibility(View.VISIBLE);
-                            attemptFailedRecyclerView.setVisibility(View.VISIBLE);
                         }
                         if (attemptFailedRefreshLayout != null &&
                                 attemptFailedRefreshLayout.isRefreshing()) {
@@ -444,12 +438,8 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                         loading = false;
                         if (attemptFailedList != null && attemptFailedList.size() == 0) {
                             attemptFailedEmptyView.setVisibility(View.VISIBLE);
-                            attemptFailedRecyclerView.setVisibility(View.GONE);
-                            attemptFailedRefreshLayout.setVisibility(View.GONE);
                         } else {
                             attemptFailedEmptyView.setVisibility(View.GONE);
-                            attemptFailedRecyclerView.setVisibility(View.VISIBLE);
-                            attemptFailedRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (attemptFailedRefreshLayout != null && attemptFailedRefreshLayout.isRefreshing()) {
                             attemptFailedRefreshLayout.setRefreshing(false);
@@ -492,15 +482,11 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
             } else {
                 getAttemptFailedList(getString(R.string.last_updated_date), "1");
             }
-            attemptFailedRecyclerView.setVisibility(View.VISIBLE);
             attemptFailedEmptyView.setVisibility(View.GONE);
             attemptFailedRefreshLayout.setRefreshing(true);
-            attemptFailedRefreshLayout.setVisibility(View.VISIBLE);
 
         } else {
-            attemptFailedRecyclerView.setVisibility(View.GONE);
             attemptFailedEmptyView.setVisibility(View.VISIBLE);
-            attemptFailedRefreshLayout.setVisibility(View.GONE);
             attemptFailedEmptyView.setText(getString(R.string.no_internet_try_later));
             attemptFailedRefreshLayout.setRefreshing(false);
         }
