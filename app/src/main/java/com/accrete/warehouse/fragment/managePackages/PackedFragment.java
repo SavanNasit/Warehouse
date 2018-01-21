@@ -361,9 +361,9 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 }
             }, 00);
         } else {
-            packedRecyclerView.setVisibility(View.GONE);
+            packedRecyclerView.setVisibility(View.VISIBLE);
             packedEmptyView.setVisibility(View.VISIBLE);
-            packedSwipeRefreshLayout.setVisibility(View.GONE);
+            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
             packedEmptyView.setText(getString(R.string.no_internet_try_later));
         }
     }
@@ -429,8 +429,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         if (packedList != null && packedList.size() == 0) {
                             packedEmptyView.setVisibility(View.VISIBLE);
                             packedEmptyView.setText("No data available");
-                            packedRecyclerView.setVisibility(View.GONE);
-                            packedSwipeRefreshLayout.setVisibility(View.GONE);
+                            packedRecyclerView.setVisibility(View.VISIBLE);
+                            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
                         } else {
                             packedEmptyView.setVisibility(View.GONE);
                             packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -454,8 +454,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         if (packedList != null && packedList.size() == 0) {
                             packedEmptyView.setVisibility(View.VISIBLE);
                             packedEmptyView.setText("No data available");
-                            packedRecyclerView.setVisibility(View.GONE);
-                            packedSwipeRefreshLayout.setVisibility(View.GONE);
+                            packedRecyclerView.setVisibility(View.VISIBLE);
+                            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
                         } else {
                             packedEmptyView.setVisibility(View.GONE);
                             packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -509,9 +509,9 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             //  customerOrderFabAdd.setVisibility(View.VISIBLE);
 
         } else {
-            packedRecyclerView.setVisibility(View.GONE);
+            packedRecyclerView.setVisibility(View.VISIBLE);
             packedEmptyView.setVisibility(View.VISIBLE);
-            packedSwipeRefreshLayout.setVisibility(View.GONE);
+            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
             packedEmptyView.setText(getString(R.string.no_internet_try_later));
             packedSwipeRefreshLayout.setRefreshing(false);
         }

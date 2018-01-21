@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PackageItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,10 +46,9 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
         holder.outForDeliveryPackageId.setText(packageItem.getPackageId());
         holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packageItem.getInvoiceNo());
-        holder.outForDeliveryInvoiceDate.setText(packageItem.getInvoiceDate());
         holder.outForDeliveryCustomerName.setText(packageItem.getCustomerName());
-        holder.outForDeliveryGatepassId.setText(packageItem.getPacdelgatid());
-        holder.outForDeliveryOrderId.setText(packageItem.getOrderId());
+        holder.outForDeliveryGatepassId.setText("Gatepass Id : " + packageItem.getPacdelgatid());
+        holder.outForDeliveryOrderId.setText("Order Id : " + packageItem.getOrderId());
         if (packageItem.getToDate() != null && !packageItem.getToDate().isEmpty()) {
             holder.outForDeliveryExpDod.setText("Exp Dod : " + packageItem.getToDate());
         } else {
@@ -59,6 +62,15 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
                 listener.onMessageRowClicked(position);
             }
         });
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM, yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startDate = targetFormat.parse(packageItem.getInvoiceDate());
+            holder.outForDeliveryInvoiceDate.setText(formatter.format(startDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         //applyClickEvents(holder, position);
     }
 

@@ -308,9 +308,7 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                     }
                 }, 200);
             } else {
-                pendingItemsRecyclerView.setVisibility(View.GONE);
                 outForDeliveryEmptyView.setVisibility(View.VISIBLE);
-                outForDeliverySwipeRefreshLayout.setVisibility(View.GONE);
                 outForDeliveryEmptyView.setText(getString(R.string.no_internet_try_later));
             }
         }
@@ -365,12 +363,8 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                         loading = false;
                         if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
                             outForDeliveryEmptyView.setVisibility(View.VISIBLE);
-                            pendingItemsRecyclerView.setVisibility(View.GONE);
-                            outForDeliverySwipeRefreshLayout.setVisibility(View.GONE);
                         } else {
                             outForDeliveryEmptyView.setVisibility(View.GONE);
-                            pendingItemsRecyclerView.setVisibility(View.VISIBLE);
-                            outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (outForDeliverySwipeRefreshLayout != null &&
                                 outForDeliverySwipeRefreshLayout.isRefreshing()) {
@@ -390,12 +384,8 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                         loading = false;
                         if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
                             outForDeliveryEmptyView.setVisibility(View.VISIBLE);
-                            pendingItemsRecyclerView.setVisibility(View.GONE);
-                            outForDeliverySwipeRefreshLayout.setVisibility(View.GONE);
                         } else {
                             outForDeliveryEmptyView.setVisibility(View.GONE);
-                            pendingItemsRecyclerView.setVisibility(View.VISIBLE);
-                            outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (outForDeliverySwipeRefreshLayout != null && outForDeliverySwipeRefreshLayout.isRefreshing()) {
                             outForDeliverySwipeRefreshLayout.setRefreshing(false);
@@ -438,15 +428,11 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
             } else {
                 getoutForDeliveryList(getString(R.string.last_updated_date), "1");
             }
-            pendingItemsRecyclerView.setVisibility(View.VISIBLE);
             outForDeliveryEmptyView.setVisibility(View.GONE);
-            outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
             outForDeliverySwipeRefreshLayout.setRefreshing(true);
 
         } else {
-            pendingItemsRecyclerView.setVisibility(View.GONE);
             outForDeliveryEmptyView.setVisibility(View.VISIBLE);
-            outForDeliverySwipeRefreshLayout.setVisibility(View.GONE);
             outForDeliveryEmptyView.setText(getString(R.string.no_internet_try_later));
             outForDeliverySwipeRefreshLayout.setRefreshing(false);
         }

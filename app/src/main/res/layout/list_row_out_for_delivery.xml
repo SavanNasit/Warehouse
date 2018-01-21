@@ -5,110 +5,114 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="@dimen/_10sdp">
+    android:paddingBottom="@dimen/_3sdp"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingRight="@dimen/_10sdp"
+    android:paddingTop="@dimen/_5sdp">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/out_for_delivery_package_id"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="left|center"
-            android:text="Package ID"
-            android:textColor="@color/blueTurquoise"
-            android:textSize="14sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/out_for_delivery_invoice_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="left|center"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/out_for_delivery_customer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Customer Name"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/out_for_delivery_customer_name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="left|center"
-        android:text="Customer Name"
-        android:textColor="#8D8D8D"
-        android:textStyle="bold"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/out_for_delivery_package_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/out_for_delivery_customer_name"
+                android:gravity="left"
+                android:text="Package ID"
+                android:textColor="@color/blueTurquoise"
+                android:textSize="@dimen/_11sdp" />
 
-    <TextView
-        android:id="@+id/out_for_delivery_invoice_no"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="left|center"
-        android:text="Invoice No"
-        android:textColor="#8D8D8D"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/out_for_delivery_invoice_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="Invoice No"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_11sdp" />
 
-    <TextView
-        android:id="@+id/out_for_delivery_exp_dod"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="left|center"
-        android:text="Exp dod"
-        android:textColor="#8D8D8D"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/out_for_delivery_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_11sdp" />
 
-    <TextView
-        android:id="@+id/out_for_delivery_user"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="left|center"
-        android:text="Delivery User"
-        android:textColor="#8D8D8D"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/out_for_delivery_exp_dod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="Exp dod"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/out_for_delivery_gatepass_id"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="left|center"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:background="@color/primary"/>
+            <TextView
+                android:id="@+id/out_for_delivery_invoice_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right|center"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_11sdp" />
 
-        <TextView
-            android:id="@+id/out_for_delivery_order_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:gravity="center"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/out_for_delivery_gatepass_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right|center"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_11sdp" />
 
+            <TextView
+                android:id="@+id/out_for_delivery_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right|center"
+                android:text="Delivery User"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_11sdp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/zipCode_textView"
+        android:layout_marginLeft="@dimen/_4sdp"
+        android:layout_marginRight="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/gray_order"></View>
 
 </LinearLayout>

@@ -362,9 +362,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                     }
                 }, 200);
             } else {
-                packedAgainstRecyclerView.setVisibility(View.GONE);
                 packedAgainstEmptyView.setVisibility(View.VISIBLE);
-                packedAgainstRefreshLayout.setVisibility(View.GONE);
                 packedAgainstEmptyView.setText(getString(R.string.no_internet_try_later));
             }
         }
@@ -419,12 +417,8 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                         loading = false;
                         if (packedAgainstList != null && packedAgainstList.size() == 0) {
                             packedAgainstEmptyView.setVisibility(View.VISIBLE);
-                            packedAgainstRecyclerView.setVisibility(View.GONE);
-                            packedAgainstRefreshLayout.setVisibility(View.GONE);
                         } else {
                             packedAgainstEmptyView.setVisibility(View.GONE);
-                            packedAgainstRefreshLayout.setVisibility(View.VISIBLE);
-                            packedAgainstRecyclerView.setVisibility(View.VISIBLE);
                         }
                         if (packedAgainstRefreshLayout != null &&
                                 packedAgainstRefreshLayout.isRefreshing()) {
@@ -444,12 +438,8 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                         loading = false;
                         if (packedAgainstList != null && packedAgainstList.size() == 0) {
                             packedAgainstEmptyView.setVisibility(View.VISIBLE);
-                            packedAgainstRecyclerView.setVisibility(View.GONE);
-                            packedAgainstRefreshLayout.setVisibility(View.GONE);
                         } else {
                             packedAgainstEmptyView.setVisibility(View.GONE);
-                            packedAgainstRecyclerView.setVisibility(View.VISIBLE);
-                            packedAgainstRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (packedAgainstRefreshLayout != null && packedAgainstRefreshLayout.isRefreshing()) {
                             packedAgainstRefreshLayout.setRefreshing(false);
@@ -492,15 +482,10 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             } else {
                 getPackedAgainstStockList(getString(R.string.last_updated_date), "1");
             }
-            packedAgainstRecyclerView.setVisibility(View.VISIBLE);
             packedAgainstEmptyView.setVisibility(View.GONE);
             packedAgainstRefreshLayout.setRefreshing(true);
-            packedAgainstRefreshLayout.setVisibility(View.VISIBLE);
-
         } else {
-            packedAgainstRecyclerView.setVisibility(View.GONE);
             packedAgainstEmptyView.setVisibility(View.VISIBLE);
-            packedAgainstRefreshLayout.setVisibility(View.GONE);
             packedAgainstEmptyView.setText(getString(R.string.no_internet_try_later));
             packedAgainstRefreshLayout.setRefreshing(false);
         }
