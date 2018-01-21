@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.fragment.manageConsignment.DetailsFragment;
 import com.accrete.warehouse.model.ShippingBy;
 import com.accrete.warehouse.model.ShippingType;
 import com.accrete.warehouse.utils.NonSwipeableViewPager;
@@ -77,7 +78,7 @@ public class CreatePassMainTabFragment extends Fragment {
                 getActivity().supportInvalidateOptionsMenu();
                 final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(createGatepassViewpager.getCurrentItem());
                 if (position == 0) {
-                    if (mFragment instanceof DetailsFragment) {
+                    if (mFragment instanceof PackageSelectionFragment) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {

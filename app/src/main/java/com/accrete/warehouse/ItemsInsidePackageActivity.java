@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.accrete.warehouse.adapter.ItemsInsidePackageAdapter;
-import com.accrete.warehouse.adapter.PackageStatusAdapter;
 import com.accrete.warehouse.model.ItemsInsidePackage;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.List;
 
 public class ItemsInsidePackageActivity extends AppCompatActivity implements ItemsInsidePackageAdapter.ItemsInsidePackageAdapterListener {
 
-    ItemsInsidePackage itemsInsidePackage = new ItemsInsidePackage();
     private ProgressBar itemsInsidePackageProgressBar;
     private RecyclerView itemsInsidePackageRecyclerView;
     private ItemsInsidePackageAdapter itemsInsidePackageAdapter;
@@ -55,6 +53,7 @@ public class ItemsInsidePackageActivity extends AppCompatActivity implements Ite
 
             }
         });
+        itemsList = getIntent().getParcelableArrayListExtra("itemsList");
 
         itemsInsidePackageAdapter = new ItemsInsidePackageAdapter(this, itemsList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -64,6 +63,8 @@ public class ItemsInsidePackageActivity extends AppCompatActivity implements Ite
         itemsInsidePackageRecyclerView.setNestedScrollingEnabled(false);
         itemsInsidePackageRecyclerView.setAdapter(itemsInsidePackageAdapter);
 
+
+/*
         itemsInsidePackage.setQuantity("1 Piece");
         itemsInsidePackage.setItemName("100 Pipers (100 Pipers)");
         itemsInsidePackage.setDescription("10 pipes got damaged");
@@ -83,7 +84,7 @@ public class ItemsInsidePackageActivity extends AppCompatActivity implements Ite
         itemsList.add(itemsInsidePackage);
         itemsList.add(itemsInsidePackage);
         itemsList.add(itemsInsidePackage);
-        itemsList.add(itemsInsidePackage);
+        itemsList.add(itemsInsidePackage);*/
 
     }
 

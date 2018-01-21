@@ -89,6 +89,40 @@ public class Data {
     @SerializedName("consignmentDetails")
     @Expose
     private List<ConsignmentDetail> consignmentDetails = null;
+    @SerializedName("gatePassData")
+    @Expose
+    private List<ViewGatepassPackages> gatePassData = null;
+    @SerializedName("customer_info")
+    @Expose
+    private CustomerInfo customerInfo;
+    @SerializedName("packageData")
+    @Expose
+    private PackageData packageData;
+
+    public PackageData getPackageData() {
+        return packageData;
+    }
+
+    public void setPackageData(PackageData packageData) {
+        this.packageData = packageData;
+    }
+
+    public CustomerInfo getCustomerInfo() {
+        return customerInfo;
+    }
+
+    public void setCustomerInfo(CustomerInfo customerInfo) {
+        this.customerInfo = customerInfo;
+    }
+
+    public List<ViewGatepassPackages> getGatePassData() {
+        return gatePassData;
+    }
+
+    public void setGatePassData(List<ViewGatepassPackages> gatePassData) {
+        this.gatePassData = gatePassData;
+    }
+
 
     public VendorData getVendorData() {
         return vendorData;
