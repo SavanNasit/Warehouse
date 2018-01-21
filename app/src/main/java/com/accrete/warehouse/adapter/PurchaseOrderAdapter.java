@@ -1,6 +1,7 @@
 package com.accrete.warehouse.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.accrete.warehouse.POReceiveConsignmentActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PurchaseOrder;
 
@@ -143,7 +145,9 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         holder.textViewReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(activity, POReceiveConsignmentActivity.class);
+                intent.putExtra(activity.getString(R.string.purOrId), purchaseOrder.getPurorid());
+                activity.startActivity(intent);
             }
         });
         //Click Item

@@ -347,4 +347,21 @@ public interface ApiInterface {
                                      @Query("pacdelgatid")
                                              String gatepassId);
 
+    @GET("?urlq=service")
+    Call<ApiResponse> searchVendor(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("name")
+                    String name
+    );
+
+
 }

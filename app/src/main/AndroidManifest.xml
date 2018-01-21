@@ -83,11 +83,15 @@
         <activity android:name=".ViewConsignmentActivity" />
         <activity
             android:name=".ViewOrderItemsActivity"
-            android:theme="@style/MyMaterialTheme"
-            android:label="View Order Items"/>
+            android:label="View Order Items"
+            android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".CreateGatepassActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".POReceiveConsignmentActivity"
+            android:label="@string/title_activity_poreceive_consignment"
+            android:theme="@style/MyMaterialTheme"></activity>
     </application>
 
 </manifest>

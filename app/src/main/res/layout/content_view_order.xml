@@ -26,7 +26,8 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/vendor_details_title"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/vendorDetailsSubTitle_textView"
@@ -35,7 +36,8 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="@string/vendor_details_subtitle"
-                android:textColor="@color/home_page_text_gray" />
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_10sdp" />
 
             <View
                 android:id="@+id/vendorDetails_view"
@@ -64,7 +66,7 @@
                     android:gravity="left|center"
                     android:text="Name :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/name_textView"
@@ -74,7 +76,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -97,7 +99,7 @@
                     android:gravity="left|center"
                     android:text="Contact No:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/contactNo_textView"
@@ -107,7 +109,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -115,7 +117,7 @@
                 android:id="@+id/address_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_11sdp"
                 android:layout_marginRight="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="horizontal"
@@ -130,7 +132,7 @@
                     android:gravity="left|center"
                     android:text="Address:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/address_textView"
@@ -140,7 +142,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -163,7 +165,7 @@
                     android:gravity="left|center"
                     android:text="Email:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/email_textView"
@@ -173,7 +175,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -184,7 +186,8 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/order_details_title"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/orderDetailsSubTitle_textView"
@@ -193,7 +196,8 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="@string/order_details_subtitle"
-                android:textColor="@color/home_page_text_gray" />
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_10sdp" />
 
             <View
                 android:id="@+id/orderDetails_view"
@@ -222,7 +226,7 @@
                     android:gravity="left|center"
                     android:text="Order Id:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/orderId_textView"
@@ -232,7 +236,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -255,7 +259,7 @@
                     android:gravity="left|center"
                     android:text="Status:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -270,7 +274,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_11sdp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -293,7 +297,7 @@
                     android:gravity="left|center"
                     android:text="Sub Total:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/subTotal_textView"
@@ -303,7 +307,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -326,7 +330,7 @@
                     android:gravity="left|center"
                     android:text="Total:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/total_textView"
@@ -336,7 +340,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -359,7 +363,7 @@
                     android:gravity="left|center"
                     android:text="Round Off:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/roundOff_textView"
@@ -369,7 +373,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -392,7 +396,7 @@
                     android:gravity="left|center"
                     android:text="Payable:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <TextView
                     android:id="@+id/payable_textView"
@@ -402,7 +406,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
             </LinearLayout>
 
@@ -413,7 +417,8 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/received_details_title"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/receivedDetailsSubTitle_textView"
@@ -422,7 +427,8 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="@string/received_details_subtitle"
-                android:textColor="@color/home_page_text_gray" />
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_10sdp" />
 
             <View
                 android:id="@+id/receivedDetails_view"
@@ -460,7 +466,7 @@
                     android:paddingBottom="20dp"
                     android:paddingTop="20dp"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="normal"
                     android:visibility="gone" />
             </RelativeLayout>
@@ -472,7 +478,8 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/consignment_details_title"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/consignmentDetailsSubTitle_textView"
@@ -481,7 +488,8 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="@string/consignment_details_subtitle"
-                android:textColor="@color/home_page_text_gray" />
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_10sdp" />
 
             <View
                 android:id="@+id/consignmentDetails_view"
@@ -519,7 +527,7 @@
                     android:paddingBottom="20dp"
                     android:paddingTop="20dp"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_12sdp"
                     android:textStyle="normal"
                     android:visibility="gone" />
             </RelativeLayout>
