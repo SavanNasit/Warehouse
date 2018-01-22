@@ -225,6 +225,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
+                intentPackageHistory.putExtra("packageid", packedAgainstList.get(position).getPacid());
                 startActivity(intentPackageHistory);
             }
         });
@@ -249,6 +250,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
                 Intent intentCustomerDetails = new Intent(getActivity(), CustomerDetailsActivity.class);
+           //     intentCustomerDetails.putExtra("customerInfo", packedAgainstList.get(position))
                 startActivity(intentCustomerDetails);
             }
         });

@@ -68,7 +68,7 @@ public class RunningOrder implements Parcelable {
         assignedUserName = in.readString();
         customerInfo = in.readParcelable(CustomerInfo.class.getClassLoader());
         packages = new ArrayList<Packages>();
-        in.readList(packages,null);
+        in.readList(packages, null);
     }
 
     public RunningOrder() {
