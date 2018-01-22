@@ -476,6 +476,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         //Transporter
         if (transportationData.getVendorName() != null && !transportationData.getVendorName().isEmpty()) {
             transporterValueEditText.setText(transportationData.getVendorName());
+            transporterId = transportationData.getVendorId();
         }
 
         //Weight
@@ -905,7 +906,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             textViewAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    consignmentItem.setPrice(priceEdittext.getText().toString().trim());
+                    consignmentItem.setUnitPrice(priceEdittext.getText().toString().trim());
                     consignmentItem.setComment(commentEdittext.getText().toString().trim());
                     consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
                     consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
@@ -1039,7 +1040,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 jsonObject.put("purchase_date", strPurchaseDate);
                 jsonObject.put("chkid", strChkId);
                 jsonObject.put("vendor-transportation-check_new", strTransporatationCheckBoxValue);
-                jsonObject.put("venid", transporterId);
+                jsonObject.put("venid", transporterId + "");
                 jsonObject.put("weight", strWeight + "");
                 jsonObject.put("expected_date", strExpectedDate + "");
                 jsonObject.put("invoice-date", strInvoiceDate + "");
@@ -1072,9 +1073,9 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                         productsItemJsonObject.put("measurement", "0");
                     }
 
-                    if (consignmentItemList.get(i).getPrice() != null &&
-                            !consignmentItemList.get(i).getPrice().isEmpty()) {
-                        productsItemJsonObject.put("item-mrp", consignmentItemList.get(i).getPrice());
+                    if (consignmentItemList.get(i).getUnitPrice() != null &&
+                            !consignmentItemList.get(i).getUnitPrice().isEmpty()) {
+                        productsItemJsonObject.put("item-mrp", consignmentItemList.get(i).getUnitPrice());
                     } else {
                         productsItemJsonObject.put("item-mrp", "0");
                     }
