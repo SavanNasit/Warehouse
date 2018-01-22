@@ -1,5 +1,7 @@
 package com.accrete.warehouse.model;
 
+import android.provider.ContactsContract;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -151,6 +153,18 @@ public class Data {
     @SerializedName("consignment_item")
     @Expose
     private ConsignmentItem consignmentItem;
+
+    public ProfileInfo getProfile() {
+        return profile;
+    }
+
+    public void setProfile(ProfileInfo profile) {
+        this.profile = profile;
+    }
+
+    @SerializedName("profile")
+    @Expose
+    private ProfileInfo profile;
 
     public List<User> getUsers() {
         return users;

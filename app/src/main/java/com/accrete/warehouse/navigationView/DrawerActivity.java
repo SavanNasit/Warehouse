@@ -42,6 +42,7 @@ import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
 import com.accrete.warehouse.model.WarehouseList;
+import com.accrete.warehouse.password.PasswordActivity;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -107,6 +108,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         super.onCreate(savedInstanceState);
         AppPreferences.setIsUserFirstTime(DrawerActivity.this, AppUtils.USER_FIRST_TIME, true);
         setContentView(R.layout.activity_drawer);
+
+
         // Handle Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,7 +119,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         domainName = AppPreferences.getDomain(DrawerActivity.this, AppUtils.DOMAIN);
         if (domainName.length() > 1)
             domainName = domainName.substring(0, domainName.length() - 1);
-        profile = new ProfileDrawerItem().withIcon(R.drawable.ic_chevron_right).withName("Poonam").withEmail("kukreti.winnie57@gmail.com").withIdentifier(101);
+        profile = new ProfileDrawerItem().withIcon(R.drawable.ic_profile_user).withName(AppPreferences.getUserName(DrawerActivity.this, AppUtils.USER_NAME)
+        ).withEmail(AppPreferences.getEmail(DrawerActivity.this, AppUtils.USER_EMAIL)).withIdentifier(101);
 
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()

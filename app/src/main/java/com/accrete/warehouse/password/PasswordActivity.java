@@ -242,7 +242,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     //AppPreferences.setIsLogin(PasswordActivity.this, AppUtils.ISLOGIN, true);
                     AppPreferences.setUserId(PasswordActivity.this, AppUtils.USER_ID, apiResponse.getData().getUserId());
                     AppPreferences.setAccessToken(PasswordActivity.this, AppUtils.ACCESS_TOKEN, apiResponse.getData().getAccessToken());
-                    // AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, apiResponse.getData().get);
+                    AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, apiResponse.getData().getProfile().getEmail());
                     AppPreferences.setUserName(PasswordActivity.this, AppUtils.USER_NAME, apiResponse.getData().getName());
                     AppPreferences.setPhoto(PasswordActivity.this, AppUtils.USER_PHOTO, imageUrl);
                     AppPreferences.setCompanyCode(PasswordActivity.this, AppUtils.COMPANY_CODE, apiResponse.getData().getCompanyCode());
