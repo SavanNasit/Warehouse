@@ -49,7 +49,8 @@ import static com.accrete.warehouse.utils.Constants.version;
  * Created by poonam on 11/30/17.
  */
 
-public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, PackedItemWithoutCheckboxAdapter.PackedItemAdapterListener {
+public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        PackedItemWithoutCheckboxAdapter.PackedItemAdapterListener {
 
     String status = "";
     private SwipeRefreshLayout packedSwipeRefreshLayout;
@@ -204,8 +205,10 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        packedEmptyView.setText(getString(R.string.no_data_available));
-                        getPackageDetailsList(getString(R.string.last_updated_date), "1");
+                        if (isAdded()) {
+                            packedEmptyView.setText(getString(R.string.no_data_available));
+                            getPackageDetailsList(getString(R.string.last_updated_date), "1");
+                        }
                     }
                 }, 200);
             } else {

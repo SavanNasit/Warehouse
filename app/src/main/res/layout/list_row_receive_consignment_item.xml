@@ -47,17 +47,21 @@
                 android:id="@+id/item_autoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:fontFamily="sans-serif"
                 android:gravity="left|center"
                 android:hint="Item"
                 android:inputType="textMultiLine"
+                android:longClickable="false"
                 android:maxLines="4"
                 android:minLines="1"
-                android:paddingBottom="@dimen/_8sdp"
-                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:paddingTop="@dimen/_4sdp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
@@ -66,7 +70,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
@@ -81,14 +84,18 @@
                     android:id="@+id/sku_code_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="SKU Code"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -103,14 +110,18 @@
                     android:id="@+id/order_quantity_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="Order Quantity"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
@@ -120,7 +131,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
@@ -135,14 +145,18 @@
                     android:id="@+id/receiving_quantity_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="Receiving Quantity"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -157,14 +171,18 @@
                     android:id="@+id/unit_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="Unit"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
@@ -174,7 +192,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
@@ -189,14 +206,18 @@
                     android:id="@+id/price_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="Price"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -211,14 +232,18 @@
                     android:id="@+id/comment_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="Comment"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
@@ -228,7 +253,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
@@ -243,14 +267,18 @@
                     android:id="@+id/expiryDate_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="Expiry Date"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -265,14 +293,18 @@
                     android:id="@+id/rejectedQuantity_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="sans-serif"
                     android:hint="Rejected Quantity"
                     android:imeOptions="actionNext"
                     android:inputType="number"
+                    android:longClickable="false"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
@@ -281,7 +313,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_4sdp"
+
             android:clipToPadding="false"
             android:gravity="left|center"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
@@ -290,14 +322,18 @@
                 android:id="@+id/rejectedReason_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:fontFamily="sans-serif"
                 android:hint="Reason for rejection"
                 android:imeOptions="actionNext"
                 android:inputType="number"
+                android:longClickable="false"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkGray"
                 android:textCursorDrawable="@drawable/green_cursor"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_10sdp" />
         </android.support.design.widget.TextInputLayout>
 
         <View

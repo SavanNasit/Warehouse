@@ -531,6 +531,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
                         if (f instanceof ManageGatePassFragment) {
                             ((ManageGatePassFragment) f).downloadPdfCall();
+                        }else if (f instanceof  ManagePackagesFragment){
+                            ((ManagePackagesFragment)f).checkFragmentAndDownloadPDF();
                         }
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

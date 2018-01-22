@@ -21,7 +21,6 @@ public class PackedItem {
     @Expose
     private String pacid;
     @SerializedName("invid")
-
     @Expose
     private String invid;
     @SerializedName("pacshsid")
@@ -98,11 +97,23 @@ public class PackedItem {
     private String invoicePayableAmount;
     @SerializedName("invoice_paid_amount")
     @Expose
+
     private String invoicePaidAmount;
+    @SerializedName("orderID")
+    @Expose
+    private String orderID;
     @SerializedName("packageId")
     @Expose
     private String packageId;
     private boolean selected;
+
+    public String getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(String orderID) {
+        this.orderID = orderID;
+    }
 
     public String getCrereqappacsid() {
         return crereqappacsid;

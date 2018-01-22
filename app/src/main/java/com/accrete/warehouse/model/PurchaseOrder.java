@@ -60,6 +60,38 @@ public class PurchaseOrder {
     @Expose
     private String purchaseOrderId;
 
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
+
+    public String getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(String discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public String getAmountAfterDiscount() {
+        return amountAfterDiscount;
+    }
+
+    public void setAmountAfterDiscount(String amountAfterDiscount) {
+        this.amountAfterDiscount = amountAfterDiscount;
+    }
+
     public String getPurorid() {
         return purorid;
     }

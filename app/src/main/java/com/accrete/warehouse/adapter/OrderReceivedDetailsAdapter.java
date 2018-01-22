@@ -40,29 +40,17 @@ public class OrderReceivedDetailsAdapter extends RecyclerView.Adapter<OrderRecei
 
         //Name
         if (receivedDetail.getItemName() != null && !receivedDetail.getItemName().isEmpty()) {
-            holder.itemNameTextView.setText("Item : ");
-            holder.itemNameValueTextView.setText(receivedDetail.getItemName().toString().trim());
-            holder.itemNameLayout.setVisibility(View.VISIBLE);
-        } else {
-            holder.itemNameLayout.setVisibility(View.GONE);
+            holder.itemsTextView.setText(receivedDetail.getItemName().toString().trim());
         }
 
         //Purchase Order Quantity
         if (receivedDetail.getPoQuantity() != null && !receivedDetail.getPoQuantity().isEmpty()) {
-            holder.purchasedQuantityTextView.setText("Purchase Order Quantity : ");
-            holder.purchasedQuantityValueTextView.setText(receivedDetail.getPoQuantity().toString().trim());
-            holder.purchasedQuantityLayout.setVisibility(View.VISIBLE);
-        } else {
-            holder.purchasedQuantityLayout.setVisibility(View.GONE);
+            holder.purchaseOrderQuantityTextView.setText(receivedDetail.getPoQuantity().toString().trim());
         }
 
         //Received Quantity
         if (receivedDetail.getReceivedQuantity() != null && !receivedDetail.getReceivedQuantity().isEmpty()) {
-            holder.receivedQuantityTextView.setText("Received Quantity : ");
-            holder.receivedQuantityValueTextView.setText(receivedDetail.getReceivedQuantity().toString().trim());
-            holder.receivedQuantityLayout.setVisibility(View.VISIBLE);
-        } else {
-            holder.receivedQuantityLayout.setVisibility(View.GONE);
+            holder.receiveQuantityTextView.setText(receivedDetail.getReceivedQuantity().toString().trim());
         }
 
     }
@@ -73,27 +61,18 @@ public class OrderReceivedDetailsAdapter extends RecyclerView.Adapter<OrderRecei
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout itemNameLayout;
-        private TextView itemNameTextView;
-        private TextView itemNameValueTextView;
-        private LinearLayout purchasedQuantityLayout;
-        private TextView purchasedQuantityTextView;
-        private TextView purchasedQuantityValueTextView;
-        private LinearLayout receivedQuantityLayout;
-        private TextView receivedQuantityTextView;
-        private TextView receivedQuantityValueTextView;
+        private LinearLayout titlesLayout;
+        private TextView itemsTextView;
+        private TextView purchaseOrderQuantityTextView;
+        private TextView receiveQuantityTextView;
+
 
         public MyViewHolder(View view) {
             super(view);
-            itemNameLayout = (LinearLayout) view.findViewById(R.id.itemName_layout);
-            itemNameTextView = (TextView) view.findViewById(R.id.itemName_textView);
-            itemNameValueTextView = (TextView) view.findViewById(R.id.itemName_value_textView);
-            purchasedQuantityLayout = (LinearLayout) view.findViewById(R.id.purchasedQuantity_layout);
-            purchasedQuantityTextView = (TextView) view.findViewById(R.id.purchasedQuantity_textView);
-            purchasedQuantityValueTextView = (TextView) view.findViewById(R.id.purchasedQuantity_value_textView);
-            receivedQuantityLayout = (LinearLayout) view.findViewById(R.id.receivedQuantity_layout);
-            receivedQuantityTextView = (TextView) view.findViewById(R.id.receivedQuantity_textView);
-            receivedQuantityValueTextView = (TextView) view.findViewById(R.id.receivedQuantity_value_textView);
+            titlesLayout = (LinearLayout) view.findViewById(R.id.titles_layout);
+            itemsTextView = (TextView) view.findViewById(R.id.items_textView);
+            purchaseOrderQuantityTextView = (TextView) view.findViewById(R.id.purchaseOrderQuantity_textView);
+            receiveQuantityTextView = (TextView) view.findViewById(R.id.receiveQuantity_textView);
         }
     }
 }

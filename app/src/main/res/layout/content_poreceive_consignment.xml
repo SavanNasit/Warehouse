@@ -40,7 +40,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="@string/purchaseOrder_details_subtitle"
                 android:textColor="@color/home_page_text_gray"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_11sdp" />
 
             <View
                 android:id="@+id/purchaseOrderDetails_view"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginRight="@dimen/_14sdp"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5sdp"
                 android:weightSum="1">
@@ -69,7 +69,7 @@
                     android:gravity="left|center"
                     android:text="PO Id :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/poId_textView"
@@ -79,7 +79,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -89,7 +89,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginRight="@dimen/_14sdp"
-                android:layout_marginTop="@dimen/_6sdp"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5sdp"
                 android:weightSum="1">
@@ -97,22 +96,20 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_weight="0.48"
-                    android:gravity="left|center"
+                    android:gravity="left"
                     android:text="Authorized By :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/authorizedBy_textView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -122,7 +119,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
                 android:layout_marginRight="@dimen/_14sdp"
-                android:layout_marginTop="@dimen/_6sdp"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5sdp"
                 android:weightSum="1">
@@ -130,17 +126,15 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_weight="0.48"
-                    android:gravity="left|center"
+                    android:gravity="left"
                     android:text="Status :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:orientation="vertical">
@@ -150,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -173,7 +167,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="@string/vendor_details_subtitle"
                 android:textColor="@color/home_page_text_gray"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_11sdp" />
 
             <View
                 android:id="@+id/vendorDetails_view"
@@ -189,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:paddingLeft="@dimen/_3sdp"
                 android:text="@string/vendor_title"
                 android:textSize="@dimen/_10sdp" />
@@ -199,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp">
+                android:layout_marginTop="@dimen/_3sdp">
 
                 <EditText
                     android:id="@+id/vendor_value_editText"
@@ -212,7 +206,7 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/search_vendor"
                     android:longClickable="false"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_10sdp"
                     android:theme="@style/Autocomplete" />
 
                 <ImageButton
@@ -242,7 +236,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="@string/inputing_purchase_details"
                 android:textColor="@color/home_page_text_gray"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_11sdp" />
 
             <View
                 android:id="@+id/purchaseDetails_view"
@@ -258,7 +252,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:paddingLeft="@dimen/_3sdp"
                 android:text="@string/receive_date_title"
                 android:textSize="@dimen/_10sdp" />
@@ -266,14 +260,15 @@
             <TextView
                 android:id="@+id/receive_date_value_textView"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:background="@drawable/edittext_gray_border"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/_8sdp"
-                android:textColor="@color/black"></TextView>
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"></TextView>
 
             <TextView
                 android:id="@+id/invoice_number_title_textView"
@@ -289,14 +284,17 @@
             <EditText
                 android:id="@+id/invoice_number_value_textView"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:background="@drawable/edittext_gray_border"
                 android:gravity="center_vertical"
+                android:hint="Invoice Number"
                 android:paddingLeft="@dimen/_8sdp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textCursorDrawable="@drawable/green_cursor"
+                android:textSize="@dimen/_9sdp" />
 
             <TextView
                 android:id="@+id/invoice_date_title_textView"
@@ -312,14 +310,15 @@
             <TextView
                 android:id="@+id/invoice_date_value_textView"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/edittext_gray_border"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/_8sdp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
 
             <TextView
                 android:id="@+id/consignmentItemsListTitle_textView"
@@ -367,7 +366,7 @@
                     android:focusableInTouchMode="false"
                     android:hint="Search item"
                     android:longClickable="false"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_10sdp"
                     android:theme="@style/Autocomplete" />
 
             </RelativeLayout>
@@ -450,10 +449,10 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:hint="@string/transporter_title"
-                        android:focusableInTouchMode="false"
                         android:focusable="false"
-                        android:textSize="@dimen/_12sdp"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/transporter_title"
+                        android:textSize="@dimen/_9sdp"
                         android:theme="@style/Autocomplete" />
 
                     <ImageButton
@@ -485,7 +484,10 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:hint="@string/weight"
-                    android:textSize="@dimen/_12sdp"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_9sdp"
                     android:theme="@style/Autocomplete" />
 
                 <TextView
@@ -508,7 +510,10 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:hint="@string/lr_number"
-                    android:textSize="@dimen/_12sdp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_9sdp"
                     android:theme="@style/Autocomplete" />
 
                 <TextView
@@ -531,7 +536,10 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:hint="@string/vehicle_number"
-                    android:textSize="@dimen/_12sdp"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_9sdp"
                     android:theme="@style/Autocomplete" />
 
                 <TextView
@@ -548,14 +556,16 @@
                 <TextView
                     android:id="@+id/expected_date_value_textView"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_36sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/edittext_gray_border"
                     android:gravity="center_vertical"
+                    android:hint="Expected Date"
                     android:paddingLeft="@dimen/_8sdp"
-                    android:textColor="@color/black"></TextView>
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp"></TextView>
             </LinearLayout>
 
             <TextView
