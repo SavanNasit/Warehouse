@@ -1,7 +1,18 @@
 package com.accrete.warehouse.fragment;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -19,10 +30,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.ViewPackageGatePassActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.ManageGatepassAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.GatepassList;
+import com.accrete.warehouse.model.ItemsInsidePackage;
 import com.accrete.warehouse.model.ManageGatepass;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
@@ -38,11 +51,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
+import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWithRationale;
 
 /**
  * Created by poonam on 12/5/17.
@@ -59,6 +75,15 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     private ManageGatepass manageGatepass = new ManageGatepass();
     private AlertDialog dialogSelectEvent;
     private String status;
+
+    private TextView downloadConfirmMessage;
+    private TextView btnYes;
+    private TextView btnCancel;
+    private AlertDialog alertDialog;
+    private DownloadManager downloadManager;
+    private ProgressBar progressBar;
+    String  strPacdelgatid;
+
 
     public static ManageGatePassFragment newInstance(String title) {
         ManageGatePassFragment f = new ManageGatePassFragment();
@@ -123,9 +148,10 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         }
     }
 
+
     @Override
-    public void onMessageRowClicked(int position) {
-        dialogItemEvents(position);
+    public void onMessageRowClicked(int position, String status) {
+        dialogItemEvents(position,status);
     }
 
     @Override
@@ -134,7 +160,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     }
 
 
-    private void dialogItemEvents(final int position) {
+    private void dialogItemEvents(final int position, String status) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions_gatepass, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -149,11 +175,30 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         ImageView imageBack;
 
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
-        actionsFilter = (LinearLayout) dialogView.findViewById(R.id.actions_filter);
         actionsViewPackage = (LinearLayout) dialogView.findViewById(R.id.actions_view_package);
         actionsPrintPackage = (LinearLayout) dialogView.findViewById(R.id.actions_print_package);
         actionsCancelGatepass = (LinearLayout) dialogView.findViewById(R.id.actions_cancel_gatepass);
         imageBack = (ImageView) dialogView.findViewById(R.id.image_back);
+
+        if(status.equals("Cancelled")){
+            actionsCancelGatepass.setVisibility(View.GONE);
+        }
+
+        actionsViewPackage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentViewPackage = new Intent(getActivity(),ViewPackageGatePassActivity.class);
+                intentViewPackage.putExtra("id",gatepassList.get(position).getPacdelgatid());
+                startActivity(intentViewPackage);
+            }
+        });
+
+        actionsPrintPackage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadPdfDialog(gatepassList.get(position).getPacdelgatid());
+            }
+        });
 
         actionsCancelGatepass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +213,6 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                 dialogSelectEvent.dismiss();
             }
         });
-
 
         dialogSelectEvent.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         if (!dialogSelectEvent.isShowing()) {
@@ -329,6 +373,123 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         });
     }
 
+    public void downloadPdfDialog( final String pacdelgatid) {
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setCancelable(true);
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+        strPacdelgatid =pacdelgatid;
+
+        TextView textViewTitle = (TextView)dialogView.findViewById(R.id.title_textView) ;
+        downloadConfirmMessage = (TextView) dialogView.findViewById(R.id.download_confirm_message);
+        btnYes = (TextView) dialogView.findViewById(R.id.btn_yes);
+        btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
+        progressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_progress_bar);
+
+        textViewTitle.setText(getString(R.string.gatepass_download_title));
+        downloadConfirmMessage.setText(getString(R.string.download_gatepass_confirm_msg));
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //calling API
+                btnYes.setEnabled(false);
+                progressBar.setVisibility(View.VISIBLE);
+                if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        if (checkPermissionWithRationale((Activity) getActivity(), new ManageGatePassFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
+                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                                return ;
+                            }
+                        }
+                    } else {
+                        downloadPdf(pacdelgatid);
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnYes.setEnabled(true);
+                    }
+                }, 3000);
+            }
+        });
+
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alertDialog.show();
+    }
+
+    private void downloadPdf(final String pacdelgatid) {
+        task = getString(R.string.download_gatepass);
+        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.cancelGatepass(version, key, task, userId, accessToken, pacdelgatid);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                            alertDialog.dismiss();
+
+                            //Download a file and display in phone's download folder
+                            Environment
+                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                                    .mkdirs();
+                            downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                            String url = apiResponse.getData().getFilename();
+                            Uri uri = Uri.parse(url);
+                            DownloadManager.Request request = new DownloadManager.Request(uri)
+                                    .setTitle(pacdelgatid + "_gatepass" + ".pdf")
+                                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                            pacdelgatid + "_gatepass" + ".pdf")
+                                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            downloadManager.enqueue(request);
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (apiResponse.getSuccessCode().equals("10001")) {
+                        alertDialog.dismiss();
+                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (progressBar != null && progressBar.getVisibility() == View.VISIBLE) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                alertDialog.dismiss();
+            }
+        });
+    }
+
     @Override
     public void onRefresh() {
         status = NetworkUtil.getConnectivityStatusString(getActivity());
@@ -342,4 +503,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         }
     }
 
+    public void downloadPdfCall() {
+        downloadPdf(strPacdelgatid);
+    }
 }

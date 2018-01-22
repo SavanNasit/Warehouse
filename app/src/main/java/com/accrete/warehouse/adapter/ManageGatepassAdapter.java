@@ -39,7 +39,7 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        GatepassList manageGatepass = gatepassList.get(position);
+        final GatepassList manageGatepass = gatepassList.get(position);
         holder.listRowManageGatepassGatepassId.setText("(" + manageGatepass.getGatePassId() + ")");
         holder.listRowManageGatepassShippingCompanyName.setText(manageGatepass.getShippingCompanyName());
         holder.listRowManageGatepassGenerateOn.setText(manageGatepass.getCreatedOn());
@@ -51,7 +51,7 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                applyClickEvents(position);
+                applyClickEvents(position,manageGatepass.getGatepassStatus());
             }
         });
     }
@@ -62,13 +62,12 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
 
     }
 
-    private void applyClickEvents(final int position) {
-        listener.onMessageRowClicked(position);
+    private void applyClickEvents(final int position, String status) {
+        listener.onMessageRowClicked(position,status);
     }
 
     public interface ManageGatepassAdapterrListener {
-        void onMessageRowClicked(int position);
-
+        void onMessageRowClicked(int position,String status);
         void onExecute();
     }
 

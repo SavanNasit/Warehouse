@@ -348,6 +348,63 @@ public interface ApiInterface {
                                              String gatepassId);
 
     @GET("?urlq=service")
+    Call<ApiResponse> viewGatepassPackages(@Query("version")
+                                                   String version,
+                                           @Query("key")
+                                                   String key,
+                                           @Query("task")
+                                                   String task,
+                                           @Query("user_id")
+                                                   String userid,
+                                           @Query("access_token")
+                                                   String accessToken,
+                                           @Query("chkid")
+                                                   String chkid,
+                                           @Query("pacdelgatid")
+                                                   String pacdelgatid);
+    @GET("?urlq=service")
+    Call<ApiResponse> downloadPackageGatepassInvoice(@Query("version")
+                                                      String version,
+                                                     @Query("key")
+                                                             String key,
+                                                     @Query("task")
+                                                             String task,
+                                                     @Query("user_id")
+                                                             String userid,
+                                                     @Query("access_token")
+                                                             String accessToken,
+                                                     @Query("cuid")
+                                                             String cuid,
+                                                     @Query("invid")
+                                                             String invid);
+    @GET("?urlq=service")
+    Call<ApiResponse> customerInfoInGatepassPackage(@Query("version")
+                                                             String version,
+                                                     @Query("key")
+                                                             String key,
+                                                     @Query("task")
+                                                             String task,
+                                                     @Query("user_id")
+                                                             String userid,
+                                                     @Query("access_token")
+                                                             String accessToken,
+                                                    @Query("chkoid")
+                                                             String chkoid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getPackageHistoryInGatepass(@Query("version")
+                                                            String version,
+                                                    @Query("key")
+                                                            String key,
+                                                    @Query("task")
+                                                            String task,
+                                                    @Query("user_id")
+                                                            String userid,
+                                                    @Query("access_token")
+                                                            String accessToken,
+                                                    @Query("pacid")
+                                                            String pacid);
+    @GET("?urlq=service")
     Call<ApiResponse> searchVendor(
             @Query("version")
                     String version,
