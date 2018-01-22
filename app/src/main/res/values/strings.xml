@@ -111,6 +111,7 @@
     <string name="download_delivery_challan_confirm_msg">Are you sure to download delivery challan?</string>
     <string name="download_invoice_task">customer/pending_invoice_print</string>
     <string name="download_delivery_challan_task">warehouse/print_delivery_challan</string>
+    <string name="download_loading_slip_task">warehouse/print_loading_slip</string>
     <string name="invoice">invoice</string>
     <string name="challan">challan</string>
 

@@ -629,7 +629,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                     cuIdPacId);
         }
 
-
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {

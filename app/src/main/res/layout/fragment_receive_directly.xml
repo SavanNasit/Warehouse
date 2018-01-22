@@ -14,7 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_30sdp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -372,7 +373,8 @@
                         android:background="@android:drawable/ic_menu_close_clear_cancel" />
                 </RelativeLayout>
 
-                <TextView android:id="@+id/weight_title_textView"
+                <TextView
+                    android:id="@+id/weight_title_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
