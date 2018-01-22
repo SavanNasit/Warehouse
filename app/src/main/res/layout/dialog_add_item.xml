@@ -63,18 +63,18 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:layout_weight="1.8"
                     android:clipToPadding="false"
@@ -87,7 +87,7 @@
                     <EditText
                         android:id="@+id/skuCode_edittext"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_37sdp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_8sdp"
                         android:enabled="false"
                         android:focusable="false"
@@ -101,12 +101,12 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/darkGray"
                         android:textCursorDrawable="@drawable/green_cursor"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_10sdp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:layout_weight="1.8"
                     android:clipToPadding="false"
@@ -119,7 +119,7 @@
                     <EditText
                         android:id="@+id/orderQuantity_edittext"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_37sdp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_8sdp"
                         android:enabled="false"
                         android:focusable="false"
@@ -133,19 +133,19 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/darkGray"
                         android:textCursorDrawable="@drawable/green_cursor"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_10sdp" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:layout_weight="1.8"
                     android:clipToPadding="false"
@@ -158,7 +158,7 @@
                     <EditText
                         android:id="@+id/receiveQuantity_edittext"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_37sdp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_8sdp"
                         android:fontFamily="sans-serif"
                         android:hint="Receiving Quantity"
@@ -169,7 +169,7 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/darkGray"
                         android:textCursorDrawable="@drawable/green_cursor"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_10sdp" />
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
@@ -196,7 +196,7 @@
                 <Spinner
                     android:id="@+id/units_type_spinner"
                     android:layout_width="fill_parent"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="2sp"
                     android:background="@drawable/spinner_bg"
@@ -216,7 +216,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_37sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:clipToPadding="false"
                 android:gravity="left|center"
@@ -228,7 +228,7 @@
                 <EditText
                     android:id="@+id/price_edittext"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
                     android:fontFamily="sans-serif"
                     android:hint="Price"
@@ -239,12 +239,12 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_37sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:clipToPadding="false"
                 android:gravity="left|center"
@@ -268,7 +268,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
@@ -285,47 +285,22 @@
             <TextView
                 android:id="@+id/expiry_date_value_textView"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_36sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/edittext_gray_border"
                 android:gravity="center_vertical"
+                android:hint="Expiry Date"
+                android:paddingBottom="@dimen/_6sdp"
                 android:paddingLeft="@dimen/_8sdp"
-                android:textColor="@color/black"></TextView>
+                android:paddingTop="@dimen/_6sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"></TextView>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_37sdp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:clipToPadding="false"
-                android:gravity="left|center"
-                android:inputType="textCapSentences|textNoSuggestions"
-                android:lines="1"
-                android:longClickable="false"
-                app:hintTextAppearance="@style/CustomTextAppearance">
-
-                <EditText
-                    android:id="@+id/reasonRejection_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_37sdp"
-                    android:layout_margin="@dimen/_8sdp"
-                    android:fontFamily="sans-serif"
-                    android:hint="Reason for rejection"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapSentences|textNoSuggestions"
-                    android:longClickable="false"
-                    android:maxLines="4"
-                    android:minLines="2"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/darkGray"
-                    android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_37sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:clipToPadding="false"
                 android:gravity="left|center"
@@ -337,7 +312,7 @@
                 <EditText
                     android:id="@+id/rejectedQuantity_edittext"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_37sdp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
                     android:fontFamily="sans-serif"
                     android:hint="Rejected Quantity"
@@ -348,7 +323,36 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkGray"
                     android:textCursorDrawable="@drawable/green_cursor"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:clipToPadding="false"
+                android:gravity="left|center"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:lines="1"
+                android:longClickable="false"
+                app:hintTextAppearance="@style/CustomTextAppearance">
+
+                <EditText
+                    android:id="@+id/reasonRejection_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:fontFamily="sans-serif"
+                    android:hint="Reason for rejection"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:longClickable="false"
+                    android:maxLines="4"
+                    android:minLines="2"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkGray"
+                    android:textCursorDrawable="@drawable/green_cursor"
+                    android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
 

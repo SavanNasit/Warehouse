@@ -45,7 +45,7 @@ public class ManagePackagesFragment extends Fragment {
     private void findViews(View rootView) {
         viewPagerExecute = (ViewPager) rootView.findViewById(R.id.view_pager_execute);
         setupViewPagerExecute(viewPagerExecute);
-        viewPagerExecute.setOffscreenPageLimit(2);
+        viewPagerExecute.setOffscreenPageLimit(7);
         tabLayoutExecute = (TabLayout) rootView.findViewById(R.id.tabs_execute);
         tabLayoutExecute.setupWithViewPager(viewPagerExecute);
 
@@ -71,6 +71,7 @@ public class ManagePackagesFragment extends Fragment {
     private void setupViewPagerExecute(ViewPager viewPagerExecute) {
         PackedFragment packedFragment = new PackedFragment();
         PackedAgainstStockFragment packedAgainstStockFragment = new PackedAgainstStockFragment();
+        ShippedPackageFragment shippedPackageFragment = new ShippedPackageFragment();
         OutForDeliveryFragment outForDeliveryFragment = new OutForDeliveryFragment();
         DeliveredFragment deliveredFragment = new DeliveredFragment();
         AttemptFailedFragment attemptFailedFragment = new AttemptFailedFragment();
@@ -80,6 +81,7 @@ public class ManagePackagesFragment extends Fragment {
         viewPagerExecuteAdapter adapter = new viewPagerExecuteAdapter(getChildFragmentManager());
         adapter.addFragment(packedFragment, "Packed");
         adapter.addFragment(packedAgainstStockFragment, "Packed Against Stock Request");
+        adapter.addFragment(shippedPackageFragment, "Shipped");
         adapter.addFragment(outForDeliveryFragment, "Out for Delivery");
         adapter.addFragment(deliveredFragment, "Delivered");
         adapter.addFragment(attemptFailedFragment, "Attempt Failed");
@@ -129,6 +131,14 @@ public class ManagePackagesFragment extends Fragment {
                     (PendingItemsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
             pendingItemsFragment.getData(str);
 
+        }
+    }
+
+    public void checkFragmentAndDownloadPDF() {
+        if (viewPagerExecute.getCurrentItem() == 1) {
+            PackedAgainstStockFragment packedAgainstStockFragment=
+                    (PackedAgainstStockFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute ,
+                            viewPagerExecute.getCurrentItem());
         }
     }
 

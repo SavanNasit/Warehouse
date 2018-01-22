@@ -110,8 +110,6 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@id/zipCode_textView"
-        android:layout_marginLeft="@dimen/_4sdp"
-        android:layout_marginRight="@dimen/_4sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/gray_order"></View>
 

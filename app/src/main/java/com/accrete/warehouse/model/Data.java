@@ -38,10 +38,16 @@ public class Data {
     @Expose
     private String runningOrderCount;
 
+    // TODO Both have same type of data so we are using same Model class for both
+    @SerializedName("packageShippedData")
+    @Expose
+    private List<PackedItem> packageShippedData = null;
     @SerializedName("packedItems")
     @Expose
     private List<PackedItem> packedItems = null;
-
+    @SerializedName("users")
+    @Expose
+    private List<User> users = null;
     @SerializedName("shipping_by")
     @Expose
     private List<ShippingBy> shippingBy = null;
@@ -51,7 +57,6 @@ public class Data {
     @SerializedName("consignments")
     @Expose
     private List<Consignment> consignments = null;
-
     @SerializedName("consignmentData")
     @Expose
     private ConsignmentData consignmentData;
@@ -94,31 +99,6 @@ public class Data {
     @SerializedName("packageData")
     @Expose
     private PackageData packageData;
-
-    public PackageData getPackageData() {
-        return packageData;
-    }
-
-    public void setPackageData(PackageData packageData) {
-        this.packageData = packageData;
-    }
-
-    public CustomerInfo getCustomerInfo() {
-        return customerInfo;
-    }
-
-    public void setCustomerInfo(CustomerInfo customerInfo) {
-        this.customerInfo = customerInfo;
-    }
-
-    public List<ViewGatepassPackages> getGatePassData() {
-        return gatePassData;
-    }
-
-    public void setGatePassData(List<ViewGatepassPackages> gatePassData) {
-        this.gatePassData = gatePassData;
-    }
-
     @SerializedName("shipping_company")
     @Expose
     private List<ShippingCompany> shippingCompany = null;
@@ -137,7 +117,6 @@ public class Data {
     @SerializedName("delivery_user_list")
     @Expose
     private List<DeliveryUserList> deliveryUserList = null;
-
     @SerializedName("purchaseOrderData")
     @Expose
     private PurchaseOrderData purchaseOrderData;
@@ -163,6 +142,46 @@ public class Data {
     @Expose
     private ConsignmentItem consignmentItem;
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<PackedItem> getPackageShippedData() {
+        return packageShippedData;
+    }
+
+    public void setPackageShippedData(List<PackedItem> packageShippedData) {
+        this.packageShippedData = packageShippedData;
+    }
+
+    public PackageData getPackageData() {
+        return packageData;
+    }
+
+    public void setPackageData(PackageData packageData) {
+        this.packageData = packageData;
+    }
+
+    public CustomerInfo getCustomerInfo() {
+        return customerInfo;
+    }
+
+    public void setCustomerInfo(CustomerInfo customerInfo) {
+        this.customerInfo = customerInfo;
+    }
+
+    public List<ViewGatepassPackages> getGatePassData() {
+        return gatePassData;
+    }
+
+    public void setGatePassData(List<ViewGatepassPackages> gatePassData) {
+        this.gatePassData = gatePassData;
+    }
+
     public ConsignmentItem getConsignmentItem() {
         return consignmentItem;
     }
@@ -170,6 +189,7 @@ public class Data {
     public void setConsignmentItem(ConsignmentItem consignmentItem) {
         this.consignmentItem = consignmentItem;
     }
+
     public List<ItemList> getItemList() {
         return itemList;
     }
@@ -356,6 +376,10 @@ public class Data {
 
     public List<PackedItem> getPackedItems() {
         return packedItems;
+    }
+
+    public void setPackedItems(List<PackedItem> packedItems) {
+        this.packedItems = packedItems;
     }
 
     public void ListPackedItems(List<PackedItem> packedItems) {

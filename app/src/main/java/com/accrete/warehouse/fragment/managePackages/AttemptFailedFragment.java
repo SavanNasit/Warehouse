@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.accrete.warehouse.CustomerDetailsActivity;
 import com.accrete.warehouse.ItemsInsidePackageActivity;
 import com.accrete.warehouse.PackageHistoryActivity;
+import com.accrete.warehouse.PackageOrderStatusActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.OutForDeliveryAdapter;
@@ -177,15 +178,15 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         //btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
-        textViewActionPackageStatus.setText("Revert Package Delivery");
+   //     textViewActionPackageStatus.setText("Revert Package Delivery");
 
 
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
-                startActivity(intentStatus);*/
-                dialogRevertPackageDelivery();
+                Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+                startActivity(intentStatus);
+             //   dialogRevertPackageDelivery();
             }
         });
 

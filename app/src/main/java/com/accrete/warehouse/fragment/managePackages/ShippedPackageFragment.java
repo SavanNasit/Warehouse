@@ -1,15 +1,9 @@
 package com.accrete.warehouse.fragment.managePackages;
 
-import android.Manifest;
-import android.app.DownloadManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -50,20 +44,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.DOWNLOAD_SERVICE;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
-import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
-import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
-import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWithRationale;
 
 /**
- * Created by agt on 19/1/18.
+ * Created by agt on 22/1/18.
  */
 
-public class PackedAgainstStockFragment extends Fragment implements PackedAgainstStockAdapter.PackedAgainstAdapterListener,
+public class ShippedPackageFragment extends Fragment implements PackedAgainstStockAdapter.PackedAgainstAdapterListener,
         DocumentUploaderAdapter.DocAdapterListener, SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout packedAgainstRefreshLayout;
@@ -79,12 +69,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
     private String status, dataChanged;
     private int visibleThreshold = 2, lastVisibleItem, totalItemCount;
     private boolean loading;
-    private TextView downloadConfirmMessage, titleDownloadTextView;
-    private TextView btnYes;
-    private TextView btnCancel;
-    private AlertDialog alertDialog;
-    private DownloadManager downloadManager;
-    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -123,7 +107,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                     loading = true;
                     //calling API
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        getPackedAgainstStockList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2");
+                        getShippedPackageList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2");
                     } else {
                         if (packedAgainstRefreshLayout.isRefreshing()) {
                             packedAgainstRefreshLayout.setRefreshing(false);
@@ -154,7 +138,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         dialogItemEvents(position);
     }
 
-    private void dialogItemEvents(final int position) {
+    private void dialogItemEvents(int position) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -195,14 +179,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         textViewActionPackageStatus.setText("Revert Package Delivery");
 
 
-        //Hidden Items
-        actionsItemsInsidePackage.setVisibility(View.GONE);
-        actionsPackageStatus.setVisibility(View.GONE);
-        actionsOtherDocuments.setVisibility(View.GONE);
-        actionsPrintGatepass.setVisibility(View.GONE);
-        actionsPrintLoadingSlip.setVisibility(View.GONE);
-
-
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,7 +199,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         actionsPackageHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
                 startActivity(intentPackageHistory);
             }
@@ -244,38 +219,18 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             }
         });
 
+      /*  btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSelectEvent.dismiss();
+            }
+        });*/
+
         actionsCustomerDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogSelectEvent.dismiss();
                 Intent intentCustomerDetails = new Intent(getActivity(), CustomerDetailsActivity.class);
                 startActivity(intentCustomerDetails);
-            }
-        });
-
-        actionsPrintInvoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogSelectEvent.dismiss();
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
-                    askStoragePermission(position, getString(R.string.invoice));
-                } else {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.invoice),
-                            packedAgainstList.get(position).getCuid(), packedAgainstList.get(position).getInvid());
-                }
-            }
-        });
-
-        actionsPrintDeliveryChallan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogSelectEvent.dismiss();
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
-                    askStoragePermission(position, getString(R.string.challan));
-                } else {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.challan),
-                            packedAgainstList.get(position).getPacid(), "");
-                }
             }
         });
 
@@ -285,28 +240,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         }
     }
 
-    public void askStoragePermission(int position, String type) {
-        if (checkPermissionWithRationale(getActivity(), new PackedAgainstStockFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            } else {
-                if (type.equals(getString(R.string.challan))) {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.challan),
-                            packedAgainstList.get(position).getPacid(), "");
-                } else {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.invoice),
-                            packedAgainstList.get(position).getCuid(), packedAgainstList.get(position).getInvid());
-                }
-            }
-        }
-    }
 
     private void dialogRevertPackageDelivery() {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_cancel_gatepass, null);
@@ -424,7 +357,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                     @Override
                     public void run() {
                         packedAgainstEmptyView.setText(getString(R.string.no_data_available));
-                        getPackedAgainstStockList(getString(R.string.last_updated_date), "1");
+                        getShippedPackageList(getString(R.string.last_updated_date), "1");
                     }
                 }, 200);
             } else {
@@ -434,8 +367,8 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         }
     }
 
-    private void getPackedAgainstStockList(final String time, final String traversalValue) {
-        String task = getString(R.string.packed_packages);
+    private void getShippedPackageList(final String time, final String traversalValue) {
+        String task = getString(R.string.fetch_shipped_packages);
 
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
@@ -444,9 +377,9 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getPackedAgainstStock(version, key, task, userId, accessToken,
+        Call<ApiResponse> call = apiService.getShippedPackages(version, key, task, userId, accessToken,
                 AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID),
-                time, traversalValue, "2");
+                time, traversalValue);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -457,7 +390,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        for (final PackedItem packedItem : apiResponse.getData().getPackedItems()) {
+                        for (final PackedItem packedItem : apiResponse.getData().getPackageShippedData()) {
                             if (packedItem != null) {
                                 if (traversalValue.equals("2")) {
                                     if (!time.equals(packedItem.getCreatedTs())) {
@@ -544,9 +477,9 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
             if (packedAgainstList != null && packedAgainstList.size() > 0) {
-                getPackedAgainstStockList(packedAgainstList.get(0).getCreatedTs(), "1");
+                getShippedPackageList(packedAgainstList.get(0).getCreatedTs(), "1");
             } else {
-                getPackedAgainstStockList(getString(R.string.last_updated_date), "1");
+                getShippedPackageList(getString(R.string.last_updated_date), "1");
             }
             packedAgainstEmptyView.setVisibility(View.GONE);
             packedAgainstRefreshLayout.setRefreshing(true);
@@ -555,138 +488,5 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             packedAgainstEmptyView.setText(getString(R.string.no_internet_try_later));
             packedAgainstRefreshLayout.setRefreshing(false);
         }
-    }
-
-    public void downloadInvoiceChallanDialog(final String fileName, final String type, final String cuIdPacId, final String InvId) {
-        final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(dialogView)
-                .setCancelable(true);
-        alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(true);
-
-        downloadConfirmMessage = (TextView) dialogView.findViewById(R.id.download_confirm_message);
-        titleDownloadTextView = (TextView) dialogView.findViewById(R.id.title_textView);
-        btnYes = (TextView) dialogView.findViewById(R.id.btn_yes);
-        btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
-        progressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_progress_bar);
-
-        if (type.equals(getString(R.string.invoice))) {
-            downloadConfirmMessage.setText(getString(R.string.download_invoice_confirm_msg));
-            titleDownloadTextView.setText("Download invoice");
-        } else {
-            downloadConfirmMessage.setText(getString(R.string.download_delivery_challan_confirm_msg));
-            titleDownloadTextView.setText("Download delivery challan");
-        }
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //calling API
-                btnYes.setEnabled(false);
-                progressBar.setVisibility(View.VISIBLE);
-                if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                    downloadPdf(alertDialog, fileName, type, cuIdPacId, InvId);
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnYes.setEnabled(true);
-                    }
-                }, 3000);
-            }
-        });
-
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        alertDialog.show();
-    }
-
-    private void downloadPdf(final AlertDialog alertDialog, final String fileName, final String type, String cuIdPacId, String invId) {
-        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
-            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
-            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
-            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
-        }
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call;
-
-        if (type.equals(getString(R.string.invoice))) {
-            task = getString(R.string.download_invoice_task);
-            call = apiService.downloadInvoicePDF(version, key, task, userId, accessToken,
-                    cuIdPacId, invId);
-        } else {
-            task = getString(R.string.download_delivery_challan_task);
-            call = apiService.downloadChallanPDF(version, key, task, userId, accessToken,
-                    cuIdPacId);
-        }
-
-
-        Log.d("Request", String.valueOf(call));
-        Log.d("url", String.valueOf(call.request().url()));
-        call.enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call call, Response response) {
-                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
-                final ApiResponse apiResponse = (ApiResponse) response.body();
-                try {
-                    if (apiResponse.getSuccess()) {
-                        if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                            alertDialog.dismiss();
-
-                            //Download a file and display in phone's download folder
-                            Environment
-                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                                    .mkdirs();
-                            downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
-                            String url = apiResponse.getData().getFilename();
-                            Uri uri = Uri.parse(url);
-                            DownloadManager.Request request = null;
-
-                            if (type.equals(getString(R.string.invoice))) {
-                                request = new DownloadManager.Request(uri)
-                                        .setTitle(fileName + "_invoice" + ".pdf")
-                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                                                fileName + "_invoice" + ".pdf")
-                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            } else {
-                                request = new DownloadManager.Request(uri)
-                                        .setTitle(fileName + "_delivery_challan" + ".pdf")
-                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                                                fileName + "_delivery_challan" + ".pdf")
-                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            }
-                            downloadManager.enqueue(request);
-                        } else {
-                            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (apiResponse.getSuccessCode().equals("10001")) {
-                        alertDialog.dismiss();
-                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    if (progressBar != null && progressBar.getVisibility() == View.VISIBLE) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                alertDialog.dismiss();
-            }
-        });
     }
 }

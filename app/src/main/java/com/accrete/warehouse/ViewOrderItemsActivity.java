@@ -92,6 +92,8 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
     private OrderReceivedDetailsAdapter orderReceivedDetailsAdapter;
     private List<ConsignmentDetail> consignmentDetailList = new ArrayList<ConsignmentDetail>();
     private List<ReceivedDetail> receivedDetailList = new ArrayList<ReceivedDetail>();
+    private View viewTitles;
+    private LinearLayout titlesLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +156,8 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
         layoutConsignmentDetails = (RelativeLayout) findViewById(R.id.layout_consignmentDetails);
         recyclerViewConsignmentDetails = (RecyclerView) findViewById(R.id.recycler_view_consignmentDetails);
         textviewConsignmentDetailsEmpty = (TextView) findViewById(R.id.textview_consignmentDetails_empty);
+        titlesLayout = (LinearLayout) findViewById(R.id.titles_layout);
+        viewTitles = (View) findViewById(R.id.view_titles);
 
         //Order Consignment Details adapter
         orderConsignmentDetailsAdapter = new OrderConsignmentDetailsAdapter(this, consignmentDetailList);
@@ -214,7 +218,7 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
                         }
                     }
 
-                    if (!consignmentDetailList.isEmpty() && !consignmentDetailList.equals("null") && consignmentDetailList.size()>0) {
+                    if (!consignmentDetailList.isEmpty() && !consignmentDetailList.equals("null") && consignmentDetailList.size() > 0) {
                         recyclerViewConsignmentDetails.setVisibility(View.VISIBLE);
                         textviewConsignmentDetailsEmpty.setVisibility(View.GONE);
                         orderConsignmentDetailsAdapter.notifyDataSetChanged();
@@ -229,12 +233,14 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
                             receivedDetailList.add(receivedDetail);
                         }
                     }
-                    if (!receivedDetailList.isEmpty() && !receivedDetailList.equals("null") && receivedDetailList.size()>0) {
+                    if (!receivedDetailList.isEmpty() && !receivedDetailList.equals("null") && receivedDetailList.size() > 0) {
                         recyclerViewReceivedDetails.setVisibility(View.VISIBLE);
+                        titlesLayout.setVisibility(View.VISIBLE);
                         textviewReceivedDetailsEmpty.setVisibility(View.GONE);
                         orderReceivedDetailsAdapter.notifyDataSetChanged();
                     } else {
                         recyclerViewReceivedDetails.setVisibility(View.GONE);
+                        titlesLayout.setVisibility(View.GONE);
                         textviewReceivedDetailsEmpty.setVisibility(View.VISIBLE);
                         textviewReceivedDetailsEmpty.setText("No date available");
                     }

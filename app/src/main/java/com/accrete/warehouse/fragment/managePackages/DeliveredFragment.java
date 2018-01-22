@@ -414,6 +414,7 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                         loading = false;
                         if (deliveredList != null && deliveredList.size() == 0) {
                             deliveredEmptyView.setVisibility(View.VISIBLE);
+                            deliveredEmptyView.setText("No data available");
                         } else {
                             deliveredEmptyView.setVisibility(View.GONE);
                         }
@@ -435,6 +436,7 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                         loading = false;
                         if (deliveredList != null && deliveredList.size() == 0) {
                             deliveredEmptyView.setVisibility(View.VISIBLE);
+                            deliveredEmptyView.setText("No data available");
                         } else {
                             deliveredEmptyView.setVisibility(View.GONE);
                         }

@@ -216,7 +216,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
 
         //Items RecyclerView
         receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
-                this);
+                this, "PurchaseOrder");
         mLayoutManager = new LinearLayoutManager(this);
         itemsRecyclerView.setLayoutManager(mLayoutManager);
         itemsRecyclerView.setHasFixedSize(true);
@@ -224,6 +224,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         itemsRecyclerView.setNestedScrollingEnabled(false);
         itemsRecyclerView.setAdapter(receiveConsignmentItemsAdapter);
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         //Mandatory Fields
         String colored = " *";
@@ -534,7 +535,9 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             transportationLayout.setVisibility(View.VISIBLE);
+            invoiceNumberValueTextView.clearFocus();
         } else {
+            invoiceNumberValueTextView.clearFocus();
             transportationLayout.setVisibility(View.GONE);
         }
     }
@@ -910,38 +913,6 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                     consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
                     consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
                     consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
-                  /*  ItemData data = new ItemData();
-                    data.setName(productNameEdittext.getText().toString().trim());
-                    data.setPrice(priceEdittext.getText().toString().trim());
-                    data.setTax(taxArrayList.get(taxTypeSpinner.getSelectedItemPosition()).getName().toString().trim());
-                    data.setDiscount(discountEdittext.getText().toString().trim());
-                    if (discountTypeSpinner.getSelectedItemPosition() == 0) {
-                        data.setDiscountType("1");
-                    } else {
-                        data.setDiscountType("2");
-                    }
-                    data.setAmount(amountEditText.getText().toString().trim());
-                    data.setQuantity(quantityEdittext.getText().toString().trim());
-                    data.setQuantityType(quantityTypeArr[quantityTypeSpinner.getSelectedItemPosition()].toString().trim());
-                    data.setSubtotalAmount(subtotalEditText.getText().toString().trim());
-                    data.setBoxQty(itemData.getBoxQty());
-                    data.setSelectedTaxValue(taxArrayList.get(taxTypeSpinner.getSelectedItemPosition()).getValue().toString().trim());
-                    data.setIitid(itemData.getIitid());
-                    data.setIsvid(itemData.getIsvid());
-                    data.setIid(itemData.getIid());
-                    data.setMeaid(itemData.getMeaid());
-                    data.setBoxConversionRate(itemData.getBoxConversionRate());
-                    data.setRemarks("");
-                    data.setPriceConversionRate(itemData.getPriceConversionRate());
-                    data.setTaxes(itemData.getTaxes());
-                    data.setUnitsData(itemData.getUnitsData());
-                    data.setButapid(taxArrayList.get(taxTypeSpinner.getSelectedItemPosition()).getButapid().toString().trim());
-                    if (sourceType.equals("edit")) {
-                        itemDataArrayList.set(positionToEdit, data);
-                    } else {
-                        itemDataArrayList.add(data);
-                    }*/
-
                     if (operationType.equals("edit")) {
                         consignmentItemList.set(positionToEdit, consignmentItem);
                     } else {

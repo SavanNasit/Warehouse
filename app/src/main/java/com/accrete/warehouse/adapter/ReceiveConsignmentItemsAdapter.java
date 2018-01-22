@@ -25,12 +25,14 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
     private List<ConsignmentItem> consignmentItemList;
     private Activity activity;
     private ReceiveConsignmentItemsAdapterListener listener;
+    private String type;
 
     public ReceiveConsignmentItemsAdapter(Activity activity, List<ConsignmentItem> consignmentItemList,
-                                          ReceiveConsignmentItemsAdapterListener listener) {
+                                          ReceiveConsignmentItemsAdapterListener listener, String type) {
         this.activity = activity;
         this.consignmentItemList = consignmentItemList;
         this.listener = listener;
+        this.type = type;
     }
 
     @Override
@@ -73,6 +75,14 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
         holder.rejectedReasonEdittext.setText(objectItem.getReasonRejection());
         holder.unitEdittext.setText(objectItem.getUnit());
 
+        if (type.equals("Directly")) {
+            holder.skuCodeEdittext.setVisibility(View.GONE);
+            holder.orderQuantityEdittext.setVisibility(View.GONE);
+        } else {
+            holder.skuCodeEdittext.setVisibility(View.VISIBLE);
+            holder.orderQuantityEdittext.setVisibility(View.VISIBLE);
+        }
+
         for (int i = 0; i > objectItem.getMeasurements().size(); i++) {
             if (objectItem.getMeasurements().get(i).getSelected()) {
                 holder.unitEdittext.setText(objectItem.getMeasurements().get(i).getName());
@@ -92,6 +102,8 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
                 listener.editItemAndOpenDialog(position);
             }
         });
+
+        holder.imageBtnEdit.setVisibility(View.GONE);
     }
 
     @Override

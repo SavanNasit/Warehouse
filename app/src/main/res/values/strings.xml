@@ -106,6 +106,13 @@
     <!-- Manage Packages -->
     <string name="fetch_packages">warehouse/fetch_packages</string>
     <string name="packed_packages">warehouse/packed_packages</string>
+    <string name="fetch_shipped_packages">warehouse/fetch_package_shipped</string>
+    <string name="download_invoice_confirm_msg">Are you sure to download invoice?</string>
+    <string name="download_delivery_challan_confirm_msg">Are you sure to download delivery challan?</string>
+    <string name="download_invoice_task">customer/pending_invoice_print</string>
+    <string name="download_delivery_challan_task">warehouse/print_delivery_challan</string>
+    <string name="invoice">invoice</string>
+    <string name="challan">challan</string>
 
     <!-- Receive Consignments -->
     <string name="fetch_purchase_orders">purchase_order/fetch_purchase_orders</string>
@@ -114,6 +121,7 @@
     <string name="purchaseOrder_details_title">Purchase Order details</string>
     <string name="purchaseOrder_details_subtitle">Purchase Order information</string>
     <string name="vendor_title">Vendor:</string>
+    <string name="authorizedBy_title">Authorized by:</string>
     <string name="purchase_details">Purchase Details</string>
     <string name="inputing_purchase_details">You will be inputing purchase details</string>
     <string name="receive_date_title">Receive Date:</string>
@@ -131,6 +139,7 @@
     <string name="vehicle_number">Vehicle Number</string>
     <string name="fetch_receive_consignment_prefilled_data">warehouse/fetch_receive_consignment_formdata</string>
     <string name="vendor_search_task">vendor/search_vendor</string>
+    <string name="authorized_user_search_task">warehouse/search_user</string>
     <string name="quotation_search_item">quotation/search_item</string>
     <string name="task_products_details">warehouse/fetch_selected_consignment_item_info</string>
     <string name="task_receive_consignment">warehouse/receive_consignment</string>
@@ -160,5 +169,6 @@
     <string name="invoice_download_title">Download Invoice</string>
     <string name="download_gatepass_invoice_confirm_msg">Are you sure to download invoice?</string>
     <string name="package_history_gatepass_list_task">warehouse/fetch_package_history</string>
+    <string name="receive">Receive</string>
 
 </resources>
