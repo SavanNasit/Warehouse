@@ -317,6 +317,11 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                                 if (apiResponse.getData().getWarehouseList().size() > 0) {
                                     AppPreferences.setWarehouseDefaultName(PasswordActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, apiResponse.getData().getWarehouseList().get(0).getName());
                                     AppPreferences.setWarehouseDefaultCheckId(PasswordActivity.this, AppUtils.WAREHOUSE_CHK_ID, apiResponse.getData().getWarehouseList().get(0).getChkid());
+                                    AppPreferences.setWarehouseOrderCount(PasswordActivity.this, AppUtils.WAREHOUSE_ORDER_COUNT, apiResponse.getData().getWarehouseList().get(0).getOrderCount());
+                                    AppPreferences.setWarehousePackageCount(PasswordActivity.this, AppUtils.WAREHOUSE_PACKAGE_COUNT, apiResponse.getData().getWarehouseList().get(0).getPackageCount());
+                                    AppPreferences.setWarehouseGatepassCount(PasswordActivity.this, AppUtils.WAREHOUSE_GATEPASS_COUNT, apiResponse.getData().getWarehouseList().get(0).getGatepassCount());
+                                    AppPreferences.setWarehouseConsignmentCount(PasswordActivity.this, AppUtils.WAREHOUSE_CONSIGNMENT_COUNT, apiResponse.getData().getWarehouseList().get(0).getConsignmentCount());
+                                    AppPreferences.setWarehouseReceiveConsignmentCount(PasswordActivity.this, AppUtils.WAREHOUSE_RECEIVE_CONSIGNMENT, apiResponse.getData().getWarehouseList().get(0).getReceiveConsignmentCount());
                                 }
                             }
                         }

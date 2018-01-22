@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.createpackage;
 
 import android.Manifest;
 import android.app.Activity;
@@ -14,14 +14,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.accrete.warehouse.OrderItemActivity;
 import com.accrete.warehouse.R;
@@ -34,7 +36,6 @@ import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
-import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -49,7 +50,6 @@ import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
-import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
 import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_CAMERA;
 import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWithRationale;
 
@@ -59,6 +59,7 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
 
 public class PendingItemsFragment extends Fragment implements PendingItemsAdapter.PendingItemsAdapterListener, View.OnClickListener {
     PendingItems pendingItems = new PendingItems();
+    List<PendingItems> selectedItemList = new ArrayList<>();
     private EditText pendingItemsEdtScan;
     private ImageView pendingItemsImgScan;
     private SwipeRefreshLayout pendingItemsSwipeRefreshLayout;
@@ -68,11 +69,26 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
     private List<PendingItems> pendingItemList = new ArrayList<>();
     private String chkid, chkoid;
     private List<SelectOrderItem> selectOrderItemList = new ArrayList<>();
-
+    private int posToupdate;
+    private boolean flagScan;
 
     public void getData(String str) {
         // Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
         pendingItemsEdtScan.setText(str);
+        for (int i = 0; i < pendingItemList.size(); i++) {
+            if (pendingItemsEdtScan.getText().toString().trim().equals(pendingItemList.get(i).getIsid())) {
+                if (Integer.parseInt(pendingItemList.get(i).getItemQuantity()) == 0) {
+                    Toast.makeText(getActivity(), "No item available", Toast.LENGTH_SHORT).show();
+                } else {
+                    pendingItemList.get(i).setItemQuantity(String.valueOf(Integer.valueOf(pendingItemList.get(i).getItemQuantity()) - 1));
+                    flagScan=true;
+                    posToupdate=i;
+                    pendingItemsAdapter.notifyDataSetChanged();
+                }
+                pendingItemsEdtScan.setText("");
+            }
+        }
+
     }
 
     @Override
@@ -83,6 +99,9 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
             chkid = bundle.getString("chkid");
             chkoid = bundle.getString("chkoid");
             pendingItemList = bundle.getParcelableArrayList("pendingItems");
+            for (int i = 0; i < pendingItemList.size(); i++) {
+                pendingItemList.get(i).setItemQuantityDuplicate(pendingItemList.get(i).getItemQuantity());
+            }
         }
         findViews(rootView);
         return rootView;
@@ -94,15 +113,8 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
         //  pendingItemsSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.pending_items_swipe_refresh_layout);
         pendingItemsRecyclerView = (RecyclerView) rootView.findViewById(R.id.pending_items_recycler_view);
         pendingItemsEmptyView = (TextView) rootView.findViewById(R.id.pending_items_empty_view);
-        LinearLayout  pendingItemsPackagerDetails = (LinearLayout)rootView.findViewById(R.id. pending_items_package_details);
 
-        pendingItemsPackagerDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        pendingItemsAdapter = new PendingItemsAdapter(getActivity(), pendingItemList, this);
+        pendingItemsAdapter = new PendingItemsAdapter(getActivity(), pendingItemList, this, 0,posToupdate,flagScan);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         pendingItemsRecyclerView.setLayoutManager(mLayoutManager);
         pendingItemsRecyclerView.setHasFixedSize(true);
@@ -120,6 +132,36 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
         }
 
         pendingItemsImgScan.setOnClickListener(this);
+        pendingItemsEdtScan.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                for (int i = 0; i < pendingItemList.size(); i++) {
+                    if (pendingItemsEdtScan.getText().toString().trim().equals(pendingItemList.get(i).getIsid())) {
+                        if (Integer.parseInt(pendingItemList.get(i).getItemQuantity()) == 0) {
+                            Toast.makeText(getActivity(), "No item available", Toast.LENGTH_SHORT).show();
+                        } else {
+                            pendingItemList.get(i).setItemQuantity(String.valueOf(Integer.valueOf(pendingItemList.get(i).getItemQuantity()) - 1));
+                            flagScan=true;
+                            posToupdate=i;
+                            pendingItemsAdapter.notifyDataSetChanged();
+                        }
+                        pendingItemsEdtScan.setText("");
+                    }
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -129,7 +171,7 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
 
 
     @Override
-    public void onExecute(String isid, String oiid, final String maximumQuantity) {
+    public void onExecute(String isid, String oiid, final String maximumQuantity, final int position) {
         executeSelectedItems(isid, oiid);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -137,9 +179,11 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
                 Intent intentOrderItem = new Intent(getActivity(), OrderItemActivity.class);
                 intentOrderItem.putExtra("chkoid", chkoid);
                 intentOrderItem.putExtra("quantity", maximumQuantity);
+                intentOrderItem.putExtra("position", position);
                 intentOrderItem.putParcelableArrayListExtra("selectOrderItemList", (ArrayList<? extends Parcelable>) selectOrderItemList);
                 intentOrderItem.putParcelableArrayListExtra("pendingItemsList", (ArrayList<? extends Parcelable>) pendingItemList);
                 startActivityForResult(intentOrderItem, 1001);
+
             }
         }, 1 * 200);
     }
@@ -148,6 +192,7 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
         if (selectOrderItemList.size() > 0) {
             selectOrderItemList.clear();
         }
+
         task = getString(R.string.execute_order_task);
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
@@ -186,19 +231,26 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
 
     @Override
     public void onClick(View v) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (checkPermissionWithRationale((Activity) getActivity(), new PendingItemsFragment(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_FOR_CAMERA)) {
-                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkPermissionWithRationale((Activity) getActivity(), new PendingItemsFragment(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_FOR_CAMERA)) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    return;
                 }
-            } else {
-                scanBarcode();
             }
-   }
+        } else {
+            scanBarcode();
+        }
+    }
 
     public void scanBarcode() {
         Intent intentScan = new Intent(getActivity(), ScannerActivity.class);
         startActivityForResult(intentScan, 1000);
+    }
+
+    public void getAllocatedQuantity(int allocatedQuantity, List<PendingItems> pendingItemsLists, int position) {
+        posToupdate =position;
+        pendingItemsAdapter = new PendingItemsAdapter(getActivity(), pendingItemList, this, allocatedQuantity,posToupdate,false);
+        pendingItemsRecyclerView.setAdapter(pendingItemsAdapter);
+        selectedItemList.addAll(pendingItemsLists);
     }
 }

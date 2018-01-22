@@ -10,7 +10,17 @@ import java.util.List;
  */
 public class Data {
 
+    public String getPacid() {
+        return pacid;
+    }
 
+    public void setPacid(String pacid) {
+        this.pacid = pacid;
+    }
+
+    @SerializedName("pacid")
+    @Expose
+    private String pacid;
     @SerializedName("user_id")
     @Expose
     private String userId;

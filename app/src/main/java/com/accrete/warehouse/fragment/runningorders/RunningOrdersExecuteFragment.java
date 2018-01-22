@@ -1,7 +1,6 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.runningorders;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,13 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.model.PackageDetailsList;
+import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
+import com.accrete.warehouse.fragment.createpackage.PackageDetailsFragment;
+import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PendingItems;
-import com.accrete.warehouse.model.RunningOrder;
 import com.accrete.warehouse.model.SelectOrderItem;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
@@ -37,11 +36,17 @@ public class RunningOrdersExecuteFragment extends Fragment {
     private Packages packages = new Packages();
     private List<Packages> packagesList = new ArrayList<>();
     private Bundle bundle;
-    private String chkid,chkoid;
+    private String chkid, chkoid;
     private ArrayList<PendingItems> pendingItems;
+    private int listSize;
+
+    List<SelectOrderItem> selectOrderItems = new ArrayList<>();
+    List<PendingItems> pendingItemsLists = new ArrayList<>();
+    String strChkoid;
+    private int strQuantity;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_running_execute_orders, container, false);
         findViews(rootView);
         return rootView;
@@ -52,9 +57,9 @@ public class RunningOrdersExecuteFragment extends Fragment {
         bundle = this.getArguments();
         if (bundle != null) {
             packagesList = bundle.getParcelableArrayList("packages");
-            pendingItems=  bundle.getParcelableArrayList("pendingItems");
-            chkid=bundle.getString("chkid");
-            chkoid=bundle.getString("chkoid");
+            pendingItems = bundle.getParcelableArrayList("pendingItems");
+            chkid = bundle.getString("chkid");
+            chkoid = bundle.getString("chkoid");
             //String packages = bundle.getString("packages");
             //  Log.d("packages list size", String.valueOf(runningOrders.size()));
             Log.d("running order list size", String.valueOf(packagesList.size()));
@@ -83,17 +88,27 @@ public class RunningOrdersExecuteFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPagerExecute.setCurrentItem(tab.getPosition());
-          /*      if (tab.getPosition() == 3) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Code to be executed after desired time
-                            PackageDetailsFragment packageDetailsFragment =
-                                    (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
-                            packageDetailsFragment.doRefresh();
-                        }
-                    }, 1 * 200);
-                }*/
+            /*       if(listSize>0){
+
+               }else{
+                   LinearLayout tabStrip = ((LinearLayout)tabLayoutExecute.getChildAt(0));
+                   for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                       tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                           @Override
+                           public boolean onTouch(View v, MotionEvent event) {
+                               return true;
+                           }
+                       });
+                   }
+               }*/
+
+            if(tab.getPosition()==1){
+                viewPagerExecute.setCurrentItem(1);
+                PackageDetailsFragment packageDetailsFragment =
+                        (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+                packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid,strQuantity);
+            }
+
             }
 
             @Override
@@ -122,7 +137,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
         Bundle bundlePendingItems = new Bundle();
         bundlePendingItems.putString("chkid", chkid);
         bundlePendingItems.putString("chkoid", chkoid);
-        bundlePendingItems.putParcelableArrayList("pendingItems",pendingItems);
+        bundlePendingItems.putParcelableArrayList("pendingItems", pendingItems);
         pendingItemsFragment.setArguments(bundlePendingItems);
 
         viewPagerExecuteAdapter adapter = new viewPagerExecuteAdapter(getChildFragmentManager());
@@ -135,26 +150,26 @@ public class RunningOrdersExecuteFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment)+" " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE)+chkoid);
+        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment)+" " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE)+chkoid);
+        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment)+" " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE)+chkoid);
+        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
     }
 
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             // Set title
-            getActivity().setTitle(getString(R.string.running_orders_execute_fragment)+" " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE)+chkoid);
+            getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
         }
     }
 
@@ -173,13 +188,36 @@ public class RunningOrdersExecuteFragment extends Fragment {
         }
     }
 
-    public void getOrderItemList(List<SelectOrderItem>selectOrderItems, List<PendingItems> pendingItemsLists, String chkoid) {
-        if(viewPagerExecute !=null && viewPagerExecute.getCurrentItem() == 1) {
+    public void sendPackageDetails(List<Packages> packages) {
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 2) {
+            Log.e("TAG_ORDERS", "" + packages.size());
+            AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
+                    (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            alreadyCreatedPackagesFragment.sendPackageDetails(packages);
+
+        }
+    }
+
+    public void getOrderItemList(List<SelectOrderItem> selectOrderItem, List<PendingItems> pendingItemsList, String chkoid, int allocatedQuantity, int pos) {
+        listSize = pendingItemsLists.size();
+        pendingItemsLists.addAll(pendingItemsList);
+        selectOrderItems.addAll(selectOrderItem);
+        strChkoid = chkoid;
+        strQuantity = allocatedQuantity;
+
+
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
             Log.e("TAG_ORDERS", "" + selectOrderItems.size());
+
+
+            PendingItemsFragment pendingItemsFragment =
+                    (PendingItemsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            pendingItemsFragment.getAllocatedQuantity(allocatedQuantity,pendingItemsList,pos);
+
+        } else if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 1) {
             PackageDetailsFragment packageDetailsFragment =
                     (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
-            packageDetailsFragment.getOrderItem(selectOrderItems,pendingItemsLists,chkoid);
-
+            packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsList, chkoid, strQuantity);
         }
     }
 

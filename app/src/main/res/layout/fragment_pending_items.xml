@@ -3,12 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1">
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.08"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_15sdp"
         android:background="@drawable/border_edittext_gray"
         android:weightSum="2">
@@ -37,8 +36,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/pending_items_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.82"
+        android:layout_height="wrap_content"
         >
 
         <android.support.v7.widget.RecyclerView
@@ -52,19 +50,18 @@
     <TextView
         android:id="@+id/pending_items_empty_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/no_data_available"
         android:textSize="@dimen/_13sdp"
         android:visibility="gone" />
 
-    <LinearLayout
+  <!--  <LinearLayout
         android:id="@+id/pending_items_package_details"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:visibility="visible"
         android:background="@color/colorPrimaryDark">
         <TextView
             android:layout_width="match_parent"
@@ -76,7 +73,7 @@
             android:visibility="visible" />
 
     </LinearLayout>
-
+-->
 
 
 </LinearLayout>

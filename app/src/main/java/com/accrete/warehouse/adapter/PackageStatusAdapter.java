@@ -58,7 +58,6 @@ public class PackageStatusAdapter extends RecyclerView.Adapter<PackageStatusAdap
 
     public interface PackageStatusAdapterListener {
         void onMessageRowClicked(int position);
-
         void onExecute();
     }
 
@@ -76,7 +75,6 @@ public class PackageStatusAdapter extends RecyclerView.Adapter<PackageStatusAdap
             packageHistoryStatus = (TextView) view.findViewById(R.id.package_history_status);
             packageHistoryDate = (TextView) view.findViewById(R.id.package_history_date);
             packageHistoryNarration = (TextView) view.findViewById(R.id.package_history_narration);
-
 
         }
     }

@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.createpackage;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,14 +51,14 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
 
         alreadyCreatedPackagesSwipeRefreshLayout.setEnabled(false);
 
-        if(packedList.size()>0){
+       /* if(packedList.size()>0){
             alreadyCreatedPackagesRecyclerView.setVisibility(View.VISIBLE);
             alreadyCreatedPackagesEmptyView.setVisibility(View.GONE);
         }else{
             alreadyCreatedPackagesRecyclerView.setVisibility(View.GONE);
             alreadyCreatedPackagesEmptyView.setVisibility(View.VISIBLE);
             alreadyCreatedPackagesEmptyView.setText(getString(R.string.no_data_available));
-        }
+        }*/
     }
 
     @Override
@@ -82,6 +82,13 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     @Override
     public void onExecute() {
 
+    }
+
+    public void sendPackageDetails(List<Packages> packages) {
+        packedList = new ArrayList<>();
+        packedList.addAll(packages);
+        packedAdapter = new AlreadyCreatedPackagesAdapter(getActivity(), packedList, this);
+        alreadyCreatedPackagesRecyclerView.setAdapter(packedAdapter);
     }
 }
 

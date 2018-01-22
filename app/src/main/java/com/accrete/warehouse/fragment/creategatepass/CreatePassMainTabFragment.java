@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.creategatepass;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.fragment.manageConsignment.DetailsFragment;
 import com.accrete.warehouse.model.ShippingBy;
 import com.accrete.warehouse.model.ShippingType;
 import com.accrete.warehouse.utils.NonSwipeableViewPager;

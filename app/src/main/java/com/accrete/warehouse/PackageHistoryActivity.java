@@ -49,7 +49,6 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_package_history);
         findViews();
-
     }
 
     private void findViews() {
@@ -152,7 +151,6 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
                             Toast.makeText(PackageHistoryActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
                         } else {
                             Toast.makeText(PackageHistoryActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }

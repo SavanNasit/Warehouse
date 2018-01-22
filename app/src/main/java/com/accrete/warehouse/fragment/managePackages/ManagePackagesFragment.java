@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.fragment.PendingItemsFragment;
+import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
