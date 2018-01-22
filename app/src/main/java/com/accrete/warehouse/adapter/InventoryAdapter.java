@@ -39,12 +39,12 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         Inventory inventory = inventoryList.get(position);
-        holder.listRowInventoryId.setText(inventory.getInventoryID());
+        holder.listRowInventoryId.setText("Id: " + inventory.getInventoryID());
         holder.listRowInventoryItem.setText(inventory.getItem());
-        holder.listRowInventorySkucode.setText(inventory.getSkuCode());
-        holder.listRowInventoryReceivedQuantity.setText(inventory.getReceivedQuantity());
-        holder.listRowInventoryAvailableStock.setText(inventory.getAvailableStock());
-        //  holder.selectDocName.setText("(" + docList.get(position)+ ")");
+        //holder.listRowInventorySkucode.setText(inventory.getSkuCode());
+        holder.listRowInventoryReceivedQuantity.setText("Total stock : " + inventory.getReceivedQuantity());
+        holder.listRowInventoryAvailableStock.setText("Available : " + inventory.getAvailableStock());
+
         //applyClickEvents(holder, position);
     }
 
@@ -67,7 +67,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView listRowInventoryId;
         private TextView listRowInventoryItem;
-        private TextView listRowInventorySkucode;
+        //private TextView listRowInventorySkucode;
         private TextView listRowInventoryReceivedQuantity;
         private TextView listRowInventoryAvailableStock;
 
@@ -76,7 +76,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
             super(view);
             listRowInventoryId = (TextView) view.findViewById(R.id.list_row_inventory_id);
             listRowInventoryItem = (TextView) view.findViewById(R.id.list_row_inventory_item);
-            listRowInventorySkucode = (TextView) view.findViewById(R.id.list_row_inventory_skucode);
+            //listRowInventorySkucode = (TextView) view.findViewById(R.id.list_row_inventory_skucode);
             listRowInventoryReceivedQuantity = (TextView) view.findViewById(R.id.list_row_inventory_received_quantity);
             listRowInventoryAvailableStock = (TextView) view.findViewById(R.id.list_row_inventory_available_stock);
         }

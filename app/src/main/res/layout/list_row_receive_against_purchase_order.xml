@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingBottom="@dimen/_6sdp"
+        android:paddingTop="@dimen/_10sdp"
         android:weightSum="2.5">
 
         <LinearLayout
@@ -20,12 +22,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_weight="1.5"
             android:gravity="left"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/vendorName_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_order"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/orderId_textView"
@@ -44,41 +51,41 @@
                 android:textAllCaps="true"
                 android:textSize="@dimen/_10sdp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:divider="@drawable/vertical_divider"
-                android:orientation="horizontal"
-                android:showDividers="middle">
+            <!-- <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_30sdp"
+                 android:divider="@drawable/vertical_divider"
+                 android:orientation="horizontal"
+                 android:showDividers="middle">
 
-                <TextView
-                    android:id="@+id/amount_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingRight="@dimen/_5sdp"
-                    android:textColor="@color/home_page_text_gray"
-                    android:textSize="@dimen/_9sdp" />
+                 <TextView
+                     android:id="@+id/amount_textView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
+                     android:paddingRight="@dimen/_5sdp"
+                     android:textColor="@color/home_page_text_gray"
+                     android:textSize="@dimen/_9sdp" />
 
-                <TextView
-                    android:id="@+id/tax_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_5sdp"
-                    android:textColor="@color/home_page_text_gray"
-                    android:textSize="@dimen/_9sdp" />
+                 <TextView
+                     android:id="@+id/tax_textView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
+                     android:paddingLeft="@dimen/_5sdp"
+                     android:paddingRight="@dimen/_5sdp"
+                     android:textColor="@color/home_page_text_gray"
+                     android:textSize="@dimen/_9sdp" />
 
-                <TextView
-                    android:id="@+id/amount_tax_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_5sdp"
-                    android:textColor="@color/home_page_text_gray"
-                    android:textSize="@dimen/_9sdp" />
+                 <TextView
+                     android:id="@+id/amount_tax_textView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="match_parent"
+                     android:paddingLeft="@dimen/_5sdp"
+                     android:paddingRight="@dimen/_5sdp"
+                     android:textColor="@color/home_page_text_gray"
+                     android:textSize="@dimen/_9sdp" />
 
-            </LinearLayout>
-
+             </LinearLayout>
+ -->
             <TextView
                 android:id="@+id/payable_amount_textView"
                 android:layout_width="wrap_content"
@@ -92,32 +99,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
             android:layout_toRightOf="@+id/left_layout"
             android:layout_weight="1"
             android:gravity="right"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/createdBy_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:maxLines="1"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/date_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:maxLines="1"
-                android:paddingBottom="@dimen/_5sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/status_textView"
@@ -130,14 +115,36 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/createdBy_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:maxLines="1"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/date_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_3sdp"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/textView_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:text="@string/fa_truck"
-                android:textSize="@dimen/_15sdp" />
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/receive"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp" />
         </LinearLayout>
     </LinearLayout>
 

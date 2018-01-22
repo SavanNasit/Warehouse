@@ -1,6 +1,7 @@
 package com.accrete.warehouse.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,12 @@ import android.widget.TextView;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.Consignment;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by poonam on 12/5/17.
@@ -36,19 +42,41 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
         return new MyViewHolder(itemView);
     }
 
+    private String capitalize(String capString) {
+        StringBuffer capBuffer = new StringBuffer();
+        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(capString);
+        while (capMatcher.find()) {
+            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toUpperCase() + capMatcher.group(2).toLowerCase());
+        }
+
+        return capMatcher.appendTail(capBuffer).toString();
+    }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+        DateFormat outputFormat = new SimpleDateFormat("dd MMM, yyyy");
+
         Consignment manageConsignment = consignmentList.get(position);
         holder.listRowManageConsignmentConsignmentId.setText(manageConsignment.getConsignmentId());
-        holder.listRowManageConsignmentPurchaseOrder.setText(manageConsignment.getPurchaseNumber());
-        holder.listRowManageConsignmentInvoiceNumber.setText(manageConsignment.getPurchaseOrderID());
-        holder.listRowManageConsignmentInvoiceDate.setText(manageConsignment.getInvoiceDate());
-        holder.listRowManageConsignmentPurchaseOrderDate.setText(manageConsignment.getPurchaseOrderDate());
-        holder.listRowManageConsignmentVendor.setText(manageConsignment.getVendor());
-        holder.listRowManageConsignmentWarehouse.setText(manageConsignment.getWarehouse());
-        holder.listRowManageConsignmentReceivedOn.setText(manageConsignment.getCreatedTs());
+        holder.listRowManageConsignmentConsignmentId.setPaintFlags(holder.listRowManageConsignmentConsignmentId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        if (manageConsignment.getPurchaseNumber() != null && !manageConsignment.getPurchaseNumber().isEmpty()) {
+            holder.listRowManageConsignmentPurchaseOrder.setText("Invoice No. : " + manageConsignment.getPurchaseNumber());
+        }
+        holder.listRowManageConsignmentInvoiceNumber.setText("PO : " + manageConsignment.getPurchaseOrderID());
+        //  holder.listRowManageConsignmentInvoiceDate.setText(manageConsignment.getInvoiceDate());
+        //  holder.listRowManageConsignmentPurchaseOrderDate.setText(manageConsignment.getPurchaseOrderDate());
+        if (manageConsignment.getVendor() != null && !manageConsignment.getVendor().isEmpty()) {
+            holder.listRowManageConsignmentVendor.setText(capitalize(manageConsignment.getVendor()));
+        }
+        // holder.listRowManageConsignmentWarehouse.setText(manageConsignment.getWarehouse());
 
+        try {
+            holder.listRowManageConsignmentReceivedOn.setText("Received on: " + (outputFormat.format(simpleDateFormat.parse(
+                    manageConsignment.getCreatedTs()))) + "");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         //Statuses
         holder.listRowManageConsignmentStatus.setBackgroundResource(R.drawable.tags_rounded_corner);
 
@@ -99,10 +127,10 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
         private TextView listRowManageConsignmentConsignmentId;
         private TextView listRowManageConsignmentPurchaseOrder;
         private TextView listRowManageConsignmentInvoiceNumber;
-        private TextView listRowManageConsignmentInvoiceDate;
-        private TextView listRowManageConsignmentPurchaseOrderDate;
+        // private TextView listRowManageConsignmentInvoiceDate;
+        // private TextView listRowManageConsignmentPurchaseOrderDate;
         private TextView listRowManageConsignmentVendor;
-        private TextView listRowManageConsignmentWarehouse;
+        //   private TextView listRowManageConsignmentWarehouse;
         private TextView listRowManageConsignmentReceivedOn;
         private TextView listRowManageConsignmentStatus;
         private LinearLayout layout;
@@ -114,10 +142,10 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
             listRowManageConsignmentConsignmentId = (TextView) view.findViewById(R.id.list_row_manage_consignment_consignment_id);
             listRowManageConsignmentPurchaseOrder = (TextView) view.findViewById(R.id.list_row_manage_consignment_purchase_order);
             listRowManageConsignmentInvoiceNumber = (TextView) view.findViewById(R.id.list_row_manage_consignment_invoice_number);
-            listRowManageConsignmentInvoiceDate = (TextView) view.findViewById(R.id.list_row_manage_consignment_invoice_date);
-            listRowManageConsignmentPurchaseOrderDate = (TextView) view.findViewById(R.id.list_row_manage_consignment_purchase_order_date);
+            //   listRowManageConsignmentInvoiceDate = (TextView) view.findViewById(R.id.list_row_manage_consignment_invoice_date);
+            //   listRowManageConsignmentPurchaseOrderDate = (TextView) view.findViewById(R.id.list_row_manage_consignment_purchase_order_date);
             listRowManageConsignmentVendor = (TextView) view.findViewById(R.id.list_row_manage_consignment_vendor);
-            listRowManageConsignmentWarehouse = (TextView) view.findViewById(R.id.list_row_manage_consignment_warehouse);
+            //   listRowManageConsignmentWarehouse = (TextView) view.findViewById(R.id.list_row_manage_consignment_warehouse);
             listRowManageConsignmentReceivedOn = (TextView) view.findViewById(R.id.list_row_manage_consignment_received_on);
             listRowManageConsignmentStatus = (TextView) view.findViewById(R.id.list_row_manage_consignment_status);
         }

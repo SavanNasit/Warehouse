@@ -131,8 +131,10 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Inve
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        inventoryEmptyView.setText(getString(R.string.no_data_available));
-                        getInventoryList(getString(R.string.last_updated_date), "1");
+                        if (isAdded()) {
+                            inventoryEmptyView.setText(getString(R.string.no_data_available));
+                            getInventoryList(getString(R.string.last_updated_date), "1");
+                        }
                     }
                 }, 200);
             } else {

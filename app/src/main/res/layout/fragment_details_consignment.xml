@@ -13,7 +13,8 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <!--layout for contacts-->
-        <LinearLayout android:id="@+id/mainLayout"
+        <LinearLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:descendantFocusability="blocksDescendants"
@@ -27,7 +28,8 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="Consignment"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                android:textSize="@dimen/_13sdp" />
 
             <TextView
                 android:id="@+id/consignmentSubTitle_textView"
@@ -36,7 +38,8 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="Details of the consignment"
-                android:textColor="@color/home_page_text_gray" />
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_12sdp" />
 
             <View
                 android:id="@+id/consignmentTitle_view"
@@ -65,7 +68,7 @@
                     android:gravity="left|center"
                     android:text="Container Id :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/containerId_textView"
@@ -75,7 +78,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -97,7 +100,7 @@
                     android:gravity="left|center"
                     android:text="Authorized by :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/authorizedBy_textView"
@@ -107,7 +110,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -129,7 +132,7 @@
                     android:gravity="left|center"
                     android:text="Purchase Order :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/purchaseOrder_textView"
@@ -139,7 +142,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -161,7 +164,7 @@
                     android:gravity="left|center"
                     android:text="Purchased On :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/purchasedOn_textView"
@@ -171,7 +174,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -193,7 +196,7 @@
                     android:gravity="left|center"
                     android:text="Invoice Number:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/invoiceNumber_textView"
@@ -203,7 +206,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -225,7 +228,7 @@
                     android:gravity="left|center"
                     android:text="Invoice Date :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/invoiceDate_textView"
@@ -235,7 +238,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -257,7 +260,7 @@
                     android:gravity="left|center"
                     android:text="Vendor :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/vendor_textView"
@@ -267,7 +270,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -289,7 +292,7 @@
                     android:gravity="left|center"
                     android:text="Created By :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/createdBy_textView"
@@ -299,7 +302,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -321,7 +324,7 @@
                     android:gravity="left|center"
                     android:text="Created Time :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/createdTime_textView"
@@ -331,7 +334,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -353,7 +356,7 @@
                     android:gravity="left|center"
                     android:text="Warehouse:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/wareHouse_textView"
@@ -363,7 +366,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -385,7 +388,7 @@
                     android:gravity="left|center"
                     android:text="Received On:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/receivedOn_textView"
@@ -395,7 +398,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -417,7 +420,7 @@
                     android:gravity="left|center"
                     android:text="Stock Request:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/stockRequest_textView"
@@ -427,7 +430,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -449,7 +452,7 @@
                     android:gravity="left|center"
                     android:text="Status:"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -465,7 +468,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -476,7 +479,8 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="Transportation Details"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                android:textSize="@dimen/_13sdp" />
 
             <TextView
                 android:id="@+id/transportationSubTitle_textView"
@@ -485,7 +489,8 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:text="Details of the transportation"
-                android:textColor="@color/home_page_text_gray" />
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_12sdp" />
 
 
             <View
@@ -514,7 +519,7 @@
                     android:gravity="left|center"
                     android:text="Vendor Name :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/vendorName_textView"
@@ -524,7 +529,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -546,7 +551,7 @@
                     android:gravity="left|center"
                     android:text="LR Number :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/lrNumber_textView"
@@ -556,7 +561,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -578,7 +583,7 @@
                     android:gravity="left|center"
                     android:text="Vehicle Number :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/vehicleNumber_textView"
@@ -588,7 +593,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -610,7 +615,7 @@
                     android:gravity="left|center"
                     android:text="Expected Date :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/expectedDate_textView"
@@ -620,7 +625,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
 
@@ -642,7 +647,7 @@
                     android:gravity="left|center"
                     android:text="Weight :"
                     android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/weight_textView"
@@ -652,7 +657,7 @@
                     android:layout_weight="0.52"
                     android:gravity="left"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
             </LinearLayout>
         </LinearLayout>

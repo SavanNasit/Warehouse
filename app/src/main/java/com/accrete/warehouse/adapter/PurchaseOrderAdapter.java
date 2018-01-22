@@ -23,6 +23,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by poonam on 12/18/17.
@@ -62,6 +64,17 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         } else return 0;
     }
 
+    private String capitalize(String capString) {
+        StringBuffer capBuffer = new StringBuffer();
+        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(capString);
+        while (capMatcher.find()) {
+            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toUpperCase() + capMatcher.group(2).toLowerCase());
+        }
+
+        return capMatcher.appendTail(capBuffer).toString();
+    }
+
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final PurchaseOrder purchaseOrder = purchaseOrderList.get(position);
@@ -70,8 +83,12 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         holder.orderIdTextView.setMovementMethod(LinkMovementMethod.getInstance());
         holder.orderIdTextView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
+        if (purchaseOrder.getVendorName() != null && !purchaseOrder.getVendorName().isEmpty()) {
+            holder.vendorNameTextView.setText(capitalize(purchaseOrder.getVendorName()));
+        }
+
         holder.wareHouseTextView.setText(purchaseOrder.getWarehouseName());
-        holder.wareHouseTextView.setVisibility(View.INVISIBLE);
+        holder.wareHouseTextView.setVisibility(View.GONE);
 
         double amount = ParseDouble(purchaseOrder.getAmount());
         double tax = ParseDouble(purchaseOrder.getTax());
@@ -79,9 +96,9 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         double payableAmount = ParseDouble(purchaseOrder.getPayableAmount());
         DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
 
-        holder.amountTextView.setText("Amount\n" + activity.getString(R.string.Rs) + " " + formatter.format(amount));
-        holder.taxTextView.setText("Tax\n" + activity.getString(R.string.Rs) + " " + formatter.format(tax));
-        holder.amountTaxTextView.setText("After Tax\n" + activity.getString(R.string.Rs) + " " + formatter.format(amountAfterTax));
+        //  holder.amountTextView.setText("Amount\n" + activity.getString(R.string.Rs) + " " + formatter.format(amount));
+        //  holder.taxTextView.setText("Tax\n" + activity.getString(R.string.Rs) + " " + formatter.format(tax));
+        //  holder.amountTaxTextView.setText("After Tax\n" + activity.getString(R.string.Rs) + " " + formatter.format(amountAfterTax));
         holder.payableAmountTextView.setText("Payable Amount " + activity.getString(R.string.Rs) + " " + formatter.format(payableAmount));
 
         holder.createdByTextView.setText("By: " + purchaseOrder.getCreatedBy());
@@ -90,7 +107,7 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
-            DateFormat outputFormat = new SimpleDateFormat("hh:mm a - dd MMM, yyyy");
+            DateFormat outputFormat = new SimpleDateFormat("dd MMM, yyyy");
             Date date = simpleDateFormat.parse(purchaseOrder.getCreatedTs());
             holder.dateTextView.setText("" + outputFormat.format(date).toString().trim());
         } catch (ParseException e) {
@@ -98,6 +115,7 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         }
 
         holder.statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
+        holder.textViewReceive.setBackgroundResource(R.drawable.tags_rounded_corner);
 
         GradientDrawable drawable = (GradientDrawable) holder.statusTextView.getBackground();
         if (purchaseOrder.getPurorsid().equals("1")) {
@@ -142,6 +160,10 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
             holder.textViewReceive.setVisibility(View.GONE);
         }
 
+        //Receive
+        GradientDrawable drawableReceive = (GradientDrawable) holder.textViewReceive.getBackground();
+        drawableReceive.setColor(activity.getResources().getColor(R.color.sky_blue_bg));
+
         holder.textViewReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,9 +198,10 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         private RelativeLayout mainLayout;
         private TextView orderIdTextView;
         private TextView dateTextView;
-        private TextView statusTextView, amountTextView, wareHouseTextView;
+        private TextView statusTextView, wareHouseTextView, vendorNameTextView;
         private TextView payableAmountTextView;
-        private TextView createdByTextView, taxTextView, amountTaxTextView, textViewReceive;
+        //private TextView amountTextView, taxTextView,amountTaxTextView;
+        private TextView createdByTextView, textViewReceive;
 
         public MyViewHolder(View view) {
             super(view);
@@ -186,13 +209,14 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
             orderIdTextView = (TextView) view.findViewById(R.id.orderId_textView);
             dateTextView = (TextView) view.findViewById(R.id.date_textView);
             statusTextView = (TextView) view.findViewById(R.id.status_textView);
-            amountTextView = (TextView) view.findViewById(R.id.amount_textView);
+            //  amountTextView = (TextView) view.findViewById(R.id.amount_textView);
             wareHouseTextView = (TextView) view.findViewById(R.id.wareHouse_textView);
             payableAmountTextView = (TextView) view.findViewById(R.id.payable_amount_textView);
             createdByTextView = (TextView) view.findViewById(R.id.createdBy_textView);
-            taxTextView = (TextView) view.findViewById(R.id.tax_textView);
-            amountTaxTextView = (TextView) view.findViewById(R.id.amount_tax_textView);
+            //  taxTextView = (TextView) view.findViewById(R.id.tax_textView);
+            // amountTaxTextView = (TextView) view.findViewById(R.id.amount_tax_textView);
             textViewReceive = (TextView) view.findViewById(R.id.textView_receive);
+            vendorNameTextView = (TextView) view.findViewById(R.id.vendorName_textView);
 
             fontAwesomeFont = Typeface.createFromAsset(activity.getAssets(), "font/fontawesome-webfont.ttf");
             textViewReceive.setTypeface(fontAwesomeFont);

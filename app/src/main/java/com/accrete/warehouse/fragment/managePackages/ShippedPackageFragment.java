@@ -25,12 +25,11 @@ import android.widget.Toast;
 import com.accrete.warehouse.CustomerDetailsActivity;
 import com.accrete.warehouse.ItemsInsidePackageActivity;
 import com.accrete.warehouse.PackageHistoryActivity;
-import com.accrete.warehouse.PackageOrderStatusActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
-import com.accrete.warehouse.adapter.OutForDeliveryAdapter;
+import com.accrete.warehouse.adapter.PackedAgainstStockAdapter;
 import com.accrete.warehouse.model.ApiResponse;
-import com.accrete.warehouse.model.PackageItem;
+import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -51,17 +50,17 @@ import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
 
 /**
- * Created by poonam on 11/30/17.
+ * Created by agt on 22/1/18.
  */
 
-public class AttemptFailedFragment extends Fragment implements OutForDeliveryAdapter.OutForDeliveryAdapterListener,
+public class ShippedPackageFragment extends Fragment implements PackedAgainstStockAdapter.PackedAgainstAdapterListener,
         DocumentUploaderAdapter.DocAdapterListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private SwipeRefreshLayout attemptFailedRefreshLayout;
-    private RecyclerView attemptFailedRecyclerView;
-    private TextView attemptFailedEmptyView;
-    private OutForDeliveryAdapter outForDeliveryAdapter;
-    private List<PackageItem> attemptFailedList = new ArrayList<>();
+    private SwipeRefreshLayout packedAgainstRefreshLayout;
+    private RecyclerView packedAgainstRecyclerView;
+    private TextView packedAgainstEmptyView;
+    private PackedAgainstStockAdapter packedAgainstStockAdapter;
+    private List<PackedItem> packedAgainstList = new ArrayList<>();
     private AlertDialog dialogSelectEvent;
     private AlertDialog dialogUploadDoc;
     private DocumentUploaderAdapter documentUploaderAdapter;
@@ -78,41 +77,40 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         return rootView;
     }
 
-
     private void findViews(View rootView) {
-        attemptFailedRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.attempt_failed_refresh_layout);
-        attemptFailedRecyclerView = (RecyclerView) rootView.findViewById(R.id.attempt_failed_recycler_view);
-        attemptFailedEmptyView = (TextView) rootView.findViewById(R.id.attempt_failed_empty_view);
+        packedAgainstRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.attempt_failed_refresh_layout);
+        packedAgainstRecyclerView = (RecyclerView) rootView.findViewById(R.id.attempt_failed_recycler_view);
+        packedAgainstEmptyView = (TextView) rootView.findViewById(R.id.attempt_failed_empty_view);
 
-        outForDeliveryAdapter = new OutForDeliveryAdapter(getActivity(), attemptFailedList, this);
+        packedAgainstStockAdapter = new PackedAgainstStockAdapter(getActivity(), packedAgainstList, this);
         mLayoutManager = new LinearLayoutManager(getActivity());
-        attemptFailedRecyclerView.setLayoutManager(mLayoutManager);
-        attemptFailedRecyclerView.setHasFixedSize(true);
-        attemptFailedRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        attemptFailedRecyclerView.setNestedScrollingEnabled(false);
-        attemptFailedRecyclerView.setAdapter(outForDeliveryAdapter);
+        packedAgainstRecyclerView.setLayoutManager(mLayoutManager);
+        packedAgainstRecyclerView.setHasFixedSize(true);
+        packedAgainstRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        packedAgainstRecyclerView.setNestedScrollingEnabled(false);
+        packedAgainstRecyclerView.setAdapter(packedAgainstStockAdapter);
 
 
         doRefresh();
 
         //Scroll Listener
-        attemptFailedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        packedAgainstRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 totalItemCount = mLayoutManager.getItemCount();
                 lastVisibleItem = mLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold) && attemptFailedList.size() > 0) {
+                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold) && packedAgainstList.size() > 0) {
                     // End has been reached
                     // Do something
                     loading = true;
                     //calling API
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        getAttemptFailedList(attemptFailedList.get(totalItemCount - 1).getCreatedTs(), "2");
+                        getShippedPackageList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2");
                     } else {
-                        if (attemptFailedRefreshLayout.isRefreshing()) {
-                            attemptFailedRefreshLayout.setRefreshing(false);
+                        if (packedAgainstRefreshLayout.isRefreshing()) {
+                            packedAgainstRefreshLayout.setRefreshing(false);
                         }
                         Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
@@ -120,13 +118,13 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
             }
         });
 
-        attemptFailedRefreshLayout.setOnRefreshListener(this);
+        packedAgainstRefreshLayout.setOnRefreshListener(this);
 
         //Load data after getting connection
-        attemptFailedEmptyView.setOnClickListener(new View.OnClickListener() {
+        packedAgainstEmptyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (attemptFailedEmptyView.getText().toString().trim().equals(getString(R.string.no_internet_try_later))) {
+                if (packedAgainstEmptyView.getText().toString().trim().equals(getString(R.string.no_internet_try_later))) {
                     doRefresh();
                 }
             }
@@ -178,15 +176,15 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         //btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
-   //     textViewActionPackageStatus.setText("Revert Package Delivery");
+        textViewActionPackageStatus.setText("Revert Package Delivery");
 
 
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
-                startActivity(intentStatus);
-             //   dialogRevertPackageDelivery();
+               /* Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+                startActivity(intentStatus);*/
+                dialogRevertPackageDelivery();
             }
         });
 
@@ -351,26 +349,26 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
     }
 
     public void doRefresh() {
-        if (attemptFailedList != null && attemptFailedList.size() == 0) {
+        if (packedAgainstList != null && packedAgainstList.size() == 0) {
             status = NetworkUtil.getConnectivityStatusString(getActivity());
             if (!status.equals(getString(R.string.not_connected_to_internet))) {
                 loading = true;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        attemptFailedEmptyView.setText(getString(R.string.no_data_available));
-                        getAttemptFailedList(getString(R.string.last_updated_date), "1");
+                        packedAgainstEmptyView.setText(getString(R.string.no_data_available));
+                        getShippedPackageList(getString(R.string.last_updated_date), "1");
                     }
                 }, 200);
             } else {
-                attemptFailedEmptyView.setVisibility(View.VISIBLE);
-                attemptFailedEmptyView.setText(getString(R.string.no_internet_try_later));
+                packedAgainstEmptyView.setVisibility(View.VISIBLE);
+                packedAgainstEmptyView.setText(getString(R.string.no_internet_try_later));
             }
         }
     }
 
-    private void getAttemptFailedList(final String time, final String traversalValue) {
-        String task = getString(R.string.fetch_packages);
+    private void getShippedPackageList(final String time, final String traversalValue) {
+        String task = getString(R.string.fetch_shipped_packages);
 
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
@@ -379,9 +377,9 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getOutForDeliveryList(version, key, task, userId, accessToken,
+        Call<ApiResponse> call = apiService.getShippedPackages(version, key, task, userId, accessToken,
                 AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID),
-                time, traversalValue, "5", "3");
+                time, traversalValue);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -392,23 +390,23 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        for (final PackageItem packageItem : apiResponse.getData().getPackageItems()) {
-                            if (packageItem != null) {
+                        for (final PackedItem packedItem : apiResponse.getData().getPackageShippedData()) {
+                            if (packedItem != null) {
                                 if (traversalValue.equals("2")) {
-                                    if (!time.equals(packageItem.getCreatedTs())) {
-                                        attemptFailedList.add(packageItem);
+                                    if (!time.equals(packedItem.getCreatedTs())) {
+                                        packedAgainstList.add(packedItem);
                                     }
                                     dataChanged = "yes";
                                 } else if (traversalValue.equals("1")) {
-                                    if (attemptFailedRefreshLayout != null &&
-                                            attemptFailedRefreshLayout.isRefreshing()) {
+                                    if (packedAgainstRefreshLayout != null &&
+                                            packedAgainstRefreshLayout.isRefreshing()) {
                                         // To remove duplicacy of a new item
-                                        if (!time.equals(packageItem.getCreatedTs())) {
-                                            attemptFailedList.add(0, packageItem);
+                                        if (!time.equals(packedItem.getCreatedTs())) {
+                                            packedAgainstList.add(0, packedItem);
                                         }
                                     } else {
-                                        if (!time.equals(packageItem.getCreatedTs())) {
-                                            attemptFailedList.add(packageItem);
+                                        if (!time.equals(packedItem.getCreatedTs())) {
+                                            packedAgainstList.add(packedItem);
                                         }
                                     }
                                     dataChanged = "yes";
@@ -416,52 +414,52 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                             }
                         }
                         loading = false;
-                        if (attemptFailedList != null && attemptFailedList.size() == 0) {
-                            attemptFailedEmptyView.setVisibility(View.VISIBLE);
+                        if (packedAgainstList != null && packedAgainstList.size() == 0) {
+                            packedAgainstEmptyView.setVisibility(View.VISIBLE);
                         } else {
-                            attemptFailedEmptyView.setVisibility(View.GONE);
+                            packedAgainstEmptyView.setVisibility(View.GONE);
                         }
-                        if (attemptFailedRefreshLayout != null &&
-                                attemptFailedRefreshLayout.isRefreshing()) {
-                            attemptFailedRefreshLayout.setRefreshing(false);
+                        if (packedAgainstRefreshLayout != null &&
+                                packedAgainstRefreshLayout.isRefreshing()) {
+                            packedAgainstRefreshLayout.setRefreshing(false);
                         }
                         if (traversalValue.equals("2")) {
-                            outForDeliveryAdapter.notifyDataSetChanged();
+                            packedAgainstStockAdapter.notifyDataSetChanged();
                             if (dataChanged != null && dataChanged.equals("yes")) {
                             }
                         } else if (traversalValue.equals("1")) {
                             if (dataChanged != null && dataChanged.equals("yes")) {
-                                outForDeliveryAdapter.notifyDataSetChanged();
-                                attemptFailedRecyclerView.smoothScrollToPosition(0);
+                                packedAgainstStockAdapter.notifyDataSetChanged();
+                                packedAgainstRecyclerView.smoothScrollToPosition(0);
                             }
                         }
                     } else {
                         loading = false;
-                        if (attemptFailedList != null && attemptFailedList.size() == 0) {
-                            attemptFailedEmptyView.setVisibility(View.VISIBLE);
+                        if (packedAgainstList != null && packedAgainstList.size() == 0) {
+                            packedAgainstEmptyView.setVisibility(View.VISIBLE);
                         } else {
-                            attemptFailedEmptyView.setVisibility(View.GONE);
+                            packedAgainstEmptyView.setVisibility(View.GONE);
                         }
-                        if (attemptFailedRefreshLayout != null && attemptFailedRefreshLayout.isRefreshing()) {
-                            attemptFailedRefreshLayout.setRefreshing(false);
+                        if (packedAgainstRefreshLayout != null && packedAgainstRefreshLayout.isRefreshing()) {
+                            packedAgainstRefreshLayout.setRefreshing(false);
                         }
                         if (traversalValue.equals("2")) {
-                            outForDeliveryAdapter.notifyDataSetChanged();
+                            packedAgainstStockAdapter.notifyDataSetChanged();
                             if (dataChanged != null && dataChanged.equals("yes")) {
                                 // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
                             }
                         } else if (traversalValue.equals("1")) {
                             if (dataChanged != null && dataChanged.equals("yes")) {
-                                outForDeliveryAdapter.notifyDataSetChanged();
-                                attemptFailedRecyclerView.smoothScrollToPosition(0);
+                                packedAgainstStockAdapter.notifyDataSetChanged();
+                                packedAgainstRecyclerView.smoothScrollToPosition(0);
                             }
                         }
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (attemptFailedRefreshLayout != null && attemptFailedRefreshLayout.isRefreshing()) {
-                        attemptFailedRefreshLayout.setRefreshing(false);
+                    if (packedAgainstRefreshLayout != null && packedAgainstRefreshLayout.isRefreshing()) {
+                        packedAgainstRefreshLayout.setRefreshing(false);
                     }
                 }
 
@@ -478,18 +476,17 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
     public void onRefresh() {
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            if (attemptFailedList != null && attemptFailedList.size() > 0) {
-                getAttemptFailedList(attemptFailedList.get(0).getCreatedTs(), "1");
+            if (packedAgainstList != null && packedAgainstList.size() > 0) {
+                getShippedPackageList(packedAgainstList.get(0).getCreatedTs(), "1");
             } else {
-                getAttemptFailedList(getString(R.string.last_updated_date), "1");
+                getShippedPackageList(getString(R.string.last_updated_date), "1");
             }
-            attemptFailedEmptyView.setVisibility(View.GONE);
-            attemptFailedRefreshLayout.setRefreshing(true);
-
+            packedAgainstEmptyView.setVisibility(View.GONE);
+            packedAgainstRefreshLayout.setRefreshing(true);
         } else {
-            attemptFailedEmptyView.setVisibility(View.VISIBLE);
-            attemptFailedEmptyView.setText(getString(R.string.no_internet_try_later));
-            attemptFailedRefreshLayout.setRefreshing(false);
+            packedAgainstEmptyView.setVisibility(View.VISIBLE);
+            packedAgainstEmptyView.setText(getString(R.string.no_internet_try_later));
+            packedAgainstRefreshLayout.setRefreshing(false);
         }
     }
 }
