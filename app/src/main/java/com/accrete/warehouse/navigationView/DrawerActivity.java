@@ -29,6 +29,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
+import com.accrete.warehouse.fragment.PendingItemsFragment;
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
@@ -70,6 +71,8 @@ import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_CAMERA;
 import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_RUNNING_ORDER_CALL_PERMISSIONS;
 
 
@@ -493,10 +496,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                     if (perms.get(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                         Log.d("PERMISSION", "Call and Phone services permission granted");
 
-                        // process the normal flow
-                        //else any one or both the permissions are not granted
-
-//                     Handling  Followup  Allow onclick in runtime permissions
                         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
                         if (f instanceof RunningOrdersFragment) {
                             ((RunningOrdersFragment) f).callAction();
@@ -519,6 +518,53 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 }
             }
             break;
+
+            case REQUEST_CODE_ASK_STORAGE_PERMISSIONS: {
+                Map<String, Integer> perms = new HashMap<>();
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("PERMISSION", "Storage permission granted");
+                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                        if (f instanceof ManageGatePassFragment) {
+                            ((ManageGatePassFragment) f).downloadPdfCall();
+                        }
+                    } else {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        } else {
+                            askUserToAllowPermissionFromSetting();
+                        }
+                    }
+                }
+            }
+            break;
+
+            case REQUEST_CODE_FOR_CAMERA: {
+                Map<String, Integer> perms = new HashMap<>();
+                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+
+                    if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("PERMISSION", "Camera");
+                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                        if (f instanceof PendingItemsFragment) {
+                            ((PendingItemsFragment) f).scanBarcode();
+                        }
+                    } else {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                        } else {
+                            askUserToAllowPermissionFromSetting();
+                        }
+                    }
+                }
+            }
+            break;
+
         }
     }
 

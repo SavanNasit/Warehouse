@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AppIllustration.AppIllustrationActivity" />
+        <activity android:name=".ViewPackageGatePassActivity" />
         <activity
             android:name=".domain.DomainActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />

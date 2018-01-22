@@ -78,7 +78,7 @@ public class CreatePassMainTabFragment extends Fragment {
                 getActivity().supportInvalidateOptionsMenu();
                 final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(createGatepassViewpager.getCurrentItem());
                 if (position == 0) {
-                    if (mFragment instanceof DetailsFragment) {
+                    if (mFragment instanceof PackageSelectionFragment) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {

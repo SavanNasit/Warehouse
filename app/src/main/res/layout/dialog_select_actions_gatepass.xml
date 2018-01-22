@@ -41,7 +41,7 @@
             android:textStyle="normal" />
 
 
-        <LinearLayout
+   <!--     <LinearLayout
             android:id="@+id/actions_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,13 +58,13 @@
                 android:textColor="#8D8D8D"
                 android:textSize="14sp" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/actions_view_package"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/home_page_gray"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp">
 
@@ -83,7 +83,7 @@
             android:id="@+id/actions_print_package"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/home_page_gray"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp">
 
@@ -102,7 +102,7 @@
             android:id="@+id/actions_cancel_gatepass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/home_page_gray"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp">
 

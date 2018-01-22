@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -191,7 +192,7 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
         List<PackageDetailsList> pdetailList = new ArrayList<>();
         for (int i = 0; i < selectOrderItems.size(); i++) {
             packageDetails.setItem(selectOrderItems.get(i).getInventoryName());
-            packageDetails.setQuantity(selectOrderItems.get(i).getAllocatedQuantity() + selectOrderItems.get(i).getUnit());
+            packageDetails.setQuantity(selectOrderItems.get(i).getAllocatedQuantity());
             packageDetails.setUnit(selectOrderItems.get(i).getUnit());
             packageDetails.setQty(selectOrderItems.get(i).getAllocatedQuantity());
             packageDetails.setBatchNumber(selectOrderItems.get(i).getInventory());

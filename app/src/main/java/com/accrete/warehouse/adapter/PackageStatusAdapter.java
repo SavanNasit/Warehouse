@@ -18,7 +18,7 @@ import java.util.List;
  * Created by poonam on 12/4/17.
  */
 
-public class PackageStatusAdapter extends RecyclerView.Adapter<PackageStatusAdapter.MyViewHolder>  {
+public class PackageStatusAdapter extends RecyclerView.Adapter<PackageStatusAdapter.MyViewHolder> {
     Activity activity;
     private Context context;
     private List<PackageStatusList> packageStatusLists;
@@ -41,14 +41,15 @@ public class PackageStatusAdapter extends RecyclerView.Adapter<PackageStatusAdap
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-      //  holder.selectDocName.setText("(" + packageStatusLists.get(position)+ ")");
-        //applyClickEvents(holder, position);
+        final PackageStatusList packageStatusList = packageStatusLists.get(position);
+        holder.packageHistoryStatus.setText(packageStatusList.getStatus());
+        holder.packageHistoryDate.setText(packageStatusList.getDate());
+        holder.packageHistoryNarration.setText(packageStatusList.getNarration());
     }
 
     @Override
     public int getItemCount() {
         return packageStatusLists.size();
-
     }
 
     private void applyClickEvents(MyViewHolder holder, final int position) {
@@ -57,18 +58,26 @@ public class PackageStatusAdapter extends RecyclerView.Adapter<PackageStatusAdap
 
     public interface PackageStatusAdapterListener {
         void onMessageRowClicked(int position);
+
         void onExecute();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView selectDocName;
-        private ImageView deleteSelectedDoc;
-
+        private View packageHistoryView;
+        private ImageView packageHistoryImg;
+        private TextView packageHistoryStatus;
+        private TextView packageHistoryDate;
+        private TextView packageHistoryNarration;
 
         public MyViewHolder(View view) {
             super(view);
-           // selectDocName = (TextView)view.findViewById( R.id.select_doc_name );
-            //deleteSelectedDoc = (ImageView)view.findViewById( R.id.delete_selected_doc );
+            packageHistoryView = (View) view.findViewById(R.id.package_history_view);
+            packageHistoryImg = (ImageView) view.findViewById(R.id.package_history_img);
+            packageHistoryStatus = (TextView) view.findViewById(R.id.package_history_status);
+            packageHistoryDate = (TextView) view.findViewById(R.id.package_history_date);
+            packageHistoryNarration = (TextView) view.findViewById(R.id.package_history_narration);
+
+
         }
     }
 

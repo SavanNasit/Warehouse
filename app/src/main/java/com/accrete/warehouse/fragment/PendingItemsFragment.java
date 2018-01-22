@@ -1,9 +1,14 @@
 package com.accrete.warehouse.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.OrderItemActivity;
@@ -28,6 +34,7 @@ import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -42,6 +49,9 @@ import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_CAMERA;
+import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWithRationale;
 
 /**
  * Created by poonam on 11/28/17.
@@ -84,6 +94,14 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
         //  pendingItemsSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.pending_items_swipe_refresh_layout);
         pendingItemsRecyclerView = (RecyclerView) rootView.findViewById(R.id.pending_items_recycler_view);
         pendingItemsEmptyView = (TextView) rootView.findViewById(R.id.pending_items_empty_view);
+        LinearLayout  pendingItemsPackagerDetails = (LinearLayout)rootView.findViewById(R.id. pending_items_package_details);
+
+        pendingItemsPackagerDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
         pendingItemsAdapter = new PendingItemsAdapter(getActivity(), pendingItemList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         pendingItemsRecyclerView.setLayoutManager(mLayoutManager);
@@ -168,10 +186,18 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
 
     @Override
     public void onClick(View v) {
-        scanBarcode();
-    }
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (checkPermissionWithRationale((Activity) getActivity(), new PendingItemsFragment(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_FOR_CAMERA)) {
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                }
+            } else {
+                scanBarcode();
+            }
+   }
 
-    private void scanBarcode() {
+    public void scanBarcode() {
         Intent intentScan = new Intent(getActivity(), ScannerActivity.class);
         startActivityForResult(intentScan, 1000);
     }
