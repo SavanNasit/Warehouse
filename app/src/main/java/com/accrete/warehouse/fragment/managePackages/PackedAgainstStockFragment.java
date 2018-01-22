@@ -223,7 +223,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         actionsPackageHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
                 intentPackageHistory.putExtra("packageid", packedAgainstList.get(position).getPacid());
                 startActivity(intentPackageHistory);
