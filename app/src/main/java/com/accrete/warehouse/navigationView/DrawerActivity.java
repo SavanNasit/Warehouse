@@ -30,10 +30,7 @@ import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
 import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
-import com.accrete.warehouse.fragment.ManageGatePassFragment;
-import com.accrete.warehouse.fragment.PendingItemsFragment;
-import com.accrete.warehouse.fragment.RunningOrdersExecuteFragment;
-import com.accrete.warehouse.fragment.RunningOrdersFragment;
+
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;

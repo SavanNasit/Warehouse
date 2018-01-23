@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
-import com.accrete.warehouse.fragment.PendingItemsFragment;
 import com.accrete.warehouse.widgets.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
