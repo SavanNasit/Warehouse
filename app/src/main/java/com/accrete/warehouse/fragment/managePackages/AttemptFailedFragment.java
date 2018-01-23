@@ -28,10 +28,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.ChangePackageAttemptFailedStatusActivity;
 import com.accrete.warehouse.CustomerDetailsActivity;
 import com.accrete.warehouse.ItemsInsidePackageActivity;
 import com.accrete.warehouse.PackageHistoryActivity;
-import com.accrete.warehouse.PackageOrderStatusActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.OutForDeliveryAdapter;
@@ -193,6 +193,7 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         dialogSelectActionsProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_select_warehouse_progress_bar);
         //btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
+        actionsItemsInsidePackage.setVisibility(View.GONE);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
         //     textViewActionPackageStatus.setText("Revert Package Delivery");
 
@@ -200,7 +201,9 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+                dialogSelectEvent.dismiss();
+                Intent intentStatus = new Intent(getActivity(), ChangePackageAttemptFailedStatusActivity.class);
+                intentStatus.putExtra(getString(R.string.pacdelgatpacid), attemptFailedList.get(position).getPacdelgatpacid().toString());
                 startActivity(intentStatus);
                 //   dialogRevertPackageDelivery();
             }
@@ -209,6 +212,7 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         actionsItemsInsidePackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentItems = new Intent(getActivity(), ItemsInsidePackageActivity.class);
                 startActivity(intentItems);
             }
@@ -217,7 +221,9 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         actionsPackageHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
+                intentPackageHistory.putExtra("packageid", attemptFailedList.get(position).getPacid().toString());
                 startActivity(intentPackageHistory);
             }
         });

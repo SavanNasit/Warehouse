@@ -206,7 +206,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+               /* Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
                 startActivity(intentStatus);*/
                 dialogRevertPackageDelivery();
             }
@@ -225,7 +225,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
-                intentPackageHistory.putExtra("packageid", packedAgainstList.get(position).getPacid());
+                intentPackageHistory.putExtra("packageid", packedAgainstList.get(position).getPacid().toString());
                 startActivity(intentPackageHistory);
             }
         });

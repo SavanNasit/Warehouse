@@ -190,15 +190,17 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
         textViewActionPackageStatus.setText("Revert Package Delivery");
+        actionsItemsInsidePackage.setVisibility(View.GONE);
 
 
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+               /* Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
                 startActivity(intentStatus);*/
 
-                dialogRevertPackageDelivery();
+                dialogRevertPackageDelivery(deliveredList.get(position).getPacdelgatid().toString()
+                        , deliveredList.get(position).getPacdelgatpacid().toString());
             }
         });
 
@@ -213,7 +215,9 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
         actionsPackageHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
+                intentPackageHistory.putExtra("packageid", deliveredList.get(position).getPacid().toString());
                 startActivity(intentPackageHistory);
             }
         });
@@ -336,7 +340,7 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
         }
     }
 
-    private void dialogRevertPackageDelivery() {
+    private void dialogRevertPackageDelivery(final String pacdelgatid, final String pacdelgatpacidd) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_cancel_gatepass, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -361,7 +365,16 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                    revertPackageDelivery(pacdelgatid, pacdelgatpacidd);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                }
+                if (dialogSelectEvent != null && dialogSelectEvent.isShowing()) {
+                    dialogSelectEvent.dismiss();
+                }
                 dialogCancelGatepass.dismiss();
+
             }
         });
 
@@ -743,6 +756,46 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 alertDialog.dismiss();
+            }
+        });
+    }
+
+    private void revertPackageDelivery(String pacdelgatid, String pacdelgatpacid) {
+        task = getString(R.string.revert_package_task);
+        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.revertPackageDelivery(version, key, task, userId, accessToken, pacdelgatid,
+                pacdelgatpacid);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        //Refresh List
+                        deliveredList.clear();
+                        doRefresh();
+                    } else if (apiResponse.getSuccessCode().equals("10001")) {
+                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

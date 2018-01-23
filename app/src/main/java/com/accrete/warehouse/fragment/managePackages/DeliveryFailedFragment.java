@@ -193,12 +193,13 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
         textViewActionPackageStatus.setText("Revert Package Delivery");
-
+        actionsItemsInsidePackage.setVisibility(View.GONE);
+        actionsPackageStatus.setVisibility(View.GONE);
 
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+               /* Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
                 startActivity(intentStatus);*/
                 dialogRevertPackageDelivery();
             }
@@ -215,7 +216,9 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
         actionsPackageHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
+                intentPackageHistory.putExtra("packageid", deliveryFailedList.get(position).getPacid().toString());
                 startActivity(intentPackageHistory);
             }
         });

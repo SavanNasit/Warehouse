@@ -28,10 +28,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.ChangePackageStatusActivity;
 import com.accrete.warehouse.CustomerDetailsActivity;
 import com.accrete.warehouse.ItemsInsidePackageActivity;
 import com.accrete.warehouse.PackageHistoryActivity;
-import com.accrete.warehouse.PackageOrderStatusActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.OutForDeliveryAdapter;
@@ -188,11 +188,14 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
         dialogSelectActionsProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_select_warehouse_progress_bar);
         //btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
+        actionsItemsInsidePackage.setVisibility(View.GONE);
 
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+                dialogSelectEvent.dismiss();
+                Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
+                intentStatus.putExtra(getString(R.string.pacdelgatpacid), outForDeliveryList.get(position).getPacdelgatpacid());
                 startActivity(intentStatus);
             }
         });
@@ -200,6 +203,7 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
         actionsItemsInsidePackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentItems = new Intent(getActivity(), ItemsInsidePackageActivity.class);
                 startActivity(intentItems);
             }
@@ -210,6 +214,7 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
+                intentPackageHistory.putExtra("packageid", outForDeliveryList.get(position).getPacid().toString());
                 startActivity(intentPackageHistory);
             }
         });

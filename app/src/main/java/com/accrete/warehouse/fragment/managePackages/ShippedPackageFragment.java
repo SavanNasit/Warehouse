@@ -182,7 +182,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+               /* Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
                 startActivity(intentStatus);*/
                 dialogRevertPackageDelivery();
             }

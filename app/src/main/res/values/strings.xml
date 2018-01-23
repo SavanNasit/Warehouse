@@ -117,6 +117,7 @@
     <string name="challan">challan</string>
     <string name="gatepass">gatepass</string>
     <string name="loading_slip">loadingSlip</string>
+    <string name="fetch_package_status_form_data_task">warehouse/fetch_package_status_form_data</string>
 
     <!-- Receive Consignments -->
     <string name="fetch_purchase_orders">purchase_order/fetch_purchase_orders</string>
@@ -175,5 +176,10 @@
     <string name="package_history_gatepass_list_task">warehouse/fetch_package_history</string>
     <string name="receive">Receive</string>
     <string name="pacId">pacid</string>
+    <string name="pacdelgatpacid">pacdelgatpacid</string>
+    <string name="revert_package_task">warehouse/revert_package_delivery</string>
+    <string name="title_activity_change_package_attempt_failed_status">
+        ChangePackageAttemptFailedStatus
+    </string>
 
 </resources>
