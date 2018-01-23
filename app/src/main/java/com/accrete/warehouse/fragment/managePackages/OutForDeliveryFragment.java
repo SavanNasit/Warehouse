@@ -196,7 +196,7 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                 dialogSelectEvent.dismiss();
                 Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
                 intentStatus.putExtra(getString(R.string.pacdelgatpacid), outForDeliveryList.get(position).getPacdelgatpacid());
-                startActivity(intentStatus);
+                startActivityForResult(intentStatus, 456);
             }
         });
 
@@ -698,6 +698,13 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                 alertDialog.dismiss();
             }
         });
+    }
+
+    public void clearListAndRefresh() {
+        if (outForDeliveryList != null && outForDeliveryList.size() > 0) {
+            outForDeliveryList.clear();
+        }
+        doRefresh();
     }
 
 }

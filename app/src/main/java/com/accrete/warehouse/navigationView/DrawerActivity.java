@@ -29,15 +29,15 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
-import com.accrete.warehouse.fragment.PendingItemsFragment;
-import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.ManageGatePassFragment;
+import com.accrete.warehouse.fragment.PendingItemsFragment;
+import com.accrete.warehouse.fragment.RunningOrdersExecuteFragment;
+import com.accrete.warehouse.fragment.RunningOrdersFragment;
+import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveAgainstPurchaseOrderFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveDirectlyFragment;
-import com.accrete.warehouse.fragment.RunningOrdersExecuteFragment;
-import com.accrete.warehouse.fragment.RunningOrdersFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
@@ -465,6 +465,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 ((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"));
             }
 
+        } else if (resultCode == 456) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+            if (currentFragment instanceof ManagePackagesFragment) {
+                Log.e("Selected Order Item", " " + requestCode + " " + resultCode);
+                ((ManagePackagesFragment) currentFragment).checkFragmentAndRefresh();
+            }
+
         }
     }
 
@@ -531,8 +538,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
                         if (f instanceof ManageGatePassFragment) {
                             ((ManageGatePassFragment) f).downloadPdfCall();
-                        }else if (f instanceof  ManagePackagesFragment){
-                            ((ManagePackagesFragment)f).checkFragmentAndDownloadPDF();
+                        } else if (f instanceof ManagePackagesFragment) {
+                            ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         }
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

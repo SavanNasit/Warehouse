@@ -601,4 +601,22 @@ public interface ApiInterface {
                                                     @Query("statusFlag")
                                                             String status);
 
+    @GET("?urlq=service")
+    Call<ApiResponse> changeOutForDeliveryStatus(@Query("version")
+                                                         String version,
+                                                 @Query("key")
+                                                         String key,
+                                                 @Query("task")
+                                                         String task,
+                                                 @Query("user_id")
+                                                         String userid,
+                                                 @Query("access_token")
+                                                         String accessToken,
+                                                 @Query("pacdelgatpacid")
+                                                         String pacdelgatpacid,
+                                                 @Query("pacdelgatpacsid")
+                                                         String pacStatusId,
+                                                 @Query("narration") String narration);
+
+
 }
