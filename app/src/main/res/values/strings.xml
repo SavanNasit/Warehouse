@@ -108,12 +108,16 @@
     <string name="packed_packages">warehouse/packed_packages</string>
     <string name="fetch_shipped_packages">warehouse/fetch_package_shipped</string>
     <string name="download_invoice_confirm_msg">Are you sure to download invoice?</string>
+    <string name="download_loading_slip_confirm_msg">Are you sure to download loading slip?</string>
     <string name="download_delivery_challan_confirm_msg">Are you sure to download delivery challan?</string>
     <string name="download_invoice_task">customer/pending_invoice_print</string>
     <string name="download_delivery_challan_task">warehouse/print_delivery_challan</string>
     <string name="download_loading_slip_task">warehouse/print_loading_slip</string>
     <string name="invoice">invoice</string>
     <string name="challan">challan</string>
+    <string name="gatepass">gatepass</string>
+    <string name="loading_slip">loadingSlip</string>
+    <string name="fetch_package_status_form_data_task">warehouse/fetch_package_status_form_data</string>
 
     <!-- Receive Consignments -->
     <string name="fetch_purchase_orders">purchase_order/fetch_purchase_orders</string>
@@ -163,7 +167,7 @@
     <string name="download_gatepass">warehouse/print_gatepass</string>
     <string name="download_gatepass_confirm_msg">Are you sure to download gatepass?</string>
     <string name="gatepass_download_title">Download Gatepass</string>
-    <string name="view_packages">VIew Packages</string>
+    <string name="view_packages">View Packages</string>
     <string name="view_gatepass_list_task">warehouse/fetch_gatepass_info</string>
     <string name="download_gatepass_invoice_task">customer/pending_invoice_print</string>
     <string name="customer_info_gatepass_task">warehouse/fetch_package_customer_info</string>
@@ -171,5 +175,11 @@
     <string name="download_gatepass_invoice_confirm_msg">Are you sure to download invoice?</string>
     <string name="package_history_gatepass_list_task">warehouse/fetch_package_history</string>
     <string name="receive">Receive</string>
+    <string name="pacId">pacid</string>
+    <string name="pacdelgatpacid">pacdelgatpacid</string>
+    <string name="revert_package_task">warehouse/revert_package_delivery</string>
+    <string name="title_activity_change_package_attempt_failed_status">
+        ChangePackageAttemptFailedStatus
+    </string>
 
 </resources>

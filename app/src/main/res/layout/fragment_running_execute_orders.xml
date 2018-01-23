@@ -13,7 +13,8 @@
         app:tabIndicatorColor="@color/primary"
         app:tabSelectedTextColor="@color/primary"
         app:tabTextColor="@color/home_page_text_gray"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
+        app:tabMinWidth="@dimen/_120sdp"
         app:tabBackground="@color/home_page_gray"
         />
 

@@ -68,7 +68,7 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
         holder.skuCodeEdittext.setText(objectItem.getInternalCode());
         holder.orderQuantityEdittext.setText(formatter.format(ParseDouble(objectItem.getOrderQuantity())));
         holder.receivingQuantityEdittext.setText(formatter.format(ParseDouble(objectItem.getReceiveQuantity())));
-        holder.priceEdittext.setText(formatter.format(ParseDouble(objectItem.getPrice())));
+        holder.priceEdittext.setText(formatter.format(ParseDouble(objectItem.getUnitPrice())));
         holder.commentEdittext.setText(objectItem.getComment());
         holder.expiryDateEdittext.setText(objectItem.getExpiryDate());
         holder.rejectedQuantityEdittext.setText(formatter.format(ParseDouble(objectItem.getRejectedQuantity())));

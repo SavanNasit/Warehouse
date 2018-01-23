@@ -523,4 +523,82 @@ public interface ApiInterface {
                     String invid
     );
 
+
+    @GET("?urlq=service")
+    Call<ApiResponse> downloadGatePassPDF(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("pacdelgatid")
+                    String pacdelGatid
+    );
+
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getCustomerInfoByPacId(@Query("version")
+                                                     String version,
+                                             @Query("key")
+                                                     String key,
+                                             @Query("task")
+                                                     String task,
+                                             @Query("user_id")
+                                                     String userid,
+                                             @Query("access_token")
+                                                     String accessToken,
+                                             @Query("pacid")
+                                                     String pacid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> revertPackageDelivery(@Query("version")
+                                                    String version,
+                                            @Query("key")
+                                                    String key,
+                                            @Query("task")
+                                                    String task,
+                                            @Query("user_id")
+                                                    String userid,
+                                            @Query("access_token")
+                                                    String accessToken,
+                                            @Query("pacdelgatid")
+                                                    String pacdelgatid,
+                                            @Query("pacdelgatpacid")
+                                                    String pacdelgatpacid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getPackageStatus(@Query("version")
+                                               String version,
+                                       @Query("key")
+                                               String key,
+                                       @Query("task")
+                                               String task,
+                                       @Query("user_id")
+                                               String userid,
+                                       @Query("access_token")
+                                               String accessToken,
+                                       @Query("pacdelgatpacid")
+                                               String pacdelgatpacid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getAttemptFailedPackageStatus(@Query("version")
+                                                            String version,
+                                                    @Query("key")
+                                                            String key,
+                                                    @Query("task")
+                                                            String task,
+                                                    @Query("user_id")
+                                                            String userid,
+                                                    @Query("access_token")
+                                                            String accessToken,
+                                                    @Query("pacdelgatpacid")
+                                                            String pacdelgatpacid,
+                                                    @Query("statusFlag")
+                                                            String status);
+
 }
