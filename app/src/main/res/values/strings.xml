@@ -183,5 +183,6 @@
     </string>
 
     <string name="change_package_order_status_task">warehouse/change_gatepass_status</string>
+    <string name="reattempt_task">warehouse/package_reAttempt</string>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.accrete.warehouse.fragment.managePackages;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -59,23 +58,14 @@ public class ManagePackagesFragment extends Fragment {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 getActivity().supportInvalidateOptionsMenu();
                 final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(viewPagerExecute.getCurrentItem());
-                if (position == 0) {
-                    if (mFragment instanceof PackedFragment) {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                            //    ((PackedFragment) mFragment).clearListAndRefresh();
-                            }
-                        }, 200);
+                if (mFragment instanceof PackedFragment) {
+                    if (mFragment != null && mFragment.isAdded()) {
+                        //    ((PackedFragment) mFragment).clearListAndRefresh();
                     }
-                } else if (position == 1) {
-                    if (mFragment instanceof PackedAgainstStockFragment) {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                          //      ((PackedAgainstStockFragment) mFragment).clearListAndRefresh();
-                            }
-                        }, 200);
+                }
+                if (mFragment instanceof PackedAgainstStockFragment) {
+                    if (mFragment != null && mFragment.isAdded()) {
+                        //    ((PackedAgainstStockFragment) mFragment).clearListAndRefresh();
                     }
                 }
             }
@@ -192,6 +182,11 @@ public class ManagePackagesFragment extends Fragment {
             OutForDeliveryFragment outForDeliveryFragment = (OutForDeliveryFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
                     viewPagerExecute.getCurrentItem());
             outForDeliveryFragment.clearListAndRefresh();
+
+        } else if (viewPagerExecute.getCurrentItem() == 5) {
+            AttemptFailedFragment attemptFailedFragment = (AttemptFailedFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                    viewPagerExecute.getCurrentItem());
+            attemptFailedFragment.clearListAndRefresh();
 
         }
     }

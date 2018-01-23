@@ -618,5 +618,20 @@ public interface ApiInterface {
                                                          String pacStatusId,
                                                  @Query("narration") String narration);
 
+    @GET("?urlq=service")
+    Call<ApiResponse> reAttemptFailedTask(@Query("version")
+                                                  String version,
+                                          @Query("key")
+                                                  String key,
+                                          @Query("task")
+                                                  String task,
+                                          @Query("user_id")
+                                                  String userid,
+                                          @Query("access_token")
+                                                  String accessToken,
+                                          @Query("pacdelgatpacid")
+                                                  String pacdelgatpacid,
+                                          @Query("narration") String narration);
+
 
 }
