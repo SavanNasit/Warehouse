@@ -45,6 +45,22 @@ public class PackageStatusAdapter extends RecyclerView.Adapter<PackageStatusAdap
         holder.packageHistoryStatus.setText(packageStatusList.getStatus());
         holder.packageHistoryDate.setText(packageStatusList.getDate());
         holder.packageHistoryNarration.setText(packageStatusList.getNarration());
+        if(packageStatusList.getStatus().equals("Packed")){
+            holder.packageHistoryImg.setImageResource(R.drawable.ic_status_packed);
+        }else if(packageStatusList.getStatus().equals("Delivered")){
+            holder.packageHistoryImg.setImageResource(R.drawable.ic_status_delivered);
+        }else if(packageStatusList.getStatus().equals("Shipped")){
+            holder.packageHistoryImg.setImageResource(R.drawable.ic_status_packed);
+        }else if(packageStatusList.getStatus().equals("Attempt Failed")){
+            holder.packageHistoryImg.setImageResource(R.drawable.ic_status_attempt_failed);
+        }else if(packageStatusList.getStatus().equals("Re-attempt")){
+            holder.packageHistoryImg.setImageResource(R.drawable.ic_status_reattempt);
+        }else if(packageStatusList.getStatus().equals("Out for Delivery")){
+            holder.packageHistoryImg.setImageResource(R.drawable.ic_status_out_for_delivery);
+        }else if(packageStatusList.getStatus().equals("Delivery Failed")) {
+            holder.packageHistoryImg.setImageResource(R.drawable.ic_status_attempt_failed);
+        }
+
     }
 
     @Override

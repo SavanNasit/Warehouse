@@ -244,7 +244,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     AppPreferences.setAccessToken(PasswordActivity.this, AppUtils.ACCESS_TOKEN, apiResponse.getData().getAccessToken());
                     AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, apiResponse.getData().getProfile().getEmail());
                     AppPreferences.setUserName(PasswordActivity.this, AppUtils.USER_NAME, apiResponse.getData().getName());
-                    AppPreferences.setPhoto(PasswordActivity.this, AppUtils.USER_PHOTO, imageUrl);
+                    AppPreferences.setPhoto(PasswordActivity.this, AppUtils.USER_PHOTO, apiResponse.getData().getProfile().getPhoto());
                     AppPreferences.setCompanyCode(PasswordActivity.this, AppUtils.COMPANY_CODE, apiResponse.getData().getCompanyCode());
 
                   /*  ContentValues values = new ContentValues();
@@ -255,7 +255,6 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     textViewNext.setEnabled(true);
                     AppPreferences.setIsLogin(PasswordActivity.this, AppUtils.ISLOGIN, true);
                     getWarehouseList();
-                    navigateToHome();
                 } else if (apiResponse.getSuccessCode().equals("10005")) {
                     progressBar.setVisibility(View.GONE);
                     textViewNext.setEnabled(false);
@@ -325,7 +324,9 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                                 }
                             }
                         }
+                        navigateToHome();
 
+                    }else{
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

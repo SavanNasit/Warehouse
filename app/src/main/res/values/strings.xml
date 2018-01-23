@@ -163,7 +163,7 @@
     <string name="download_gatepass">warehouse/print_gatepass</string>
     <string name="download_gatepass_confirm_msg">Are you sure to download gatepass?</string>
     <string name="gatepass_download_title">Download Gatepass</string>
-    <string name="view_packages">VIew Packages</string>
+    <string name="view_packages">View Packages</string>
     <string name="view_gatepass_list_task">warehouse/fetch_gatepass_info</string>
     <string name="download_gatepass_invoice_task">customer/pending_invoice_print</string>
     <string name="customer_info_gatepass_task">warehouse/fetch_package_customer_info</string>
@@ -171,5 +171,6 @@
     <string name="download_gatepass_invoice_confirm_msg">Are you sure to download invoice?</string>
     <string name="package_history_gatepass_list_task">warehouse/fetch_package_history</string>
     <string name="receive">Receive</string>
+    <string name="task_cancel_package">warehouse/cancel_package</string>
 
 </resources>

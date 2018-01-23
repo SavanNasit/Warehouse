@@ -60,23 +60,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
             pendingItems = bundle.getParcelableArrayList("pendingItems");
             chkid = bundle.getString("chkid");
             chkoid = bundle.getString("chkoid");
-            //String packages = bundle.getString("packages");
-            //  Log.d("packages list size", String.valueOf(runningOrders.size()));
             Log.d("running order list size", String.valueOf(packagesList.size()));
-
-       /*     for (int i = 0; i < runningOrders.size(); i++) {
-                for (int j = 0; j < runningOrders.get(i).getPackages().size() ; j++) {
-                    Log.d("packages list size", String.valueOf(runningOrders.get(i).getPackages().size()));
-                    if (runningOrders.get(i).getPackages().get(j).getInvoiceDate()!= null) {
-                        Toast.makeText(getActivity(),runningOrders.get(i).getPackages().get(j).getInvoiceDate(), Toast.LENGTH_SHORT).show();
-                        Log.d("packages invoice date", runningOrders.get(i).getPackages().get(j).getPacid());
-
-                    }
-
-
-                }
-
-            }*/
 
         }
         setupViewPagerExecute(viewPagerExecute);
@@ -88,26 +72,16 @@ public class RunningOrdersExecuteFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPagerExecute.setCurrentItem(tab.getPosition());
-            /*       if(listSize>0){
-
-               }else{
-                   LinearLayout tabStrip = ((LinearLayout)tabLayoutExecute.getChildAt(0));
-                   for(int i = 0; i < tabStrip.getChildCount(); i++) {
-                       tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
-                           @Override
-                           public boolean onTouch(View v, MotionEvent event) {
-                               return true;
-                           }
-                       });
-                   }
-               }*/
 
             if(tab.getPosition()==1){
-                viewPagerExecute.setCurrentItem(1);
                 PackageDetailsFragment packageDetailsFragment =
                         (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
                 packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid,strQuantity);
-            }
+            }else if(tab.getPosition()==2){
+                    AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
+                            (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+                    alreadyCreatedPackagesFragment.getPackageList(packagesList);
+                }
 
             }
 
@@ -220,6 +194,17 @@ public class RunningOrdersExecuteFragment extends Fragment {
             packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsList, chkoid, strQuantity);
         }
     }
+
+    public void scanBarcode() {
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
+            PendingItemsFragment pendingItemsFragment =
+                    (PendingItemsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            pendingItemsFragment.scanBarcode();
+
+            Log.d("PERMISSION", "ROEF");
+        }
+    }
+
 
  /*   public void getOrderItemList(ArrayList<Parcelable> selectedOrderItems) {
         if(viewPagerExecute !=null && viewPagerExecute.getCurrentItem() == 1) {

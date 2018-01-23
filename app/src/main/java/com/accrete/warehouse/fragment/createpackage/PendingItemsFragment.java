@@ -243,6 +243,7 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
     }
 
     public void scanBarcode() {
+        Log.d("PERMISSION", "Camera3");
         Intent intentScan = new Intent(getActivity(), ScannerActivity.class);
         startActivityForResult(intentScan, 1000);
     }

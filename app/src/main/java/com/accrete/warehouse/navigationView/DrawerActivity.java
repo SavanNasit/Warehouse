@@ -29,10 +29,9 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
-import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
-import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
+import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveAgainstPurchaseOrderFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveDirectlyFragment;
@@ -42,7 +41,6 @@ import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
 import com.accrete.warehouse.model.WarehouseList;
-import com.accrete.warehouse.password.PasswordActivity;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -117,9 +115,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
         domainName = AppPreferences.getDomain(DrawerActivity.this, AppUtils.DOMAIN);
+        String imageURL = AppPreferences.getPhoto(DrawerActivity.this, AppUtils.USER_PHOTO);
         if (domainName.length() > 1)
             domainName = domainName.substring(0, domainName.length() - 1);
-        profile = new ProfileDrawerItem().withIcon(R.drawable.ic_profile_user).withName(AppPreferences.getUserName(DrawerActivity.this, AppUtils.USER_NAME)
+        profile = new ProfileDrawerItem().withIcon(imageURL).withName(AppPreferences.getUserName(DrawerActivity.this, AppUtils.USER_NAME)
         ).withEmail(AppPreferences.getEmail(DrawerActivity.this, AppUtils.USER_EMAIL)).withIdentifier(101);
 
         // Create the AccountHeader
@@ -358,11 +357,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         } else {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
             Fragment currentReceiveFragment = getSupportFragmentManager().findFragmentById(R.id.receive_consignment_container);
-            if (currentFragment instanceof RunningOrdersFragment) {
-                getSupportFragmentManager().popBackStack();
-                drawer.deselect(2);
-                drawer.setSelection(0);
-            } else if (currentFragment instanceof ManagePackagesFragment) {
+            Fragment currentRunningOrder = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
+            if (currentFragment instanceof ManagePackagesFragment) {
                 // add your code here
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(3);
@@ -379,6 +375,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 drawer.setSelection(0);
 
 
+            } else if (currentReceiveFragment instanceof ReceiveDirectlyFragment) {
+                super.onBackPressed();
+                return;
+
+            } else if (currentReceiveFragment instanceof ReceiveAgainstPurchaseOrderFragment) {
+                super.onBackPressed();
+                return;
             } else if (currentFragment instanceof ReceiveConsignmentFragment) {
 
                 getSupportFragmentManager().popBackStack();
@@ -386,19 +389,14 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 drawer.setSelection(0);
 
 
-            } else if (currentReceiveFragment instanceof ReceiveDirectlyFragment) {
+            } else if (currentRunningOrder instanceof RunningOrdersExecuteFragment) {
+                super.onBackPressed();
+                return;
 
+            } else if (currentFragment instanceof RunningOrdersFragment) {
                 getSupportFragmentManager().popBackStack();
-                drawer.deselect(6);
+                drawer.deselect(2);
                 drawer.setSelection(0);
-
-
-            } else if (currentReceiveFragment instanceof ReceiveAgainstPurchaseOrderFragment) {
-
-                getSupportFragmentManager().popBackStack();
-                drawer.deselect(6);
-                drawer.setSelection(0);
-
             } else {
 
                 if (doubleBackToExitPressedOnce) {
@@ -454,13 +452,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         AppPreferences.setWarehouseConsignmentCount(DrawerActivity.this, AppUtils.WAREHOUSE_CONSIGNMENT_COUNT, consignmentCount);
         AppPreferences.setWarehouseReceiveConsignmentCount(DrawerActivity.this, AppUtils.WAREHOUSE_RECEIVE_CONSIGNMENT, receiveConsignmentCount);
         //setCallback(strWarehouseName);
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+     /*   Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
         if (currentFragment instanceof HomeFragment) {
             if (getFragmentRefreshListener() != null) {
                 Log.d("warehouse", strWarehouseName);
                 getFragmentRefreshListener().onRefresh(strWarehouseName);
             }
-        }
+        }*/
     }
 
     @Override
@@ -476,9 +474,9 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         } else if (resultCode == 1001) {
             Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
             if (newCurrentFragment instanceof RunningOrdersExecuteFragment) {
-                Log.e("Selected Order Item", " " + requestCode + " " + data.getIntExtra("qty",0));
+                Log.e("Selected Order Item", " " + requestCode + " " + data.getIntExtra("qty", 0));
                 ((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"),
-                        data.getIntExtra("qty",0), data.getIntExtra("pos",0));
+                        data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));
             }
 
         }
@@ -547,8 +545,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
                         if (f instanceof ManageGatePassFragment) {
                             ((ManageGatePassFragment) f).downloadPdfCall();
-                        }else if (f instanceof  ManagePackagesFragment){
-                            ((ManagePackagesFragment)f).checkFragmentAndDownloadPDF();
+                        } else if (f instanceof ManagePackagesFragment) {
+                            ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         }
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -569,9 +567,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
                     if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         Log.d("PERMISSION", "Camera");
-                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-                        if (f instanceof PendingItemsFragment) {
-                            ((PendingItemsFragment) f).scanBarcode();
+                        Fragment f = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
+                        if (f instanceof RunningOrdersExecuteFragment) {
+                            ((RunningOrdersExecuteFragment) f).scanBarcode();
+                            Log.d("PERMISSION", "Camera2");
                         }
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {

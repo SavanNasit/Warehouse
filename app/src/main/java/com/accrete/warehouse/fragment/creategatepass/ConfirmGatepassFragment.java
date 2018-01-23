@@ -189,7 +189,7 @@ public class ConfirmGatepassFragment extends Fragment {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Log.d("error", t.getMessage());
-
+                Toast.makeText(getActivity(), "Oops, Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }

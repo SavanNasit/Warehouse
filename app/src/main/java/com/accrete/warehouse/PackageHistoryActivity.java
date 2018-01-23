@@ -85,7 +85,6 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
         packageStatus.setPackageStatus("Out For Delivery");
         packageStatus.setDate("November 28, 2017, 6:13 pm");
         packageStatus.setNarration("charger got damaged");
-
         packageStatusList.add(packageStatus);
         packageStatusList.add(packageStatus);
         packageStatusList.add(packageStatus);
@@ -135,17 +134,13 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
                 try {
                     if (apiResponse.getSuccess()) {
                         packageHistoryRecyclerView.setVisibility(View.VISIBLE);
-
                         for (PackageStatusList packageStatusLists : apiResponse.getData().getPackageData().getHistoryData()) {
                             packageStatusList.add(packageStatusLists);
-
                         }
                         packageHistoryDate.setText(apiResponse.getData().getPackageData().getInvoiceDate());
                         packageHistoryId.setText(apiResponse.getData().getPackageData().getPackageId());
                         packageHistoryName.setText(apiResponse.getData().getPackageData().getCustomerName());
                         packageHistoryInoviceNum.setText(apiResponse.getData().getPackageData().getInvoiceNo());
-
-
                         packageStatusAdapter.notifyDataSetChanged();
 
                     } else {
