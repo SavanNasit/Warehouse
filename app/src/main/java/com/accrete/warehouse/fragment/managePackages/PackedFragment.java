@@ -334,6 +334,14 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
     }
 
+    public void clearListAndRefresh() {
+        if (packedList != null && packedList.size() > 0) {
+            packedList.clear();
+        }
+        packedItemAdapter.notifyDataSetChanged();
+        doRefresh();
+    }
+
     private void dialogDeliverPackages() {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_cancel_gatepass, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

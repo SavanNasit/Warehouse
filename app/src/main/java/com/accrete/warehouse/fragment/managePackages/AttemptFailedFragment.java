@@ -94,6 +94,12 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         return rootView;
     }
 
+    public void clearListAndRefresh() {
+        if (attemptFailedList != null && attemptFailedList.size() > 0) {
+            attemptFailedList.clear();
+        }
+        doRefresh();
+    }
 
     private void findViews(View rootView) {
         attemptFailedRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.attempt_failed_refresh_layout);
@@ -204,7 +210,7 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                 dialogSelectEvent.dismiss();
                 Intent intentStatus = new Intent(getActivity(), ChangePackageAttemptFailedStatusActivity.class);
                 intentStatus.putExtra(getString(R.string.pacdelgatpacid), attemptFailedList.get(position).getPacdelgatpacid().toString());
-                startActivity(intentStatus);
+                startActivityForResult(intentStatus, 456);
                 //   dialogRevertPackageDelivery();
             }
         });
