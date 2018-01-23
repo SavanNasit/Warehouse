@@ -29,6 +29,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
+import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
@@ -543,10 +544,14 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                     if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         Log.d("PERMISSION", "Storage permission granted");
                         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
+
                         if (f instanceof ManageGatePassFragment) {
                             ((ManageGatePassFragment) f).downloadPdfCall();
                         } else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
+                        }else if (fragment instanceof RunningOrdersExecuteFragment) {
+                            ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
                         }
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

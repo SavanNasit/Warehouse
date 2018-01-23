@@ -60,13 +60,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
             pendingItems = bundle.getParcelableArrayList("pendingItems");
             chkid = bundle.getString("chkid");
             chkoid = bundle.getString("chkoid");
-            pendingItems = bundle.getParcelableArrayList("pendingItems");
-            chkid = bundle.getString("chkid");
-            chkoid = bundle.getString("chkoid");
-            //String packages = bundle.getString("packages");
-            //  Log.d("packages list size", String.valueOf(runningOrders.size()));
             Log.d("running order list size", String.valueOf(packagesList.size()));
-
 
         }
         setupViewPagerExecute(viewPagerExecute);
@@ -76,19 +70,6 @@ public class RunningOrdersExecuteFragment extends Fragment {
 
         viewPagerExecute.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPagerExecute.setCurrentItem(tab.getPosition());
-
-            if(tab.getPosition()==1){
-                PackageDetailsFragment packageDetailsFragment =
-                        (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
-                packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid,strQuantity);
-            }else if(tab.getPosition()==2){
-                    AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
-                            (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
-                    alreadyCreatedPackagesFragment.getPackageList(packagesList);
-                }
-
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
                 //Disabling click on first tab, To make it enable set clickable true
@@ -102,7 +83,15 @@ public class RunningOrdersExecuteFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-
+                if(position==1){
+                    PackageDetailsFragment packageDetailsFragment =
+                            (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+                    packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid,strQuantity);
+                }else if(position==2){
+                    AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
+                            (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+                    alreadyCreatedPackagesFragment.getPackageList(packagesList);
+                }
             }
 
             @Override
@@ -110,6 +99,8 @@ public class RunningOrdersExecuteFragment extends Fragment {
 
             }
         });
+
+
 
     }
 
@@ -149,7 +140,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment)+" " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE)+chkoid);
+        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
     }
 
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -194,8 +185,6 @@ public class RunningOrdersExecuteFragment extends Fragment {
 
 
         if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
-    public void getOrderItemList(List<SelectOrderItem> selectOrderItems, List<PendingItems> pendingItemsLists, String chkoid) {
-        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 1) {
             Log.e("TAG_ORDERS", "" + selectOrderItems.size());
 
 
@@ -209,13 +198,22 @@ public class RunningOrdersExecuteFragment extends Fragment {
             packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsList, chkoid, strQuantity);
         }
     }
-            packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid);
 
     public void scanBarcode() {
         if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
             PendingItemsFragment pendingItemsFragment =
                     (PendingItemsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
             pendingItemsFragment.scanBarcode();
+
+            Log.d("PERMISSION", "ROEF");
+        }
+    }
+
+    public void checkFragmentAndDownloadPDF() {
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 2) {
+            AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
+                    (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            alreadyCreatedPackagesFragment.checkFragmentAndDownloadPDF();
 
             Log.d("PERMISSION", "ROEF");
         }

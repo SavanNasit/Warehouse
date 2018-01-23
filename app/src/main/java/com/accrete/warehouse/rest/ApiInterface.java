@@ -358,6 +358,8 @@ public interface ApiInterface {
                                              String userid,
                                      @Query("access_token")
                                              String accessToken,
+                                    @Query("chkid")
+                                            String chkid,
                                      @Query("pacid")
                                              String pacid);
 

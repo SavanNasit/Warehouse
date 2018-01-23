@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.accrete.warehouse.fragment.runningorders.RunningOrdersExecuteFragment.viewPagerExecute;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
@@ -161,7 +163,13 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
 
             }
         });
-
+        LinearLayout linearLayoutPackageDetails =(LinearLayout) rootView.findViewById(R.id.pending_items_package_details);
+        linearLayoutPackageDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPagerExecute.setCurrentItem(1);
+            }
+        });
     }
 
     @Override
