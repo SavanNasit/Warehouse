@@ -81,7 +81,7 @@
         <activity android:name=".CustomerDetailsActivity" />
         <activity android:name=".PackageHistoryActivity" />
         <activity android:name=".ItemsInsidePackageActivity" />
-        <activity android:name=".PackageOrderStatusActivity" />
+        <activity android:name=".ChangePackageStatusActivity" />
         <activity android:name=".ViewConsignmentActivity" />
         <activity
             android:name=".ViewOrderItemsActivity"
@@ -93,6 +93,9 @@
         <activity
             android:name=".POReceiveConsignmentActivity"
             android:label="@string/title_activity_poreceive_consignment"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".ChangePackageAttemptFailedStatusActivity"
             android:theme="@style/MyMaterialTheme"></activity>
     </application>
 

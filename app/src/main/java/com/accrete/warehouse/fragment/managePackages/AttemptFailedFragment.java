@@ -1,9 +1,15 @@
 package com.accrete.warehouse.fragment.managePackages;
 
+import android.Manifest;
+import android.app.DownloadManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -22,10 +28,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.ChangePackageAttemptFailedStatusActivity;
 import com.accrete.warehouse.CustomerDetailsActivity;
 import com.accrete.warehouse.ItemsInsidePackageActivity;
 import com.accrete.warehouse.PackageHistoryActivity;
-import com.accrete.warehouse.PackageOrderStatusActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.OutForDeliveryAdapter;
@@ -45,10 +51,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
+import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
+import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWithRationale;
 
 /**
  * Created by poonam on 11/30/17.
@@ -70,6 +80,12 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
     private String status, dataChanged;
     private int visibleThreshold = 2, lastVisibleItem, totalItemCount;
     private boolean loading;
+    private TextView downloadConfirmMessage, titleDownloadTextView;
+    private TextView btnYes;
+    private TextView btnCancel;
+    private AlertDialog alertDialog;
+    private DownloadManager downloadManager;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,7 +156,7 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         dialogItemEvents(position);
     }
 
-    private void dialogItemEvents(int position) {
+    private void dialogItemEvents(final int position) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -177,22 +193,26 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         dialogSelectActionsProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_select_warehouse_progress_bar);
         //btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
+        actionsItemsInsidePackage.setVisibility(View.GONE);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
-   //     textViewActionPackageStatus.setText("Revert Package Delivery");
+        //     textViewActionPackageStatus.setText("Revert Package Delivery");
 
 
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+                dialogSelectEvent.dismiss();
+                Intent intentStatus = new Intent(getActivity(), ChangePackageAttemptFailedStatusActivity.class);
+                intentStatus.putExtra(getString(R.string.pacdelgatpacid), attemptFailedList.get(position).getPacdelgatpacid().toString());
                 startActivity(intentStatus);
-             //   dialogRevertPackageDelivery();
+                //   dialogRevertPackageDelivery();
             }
         });
 
         actionsItemsInsidePackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentItems = new Intent(getActivity(), ItemsInsidePackageActivity.class);
                 startActivity(intentItems);
             }
@@ -201,7 +221,9 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         actionsPackageHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
+                intentPackageHistory.putExtra("packageid", attemptFailedList.get(position).getPacid().toString());
                 startActivity(intentPackageHistory);
             }
         });
@@ -228,11 +250,70 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
             }
         });*/
 
+        //Load Customer's Info
         actionsCustomerDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentCustomerDetails = new Intent(getActivity(), CustomerDetailsActivity.class);
+                intentCustomerDetails.putExtra(getString(R.string.pacId), attemptFailedList.get(position).getPacid().toString());
                 startActivity(intentCustomerDetails);
+            }
+        });
+
+        //Download Invoice
+        actionsPrintInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSelectEvent.dismiss();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    askStoragePermission(position, getString(R.string.invoice));
+                } else {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.invoice),
+                            attemptFailedList.get(position).getCuid(), attemptFailedList.get(position).getInvid());
+                }
+            }
+        });
+
+        //Download Challan
+        actionsPrintDeliveryChallan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSelectEvent.dismiss();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    askStoragePermission(position, getString(R.string.challan));
+                } else {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.challan),
+                            attemptFailedList.get(position).getPacid(), "");
+                }
+            }
+        });
+
+        //Download GatePass
+        actionsPrintGatepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSelectEvent.dismiss();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    askStoragePermission(position, getString(R.string.gatepass));
+                } else {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.gatepass),
+                            attemptFailedList.get(position).getPacdelgatid(), "");
+                }
+            }
+        });
+
+        //Download Loading Slip
+        actionsPrintLoadingSlip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSelectEvent.dismiss();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    askStoragePermission(position, getString(R.string.loading_slip));
+                } else {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.loading_slip),
+                            attemptFailedList.get(position).getPacdelgatid(), "");
+                }
             }
         });
 
@@ -242,6 +323,35 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         }
     }
 
+    public void askStoragePermission(int position, String type) {
+        if (checkPermissionWithRationale(getActivity(), new PackedAgainstStockFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            } else {
+                if (type.equals(getString(R.string.challan))) {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.challan),
+                            attemptFailedList.get(position).getPacid(), "");
+                } else if (type.equals(getString(R.string.invoice))) {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.invoice),
+                            attemptFailedList.get(position).getCuid(), attemptFailedList.get(position).getInvid());
+                } else if (type.equals(getString(R.string.gatepass))) {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.gatepass),
+                            attemptFailedList.get(position).getPacdelgatid(), "");
+                } else if (type.equals(getString(R.string.loading_slip))) {
+                    downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.loading_slip),
+                            attemptFailedList.get(position).getPacdelgatid(), "");
+                }
+
+            }
+        }
+    }
 
     private void dialogRevertPackageDelivery() {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_cancel_gatepass, null);
@@ -492,4 +602,164 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
             attemptFailedRefreshLayout.setRefreshing(false);
         }
     }
+
+    public void downloadDialog(final String fileName, final String type, final String cuIdPacId, final String InvId) {
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setCancelable(true);
+        alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(true);
+
+        downloadConfirmMessage = (TextView) dialogView.findViewById(R.id.download_confirm_message);
+        titleDownloadTextView = (TextView) dialogView.findViewById(R.id.title_textView);
+        btnYes = (TextView) dialogView.findViewById(R.id.btn_yes);
+        btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
+        progressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_progress_bar);
+
+        if (type.equals(getString(R.string.invoice))) {
+            downloadConfirmMessage.setText(getString(R.string.download_invoice_confirm_msg));
+            titleDownloadTextView.setText("Download invoice");
+        } else if (type.equals(getString(R.string.challan))) {
+            downloadConfirmMessage.setText(getString(R.string.download_delivery_challan_confirm_msg));
+            titleDownloadTextView.setText("Download delivery challan");
+        } else if (type.equals(getString(R.string.gatepass))) {
+            downloadConfirmMessage.setText(getString(R.string.download_gatepass_confirm_msg));
+            titleDownloadTextView.setText("Download gatepass");
+        } else if (type.equals(getString(R.string.loading_slip))) {
+            downloadConfirmMessage.setText(getString(R.string.download_loading_slip_confirm_msg));
+            titleDownloadTextView.setText("Download loading slip");
+        }
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //calling API
+                btnYes.setEnabled(false);
+                progressBar.setVisibility(View.VISIBLE);
+                if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                    downloadPdf(alertDialog, fileName, type, cuIdPacId, InvId);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnYes.setEnabled(true);
+                    }
+                }, 3000);
+            }
+        });
+
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alertDialog.show();
+    }
+
+    private void downloadPdf(final AlertDialog alertDialog, final String fileName, final String type, String cuIdPacId, String invId) {
+        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = null;
+
+        if (type.equals(getString(R.string.invoice))) {
+            task = getString(R.string.download_invoice_task);
+            call = apiService.downloadInvoicePDF(version, key, task, userId, accessToken,
+                    cuIdPacId, invId);
+        } else if (type.equals(getString(R.string.challan))) {
+            task = getString(R.string.download_delivery_challan_task);
+            call = apiService.downloadChallanPDF(version, key, task, userId, accessToken,
+                    cuIdPacId);
+        } else if (type.equals(getString(R.string.gatepass))) {
+            task = getString(R.string.download_gatepass);
+            call = apiService.downloadGatePassPDF(version, key, task, userId, accessToken,
+                    cuIdPacId);
+        } else if (type.equals(getString(R.string.loading_slip))) {
+            task = getString(R.string.download_loading_slip_task);
+            call = apiService.downloadGatePassPDF(version, key, task, userId, accessToken,
+                    cuIdPacId);
+        }
+
+
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                            alertDialog.dismiss();
+
+                            //Download a file and display in phone's download folder
+                            Environment
+                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                                    .mkdirs();
+                            downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                            String url = apiResponse.getData().getFilename();
+                            Uri uri = Uri.parse(url);
+                            DownloadManager.Request request = null;
+
+                            if (type.equals(getString(R.string.invoice))) {
+                                request = new DownloadManager.Request(uri)
+                                        .setTitle(fileName + "_invoice" + ".pdf")
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                                fileName + "_invoice" + ".pdf")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            } else if (type.equals(getString(R.string.gatepass))) {
+                                request = new DownloadManager.Request(uri)
+                                        .setTitle(fileName + "_gatePass" + ".pdf")
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                                fileName + "_gatePass" + ".pdf")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            } else if (type.equals(getString(R.string.loading_slip))) {
+                                request = new DownloadManager.Request(uri)
+                                        .setTitle(fileName + "_loadingSlip" + ".pdf")
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                                fileName + "_loadingSlip" + ".pdf")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            } else {
+                                request = new DownloadManager.Request(uri)
+                                        .setTitle(fileName + "_delivery_challan" + ".pdf")
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                                fileName + "_delivery_challan" + ".pdf")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            }
+                            downloadManager.enqueue(request);
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (apiResponse.getSuccessCode().equals("10001")) {
+                        alertDialog.dismiss();
+                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (progressBar != null && progressBar.getVisibility() == View.VISIBLE) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                alertDialog.dismiss();
+            }
+        });
+    }
+
 }

@@ -11,11 +11,32 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class CustomerInfo implements Parcelable {
+    public static final Creator<CustomerInfo> CREATOR = new Creator<CustomerInfo>() {
+        @Override
+        public CustomerInfo createFromParcel(Parcel in) {
+            return new CustomerInfo(in);
+        }
+
+        @Override
+        public CustomerInfo[] newArray(int size) {
+            return new CustomerInfo[size];
+        }
+    };
+    @SerializedName("packageId")
+    @Expose
+    private String packageId;
+    @SerializedName("invoiceNo")
+    @Expose
+    private String invoiceNo;
+    @SerializedName("invoiceDate")
+    @Expose
+    private String invoiceDate;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("email")
     @Expose
+
     private String email;
     @SerializedName("mobile")
     @Expose
@@ -62,7 +83,6 @@ public class CustomerInfo implements Parcelable {
     @SerializedName("billing_addr_mobile")
     @Expose
     private String billingAddrMobile;
-
     protected CustomerInfo(Parcel in) {
         name = in.readString();
         email = in.readString();
@@ -82,22 +102,33 @@ public class CustomerInfo implements Parcelable {
         billingAddrCountryName = in.readString();
         billingAddrMobile = in.readString();
     }
-
-    public  CustomerInfo(){
+    public CustomerInfo() {
 
     }
 
-    public static final Creator<CustomerInfo> CREATOR = new Creator<CustomerInfo>() {
-        @Override
-        public CustomerInfo createFromParcel(Parcel in) {
-            return new CustomerInfo(in);
-        }
+    public String getPackageId() {
+        return packageId;
+    }
 
-        @Override
-        public CustomerInfo[] newArray(int size) {
-            return new CustomerInfo[size];
-        }
-    };
+    public void setPackageId(String packageId) {
+        this.packageId = packageId;
+    }
+
+    public String getInvoiceNo() {
+        return invoiceNo;
+    }
+
+    public void setInvoiceNo(String invoiceNo) {
+        this.invoiceNo = invoiceNo;
+    }
+
+    public String getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(String invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
 
     public String getName() {
         return name;

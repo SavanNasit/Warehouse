@@ -60,7 +60,13 @@ public class RunningOrdersExecuteFragment extends Fragment {
             pendingItems = bundle.getParcelableArrayList("pendingItems");
             chkid = bundle.getString("chkid");
             chkoid = bundle.getString("chkoid");
+            pendingItems = bundle.getParcelableArrayList("pendingItems");
+            chkid = bundle.getString("chkid");
+            chkoid = bundle.getString("chkoid");
+            //String packages = bundle.getString("packages");
+            //  Log.d("packages list size", String.valueOf(runningOrders.size()));
             Log.d("running order list size", String.valueOf(packagesList.size()));
+
 
         }
         setupViewPagerExecute(viewPagerExecute);
@@ -68,7 +74,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
         tabLayoutExecute = (TabLayout) rootView.findViewById(R.id.tabs_execute);
         tabLayoutExecute.setupWithViewPager(viewPagerExecute);
 
-        tabLayoutExecute.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        viewPagerExecute.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPagerExecute.setCurrentItem(tab.getPosition());
@@ -83,20 +89,27 @@ public class RunningOrdersExecuteFragment extends Fragment {
                     alreadyCreatedPackagesFragment.getPackageList(packagesList);
                 }
 
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                //Disabling click on first tab, To make it enable set clickable true
+                /*LinearLayout tabStrip = ((LinearLayout)tabLayoutExecute.getChildAt(0));
+                for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                    tabStrip.getChildAt(1).setClickable(false);
+                }*/
+
+
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+            public void onPageSelected(int position) {
 
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
-
-
 
     }
 
@@ -136,7 +149,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
+        getActivity().setTitle(getString(R.string.running_orders_execute_fragment)+" " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE)+chkoid);
     }
 
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -181,6 +194,8 @@ public class RunningOrdersExecuteFragment extends Fragment {
 
 
         if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
+    public void getOrderItemList(List<SelectOrderItem> selectOrderItems, List<PendingItems> pendingItemsLists, String chkoid) {
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 1) {
             Log.e("TAG_ORDERS", "" + selectOrderItems.size());
 
 
@@ -194,6 +209,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
             packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsList, chkoid, strQuantity);
         }
     }
+            packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid);
 
     public void scanBarcode() {
         if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {

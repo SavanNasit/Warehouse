@@ -153,6 +153,28 @@ public class Data {
     @SerializedName("consignment_item")
     @Expose
     private ConsignmentItem consignmentItem;
+    @SerializedName("statuses")
+    @Expose
+    private List<Status> statuses = null;
+    @SerializedName("logHistoryData")
+    @Expose
+    private List<LogHistoryDatum> logHistoryData = null;
+
+    public List<LogHistoryDatum> getLogHistoryData() {
+        return logHistoryData;
+    }
+
+    public void setLogHistoryData(List<LogHistoryDatum> logHistoryData) {
+        this.logHistoryData = logHistoryData;
+    }
+
+    public List<Status> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<Status> statuses) {
+        this.statuses = statuses;
+    }
 
     public ProfileInfo getProfile() {
         return profile;

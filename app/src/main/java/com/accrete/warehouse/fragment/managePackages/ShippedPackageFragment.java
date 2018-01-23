@@ -138,7 +138,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         dialogItemEvents(position);
     }
 
-    private void dialogItemEvents(int position) {
+    private void dialogItemEvents(final int position) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -182,7 +182,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intentStatus = new Intent(getActivity(), PackageOrderStatusActivity.class);
+               /* Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
                 startActivity(intentStatus);*/
                 dialogRevertPackageDelivery();
             }
@@ -219,17 +219,13 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
             }
         });
 
-      /*  btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogSelectEvent.dismiss();
-            }
-        });*/
-
+        //Load Customer's Info
         actionsCustomerDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentCustomerDetails = new Intent(getActivity(), CustomerDetailsActivity.class);
+                intentCustomerDetails.putExtra(getString(R.string.pacId), packedAgainstList.get(position).getPacid().toString());
                 startActivity(intentCustomerDetails);
             }
         });
@@ -239,7 +235,6 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
             dialogSelectEvent.show();
         }
     }
-
 
     private void dialogRevertPackageDelivery() {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_cancel_gatepass, null);

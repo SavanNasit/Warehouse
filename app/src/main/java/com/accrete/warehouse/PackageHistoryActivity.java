@@ -19,6 +19,7 @@ import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -80,7 +81,11 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
         packageHistoryRecyclerView.setNestedScrollingEnabled(false);
         packageHistoryRecyclerView.setAdapter(packageStatusAdapter);
 
-        getPackageGatepassList(getIntent().getStringExtra("packageid"));
+        if (!NetworkUtil.getConnectivityStatusString(this).equals(getString(R.string.not_connected_to_internet))) {
+            getPackageGatepassList(getIntent().getStringExtra("packageid") + "");
+        } else {
+            Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        }
 /*
         packageStatus.setPackageStatus("Out For Delivery");
         packageStatus.setDate("November 28, 2017, 6:13 pm");
@@ -159,7 +164,7 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("warehouse:packageHistory", t.getMessage());
+                Log.d("packageHistory", t.getMessage());
             }
         });
     }

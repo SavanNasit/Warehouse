@@ -40,12 +40,23 @@ public class ConsignmentItem {
     @SerializedName("unit")
     @Expose
     private String unit;
+    @SerializedName("unit_price")
+    @Expose
+    private String unitPrice;
     private String price;
     private String unitId;
     private String comment;
     private String expiryDate;
     private String rejectedQuantity;
     private String reasonRejection;
+
+    public String getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
+    }
 
     public String getUnitId() {
         return unitId;
