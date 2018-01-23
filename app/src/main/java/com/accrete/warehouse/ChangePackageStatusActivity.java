@@ -1,5 +1,6 @@
 package com.accrete.warehouse;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -47,6 +48,7 @@ public class ChangePackageStatusActivity extends AppCompatActivity {
     private Spinner statusSpinner;
     private TextInputEditText narrationEditText;
     private TextView submitTextView;
+    private String pacdelId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +79,9 @@ public class ChangePackageStatusActivity extends AppCompatActivity {
         submitTextView = (TextView) findViewById(R.id.submit_textView);
 
         if (getIntent() != null && getIntent().hasExtra(getString(R.string.pacdelgatpacid))) {
+            pacdelId = getIntent().getStringExtra(getString(R.string.pacdelgatpacid));
             if (!NetworkUtil.getConnectivityStatusString(this).equals(getString(R.string.not_connected_to_internet))) {
-                getPrefilledData(getIntent().getStringExtra(getString(R.string.pacdelgatpacid)));
+                getPrefilledData(pacdelId);
             } else {
                 Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             }
@@ -87,7 +90,12 @@ public class ChangePackageStatusActivity extends AppCompatActivity {
         submitTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (!NetworkUtil.getConnectivityStatusString(ChangePackageStatusActivity.this).equals(getString(R.string.not_connected_to_internet))) {
+                    changeStatusTask(pacdelId, statusArrayList.get(statusSpinner.getSelectedItemPosition()).getPacdelgatpacsid(),
+                            narrationEditText.getText().toString().trim() + "");
+                } else {
+                    Toast.makeText(ChangePackageStatusActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -159,5 +167,52 @@ public class ChangePackageStatusActivity extends AppCompatActivity {
         if (customerInfo.getEmail() != null && !customerInfo.getEmail().isEmpty()) {
             emailTextView.setText(customerInfo.getEmail());
         }
+    }
+
+    private void changeStatusTask(String pacid, String statusId, String narration) {
+        task = getString(R.string.change_package_order_status_task);
+
+        if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.changeOutForDeliveryStatus(version, key, task, userId, accessToken, pacid,
+                statusId, narration);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                // enquiryList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        Intent resultIntent = new Intent();
+                        setResult(456, resultIntent);
+                        finish();
+                    } else {
+                        if (apiResponse.getSuccessCode().equals("10001")) {
+                            Toast.makeText(ChangePackageStatusActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(ChangePackageStatusActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("packageOrderStatus", t.getMessage());
+            }
+        });
     }
 }

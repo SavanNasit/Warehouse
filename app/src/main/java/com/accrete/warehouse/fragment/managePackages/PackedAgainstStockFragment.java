@@ -420,6 +420,14 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
 
     }
 
+    public void clearListAndRefresh() {
+        if (packedAgainstList != null && packedAgainstList.size() > 0) {
+            packedAgainstList.clear();
+        }
+        packedAgainstStockAdapter.notifyDataSetChanged();
+        doRefresh();
+    }
+
     public void doRefresh() {
         if (packedAgainstList != null && packedAgainstList.size() == 0) {
             status = NetworkUtil.getConnectivityStatusString(getActivity());

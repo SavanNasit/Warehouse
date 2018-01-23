@@ -30,6 +30,10 @@ import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
 import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
+import com.accrete.warehouse.fragment.ManageGatePassFragment;
+import com.accrete.warehouse.fragment.PendingItemsFragment;
+import com.accrete.warehouse.fragment.RunningOrdersExecuteFragment;
+import com.accrete.warehouse.fragment.RunningOrdersFragment;
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
@@ -480,6 +484,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));
             }
 
+        } else if (resultCode == 456) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+            if (currentFragment instanceof ManagePackagesFragment) {
+                Log.e("Selected Order Item", " " + requestCode + " " + resultCode);
+                ((ManagePackagesFragment) currentFragment).checkFragmentAndRefresh();
+            }
+
         }
     }
 
@@ -552,6 +563,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         }else if (fragment instanceof RunningOrdersExecuteFragment) {
                             ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
+                        } else if (f instanceof ManagePackagesFragment) {
+                            ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         }
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
