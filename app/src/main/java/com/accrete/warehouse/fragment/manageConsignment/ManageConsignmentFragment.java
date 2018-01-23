@@ -229,7 +229,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
 
 
 
-   /* public void downloadInvoiceChallanDialog(final String cuId, final String avid, final String date, final String fileName) {
+   /* public void downloadDialog(final String cuId, final String avid, final String date, final String fileName) {
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_voucher, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)

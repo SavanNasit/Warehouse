@@ -523,4 +523,36 @@ public interface ApiInterface {
                     String invid
     );
 
+
+    @GET("?urlq=service")
+    Call<ApiResponse> downloadGatePassPDF(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("pacdelgatid")
+                    String pacdelGatid
+    );
+
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getCustomerInfoByPacId(@Query("version")
+                                                     String version,
+                                             @Query("key")
+                                                     String key,
+                                             @Query("task")
+                                                     String task,
+                                             @Query("user_id")
+                                                     String userid,
+                                             @Query("access_token")
+                                                     String accessToken,
+                                             @Query("pacid")
+                                                     String pacid);
+
 }

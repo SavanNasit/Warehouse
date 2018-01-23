@@ -19,6 +19,10 @@ public class MSupportConstants {
     public static final int REQUEST_CODE_FOR_RUNNING_ORDER_CALL_PERMISSIONS = 10001;
     public static final int REQUEST_CODE_FOR_CAMERA = 10002;
     public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS = 10004;
+    public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS_DOWNLOAD_INVOICE = 10011;
+    public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS_DOWNLOAD_CHALLAN = 10012;
+    public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS_DOWNLOAD_GATEPASS = 10013;
+    public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS_DOWNLOAD_LOADING_SLIP = 10014;
 
 
 //    /**

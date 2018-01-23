@@ -228,22 +228,18 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
             }
         });
 
-      /*  btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogSelectEvent.dismiss();
-            }
-        });*/
-
+        //Load Customer's Info
         actionsCustomerDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
                 Intent intentCustomerDetails = new Intent(getActivity(), CustomerDetailsActivity.class);
+                intentCustomerDetails.putExtra(getString(R.string.pacId), outForDeliveryList.get(position).getPacid().toString());
                 startActivity(intentCustomerDetails);
             }
         });
 
+        //Download Invoice
         actionsPrintInvoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,12 +247,13 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     askStoragePermission(position, getString(R.string.invoice));
                 } else {
-                    downloadInvoiceChallanDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.invoice),
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.invoice),
                             outForDeliveryList.get(position).getCuid(), outForDeliveryList.get(position).getInvid());
                 }
             }
         });
 
+        //Download Challan
         actionsPrintDeliveryChallan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,8 +261,36 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     askStoragePermission(position, getString(R.string.challan));
                 } else {
-                    downloadInvoiceChallanDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.challan),
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.challan),
                             outForDeliveryList.get(position).getPacid(), "");
+                }
+            }
+        });
+
+        //Download GatePass
+        actionsPrintGatepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSelectEvent.dismiss();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    askStoragePermission(position, getString(R.string.gatepass));
+                } else {
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.gatepass),
+                            outForDeliveryList.get(position).getPacdelgatid(), "");
+                }
+            }
+        });
+
+        //Download Loading Slip
+        actionsPrintLoadingSlip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSelectEvent.dismiss();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    askStoragePermission(position, getString(R.string.loading_slip));
+                } else {
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.loading_slip),
+                            outForDeliveryList.get(position).getPacdelgatid(), "");
                 }
             }
         });
@@ -289,12 +314,19 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                 return;
             } else {
                 if (type.equals(getString(R.string.challan))) {
-                    downloadInvoiceChallanDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.challan),
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.challan),
                             outForDeliveryList.get(position).getPacid(), "");
-                } else {
-                    downloadInvoiceChallanDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.invoice),
+                } else if (type.equals(getString(R.string.invoice))) {
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.invoice),
                             outForDeliveryList.get(position).getCuid(), outForDeliveryList.get(position).getInvid());
+                } else if (type.equals(getString(R.string.gatepass))) {
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.gatepass),
+                            outForDeliveryList.get(position).getPacdelgatid(), "");
+                } else if (type.equals(getString(R.string.loading_slip))) {
+                    downloadDialog(outForDeliveryList.get(position).getPackageId(), getString(R.string.loading_slip),
+                            outForDeliveryList.get(position).getPacdelgatid(), "");
                 }
+
             }
         }
     }
@@ -504,7 +536,7 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
         }
     }
 
-    public void downloadInvoiceChallanDialog(final String fileName, final String type, final String cuIdPacId, final String InvId) {
+    public void downloadDialog(final String fileName, final String type, final String cuIdPacId, final String InvId) {
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -521,9 +553,15 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
         if (type.equals(getString(R.string.invoice))) {
             downloadConfirmMessage.setText(getString(R.string.download_invoice_confirm_msg));
             titleDownloadTextView.setText("Download invoice");
-        } else {
+        } else if (type.equals(getString(R.string.challan))) {
             downloadConfirmMessage.setText(getString(R.string.download_delivery_challan_confirm_msg));
             titleDownloadTextView.setText("Download delivery challan");
+        } else if (type.equals(getString(R.string.gatepass))) {
+            downloadConfirmMessage.setText(getString(R.string.download_gatepass_confirm_msg));
+            titleDownloadTextView.setText("Download gatepass");
+        } else if (type.equals(getString(R.string.loading_slip))) {
+            downloadConfirmMessage.setText(getString(R.string.download_loading_slip_confirm_msg));
+            titleDownloadTextView.setText("Download loading slip");
         }
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -564,15 +602,23 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call;
+        Call<ApiResponse> call = null;
 
         if (type.equals(getString(R.string.invoice))) {
             task = getString(R.string.download_invoice_task);
             call = apiService.downloadInvoicePDF(version, key, task, userId, accessToken,
                     cuIdPacId, invId);
-        } else {
+        } else if (type.equals(getString(R.string.challan))) {
             task = getString(R.string.download_delivery_challan_task);
             call = apiService.downloadChallanPDF(version, key, task, userId, accessToken,
+                    cuIdPacId);
+        } else if (type.equals(getString(R.string.gatepass))) {
+            task = getString(R.string.download_gatepass);
+            call = apiService.downloadGatePassPDF(version, key, task, userId, accessToken,
+                    cuIdPacId);
+        } else if (type.equals(getString(R.string.loading_slip))) {
+            task = getString(R.string.download_loading_slip_task);
+            call = apiService.downloadGatePassPDF(version, key, task, userId, accessToken,
                     cuIdPacId);
         }
 
@@ -603,6 +649,18 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                                         .setTitle(fileName + "_invoice" + ".pdf")
                                         .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
                                                 fileName + "_invoice" + ".pdf")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            } else if (type.equals(getString(R.string.gatepass))) {
+                                request = new DownloadManager.Request(uri)
+                                        .setTitle(fileName + "_gatePass" + ".pdf")
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                                fileName + "_gatePass" + ".pdf")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            } else if (type.equals(getString(R.string.loading_slip))) {
+                                request = new DownloadManager.Request(uri)
+                                        .setTitle(fileName + "_loadingSlip" + ".pdf")
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                                fileName + "_loadingSlip" + ".pdf")
                                         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                             } else {
                                 request = new DownloadManager.Request(uri)

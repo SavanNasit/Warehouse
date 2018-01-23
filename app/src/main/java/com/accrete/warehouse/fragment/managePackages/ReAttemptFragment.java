@@ -139,7 +139,7 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
         dialogItemEvents(position);
     }
 
-    private void dialogItemEvents(int position) {
+    private void dialogItemEvents(final int position) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -227,10 +227,13 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
             }
         });*/
 
+        //Load Customer's Info
         actionsCustomerDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentCustomerDetails = new Intent(getActivity(), CustomerDetailsActivity.class);
+                intentCustomerDetails.putExtra(getString(R.string.pacId), reAttemptList.get(position).getPacid().toString());
                 startActivity(intentCustomerDetails);
             }
         });

@@ -223,6 +223,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         actionsPackageHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentPackageHistory = new Intent(getActivity(), PackageHistoryActivity.class);
                 intentPackageHistory.putExtra("packageid", packedAgainstList.get(position).getPacid());
                 startActivity(intentPackageHistory);
@@ -244,16 +245,18 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             }
         });
 
+        //Load Customer's Info
         actionsCustomerDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
                 Intent intentCustomerDetails = new Intent(getActivity(), CustomerDetailsActivity.class);
-           //     intentCustomerDetails.putExtra("customerInfo", packedAgainstList.get(position))
+                intentCustomerDetails.putExtra(getString(R.string.pacId), packedAgainstList.get(position).getPacid().toString());
                 startActivity(intentCustomerDetails);
             }
         });
 
+        //Download Invoice
         actionsPrintInvoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,12 +264,13 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     askStoragePermission(position, getString(R.string.invoice));
                 } else {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.invoice),
+                    downloadDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.invoice),
                             packedAgainstList.get(position).getCuid(), packedAgainstList.get(position).getInvid());
                 }
             }
         });
 
+        //Download Delivery Challan
         actionsPrintDeliveryChallan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,7 +278,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     askStoragePermission(position, getString(R.string.challan));
                 } else {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.challan),
+                    downloadDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.challan),
                             packedAgainstList.get(position).getPacid(), "");
                 }
             }
@@ -299,10 +303,10 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 return;
             } else {
                 if (type.equals(getString(R.string.challan))) {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.challan),
+                    downloadDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.challan),
                             packedAgainstList.get(position).getPacid(), "");
                 } else {
-                    downloadInvoiceChallanDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.invoice),
+                    downloadDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.invoice),
                             packedAgainstList.get(position).getCuid(), packedAgainstList.get(position).getInvid());
                 }
             }
@@ -558,7 +562,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         }
     }
 
-    public void downloadInvoiceChallanDialog(final String fileName, final String type, final String cuIdPacId, final String InvId) {
+    public void downloadDialog(final String fileName, final String type, final String cuIdPacId, final String InvId) {
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
