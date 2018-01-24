@@ -10,8 +10,8 @@ public class AppUtils {
     public final static String ISLOGIN = "islogin";
     public final static String USER_ID = "user_id";
     public final static String ACCESS_TOKEN = "access_token";
-    public final static String WAREHOUSE_CHK_ID= "defaultWarehouseChkId";
-    public final static String WAREHOUSE_DEFAULT_NAME = "defaultWarehouse";
+    public  static String WAREHOUSE_CHK_ID= "defaultWarehouseChkId";
+    public  static String WAREHOUSE_DEFAULT_NAME = "defaultWarehouse";
     public final static String USER_SESSION_ID = "userSessionId";
     public final static String USER_NAME = "username";
     public final static String USER_EMAIL = "email";
@@ -59,4 +59,9 @@ public class AppUtils {
     public static final String TWO_STEP_VERIFICATION_STATUS = "two_step_status";
     public static String ShippingBy = "shipping_by";
     public static String ShippingType = "shipping_type";
+    public static String WAREHOUSE_ORDER_COUNT="order_count";
+    public static String WAREHOUSE_PACKAGE_COUNT="package_count";
+    public static String WAREHOUSE_GATEPASS_COUNT="gatepass_count";
+    public static String WAREHOUSE_CONSIGNMENT_COUNT="consignment_count";
+    public static String WAREHOUSE_RECEIVE_CONSIGNMENT="receive_consignment_count";
 }

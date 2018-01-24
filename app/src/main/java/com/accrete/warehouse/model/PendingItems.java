@@ -20,6 +20,7 @@ public class PendingItems implements Parcelable {
     @SerializedName("item_quantity")
     @Expose
     private String itemQuantity;
+    private String itemQuantityDuplicate;
     @SerializedName("item_unit")
     @Expose
     private String itemUnit;
@@ -52,6 +53,7 @@ public class PendingItems implements Parcelable {
         itemVariationName = in.readString();
         itemSkuCode = in.readString();
         itemQuantity = in.readString();
+        itemQuantityDuplicate=in.readString();
         itemUnit = in.readString();
         itemStatus = in.readString();
         oiid = in.readString();
@@ -93,6 +95,15 @@ public class PendingItems implements Parcelable {
 
     public String getItemQuantity() {
         return itemQuantity;
+    }
+
+
+    public String getItemQuantityDuplicate() {
+        return itemQuantityDuplicate;
+    }
+
+    public void setItemQuantityDuplicate(String itemQuantityDuplicate) {
+        this.itemQuantityDuplicate = itemQuantityDuplicate;
     }
 
     public void setItemQuantity(String itemQuantity) {
@@ -186,6 +197,7 @@ public class PendingItems implements Parcelable {
         dest.writeString(itemVariationName);
         dest.writeString(itemSkuCode);
         dest.writeString(itemQuantity);
+        dest.writeString(itemQuantityDuplicate);
         dest.writeString(itemUnit);
         dest.writeString(itemStatus);
         dest.writeString(oiid);

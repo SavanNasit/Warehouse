@@ -1,5 +1,7 @@
 package com.accrete.warehouse.model;
 
+import android.provider.ContactsContract;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +12,17 @@ import java.util.List;
  */
 public class Data {
 
+    public String getPacid() {
+        return pacid;
+    }
 
+    public void setPacid(String pacid) {
+        this.pacid = pacid;
+    }
+
+    @SerializedName("pacid")
+    @Expose
+    private String pacid;
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -163,6 +175,18 @@ public class Data {
     public void setStatuses(List<Status> statuses) {
         this.statuses = statuses;
     }
+
+    public ProfileInfo getProfile() {
+        return profile;
+    }
+
+    public void setProfile(ProfileInfo profile) {
+        this.profile = profile;
+    }
+
+    @SerializedName("profile")
+    @Expose
+    private ProfileInfo profile;
 
     public List<User> getUsers() {
         return users;

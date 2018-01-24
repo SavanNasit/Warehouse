@@ -35,7 +35,7 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         PackageDetailsList packageDetailsList = packageDetailsLists.get(position);
         if(holder.listRowPackageDetailsItem.length()>25){
             holder.listRowPackageDetailsItem.setText(packageDetailsList.getItem().substring(0,25)+"...");
@@ -48,7 +48,7 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
         holder.listRowPackageDetailsRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onExecute();
+                listener.onExecute(position);
             }
         });
 
@@ -67,7 +67,7 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
 
     public interface PackageDetailsAdapterListener {
         void onMessageRowClicked(int position);
-        void onExecute();
+        void onExecute(int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

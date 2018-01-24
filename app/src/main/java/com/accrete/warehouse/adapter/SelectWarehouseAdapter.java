@@ -64,7 +64,9 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
                     lastChecked = null;
                 }
 
-                applyClickEvents(warehouseLists.get(clickedPos).getName(),warehouseLists.get(clickedPos).getChkid());
+                applyClickEvents(warehouseLists.get(clickedPos).getName(),warehouseLists.get(clickedPos).getChkid(),warehouseLists.get(clickedPos).getOrderCount()
+                ,warehouseLists.get(clickedPos).getPackageCount(),warehouseLists.get(clickedPos).getGatepassCount(),warehouseLists.get(clickedPos).getConsignmentCount()
+                ,warehouseLists.get(clickedPos).getReceiveConsignmentCount());
             }
         });
 
@@ -76,11 +78,11 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
     }
 
     public interface SelectWarehouseAdapterListener {
-        void onMessageRowClicked(String warehouseName, String warehouseChkId);
+        void onMessageRowClicked(String name, String chkid, String orderCount, String packageCount, String gatepassCount, String consignmentCount, String receiveConsignmentCount);
     }
 
-    private void applyClickEvents(String warehouseName,String warehouseChkId) {
-                listener.onMessageRowClicked(warehouseName,warehouseChkId);
+    private void applyClickEvents(String name, String chkid, String orderCount, String packageCount, String gatepassCount, String consignmentCount, String receiveConsignmentCount) {
+                listener.onMessageRowClicked(name,chkid,orderCount,packageCount,gatepassCount,consignmentCount,receiveConsignmentCount);
                // notifyDataSetChanged();
     }
 

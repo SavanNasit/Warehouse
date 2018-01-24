@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.runningorders;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -194,6 +194,14 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                         }
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
+
+                            runningOrdersEmptyView.setText(getString(R.string.no_data_available));
+                            runningOrdersRecyclerView.setVisibility(View.GONE);
+                            runningOrdersEmptyView.setVisibility(View.VISIBLE);
+                            runningOrdersCount.setVisibility(View.GONE);
+
+                        } else if (apiResponse.getSuccessCode().equals("20004")) {
+
                             runningOrdersEmptyView.setText(getString(R.string.no_data_available));
                             runningOrdersRecyclerView.setVisibility(View.GONE);
                             runningOrdersEmptyView.setVisibility(View.VISIBLE);

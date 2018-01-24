@@ -37,6 +37,17 @@ public class SelectOrderItem implements Parcelable{
     @Expose
     private String inventoryName;
 
+    public String getFinalQuantity() {
+        return finalQuantity;
+    }
+
+    public void setFinalQuantity(String finalQuantity) {
+        this.finalQuantity = finalQuantity;
+    }
+
+
+    private String  finalQuantity;
+
 
     public SelectOrderItem(){
 
@@ -47,6 +58,7 @@ public class SelectOrderItem implements Parcelable{
         vendor = in.readString();
         purchasedOn = in.readString();
         remark = in.readString();
+        finalQuantity=in.readString();
         availableQuantity = in.readString();
         if (in.readByte() == 0) {
             allocatedQuantity = null;
@@ -145,6 +157,7 @@ public class SelectOrderItem implements Parcelable{
         dest.writeString(inventory);
         dest.writeString(vendor);
         dest.writeString(purchasedOn);
+        dest.writeString(finalQuantity);
         dest.writeString(remark);
         dest.writeString(availableQuantity);
         if (allocatedQuantity == null) {

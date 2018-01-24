@@ -18,6 +18,21 @@ public class WarehouseList {
     @SerializedName("chkid")
     @Expose
     private String chkid;
+    @SerializedName("order_count")
+    @Expose
+    private String orderCount;
+    @SerializedName("package_count")
+    @Expose
+    private String packageCount;
+    @SerializedName("gatepass_count")
+    @Expose
+    private String gatepassCount;
+    @SerializedName("consignmentCount")
+    @Expose
+    private String consignmentCount;
+    @SerializedName("receiveConsignmentCount")
+    @Expose
+    private String receiveConsignmentCount;
 
     public String getId() {
         return id;
@@ -42,5 +57,46 @@ public class WarehouseList {
     public void setChkid(String chkid) {
         this.chkid = chkid;
     }
+
+    public String getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(String orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public String getPackageCount() {
+        return packageCount;
+    }
+
+    public void setPackageCount(String packageCount) {
+        this.packageCount = packageCount;
+    }
+
+    public String getGatepassCount() {
+        return gatepassCount;
+    }
+
+    public void setGatepassCount(String gatepassCount) {
+        this.gatepassCount = gatepassCount;
+    }
+
+    public String getConsignmentCount() {
+        return consignmentCount;
+    }
+
+    public void setConsignmentCount(String consignmentCount) {
+        this.consignmentCount = consignmentCount;
+    }
+
+    public String getReceiveConsignmentCount() {
+        return receiveConsignmentCount;
+    }
+
+    public void setReceiveConsignmentCount(String receiveConsignmentCount) {
+        this.receiveConsignmentCount = receiveConsignmentCount;
+    }
+
 
 }

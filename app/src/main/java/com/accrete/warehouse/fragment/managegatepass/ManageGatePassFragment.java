@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.managegatepass;
 
 import android.Manifest;
 import android.app.Activity;
@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,12 +29,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.accrete.warehouse.ViewPackageGatePassActivity;
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.ViewPackageGatePassActivity;
 import com.accrete.warehouse.adapter.ManageGatepassAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.GatepassList;
-import com.accrete.warehouse.model.ItemsInsidePackage;
 import com.accrete.warehouse.model.ManageGatepass;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
@@ -67,6 +65,7 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
 public class ManageGatePassFragment extends Fragment implements ManageGatepassAdapter.ManageGatepassAdapterrListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String KEY_TITLE = "ManageGatePass";
+    String strPacdelgatid;
     private SwipeRefreshLayout manageGatepassSwipeRefreshLayout;
     private RecyclerView manageGatepassRecyclerView;
     private TextView manageGatepassEmptyView;
@@ -75,15 +74,12 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     private ManageGatepass manageGatepass = new ManageGatepass();
     private AlertDialog dialogSelectEvent;
     private String status;
-
     private TextView downloadConfirmMessage;
     private TextView btnYes;
     private TextView btnCancel;
     private AlertDialog alertDialog;
     private DownloadManager downloadManager;
     private ProgressBar progressBar;
-    String  strPacdelgatid;
-
 
     public static ManageGatePassFragment newInstance(String title) {
         ManageGatePassFragment f = new ManageGatePassFragment();
@@ -151,7 +147,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
 
     @Override
     public void onMessageRowClicked(int position, String status) {
-        dialogItemEvents(position,status);
+        dialogItemEvents(position, status);
     }
 
     @Override
@@ -180,15 +176,15 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         actionsCancelGatepass = (LinearLayout) dialogView.findViewById(R.id.actions_cancel_gatepass);
         imageBack = (ImageView) dialogView.findViewById(R.id.image_back);
 
-        if(status.equals("Cancelled")){
+        if (status.equals("Cancelled")) {
             actionsCancelGatepass.setVisibility(View.GONE);
         }
 
         actionsViewPackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentViewPackage = new Intent(getActivity(),ViewPackageGatePassActivity.class);
-                intentViewPackage.putExtra("id",gatepassList.get(position).getPacdelgatid());
+                Intent intentViewPackage = new Intent(getActivity(), ViewPackageGatePassActivity.class);
+                intentViewPackage.putExtra("id", gatepassList.get(position).getPacdelgatid());
                 startActivity(intentViewPackage);
             }
         });
@@ -299,6 +295,12 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                             manageGatepassRecyclerView.setVisibility(View.GONE);
                             manageGatepassEmptyView.setVisibility(View.VISIBLE);
 
+                        } else if (apiResponse.getSuccessCode().equals("20004")) {
+                            manageGatepassEmptyView.setText(getString(R.string.no_data_available));
+                            manageGatepassRecyclerView.setVisibility(View.GONE);
+                            manageGatepassEmptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                     if (manageGatepassSwipeRefreshLayout != null && manageGatepassSwipeRefreshLayout.isRefreshing()) {
@@ -373,16 +375,16 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         });
     }
 
-    public void downloadPdfDialog( final String pacdelgatid) {
+    public void downloadPdfDialog(final String pacdelgatid) {
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
                 .setCancelable(true);
         alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(true);
-        strPacdelgatid =pacdelgatid;
+        strPacdelgatid = pacdelgatid;
 
-        TextView textViewTitle = (TextView)dialogView.findViewById(R.id.title_textView) ;
+        TextView textViewTitle = (TextView) dialogView.findViewById(R.id.title_textView);
         downloadConfirmMessage = (TextView) dialogView.findViewById(R.id.download_confirm_message);
         btnYes = (TextView) dialogView.findViewById(R.id.btn_yes);
         btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
@@ -406,8 +408,8 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                 if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (checkPermissionWithRationale((Activity) getActivity(), new ManageGatePassFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
-                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-                                return ;
+                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                return;
                             }
                         }
                     } else {

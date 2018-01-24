@@ -242,9 +242,9 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     //AppPreferences.setIsLogin(PasswordActivity.this, AppUtils.ISLOGIN, true);
                     AppPreferences.setUserId(PasswordActivity.this, AppUtils.USER_ID, apiResponse.getData().getUserId());
                     AppPreferences.setAccessToken(PasswordActivity.this, AppUtils.ACCESS_TOKEN, apiResponse.getData().getAccessToken());
-                    // AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, apiResponse.getData().get);
+                    AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, apiResponse.getData().getProfile().getEmail());
                     AppPreferences.setUserName(PasswordActivity.this, AppUtils.USER_NAME, apiResponse.getData().getName());
-                    AppPreferences.setPhoto(PasswordActivity.this, AppUtils.USER_PHOTO, imageUrl);
+                    AppPreferences.setPhoto(PasswordActivity.this, AppUtils.USER_PHOTO, apiResponse.getData().getProfile().getPhoto());
                     AppPreferences.setCompanyCode(PasswordActivity.this, AppUtils.COMPANY_CODE, apiResponse.getData().getCompanyCode());
 
                   /*  ContentValues values = new ContentValues();
@@ -255,7 +255,6 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     textViewNext.setEnabled(true);
                     AppPreferences.setIsLogin(PasswordActivity.this, AppUtils.ISLOGIN, true);
                     getWarehouseList();
-                    navigateToHome();
                 } else if (apiResponse.getSuccessCode().equals("10005")) {
                     progressBar.setVisibility(View.GONE);
                     textViewNext.setEnabled(false);
@@ -317,10 +316,17 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                                 if (apiResponse.getData().getWarehouseList().size() > 0) {
                                     AppPreferences.setWarehouseDefaultName(PasswordActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, apiResponse.getData().getWarehouseList().get(0).getName());
                                     AppPreferences.setWarehouseDefaultCheckId(PasswordActivity.this, AppUtils.WAREHOUSE_CHK_ID, apiResponse.getData().getWarehouseList().get(0).getChkid());
+                                    AppPreferences.setWarehouseOrderCount(PasswordActivity.this, AppUtils.WAREHOUSE_ORDER_COUNT, apiResponse.getData().getWarehouseList().get(0).getOrderCount());
+                                    AppPreferences.setWarehousePackageCount(PasswordActivity.this, AppUtils.WAREHOUSE_PACKAGE_COUNT, apiResponse.getData().getWarehouseList().get(0).getPackageCount());
+                                    AppPreferences.setWarehouseGatepassCount(PasswordActivity.this, AppUtils.WAREHOUSE_GATEPASS_COUNT, apiResponse.getData().getWarehouseList().get(0).getGatepassCount());
+                                    AppPreferences.setWarehouseConsignmentCount(PasswordActivity.this, AppUtils.WAREHOUSE_CONSIGNMENT_COUNT, apiResponse.getData().getWarehouseList().get(0).getConsignmentCount());
+                                    AppPreferences.setWarehouseReceiveConsignmentCount(PasswordActivity.this, AppUtils.WAREHOUSE_RECEIVE_CONSIGNMENT, apiResponse.getData().getWarehouseList().get(0).getReceiveConsignmentCount());
                                 }
                             }
                         }
+                        navigateToHome();
 
+                    }else{
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
