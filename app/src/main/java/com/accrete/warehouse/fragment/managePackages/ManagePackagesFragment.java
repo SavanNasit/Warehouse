@@ -229,6 +229,50 @@ public class ManagePackagesFragment extends Fragment {
         }
     }
 
+    public void sendDocument(String selectedFilePath, String fileName) {
+        if (viewPagerExecute.getCurrentItem() == 0) {
+            PackedFragment packedFragment =
+                    (PackedFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            packedFragment.addDocument(selectedFilePath, fileName);
+        } else if (viewPagerExecute.getCurrentItem() == 1) {
+            PackedAgainstStockFragment packedAgainstStockFragment =
+                    (PackedAgainstStockFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            packedAgainstStockFragment.addDocument(selectedFilePath, fileName);
+        } else if (viewPagerExecute.getCurrentItem() == 2) {
+            ShippedPackageFragment shippedPackageFragment =
+                    (ShippedPackageFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            shippedPackageFragment.addDocument(selectedFilePath, fileName);
+        } else if (viewPagerExecute.getCurrentItem() == 3) {
+            OutForDeliveryFragment outForDeliveryFragment =
+                    (OutForDeliveryFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            outForDeliveryFragment.addDocument(selectedFilePath, fileName);
+        } else if (viewPagerExecute.getCurrentItem() == 4) {
+            DeliveredFragment deliveredFragment =
+                    (DeliveredFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            deliveredFragment.addDocument(selectedFilePath, fileName);
+        } else if (viewPagerExecute.getCurrentItem() == 5) {
+            AttemptFailedFragment attemptFailedFragment =
+                    (AttemptFailedFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            attemptFailedFragment.addDocument(selectedFilePath, fileName);
+        } else if (viewPagerExecute.getCurrentItem() == 6) {
+            ReAttemptFragment reAttemptFragment =
+                    (ReAttemptFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            reAttemptFragment.addDocument(selectedFilePath, fileName);
+        } else if (viewPagerExecute.getCurrentItem() == 7) {
+            DeliveryFailedFragment deliveryFailedFragment =
+                    (DeliveryFailedFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            deliveryFailedFragment.addDocument(selectedFilePath, fileName);
+        }
+    }
+
     public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {
         private static final String KEY_TITLE = "fragment_title";
         private static final String KEY_FRAGMENT = "fragment";

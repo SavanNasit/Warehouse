@@ -1,6 +1,5 @@
 package com.accrete.warehouse.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.UploadDocument;
 
 import java.util.List;
 
@@ -17,16 +17,14 @@ import java.util.List;
  * Created by poonam on 12/4/17.
  */
 
-public class DocumentUploaderAdapter extends RecyclerView.Adapter<DocumentUploaderAdapter.MyViewHolder>  {
-    Activity activity;
+public class DocumentUploaderAdapter extends RecyclerView.Adapter<DocumentUploaderAdapter.MyViewHolder> {
     private Context context;
-    private List<String> docList;
-    private int mExpandedPosition = -1;
+    private List<UploadDocument> documentList;
     private DocAdapterListener listener;
 
-    public DocumentUploaderAdapter(Context context, List<String> docList, DocAdapterListener listener) {
+    public DocumentUploaderAdapter(Context context, List<UploadDocument> documentList, DocAdapterListener listener) {
         this.context = context;
-        this.docList = docList;
+        this.documentList = documentList;
         this.listener = listener;
     }
 
@@ -40,34 +38,38 @@ public class DocumentUploaderAdapter extends RecyclerView.Adapter<DocumentUpload
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.selectDocName.setText("(" + docList.get(position)+ ")");
-        //applyClickEvents(holder, position);
+        holder.docNameTextView.setText("" + documentList.get(position).getFileName());
+        applyClickEvents(holder, position);
     }
 
     @Override
     public int getItemCount() {
-        return docList.size();
+        return documentList.size();
 
     }
 
     private void applyClickEvents(MyViewHolder holder, final int position) {
-        listener.onMessageRowClicked(position);
+        holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickedDeleteBtn(position);
+            }
+        });
+
     }
 
     public interface DocAdapterListener {
-        void onMessageRowClicked(int position);
-        void onExecute();
+        void onClickedDeleteBtn(int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView selectDocName;
-        private ImageView deleteSelectedDoc;
-
+        private TextView docNameTextView;
+        private ImageView deleteImageView;
 
         public MyViewHolder(View view) {
             super(view);
-            selectDocName = (TextView)view.findViewById( R.id.select_doc_name );
-            deleteSelectedDoc = (ImageView)view.findViewById( R.id.delete_selected_doc );
+            docNameTextView = (TextView) view.findViewById(R.id.doc_name_textView);
+            deleteImageView = (ImageView) view.findViewById(R.id.delete_imageView);
         }
     }
 

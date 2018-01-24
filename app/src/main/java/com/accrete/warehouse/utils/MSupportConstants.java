@@ -23,6 +23,7 @@ public class MSupportConstants {
     public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS_DOWNLOAD_CHALLAN = 10012;
     public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS_DOWNLOAD_GATEPASS = 10013;
     public static final int REQUEST_CODE_ASK_STORAGE_PERMISSIONS_DOWNLOAD_LOADING_SLIP = 10014;
+    public static final int PICK_FILE_RESULT_CODE = 10020;
 
 
 //    /**
