@@ -209,7 +209,7 @@ public class ChangePackageAttemptFailedStatusActivity extends AppCompatActivity 
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.reAttemptFailedTask(version, key, task, userId, accessToken, pacid,
+        Call<ApiResponse> call = apiService.reAttemptDeliveryFailedTask(version, key, task, userId, accessToken, pacid,
                 narration);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
@@ -247,7 +247,7 @@ public class ChangePackageAttemptFailedStatusActivity extends AppCompatActivity 
 
 
     private void deliveryFailedTask(String pacid, String narration) {
-        task = getString(R.string.reattempt_task);
+        task = getString(R.string.delivery_failed_task);
 
         if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
@@ -256,7 +256,7 @@ public class ChangePackageAttemptFailedStatusActivity extends AppCompatActivity 
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.reAttemptFailedTask(version, key, task, userId, accessToken, pacid,
+        Call<ApiResponse> call = apiService.reAttemptDeliveryFailedTask(version, key, task, userId, accessToken, pacid,
                 narration);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));

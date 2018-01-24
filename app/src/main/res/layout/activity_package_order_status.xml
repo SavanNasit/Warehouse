@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@color/green"
+                android:background="@drawable/rounded_view_green_color"
                 android:longClickable="false"
                 android:paddingBottom="@dimen/_8sdp"
                 android:paddingLeft="@dimen/_25sdp"
