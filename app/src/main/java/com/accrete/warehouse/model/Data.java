@@ -20,6 +20,18 @@ public class Data {
         this.pacid = pacid;
     }
 
+    @SerializedName("packages")
+    @Expose
+    private List<AlreadyCreatedPackages> packages = null;
+
+    public List<AlreadyCreatedPackages> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<AlreadyCreatedPackages> packages) {
+        this.packages = packages;
+    }
+
     @SerializedName("pacid")
     @Expose
     private String pacid;

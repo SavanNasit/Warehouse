@@ -20,6 +20,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.PackageDetailsAdapter;
 import com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment;
 import com.accrete.warehouse.fragment.runningorders.RunningOrdersExecuteFragment;
+import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PackageDetailsList;
 import com.accrete.warehouse.model.Packages;
@@ -80,7 +81,7 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
     private String chkid;
     private String orderId;
     private List<PendingItems> pendingItemList = new ArrayList<>();
-    private List<Packages> packedList = new ArrayList<>();
+    private List<AlreadyCreatedPackages> packedList = new ArrayList<>();
     public void doRefresh() {
     }
 
@@ -179,7 +180,6 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
 
     }
 
-
     private void invoiceTypeAdapter() {
         invoiceTypeList.add("Retail");
         invoiceTypeList.add("Tax");
@@ -194,9 +194,9 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
             pendingItemList.clear();
         }
 
-        if (packageDetailsList.size() > 0) {
+     /*   if (packageDetailsList.size() > 0) {
             packageDetailsList.clear();
-        }
+        }*/
 
         List<PackageDetailsList> pdetailList = new ArrayList<>();
         for (int i = 0; i < selectOrderItems.size(); i++) {
@@ -215,7 +215,6 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
 
 
     }
-
 
     private void createPackage() {
         task = getString(R.string.create_package_task);
@@ -292,16 +291,16 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
                     if (apiResponse.getSuccess()) {
                         Toast.makeText(getActivity(), "Package created", Toast.LENGTH_SHORT).show();
                         RunningOrdersExecuteFragment.viewPagerExecute.setCurrentItem(2);
-                        Packages packages = new Packages();
+                       /* AlreadyCreatedPackages packages = new AlreadyCreatedPackages();
                         packages.setInvoiceDate(strInvoiceDate);
                         packages.setInvoiceNo(strInvoiceNumber);
                         packages.setCustomerName(packageDetailsName.getText().toString());
-                        packages.setOid(strOrder);
+                        packages.setOrderID(strOrder);
                         packages.setPacid(apiResponse.getData().getPacid());
 
-                        packedList.add(packages);
+                        packedList.add(packages);*/
 
-                        ( (RunningOrdersExecuteFragment)getParentFragment()).sendPackageDetails(packedList);
+                        ( (RunningOrdersExecuteFragment)getParentFragment()).sendPackageDetails();
 
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
