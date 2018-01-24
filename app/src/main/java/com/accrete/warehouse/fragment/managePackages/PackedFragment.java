@@ -42,6 +42,7 @@ import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
+import com.accrete.warehouse.rest.FilesUploadAsyncTask;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
@@ -465,6 +466,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
 
+        actionsPrintGatepass.setVisibility(View.GONE);
+        actionsPrintLoadingSlip.setVisibility(View.GONE);
         actionsItemsInsidePackage.setVisibility(View.GONE);
         actionsPackageStatus.setVisibility(View.GONE);
 
@@ -499,7 +502,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
-                dialogUploadDoc(getActivity());
+                dialogUploadDoc(getActivity(), packedList.get(position).getPacid().toString());
             }
         });
 
@@ -580,7 +583,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     //Opening Dialog to Upload Documents
-    private void dialogUploadDoc(Activity activity) {
+    private void dialogUploadDoc(final Activity activity, final String pacId) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -610,7 +613,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
-                    dialogUploadDoc.dismiss();
+                    if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                        FilesUploadAsyncTask filesUploadAsyncTask = new FilesUploadAsyncTask(activity,
+                                uploadDocumentList, pacId, dialogUploadDoc);
+                        filesUploadAsyncTask.execute();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
                 }
