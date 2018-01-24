@@ -917,7 +917,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 }
             }
 
-
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
