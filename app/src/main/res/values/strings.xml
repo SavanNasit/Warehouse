@@ -185,6 +185,7 @@
 
     <string name="change_package_order_status_task">warehouse/change_gatepass_status</string>
     <string name="reattempt_task">warehouse/package_reAttempt</string>
+    <string name="task_already_created_packages">warehouse/fetch_order_packages</string>
     <string name="delivery_failed_task">warehouse/package_delivery_failed_submit</string>
 
 </resources>

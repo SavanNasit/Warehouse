@@ -1,4 +1,4 @@
-/*buildscript {
+buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
     }
@@ -6,8 +6,9 @@
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
     }
-}*/
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 /*
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -65,23 +66,16 @@ dependencies {
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.3@aar'
     compile 'com.mikepenz:octicons-typeface:3.0.0.1@aar'
     compile 'com.mikepenz:itemanimators:0.5.0@aar'
-
-    /*   compile('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
-        transitive = true;
-    }*/
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
     compile 'com.android.support:multidex:1.0.0'
-
-
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.0-RC1'
     //compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-
     compile 'me.dm7.barcodescanner:zxing:1.9.8'
-
-
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true;
+    }
 }

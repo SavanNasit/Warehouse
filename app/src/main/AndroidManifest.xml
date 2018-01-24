@@ -69,12 +69,6 @@
             android:name=".navigationView.DrawerActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ScannerActivity" />
-        <!-- android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" -->
-        <!--
-          <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" />
-        -->
 
         <activity android:name=".MainActivity" />
         <activity android:name=".OrderItemActivity" />
@@ -97,6 +91,9 @@
         <activity
             android:name=".ChangePackageAttemptFailedStatusActivity"
             android:theme="@style/MyMaterialTheme"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" />
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
@@ -29,8 +30,8 @@ import java.util.List;
 public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyCreatedPackagesAdapter.MyViewHolder>{
     private Context context;
     private AlreadyCreatedPackagesAdapterListener listener;
-    private List<Packages> packedList = new ArrayList<>();
-    public AlreadyCreatedPackagesAdapter(Context context, List<Packages> packedList,AlreadyCreatedPackagesAdapterListener listener) {
+    private List<AlreadyCreatedPackages> packedList = new ArrayList<>();
+    public AlreadyCreatedPackagesAdapter(Context context, List<AlreadyCreatedPackages> packedList,AlreadyCreatedPackagesAdapterListener listener) {
         this.context = context;
         this.packedList = packedList;
         this.listener = listener;
@@ -45,8 +46,8 @@ public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyC
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        final Packages packed = packedList.get(position);
-        holder.outForDeliveryPackageId.setText(AppPreferences.getCompanyCode(context, AppUtils.COMPANY_CODE)+"PAK"+packed.getPacid());
+        final AlreadyCreatedPackages packed = packedList.get(position);
+        holder.outForDeliveryPackageId.setText(packed.getPackageId());
         holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packed.getInvoiceNo());
         holder.outForDeliveryCustomerName.setText(packed.getCustomerName());
@@ -54,7 +55,7 @@ public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyC
         //TODO NO GatePass ID in this process
         holder.outForDeliveryGatepassId.setVisibility(View.GONE);
 
-        holder.outForDeliveryOrderId.setText("Order Id : " + packed.getOid());
+        holder.outForDeliveryOrderId.setText("Order Id : " + packed.getOrderID());
         if (packed.getToDate() != null && !packed.getToDate().isEmpty()) {
             holder.outForDeliveryExpDod.setText("Exp Dod : " + packed.getToDate());
         } else {

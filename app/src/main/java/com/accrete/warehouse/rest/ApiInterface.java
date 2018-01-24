@@ -349,19 +349,19 @@ public interface ApiInterface {
 
     @GET("?urlq=service")
     Call<ApiResponse> cancelPackage(@Query("version")
-                                             String version,
-                                     @Query("key")
-                                             String key,
-                                     @Query("task")
-                                             String task,
-                                     @Query("user_id")
-                                             String userid,
-                                     @Query("access_token")
-                                             String accessToken,
+                                            String version,
+                                    @Query("key")
+                                            String key,
+                                    @Query("task")
+                                            String task,
+                                    @Query("user_id")
+                                            String userid,
+                                    @Query("access_token")
+                                            String accessToken,
                                     @Query("chkid")
                                             String chkid,
-                                     @Query("pacid")
-                                             String pacid);
+                                    @Query("pacid")
+                                            String pacid);
 
     @GET("?urlq=service")
     Call<ApiResponse> viewGatepassPackages(@Query("version")
@@ -648,6 +648,22 @@ public interface ApiInterface {
                                                   @Query("pacdelgatpacid")
                                                   String pacdelgatpacid,
                                                   @Query("narration") String narration);
+
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getOrderPackages(@Query("version")
+                                               String version,
+                                       @Query("key")
+                                               String key,
+                                       @Query("task")
+                                               String task,
+                                       @Query("user_id")
+                                               String userid,
+                                       @Query("access_token")
+                                               String accessToken,
+                                       @Query("chkid")
+                                               String chkid,
+                                       @Query("chkoid") String chkoid);
 
 
 }

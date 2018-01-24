@@ -16,6 +16,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
 import com.accrete.warehouse.fragment.createpackage.PackageDetailsFragment;
 import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
+import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
@@ -34,7 +35,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
     public static ViewPager viewPagerExecute;
     private TabLayout tabLayoutExecute;
     private Packages packages = new Packages();
-    private List<Packages> packagesList = new ArrayList<>();
+    private List<AlreadyCreatedPackages> packagesList = new ArrayList<>();
     private Bundle bundle;
     private String chkid, chkoid;
     private ArrayList<PendingItems> pendingItems;
@@ -110,6 +111,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
         AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment = new AlreadyCreatedPackagesFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("packagesList", (ArrayList<? extends Parcelable>) packagesList);
+        bundle.putString("chkoid", chkoid);
         alreadyCreatedPackagesFragment.setArguments(bundle);
 
         Bundle bundlePendingItems = new Bundle();
@@ -166,12 +168,12 @@ public class RunningOrdersExecuteFragment extends Fragment {
         }
     }
 
-    public void sendPackageDetails(List<Packages> packages) {
+    public void sendPackageDetails() {
         if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 2) {
-            Log.e("TAG_ORDERS", "" + packages.size());
+
             AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
                     (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
-            alreadyCreatedPackagesFragment.sendPackageDetails(packages);
+            alreadyCreatedPackagesFragment.sendPackageDetails();
 
         }
     }
