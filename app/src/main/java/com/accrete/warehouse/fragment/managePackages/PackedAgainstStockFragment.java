@@ -107,7 +107,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         packedAgainstRecyclerView.setAdapter(packedAgainstStockAdapter);
 
 
-        doRefresh();
+      //  doRefresh();
 
         //Scroll Listener
         packedAgainstRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -424,7 +424,8 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         if (packedAgainstList != null && packedAgainstList.size() > 0) {
             packedAgainstList.clear();
         }
-        packedAgainstStockAdapter.notifyDataSetChanged();
+        packedAgainstRecyclerView.removeAllViewsInLayout();
+       packedAgainstStockAdapter.notifyDataSetChanged();
         doRefresh();
     }
 

@@ -106,7 +106,7 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
         pendingItemsRecyclerView.setNestedScrollingEnabled(false);
         pendingItemsRecyclerView.setAdapter(outForDeliveryAdapter);
 
-        doRefresh();
+        //doRefresh();
 
         //Scroll Listener
         pendingItemsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -704,6 +704,8 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
         if (outForDeliveryList != null && outForDeliveryList.size() > 0) {
             outForDeliveryList.clear();
         }
+        pendingItemsRecyclerView.removeAllViewsInLayout();
+        outForDeliveryAdapter.notifyDataSetChanged();
         doRefresh();
     }
 

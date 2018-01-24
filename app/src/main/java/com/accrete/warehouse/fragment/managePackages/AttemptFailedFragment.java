@@ -98,6 +98,8 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         if (attemptFailedList != null && attemptFailedList.size() > 0) {
             attemptFailedList.clear();
         }
+        attemptFailedRecyclerView.removeAllViewsInLayout();
+        outForDeliveryAdapter.notifyDataSetChanged();
         doRefresh();
     }
 
@@ -115,7 +117,7 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         attemptFailedRecyclerView.setAdapter(outForDeliveryAdapter);
 
 
-        doRefresh();
+        //    doRefresh();
 
         //Scroll Listener
         attemptFailedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

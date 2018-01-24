@@ -93,6 +93,15 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
         return rootView;
     }
 
+    public void clearListAndRefresh() {
+        if (reAttemptList != null && reAttemptList.size() > 0) {
+            reAttemptList.clear();
+        }
+        reAattemptRecyclerView.removeAllViewsInLayout();
+        outForDeliveryAdapter.notifyDataSetChanged();
+        doRefresh();
+    }
+
     private void findViews(View rootView) {
         reAttemptRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.attempt_failed_refresh_layout);
         reAattemptRecyclerView = (RecyclerView) rootView.findViewById(R.id.attempt_failed_recycler_view);
@@ -106,8 +115,7 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
         reAattemptRecyclerView.setNestedScrollingEnabled(false);
         reAattemptRecyclerView.setAdapter(outForDeliveryAdapter);
 
-
-        doRefresh();
+        // doRefresh();
 
         //Scroll Listener
         reAattemptRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -92,6 +92,15 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
         return rootView;
     }
 
+    public void clearListAndRefresh() {
+        if (deliveredList != null && deliveredList.size() > 0) {
+            deliveredList.clear();
+        }
+        deliveredRecyclerView.removeAllViewsInLayout();
+        outForDeliveryAdapter.notifyDataSetChanged();
+        doRefresh();
+    }
+
     private void findViews(View rootView) {
         deliveredSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.delivered_swipe_refresh_layout);
         deliveredRecyclerView = (RecyclerView) rootView.findViewById(R.id.delivered_recycler_view);
@@ -105,7 +114,7 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
         deliveredRecyclerView.setNestedScrollingEnabled(false);
         deliveredRecyclerView.setAdapter(outForDeliveryAdapter);
 
-        doRefresh();
+        //   doRefresh();
 
         //Scroll Listener
         deliveredRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

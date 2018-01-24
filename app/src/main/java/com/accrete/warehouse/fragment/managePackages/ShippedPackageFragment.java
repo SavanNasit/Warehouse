@@ -91,7 +91,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         packedAgainstRecyclerView.setAdapter(packedAgainstStockAdapter);
 
 
-        doRefresh();
+        //  doRefresh();
 
         //Scroll Listener
         packedAgainstRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -130,7 +130,15 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
             }
         });
 
+    }
 
+    public void clearListAndRefresh() {
+        if (packedAgainstList != null && packedAgainstList.size() > 0) {
+            packedAgainstList.clear();
+        }
+        packedAgainstRecyclerView.removeAllViewsInLayout();
+        packedAgainstStockAdapter.notifyDataSetChanged();
+        doRefresh();
     }
 
     @Override

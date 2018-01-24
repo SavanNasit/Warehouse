@@ -93,6 +93,15 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
         return rootView;
     }
 
+    public void clearListAndRefresh() {
+        if (deliveryFailedList != null && deliveryFailedList.size() > 0) {
+            deliveryFailedList.clear();
+        }
+        deliveryFailedRecyclerView.removeAllViewsInLayout();
+        outForDeliveryAdapter.notifyDataSetChanged();
+        doRefresh();
+    }
+
     private void findViews(View rootView) {
         deliveryFailedRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.attempt_failed_refresh_layout);
         deliveryFailedRecyclerView = (RecyclerView) rootView.findViewById(R.id.attempt_failed_recycler_view);
@@ -107,7 +116,7 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
         deliveryFailedRecyclerView.setAdapter(outForDeliveryAdapter);
 
 
-        doRefresh();
+     //   doRefresh();
 
         //Scroll Listener
         deliveryFailedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

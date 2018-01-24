@@ -120,6 +120,18 @@ public class ChangePackageAttemptFailedStatusActivity extends AppCompatActivity 
             }
         });
 
+        deliveryFailedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!NetworkUtil.getConnectivityStatusString(ChangePackageAttemptFailedStatusActivity.this).equals(getString(R.string.not_connected_to_internet))) {
+                    deliveryFailedTask(pacdelId,
+                            narrationEditText.getText().toString().trim() + "");
+                } else {
+                    Toast.makeText(ChangePackageAttemptFailedStatusActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     private void getPrefilledData(String pacid) {
@@ -188,6 +200,53 @@ public class ChangePackageAttemptFailedStatusActivity extends AppCompatActivity 
     }
 
     private void reAttemptTask(String pacid, String narration) {
+        task = getString(R.string.reattempt_task);
+
+        if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.reAttemptFailedTask(version, key, task, userId, accessToken, pacid,
+                narration);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                // enquiryList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        Intent resultIntent = new Intent();
+                        setResult(456, resultIntent);
+                        finish();
+                    } else {
+                        if (apiResponse.getSuccessCode().equals("10001")) {
+                            Toast.makeText(ChangePackageAttemptFailedStatusActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ChangePackageAttemptFailedStatusActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("packageOrderStatus", t.getMessage());
+            }
+        });
+    }
+
+
+    private void deliveryFailedTask(String pacid, String narration) {
         task = getString(R.string.reattempt_task);
 
         if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {

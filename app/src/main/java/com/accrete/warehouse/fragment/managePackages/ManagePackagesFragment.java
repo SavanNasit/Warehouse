@@ -57,22 +57,60 @@ public class ManagePackagesFragment extends Fragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 getActivity().supportInvalidateOptionsMenu();
-                final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(viewPagerExecute.getCurrentItem());
-                if (mFragment instanceof PackedFragment) {
-                    if (mFragment != null && mFragment.isAdded()) {
-                        //    ((PackedFragment) mFragment).clearListAndRefresh();
-                    }
-                }
-                if (mFragment instanceof PackedAgainstStockFragment) {
-                    if (mFragment != null && mFragment.isAdded()) {
-                        //    ((PackedAgainstStockFragment) mFragment).clearListAndRefresh();
-                    }
-                }
             }
 
             @Override
             public void onPageSelected(int position) {
-
+                final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(viewPagerExecute.getCurrentItem());
+                if (position == 0) {
+                    if (mFragment instanceof PackedFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((PackedFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                } else if (position == 1) {
+                    if (mFragment instanceof PackedAgainstStockFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((PackedAgainstStockFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                } else if (position == 2) {
+                    if (mFragment instanceof ShippedPackageFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((ShippedPackageFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                } else if (position == 3) {
+                    if (mFragment instanceof OutForDeliveryFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((OutForDeliveryFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                } else if (position == 4) {
+                    if (mFragment instanceof DeliveredFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((DeliveredFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                } else if (position == 5) {
+                    if (mFragment instanceof AttemptFailedFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((AttemptFailedFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                } else if (position == 6) {
+                    if (mFragment instanceof ReAttemptFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((ReAttemptFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                } else if (position == 7) {
+                    if (mFragment instanceof DeliveryFailedFragment) {
+                        if (mFragment != null && mFragment.isAdded()) {
+                            ((DeliveryFailedFragment) mFragment).clearListAndRefresh();
+                        }
+                    }
+                }
             }
 
             @Override
