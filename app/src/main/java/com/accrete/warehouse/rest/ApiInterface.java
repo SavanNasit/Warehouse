@@ -635,19 +635,19 @@ public interface ApiInterface {
                                                  @Query("narration") String narration);
 
     @GET("?urlq=service")
-    Call<ApiResponse> reAttemptFailedTask(@Query("version")
+    Call<ApiResponse> reAttemptDeliveryFailedTask(@Query("version")
                                                   String version,
-                                          @Query("key")
+                                                  @Query("key")
                                                   String key,
-                                          @Query("task")
+                                                  @Query("task")
                                                   String task,
-                                          @Query("user_id")
+                                                  @Query("user_id")
                                                   String userid,
-                                          @Query("access_token")
+                                                  @Query("access_token")
                                                   String accessToken,
-                                          @Query("pacdelgatpacid")
+                                                  @Query("pacdelgatpacid")
                                                   String pacdelgatpacid,
-                                          @Query("narration") String narration);
+                                                  @Query("narration") String narration);
 
 
     @GET("?urlq=service")

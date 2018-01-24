@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -29,8 +31,6 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
-import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
-
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
@@ -47,6 +47,7 @@ import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.FilePath;
 import com.google.gson.GsonBuilder;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator;
@@ -58,6 +59,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +74,7 @@ import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
+import static com.accrete.warehouse.utils.MSupportConstants.PICK_FILE_RESULT_CODE;
 import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
 import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_CAMERA;
 import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_RUNNING_ORDER_CALL_PERMISSIONS;
@@ -91,6 +94,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     private String stringWarehouseName;
     private boolean doubleBackToExitPressedOnce = false;
     private DrawerInterface drawerInterfaceToSend;
+    private String selectedFilePath;
 
     public DrawerActivity() {
     }
@@ -488,6 +492,36 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 ((ManagePackagesFragment) currentFragment).checkFragmentAndRefresh();
             }
 
+        } else if (resultCode == Activity.RESULT_OK) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+            if (requestCode == PICK_FILE_RESULT_CODE) {
+
+                // Get the Uri of the selected file
+                Uri uri = data.getData();
+                String uriString = uri.toString();
+                File myFile = new File(uriString);
+
+                selectedFilePath = FilePath.getPath(this, uri);
+
+                String displayName = null;
+                if (uriString.startsWith("content://")) {
+                    Cursor cursor = null;
+                    try {
+                        cursor = getContentResolver().query(uri, null, null, null, null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                } else if (uriString.startsWith("file://")) {
+                    displayName = myFile.getName();
+                }
+
+                if (currentFragment instanceof ManagePackagesFragment) {
+                    ((ManagePackagesFragment) currentFragment).sendDocument(selectedFilePath, displayName);
+                }
+            }
         }
     }
 
@@ -558,7 +592,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                             ((ManageGatePassFragment) f).downloadPdfCall();
                         } else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
-                        }else if (fragment instanceof RunningOrdersExecuteFragment) {
+                        } else if (fragment instanceof RunningOrdersExecuteFragment) {
                             ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
                         } else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();

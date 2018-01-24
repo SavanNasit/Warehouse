@@ -1,6 +1,7 @@
 package com.accrete.warehouse.fragment.managePackages;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -36,6 +37,7 @@ import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.OutForDeliveryAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PackageItem;
+import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -56,6 +58,7 @@ import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
+import static com.accrete.warehouse.utils.MSupportConstants.PICK_FILE_RESULT_CODE;
 import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
 import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWithRationale;
 
@@ -74,7 +77,7 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
     private AlertDialog dialogSelectEvent;
     private AlertDialog dialogUploadDoc;
     private DocumentUploaderAdapter documentUploaderAdapter;
-    private List<String> documentList = new ArrayList<>();
+    private List<UploadDocument> uploadDocumentList = new ArrayList<>();
     private LinearLayoutManager mLayoutManager;
     private String status, dataChanged;
     private int visibleThreshold = 2, lastVisibleItem, totalItemCount;
@@ -85,12 +88,45 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
     private AlertDialog alertDialog;
     private DownloadManager downloadManager;
     private ProgressBar progressBar;
+    private LinearLayout linearLayout;
+    private RecyclerView dialogUploadDocRecyclerView;
+    private ImageView addImageView;
+    private Button btnUpload;
+    private ProgressBar dialogUploadProgressBar;
+
+    //Add Document into List
+    public void addDocument(String selectedFilePath, String fileName) {
+        UploadDocument uploadDocument = new UploadDocument();
+        uploadDocument.setFileName(fileName);
+        uploadDocument.setFilePath(selectedFilePath);
+        uploadDocument.setFileType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
+        uploadDocumentList.add(uploadDocument);
+        documentUploaderAdapter.notifyDataSetChanged();
+    }
+
+    //Remove file/document from list
+    @Override
+    public void onClickedDeleteBtn(int position) {
+        if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
+            uploadDocumentList.remove(position);
+            documentUploaderAdapter.notifyDataSetChanged();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_attempt_failed, container, false);
         findViews(rootView);
         return rootView;
+    }
+
+    public void clearListAndRefresh() {
+        if (reAttemptList != null && reAttemptList.size() > 0) {
+            reAttemptList.clear();
+        }
+        reAattemptRecyclerView.removeAllViewsInLayout();
+        outForDeliveryAdapter.notifyDataSetChanged();
+        doRefresh();
     }
 
     private void findViews(View rootView) {
@@ -106,8 +142,7 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
         reAattemptRecyclerView.setNestedScrollingEnabled(false);
         reAattemptRecyclerView.setAdapter(outForDeliveryAdapter);
 
-
-        doRefresh();
+        // doRefresh();
 
         //Scroll Listener
         reAattemptRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -228,7 +263,7 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
-                dialogUploadDoc();
+                dialogUploadDoc(getActivity());
             }
         });
 
@@ -389,7 +424,8 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
 
     }
 
-    private void dialogUploadDoc() {
+    //Opening Dialog to Upload Documents
+    private void dialogUploadDoc(Activity activity) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -397,46 +433,51 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
         dialogUploadDoc = builder.create();
         dialogUploadDoc.setCanceledOnTouchOutside(true);
 
-
-        LinearLayout linearLayout;
-        RecyclerView dialogUploadDocRecyclerView;
-        Button btnUpload;
-        ProgressBar dialogUploadProgressBar;
-        Button btnCancel;
-
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
         dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);
+        addImageView = (ImageView) dialogView.findViewById(R.id.add_imageView);
         btnUpload = (Button) dialogView.findViewById(R.id.btn_upload);
         dialogUploadProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_upload_progress_bar);
-        btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
+        Button btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
 
-        documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), documentList, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), uploadDocumentList, this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
         dialogUploadDocRecyclerView.setLayoutManager(mLayoutManager);
-        // recyclerView.setItemAnimator(new DefaultItemAnimator());
         dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
 
-        if (documentList.size() > 0) {
-            documentList.clear();
+        if (uploadDocumentList.size() > 0) {
+            uploadDocumentList.clear();
         }
 
-        documentList.add("awesome-file.jpg");
-        documentList.add("awesome-file.jpg");
-        documentList.add("awesome-file.jpg");
-
-
+        //Upload files and dismiss dialog
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
+                    dialogUploadDoc.dismiss();
+                } else {
+                    Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //Dismiss dialog
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
+                    uploadDocumentList.clear();
+                }
                 dialogUploadDoc.dismiss();
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        //Call Intent to select file and add into List
+        addImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogUploadDoc.dismiss();
+                selectFile();
             }
         });
 
@@ -445,6 +486,14 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
             dialogUploadDoc.show();
         }
     }
+
+    //Intent to select file
+    private void selectFile() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+    }
+
 
     @Override
     public void onExecute() {
