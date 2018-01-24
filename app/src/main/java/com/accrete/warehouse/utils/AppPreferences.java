@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.accrete.warehouse.model.ShippingBy;
-
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -187,5 +184,70 @@ public class AppPreferences {
         edit.commit();
     }
 
+    public static String getWarehouseOrderCount(Context ctx, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getString(key, " ");
+    }
 
+
+    public static void setWarehouseOrderCount(Context ctx, String key, String value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor edit = preference.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
+
+    public static String getWarehousePackageCount(Context ctx, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getString(key, " ");
+    }
+
+
+    public static void setWarehousePackageCount(Context ctx, String key, String value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor edit = preference.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
+
+    public static String getWarehouseGatepassCount(Context ctx, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getString(key, " ");
+    }
+
+
+    public static void setWarehouseGatepassCount(Context ctx, String key, String value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor edit = preference.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
+    public static String getWarehouseConsignmentCount(Context ctx, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getString(key, " ");
+    }
+
+
+    public static void setWarehouseConsignmentCount(Context ctx, String key, String value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor edit = preference.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
+    public static String getWarehouseReceiveConsignmentCount(Context ctx, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getString(key, " ");
+    }
+
+
+    public static void setWarehouseReceiveConsignmentCount(Context ctx, String key, String value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor edit = preference.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
 }

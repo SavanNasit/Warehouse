@@ -26,11 +26,16 @@ public class PendingItemsAdapter extends RecyclerView.Adapter<PendingItemsAdapte
     private List<PendingItems> pendingItems;
     private int mExpandedPosition = -1;
     private PendingItemsAdapterListener listener;
+    private int qty,posToUpdate;
+    private boolean flagScan;
 
-    public PendingItemsAdapter(Context context, List<PendingItems> pendingItems, PendingItemsAdapterListener listener) {
+    public PendingItemsAdapter(Context context, List<PendingItems> pendingItems, PendingItemsAdapterListener listener, int quantity,int posToUpdate,boolean flagScan) {
         this.context = context;
         this.pendingItems = pendingItems;
         this.listener = listener;
+        this.qty = quantity;
+        this.posToUpdate =posToUpdate;
+        this.flagScan=flagScan;
     }
 
     @Override
@@ -41,11 +46,17 @@ public class PendingItemsAdapter extends RecyclerView.Adapter<PendingItemsAdapte
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         final PendingItems pendingItem = pendingItems.get(position);
         holder.listRowPendingItemsBatchNumber.setText(pendingItem.getIsid());
         holder.listRowPendingItemsItem.setText(pendingItem.getItemVariationName());
-        holder.listRowPendingItemsQuantity.setText(pendingItem.getItemQuantity());
+        if(qty>0 && position==posToUpdate){
+            holder.listRowPendingItemsQuantity.setText(String.valueOf(Integer.parseInt(pendingItems.get(posToUpdate).getItemQuantityDuplicate())-qty));
+        }else if(flagScan && position == posToUpdate){
+            holder.listRowPendingItemsQuantity.setText(pendingItems.get(posToUpdate).getItemQuantity());
+        }else {
+            holder.listRowPendingItemsQuantity.setText(pendingItem.getItemQuantityDuplicate());
+        }
         holder.listRowPendingItemsStatus.setText(pendingItem.getItemStatus());
         holder.listRowPendingItemsUnit.setText(pendingItem.getItemUnit());
 
@@ -68,7 +79,7 @@ public class PendingItemsAdapter extends RecyclerView.Adapter<PendingItemsAdapte
                 if (pendingItem.getItemStatus().equals("Executed")) {
                     Toast.makeText(context, "Item already executed", Toast.LENGTH_SHORT).show();
                 } else {
-                    listener.onExecute(pendingItem.getIsid(), pendingItem.getOiid(), pendingItem.getItemQuantity());
+                    listener.onExecute(pendingItem.getIsid(), pendingItem.getOiid(), pendingItem.getItemQuantity(),position);
                 }
 
             }
@@ -89,8 +100,7 @@ public class PendingItemsAdapter extends RecyclerView.Adapter<PendingItemsAdapte
 
     public interface PendingItemsAdapterListener {
         void onMessageRowClicked(int position);
-
-        void onExecute(String isid, String oiid, String itemQuantity);
+        void onExecute(String isid, String oiid, String itemQuantity,int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.CustomerDetailsActivity;
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.fragment.RunningOrdersFragment;
+import com.accrete.warehouse.fragment.runningorders.RunningOrdersFragment;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.RunningOrder;

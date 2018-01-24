@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.runningorders;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
+import com.accrete.warehouse.fragment.createpackage.PackageDetailsFragment;
+import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
@@ -35,6 +38,12 @@ public class RunningOrdersExecuteFragment extends Fragment {
     private Bundle bundle;
     private String chkid, chkoid;
     private ArrayList<PendingItems> pendingItems;
+    private int listSize;
+
+    List<SelectOrderItem> selectOrderItems = new ArrayList<>();
+    List<PendingItems> pendingItemsLists = new ArrayList<>();
+    String strChkoid;
+    private int strQuantity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,10 +60,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
             pendingItems = bundle.getParcelableArrayList("pendingItems");
             chkid = bundle.getString("chkid");
             chkoid = bundle.getString("chkoid");
-            //String packages = bundle.getString("packages");
-            //  Log.d("packages list size", String.valueOf(runningOrders.size()));
             Log.d("running order list size", String.valueOf(packagesList.size()));
-
 
         }
         setupViewPagerExecute(viewPagerExecute);
@@ -77,7 +83,15 @@ public class RunningOrdersExecuteFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-
+                if(position==1){
+                    PackageDetailsFragment packageDetailsFragment =
+                            (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+                    packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid,strQuantity);
+                }else if(position==2){
+                    AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
+                            (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+                    alreadyCreatedPackagesFragment.getPackageList(packagesList);
+                }
             }
 
             @Override
@@ -85,6 +99,8 @@ public class RunningOrdersExecuteFragment extends Fragment {
 
             }
         });
+
+
 
     }
 
@@ -150,15 +166,59 @@ public class RunningOrdersExecuteFragment extends Fragment {
         }
     }
 
-    public void getOrderItemList(List<SelectOrderItem> selectOrderItems, List<PendingItems> pendingItemsLists, String chkoid) {
-        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 1) {
-            Log.e("TAG_ORDERS", "" + selectOrderItems.size());
-            PackageDetailsFragment packageDetailsFragment =
-                    (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
-            packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsLists, chkoid);
+    public void sendPackageDetails(List<Packages> packages) {
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 2) {
+            Log.e("TAG_ORDERS", "" + packages.size());
+            AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
+                    (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            alreadyCreatedPackagesFragment.sendPackageDetails(packages);
 
         }
     }
+
+    public void getOrderItemList(List<SelectOrderItem> selectOrderItem, List<PendingItems> pendingItemsList, String chkoid, int allocatedQuantity, int pos) {
+        listSize = pendingItemsLists.size();
+        pendingItemsLists.addAll(pendingItemsList);
+        selectOrderItems.addAll(selectOrderItem);
+        strChkoid = chkoid;
+        strQuantity = allocatedQuantity;
+
+
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
+            Log.e("TAG_ORDERS", "" + selectOrderItems.size());
+
+
+            PendingItemsFragment pendingItemsFragment =
+                    (PendingItemsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            pendingItemsFragment.getAllocatedQuantity(allocatedQuantity,pendingItemsList,pos);
+
+        } else if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 1) {
+            PackageDetailsFragment packageDetailsFragment =
+                    (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            packageDetailsFragment.getOrderItem(selectOrderItems, pendingItemsList, chkoid, strQuantity);
+        }
+    }
+
+    public void scanBarcode() {
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
+            PendingItemsFragment pendingItemsFragment =
+                    (PendingItemsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            pendingItemsFragment.scanBarcode();
+
+            Log.d("PERMISSION", "ROEF");
+        }
+    }
+
+    public void checkFragmentAndDownloadPDF() {
+        if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 2) {
+            AlreadyCreatedPackagesFragment alreadyCreatedPackagesFragment =
+                    (AlreadyCreatedPackagesFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
+            alreadyCreatedPackagesFragment.checkFragmentAndDownloadPDF();
+
+            Log.d("PERMISSION", "ROEF");
+        }
+    }
+
 
  /*   public void getOrderItemList(ArrayList<Parcelable> selectedOrderItems) {
         if(viewPagerExecute !=null && viewPagerExecute.getCurrentItem() == 1) {

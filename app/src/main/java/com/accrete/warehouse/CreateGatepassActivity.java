@@ -2,26 +2,13 @@ package com.accrete.warehouse;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.accrete.warehouse.fragment.ConfirmGatepassFragment;
-import com.accrete.warehouse.fragment.CreatePassMainTabFragment;
-import com.accrete.warehouse.fragment.GatepassFragment;
-import com.accrete.warehouse.fragment.PackageSelectionFragment;
-import com.accrete.warehouse.model.ShippingBy;
-import com.accrete.warehouse.model.ShippingType;
-import com.accrete.warehouse.utils.NonSwipeableViewPager;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment;
 
 /**
  * Created by poonam on 12/21/17.

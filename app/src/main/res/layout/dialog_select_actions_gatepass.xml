@@ -107,6 +107,7 @@
             android:padding="@dimen/_10sdp">
 
             <TextView
+                android:id="@+id/cancel_gatepass_textview_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

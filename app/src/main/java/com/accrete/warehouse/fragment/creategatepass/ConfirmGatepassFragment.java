@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.creategatepass;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
+import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.DeliveryUserList;
 import com.accrete.warehouse.rest.ApiClient;
@@ -35,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.accrete.warehouse.fragment.CreatePassMainTabFragment.createGatepassViewpager;
+import static com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment.createGatepassViewpager;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
@@ -189,7 +189,7 @@ public class ConfirmGatepassFragment extends Fragment {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Log.d("error", t.getMessage());
-
+                Toast.makeText(getActivity(), "Oops, Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }

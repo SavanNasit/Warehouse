@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.adapter.SelectOrderItemAdapter;
-import com.accrete.warehouse.fragment.RunningOrdersExecuteFragment;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -37,6 +36,7 @@ public class OrderItemActivity extends AppCompatActivity implements SelectOrderI
     private String chkoid;
     private String maximumQuantity;
     private List<PendingItems> pendingItemList = new ArrayList<>();
+    private int position;
 
     private void findViews() {
         ordersItemRecyclerView = (RecyclerView) findViewById(R.id.orders_item_recycler_view);
@@ -81,7 +81,8 @@ public class OrderItemActivity extends AppCompatActivity implements SelectOrderI
         selectOrderItemList = getIntent().getParcelableArrayListExtra("selectOrderItemList");
         pendingItemList = getIntent().getParcelableArrayListExtra("pendingItemsList");
         chkoid = getIntent().getStringExtra("chkoid");
-        maximumQuantity = getIntent().getStringExtra("quantity");
+         position = getIntent().getIntExtra("position",0);
+       // maximumQuantity = getIntent().getStringExtra("quantity");
         Log.d("selectOrderList size", String.valueOf(selectOrderItemList.size()));
         findViews();
     }
@@ -92,22 +93,24 @@ public class OrderItemActivity extends AppCompatActivity implements SelectOrderI
     }
 
     @Override
-    public void onItemExecute(String inventoryName, String allocatedQuantity, String quantity, String unit) {
+    public void onItemExecute(String inventoryName, String allocatedQuantity, String quantity, String unit,int position) {
 
             if (quantity == null || quantity.isEmpty()) {
                 Toast.makeText(this, "Please enter quantity", Toast.LENGTH_SHORT).show();
             } else if (Integer.parseInt(quantity) == 0) {
                 Toast.makeText(this, "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
-            } else if (Integer.parseInt(quantity) > Integer.parseInt(maximumQuantity)) {
+            } else if (Integer.parseInt(quantity) > Integer.parseInt(allocatedQuantity)) {
                 Toast.makeText(this, "Low stock inventory", Toast.LENGTH_SHORT).show();
             } else {
                 Intent resultIntent = new Intent();
                 resultIntent.putParcelableArrayListExtra("selectOrderItem", (ArrayList<? extends Parcelable>) selectOrderItemList);
                 resultIntent.putExtra("chkoid", chkoid);
+                resultIntent.putExtra("pos", position);
+                resultIntent.putExtra("qty",Integer.valueOf(quantity));
                 resultIntent.putParcelableArrayListExtra("pendingItemsList", (ArrayList<? extends Parcelable>) pendingItemList);
                 setResult(1001, resultIntent);
                 finish();
-                RunningOrdersExecuteFragment.viewPagerExecute.setCurrentItem(1);
+               // RunningOrdersExecuteFragment.viewPagerExecute.setCurrentItem(1);
             }
     }
 }

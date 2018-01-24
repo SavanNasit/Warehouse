@@ -13,7 +13,9 @@ import com.accrete.warehouse.CreateGatepassActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
+import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
+import com.accrete.warehouse.fragment.runningorders.RunningOrdersFragment;
 import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.navigationView.DrawerInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -63,6 +65,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Draw
         if (AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME) != null &&
                 !AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME).isEmpty()) {
             textViewWarehouseTitle.setText(AppPreferences.getWarehouseDefaultName(getActivity(), AppUtils.WAREHOUSE_DEFAULT_NAME));
+            homeRunningOrdersCount.setText(AppPreferences.getWarehouseOrderCount(getActivity(), AppUtils.WAREHOUSE_ORDER_COUNT));
+            homeManagePackagesCount.setText(AppPreferences.getWarehousePackageCount(getActivity(), AppUtils.WAREHOUSE_PACKAGE_COUNT));
+            homeManageGatePassCount.setText(AppPreferences.getWarehouseGatepassCount(getActivity(), AppUtils.WAREHOUSE_GATEPASS_COUNT));
+            homeManageConsignmentCount.setText(AppPreferences.getWarehouseConsignmentCount(getActivity(), AppUtils.WAREHOUSE_CONSIGNMENT_COUNT));
+            homeReceiveConsignmentCount.setText(AppPreferences.getWarehouseReceiveConsignmentCount(getActivity(), AppUtils.WAREHOUSE_RECEIVE_CONSIGNMENT));
         }
 
         ((DrawerActivity) getActivity()).setFragmentRefreshListener(new DrawerActivity.FragmentRefreshListener() {

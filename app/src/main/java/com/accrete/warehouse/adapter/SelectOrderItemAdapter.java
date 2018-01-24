@@ -45,7 +45,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final SelectOrderItem selectOrderItem = selectOrderItems.get(position);
         holder.listRowOrderItemInventory.setText(selectOrderItem.getInventory());
 
@@ -75,7 +75,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
             @Override
             public void onClick(View v) {
                 listener.onItemExecute(selectOrderItem.getInventoryName(),selectOrderItem.getAllocatedQuantity(),
-                        holder.listRowOrderItemEdtAllotQuantity.getText().toString(),selectOrderItem.getUnit());
+                        holder.listRowOrderItemEdtAllotQuantity.getText().toString(),selectOrderItem.getUnit(),position);
             }
         });
 
@@ -105,7 +105,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
 
     public interface SelectOrderItemsAdapterListener{
         void onItemRowClicked(int position);
-        void onItemExecute(String inventoryName, String allocatedQuantity, String quantity, String unit);
+        void onItemExecute(String inventoryName, String allocatedQuantity, String quantity, String unit,int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

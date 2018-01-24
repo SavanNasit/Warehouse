@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.creategatepass;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.PackedItemAdapter;
+import com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.ShippingBy;
@@ -36,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.accrete.warehouse.fragment.CreatePassMainTabFragment.createGatepassViewpager;
+import static com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment.createGatepassViewpager;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;

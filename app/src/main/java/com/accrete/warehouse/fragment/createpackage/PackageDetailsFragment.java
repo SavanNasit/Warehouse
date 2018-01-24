@@ -1,5 +1,6 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.createpackage;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -12,14 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.PackageDetailsAdapter;
+import com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment;
+import com.accrete.warehouse.fragment.runningorders.RunningOrdersExecuteFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PackageDetailsList;
+import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
 import com.accrete.warehouse.rest.ApiClient;
@@ -77,7 +80,7 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
     private String chkid;
     private String orderId;
     private List<PendingItems> pendingItemList = new ArrayList<>();
-
+    private List<Packages> packedList = new ArrayList<>();
     public void doRefresh() {
     }
 
@@ -151,8 +154,9 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
     }
 
     @Override
-    public void onExecute() {
-
+    public void onExecute(int position) {
+        packageDetailsList.remove(position);
+        packageDetailsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -185,23 +189,30 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
     }
 
 
-    public void getOrderItem(List<SelectOrderItem> selectOrderItems, List<PendingItems> pendingItemsLists, String chkoid) {
+    public void getOrderItem(List<SelectOrderItem> selectOrderItems, List<PendingItems> pendingItemsLists, String chkoid, int strQuantity) {
         if (pendingItemList.size() > 0) {
             pendingItemList.clear();
         }
+
+        if (packageDetailsList.size() > 0) {
+            packageDetailsList.clear();
+        }
+
         List<PackageDetailsList> pdetailList = new ArrayList<>();
         for (int i = 0; i < selectOrderItems.size(); i++) {
             packageDetails.setItem(selectOrderItems.get(i).getInventoryName());
-            packageDetails.setQuantity(selectOrderItems.get(i).getAllocatedQuantity());
+            //packageDetails.setQuantity(selectOrderItems.get(i).getAllocatedQuantity());
+            packageDetails.setQuantity(String.valueOf(strQuantity));
             packageDetails.setUnit(selectOrderItems.get(i).getUnit());
             packageDetails.setQty(selectOrderItems.get(i).getAllocatedQuantity());
             packageDetails.setBatchNumber(selectOrderItems.get(i).getInventory());
         }
         pdetailList.add(packageDetails);
         packageDetailsList.addAll(pdetailList);
-        // packageDetailsAdapter.notifyDataSetChanged();
+        packageDetailsAdapter.notifyDataSetChanged();
         pendingItemList.addAll(pendingItemsLists);
         orderId = chkoid;
+
 
     }
 
@@ -281,16 +292,27 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
                     if (apiResponse.getSuccess()) {
                         Toast.makeText(getActivity(), "Package created", Toast.LENGTH_SHORT).show();
                         RunningOrdersExecuteFragment.viewPagerExecute.setCurrentItem(2);
+                        Packages packages = new Packages();
+                        packages.setInvoiceDate(strInvoiceDate);
+                        packages.setInvoiceNo(strInvoiceNumber);
+                        packages.setCustomerName(packageDetailsName.getText().toString());
+                        packages.setOid(strOrder);
+                        packages.setPacid(apiResponse.getData().getPacid());
+
+                        packedList.add(packages);
+
+                        ( (RunningOrdersExecuteFragment)getParentFragment()).sendPackageDetails(packedList);
+
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
                             Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else if (apiResponse.getSuccessCode().equals("10006")) {
                             Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                         }else if(apiResponse.getSuccessCode().equals("20004")){
-                        packageDetailsEmptyView.setText(apiResponse.getMessage());
-                        packageDetailsRecyclerView.setVisibility(View.GONE);
-                        packageDetailsEmptyView.setVisibility(View.VISIBLE);
-                    }
+                        } else if (apiResponse.getSuccessCode().equals("20004")) {
+                            packageDetailsEmptyView.setText(apiResponse.getMessage());
+                            packageDetailsRecyclerView.setVisibility(View.GONE);
+                            packageDetailsEmptyView.setVisibility(View.VISIBLE);
+                        }
                     }
 
                 } catch (Exception e) {
@@ -300,7 +322,7 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+              Toast.makeText(getActivity(), "Order Execution failed", Toast.LENGTH_LONG).show();
                 Log.d("wh:createdPackage", t.getMessage());
             }
         });

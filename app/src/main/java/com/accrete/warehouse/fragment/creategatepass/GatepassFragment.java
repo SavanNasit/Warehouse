@@ -1,4 +1,4 @@
-package com.accrete.warehouse.fragment;
+package com.accrete.warehouse.fragment.creategatepass;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,7 +34,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.accrete.warehouse.fragment.CreatePassMainTabFragment.createGatepassViewpager;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
@@ -114,7 +113,7 @@ public class GatepassFragment extends Fragment {
                                 shippingTypesList.get(dialogCreateGatepassShippingType.getSelectedItemPosition()).getPacshtid(),
                                 arrayListShippingCompanyID.get(dialogCreateGatepassShippingCompany.getSelectedItemPosition()),
                                 dialogCreateGatepassVehicleNumber.getText().toString());
-                createGatepassViewpager.setCurrentItem(2);
+                CreatePassMainTabFragment.createGatepassViewpager.setCurrentItem(2);
             }
         });
 
@@ -153,7 +152,7 @@ public class GatepassFragment extends Fragment {
         dialogCreateGatepassBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createGatepassViewpager.setCurrentItem(0);
+                CreatePassMainTabFragment.createGatepassViewpager.setCurrentItem(0);
             }
         });
 
