@@ -50,6 +50,7 @@
             android:padding="@dimen/_10sdp">
 
             <TextView
+                android:id="@+id/items_inside_textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -132,7 +133,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Print Invoice"
+                android:text="Download Invoice"
                 android:textColor="#8D8D8D"
                 android:textSize="14sp" />
 
@@ -151,7 +152,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Print Delivery Challan"
+                android:text="Download Delivery Challan"
                 android:textColor="@color/home_page_text_gray"
                 android:textSize="14sp" />
 
@@ -190,7 +191,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Print Gatepass"
+                android:text="Download Gatepass"
                 android:textColor="@color/home_page_text_gray"
                 android:textSize="14sp" />
 
@@ -210,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Print Loading Slip"
+                android:text="Download Loading Slip"
                 android:textColor="@color/home_page_text_gray"
                 android:textSize="14sp" />
 

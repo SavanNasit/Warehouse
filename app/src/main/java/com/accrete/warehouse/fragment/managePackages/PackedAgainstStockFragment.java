@@ -576,9 +576,9 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                         }
 
                         if (apiResponse.getSuccess() != null && apiResponse.getMessage() != null) {
-                            Toast.makeText(getActivity(), apiResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getActivity(), apiResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getActivity(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getActivity(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
