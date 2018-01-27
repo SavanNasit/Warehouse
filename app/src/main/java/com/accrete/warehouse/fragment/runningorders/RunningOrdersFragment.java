@@ -184,6 +184,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
+                        runningOrdersAdapter.notifyDataSetChanged();
                         runningOrdersRecyclerView.setVisibility(View.VISIBLE);
                         runningOrdersEmptyView.setVisibility(View.GONE);
 

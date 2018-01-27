@@ -187,5 +187,6 @@
     <string name="reattempt_task">warehouse/package_reAttempt</string>
     <string name="task_already_created_packages">warehouse/fetch_order_packages</string>
     <string name="delivery_failed_task">warehouse/package_delivery_failed_submit</string>
+    <string name="manage_packages_file_upload_task">warehouse/package_file_upload</string>
 
 </resources>
