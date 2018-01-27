@@ -193,6 +193,7 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
         if (pendingItemList.size() > 0) {
             pendingItemList.clear();
         }
+        packageDetailsAdapter.notifyDataSetChanged();
 
      /*   if (packageDetailsList.size() > 0) {
             packageDetailsList.clear();
@@ -212,8 +213,6 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
         packageDetailsAdapter.notifyDataSetChanged();
         pendingItemList.addAll(pendingItemsLists);
         orderId = chkoid;
-
-
     }
 
     private void createPackage() {
@@ -252,7 +251,7 @@ public class PackageDetailsFragment extends Fragment implements PackageDetailsAd
                     jsonObjectPackageDetails.put(getString(R.string.isvid), pendingItemList.get(i).getIsvid());
                     jsonObjectPackageDetails.put(getString(R.string.isid), pendingItemList.get(i).getIsid());
                     jsonObjectPackageDetails.put(getString(R.string.iid), pendingItemList.get(i).getIid());
-                    jsonObjectPackageDetails.put(getString(R.string.qty), packageDetailsList.get(i).getQuantity());
+                    jsonObjectPackageDetails.put(getString(R.string.qty), pendingItemList.get(i).getItemQuantity());
                     jsonObjectPackageDetails.put(getString(R.string.oiid), pendingItemList.get(i).getOiid());
                     jsonObjectPackageDetails.put(getString(R.string.meaid), pendingItemList.get(i).getMeaid());
                     jsonObjectPackageDetails.put(getString(R.string.name), pendingItemList.get(i).getItemVariationName());

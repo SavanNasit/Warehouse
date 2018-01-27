@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="192.168.1.10"
+                    android:host="192.168.1.29"
                     android:pathPattern="/..*"
                     android:scheme="http" />
                 <data

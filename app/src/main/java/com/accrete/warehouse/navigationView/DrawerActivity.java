@@ -95,6 +95,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     private boolean doubleBackToExitPressedOnce = false;
     private DrawerInterface drawerInterfaceToSend;
     private String selectedFilePath;
+    private Toolbar toolbar;
+    boolean selectedPosition = false;
 
     public DrawerActivity() {
     }
@@ -115,7 +117,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
 
         // Handle Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
@@ -210,6 +212,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 Intent intentDomain = new Intent(DrawerActivity.this, DomainActivity.class);
                                 startActivity(intentDomain);
                                 finish();
+                                Toast.makeText(DrawerActivity.this, getString(R.string.logout_sucessfully), Toast.LENGTH_SHORT).show();
                             }
 
                             if (intent != null) {
@@ -237,7 +240,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     }
 
 
-    private void dialogSelectWarehouse() {
+    private void dialogSelectWarehouse( ) {
         View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_select_warehouse, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
@@ -265,9 +268,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             public void onClick(View v) {
                 dialogSelectWarehouse.dismiss();
 
+
             }
         });
-        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this);
+        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this,selectedPosition,AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(),AppUtils.WAREHOUSE_CHK_ID));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         // recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -379,13 +383,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(5);
                 drawer.setSelection(0);
-
-
             } else if (currentReceiveFragment instanceof ReceiveDirectlyFragment) {
+                toolbar.setTitle(R.string.receive_consignment_fragment);
                 super.onBackPressed();
                 return;
 
             } else if (currentReceiveFragment instanceof ReceiveAgainstPurchaseOrderFragment) {
+                toolbar.setTitle(R.string.receive_consignment_fragment);
                 super.onBackPressed();
                 return;
             } else if (currentFragment instanceof ReceiveConsignmentFragment) {
@@ -396,6 +400,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
 
             } else if (currentRunningOrder instanceof RunningOrdersExecuteFragment) {
+                toolbar.setTitle(R.string.running_orders_fragment);
                 super.onBackPressed();
                 return;
 
@@ -465,6 +470,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 getFragmentRefreshListener().onRefresh(strWarehouseName);
             }
         }*/
+     selectedPosition =true;
     }
 
     @Override

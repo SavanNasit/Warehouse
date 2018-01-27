@@ -646,6 +646,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private void selectFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
     }
 

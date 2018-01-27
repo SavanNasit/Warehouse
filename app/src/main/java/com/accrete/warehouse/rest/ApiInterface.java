@@ -29,6 +29,38 @@ public interface ApiInterface {
     );
 
     @GET("?urlq=service")
+    Call<ApiResponse> resetPassword(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("token")
+                    String token,
+            @Query("email")
+                    String email,
+            @Query("password")
+                    String password,
+            @Query("repassword")
+                    String repassword);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> verifyEmail(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("email")
+                    String mobile
+    );
+
+
+    @GET("?urlq=service")
     Call<ApiResponse> isAccessTokenValid(
             @Query("version")
                     String version,

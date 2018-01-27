@@ -62,7 +62,7 @@ public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyC
             holder.outForDeliveryExpDod.setText("Exp Dod : N/A ");
         }
 
-        holder.outForDeliveryUser.setText("Delivery User : " + packed.getCustomerName());
+        holder.outForDeliveryUser.setText("Payment : " + packed.getPaymentStatus());
 
         holder.outForDeliveryContainer.setOnClickListener(new View.OnClickListener() {
             @Override

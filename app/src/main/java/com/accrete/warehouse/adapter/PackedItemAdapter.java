@@ -45,8 +45,8 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
         final PackedItem packed = packedList.get(position);
         holder.listRowPackedPackageId.setText(packed.getPackageId());
         holder.listRowPackedPackageId.setPaintFlags(holder.listRowPackedPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        if (packed.getOid() != null && !packed.getOid().isEmpty()) {
-            holder.listRowPackedOrderId.setText(packed.getOid());
+        if (packed.getOrderID() != null && !packed.getOrderID().isEmpty()) {
+            holder.listRowPackedOrderId.setText("Order Id:"+packed.getOrderID());
             holder.listRowPackedOrderId.setVisibility(View.VISIBLE);
         } else {
             holder.listRowPackedOrderId.setVisibility(View.GONE);

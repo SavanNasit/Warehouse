@@ -47,7 +47,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    email = editTextEmail.getText().toString();
+                    email = editTextEmail.getText().toString().trim();
                     boolean valid = emailValidator.validateEmail(email);
                     if (valid) {
                         if (TextUtils.isEmpty(email)) {
@@ -80,7 +80,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        email = editTextEmail.getText().toString();
+        email = editTextEmail.getText().toString().trim();
 
         boolean valid = emailValidator.validateEmail(email);
         if (valid) {

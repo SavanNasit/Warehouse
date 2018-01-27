@@ -1,11 +1,14 @@
 package com.accrete.warehouse.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,7 +51,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Draw
     private TextView homeManageGatePassCount;
     private TextView homeManageConsignmentCount;
     private TextView homeReceiveConsignmentCount;
-
+    FrameLayout frameLayout;
 
     public static HomeFragment newInstance(String title) {
         HomeFragment f = new HomeFragment();
@@ -82,6 +85,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Draw
 
         drawerActivity = new DrawerActivity();
         drawerActivity.setCallback(this);
+
+        String stringLoginSuccess = getActivity().getIntent().getStringExtra(getString(R.string.intent));
+        frameLayout = (FrameLayout) rootView.findViewById(R.id.home_container);
+        if (stringLoginSuccess != null && !stringLoginSuccess.isEmpty() && stringLoginSuccess.equals(getString(R.string.password))) {
+            Snackbar snackbar = Snackbar
+                    .make(frameLayout, getString(R.string.login_success), Snackbar.LENGTH_LONG);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundResource(R.color.green);
+            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+            getActivity().getIntent().removeExtra(getString(R.string.intent));
+        }
 
         return rootView;
     }

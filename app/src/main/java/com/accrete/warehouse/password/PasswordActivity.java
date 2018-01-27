@@ -3,9 +3,12 @@ package com.accrete.warehouse.password;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -13,7 +16,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +32,7 @@ import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.EmailValidator;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
@@ -56,6 +62,13 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
     private String password;
     private String status;
     private int progressStatus = 0;
+    private AlertDialog dialogSendLinkToEmailForResetPassword;
+    private Button buttonSendLink;
+    private ProgressBar progressBarSendLink;
+    private EmailValidator emailValidator;
+    private AlertDialog alertDialog;
+    private Uri dataUri;
+    private String dataUriString, uriAccessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +78,17 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(getResources().getColor(R.color.lightViolet));
+        }
+
+        email = getIntent().getExtras().getString(getString(R.string.email));
+        if (getIntent() != null) {
+            dataUri = getIntent().getData();
+            if (dataUri != null) {
+                dataUriString = dataUri.toString();
+                String[] split = dataUriString.split("token=");
+                uriAccessToken = split[1];
+                dialogResetPassword(uriAccessToken);
+            }
         }
 
         email = getIntent().getExtras().getString(getString(R.string.email));
@@ -129,11 +153,263 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
 
             }
         });
+        textViewResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSendLinkToEmailForResetPassword();
+            }
+        });
 
        /* LocalBroadcastManager.getInstance(this).registerReceiver(mOTPReceiver,
                 new IntentFilter(getString(R.string.send_mobile_otp)));*/
     }
 
+
+    private void dialogSendLinkToEmailForResetPassword() {
+        View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_send_link_to_email_for_reset_password, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(true);
+        dialogSendLinkToEmailForResetPassword = builder.create();
+        dialogSendLinkToEmailForResetPassword.setCanceledOnTouchOutside(true);
+        final EditText editTextEmail;
+        final TextView textViewsignIn;
+        LinearLayout linearLayoutSignIn = (LinearLayout) dialogView.findViewById(R.id.already_account_sign_in);
+        editTextEmail = (EditText) dialogView.findViewById(R.id.email);
+        textViewsignIn = (TextView) dialogView.findViewById(R.id.already_account_sign_in_text_view);
+        progressBarSendLink = (ProgressBar) dialogView.findViewById(R.id.dialog_send_link_progress_bar);
+
+        buttonSendLink = (Button) dialogView.findViewById(R.id.button_send_link);
+        if (email != null && !email.isEmpty()) {
+            editTextEmail.setText(email);
+        }
+
+        textViewsignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentSignIn = new Intent(PasswordActivity.this, LoginActivity.class);
+                intentSignIn.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentSignIn);
+            }
+        });
+
+        buttonSendLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(editTextEmail.getText().toString())) {
+                    editTextEmail.setError(getString(R.string.username_error));
+                } else {
+                    AppPreferences.setEmail(PasswordActivity.this, AppUtils.USER_EMAIL, editTextEmail.getText().toString());
+                    emailValidator = new EmailValidator();
+                    boolean valid = emailValidator.validateEmail(editTextEmail.getText().toString().trim());
+                    if (valid) {
+                        if (!NetworkUtil.getConnectivityStatusString(PasswordActivity.this).equals(getString(R.string.not_connected_to_internet))) {
+                            sendLinkToEmailForResetPassword(editTextEmail.getText().toString().trim());
+                        } else {
+                            buttonSendLink.setEnabled(false);
+                            Toast.makeText(PasswordActivity.this, R.string.not_connected_to_internet, Toast.LENGTH_SHORT).show();
+                            new Handler().postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    buttonSendLink.setEnabled(true);
+                                }
+                            }, 3000);
+                        }
+                    } else {
+                        buttonSendLink.setEnabled(false);
+                        Toast.makeText(PasswordActivity.this, getString(R.string.valid_email_error), Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                buttonSendLink.setEnabled(true);
+                            }
+                        }, 3000);
+                    }
+
+                }
+
+            }
+        });
+        dialogSendLinkToEmailForResetPassword.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialogSendLinkToEmailForResetPassword.show();
+    }
+
+    public void sendLinkToEmailForResetPassword(String email) {
+        task = getString(R.string.verify_email_to_forgot_password);
+
+        ApiClient.BASE_URL = AppPreferences.getLastDomain(PasswordActivity.this, AppUtils.DOMAIN);
+        final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call call = apiService.verifyEmail(version, key, task, email);
+        Log.v("Request", String.valueOf(call));
+        Log.v("url", String.valueOf(call.request().url()));
+        buttonSendLink.setEnabled(false);
+        progressBarSendLink.setMax(100);
+        progressBarSendLink.setVisibility(View.VISIBLE);
+        progressBarSendLink.setProgress(progressStatus);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                ApiResponse apiResponse = (ApiResponse) response.body();
+                if (apiResponse.getSuccess()) {
+                    Toast.makeText(PasswordActivity.this, getString(R.string.email_link_success), Toast.LENGTH_SHORT).show();
+                    dialogSendLinkToEmailForResetPassword.dismiss();
+                    progressBarSendLink.setVisibility(View.GONE);
+                    //Enable Button again
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            buttonSendLink.setEnabled(true);
+                        }
+                    }, 3000);
+
+                } else if (apiResponse.getSuccessCode().equals("10006")) {
+                    Toast.makeText(PasswordActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialogSendLinkToEmailForResetPassword.dismiss();
+                    progressBarSendLink.setVisibility(View.GONE);
+                    //Enable Button again
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            buttonSendLink.setEnabled(true);
+                        }
+                    }, 3000);
+
+                } else if (apiResponse.getSuccessCode().equals("20003")) {
+                    Toast.makeText(PasswordActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialogSendLinkToEmailForResetPassword.dismiss();
+                    progressBarSendLink.setVisibility(View.GONE);
+                    //Enable Button again
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            buttonSendLink.setEnabled(true);
+                        }
+                    }, 3000);
+
+                } else if (apiResponse.getSuccessCode().equals("10003")) {
+                    Toast.makeText(PasswordActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialogSendLinkToEmailForResetPassword.dismiss();
+                    progressBarSendLink.setVisibility(View.GONE);
+                    //Enable Button again
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            buttonSendLink.setEnabled(true);
+                        }
+                    }, 3000);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                progressBarSendLink.setVisibility(View.GONE);
+                Toast.makeText(PasswordActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(call.request())));
+                t.printStackTrace();
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        buttonSendLink.setEnabled(true);
+                    }
+                }, 3000);
+
+            }
+
+        });
+    }
+
+
+    private void dialogResetPassword(final String uriAccessToken) {
+        View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_reset_password, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView)
+                .setCancelable(true);
+        alertDialog = builder.create();
+        final EditText editTextNewPassword, editTextConfirmPassword;
+        final TextView textViewsignIn;
+        alertDialog.setCanceledOnTouchOutside(true);
+        LinearLayout linearLayoutSignIn = (LinearLayout) dialogView.findViewById(R.id.dialog_reset_already_account_sign_in);
+        editTextNewPassword = (EditText) dialogView.findViewById(R.id.new_password);
+        editTextConfirmPassword = (EditText) dialogView.findViewById(R.id.confirm_password);
+        Button buttonResetPassword = (Button) dialogView.findViewById(R.id.reset_password);
+        textViewsignIn = (TextView) dialogView.findViewById(R.id.already_account_sign_in_text_view);
+
+        textViewsignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToLogin();
+            }
+        });
+
+        buttonResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(editTextNewPassword.getText().toString())) {
+                    Toast.makeText(PasswordActivity.this, "Please enter New password", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(editTextConfirmPassword.getText().toString())) {
+                    Toast.makeText(PasswordActivity.this, "Please re enter new password", Toast.LENGTH_SHORT).show();
+                } else if (!editTextNewPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
+                    Toast.makeText(PasswordActivity.this, "New Password does not match the confirm password.", Toast.LENGTH_SHORT).show();
+                } else {
+                    resetPassword(uriAccessToken, editTextNewPassword.getText().toString(), editTextConfirmPassword.getText().toString(),
+                            AppPreferences.getEmail(PasswordActivity.this, AppUtils.USER_EMAIL));
+                }
+            }
+        });
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alertDialog.show();
+
+    }
+
+    public void resetPassword(String uriAccessToken, String password, String confirmPassword, String changePasswordForThisEmail) {
+        try {
+            task = getString(R.string.reset_password);
+            userId = AppPreferences.getUserId(PasswordActivity.this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(PasswordActivity.this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(PasswordActivity.this, AppUtils.DOMAIN);
+            final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call call = apiService.resetPassword(version, key, task, userId, uriAccessToken, changePasswordForThisEmail, password, confirmPassword);
+            Log.v("Request", String.valueOf(call));
+            Log.v("url", String.valueOf(call.request().url()));
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    ApiResponse apiResponse = (ApiResponse) response.body();
+                    if (apiResponse.getSuccess()) {
+                        Toast.makeText(PasswordActivity.this, getString(R.string.password_change_success), Toast.LENGTH_SHORT).show();
+                        backToLogin();
+                        alertDialog.dismiss();
+                    } else if (apiResponse.getSuccessCode().equals("10006")) {
+                        Toast.makeText(PasswordActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        alertDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Toast.makeText(PasswordActivity.this, getString(R.string.try_again), Toast.LENGTH_SHORT).show();
+                    Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(call.request())));
+                    t.printStackTrace();
+                }
+
+            });
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+            Toast.makeText(getApplicationContext(), R.string.something_wrong, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onDestroy() {

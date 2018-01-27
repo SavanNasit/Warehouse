@@ -22,6 +22,7 @@ import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.widgets.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -232,7 +233,7 @@ public class RunningOrdersExecuteFragment extends Fragment {
         }
     }*/
 
-    class viewPagerExecuteAdapter extends FragmentPagerAdapter {
+    class viewPagerExecuteAdapter extends SmartFragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
