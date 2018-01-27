@@ -575,6 +575,12 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                                 packedAgainstRecyclerView.smoothScrollToPosition(0);
                             }
                         }
+
+                        if (apiResponse.getSuccess() != null && apiResponse.getMessage() != null) {
+                        //    Toast.makeText(getActivity(), apiResponse.getMessage() + "", Toast.LENGTH_SHORT).show();
+                        } else {
+                         //   Toast.makeText(getActivity(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 } catch (Exception e) {
@@ -582,6 +588,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                     if (packedAgainstRefreshLayout != null && packedAgainstRefreshLayout.isRefreshing()) {
                         packedAgainstRefreshLayout.setRefreshing(false);
                     }
+                    Toast.makeText(getActivity(), "Something went wrong.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -589,6 +596,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Something went wrong.", Toast.LENGTH_SHORT).show();
             }
         });
     }

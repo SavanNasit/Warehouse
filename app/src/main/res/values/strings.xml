@@ -200,5 +200,6 @@
     <string name="email_link_success">We have sent an email.</string>
 
 
+    <string name="manage_packages_file_upload_task">warehouse/package_file_upload</string>
 
 </resources>

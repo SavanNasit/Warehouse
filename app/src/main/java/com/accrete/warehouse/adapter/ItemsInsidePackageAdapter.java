@@ -49,7 +49,6 @@ public class ItemsInsidePackageAdapter extends RecyclerView.Adapter<ItemsInsideP
     @Override
     public int getItemCount() {
         return itemsInsidePackageList.size();
-
     }
 
     private void applyClickEvents(DocumentUploaderAdapter.MyViewHolder holder, final int position) {

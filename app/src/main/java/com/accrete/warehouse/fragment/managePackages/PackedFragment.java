@@ -42,6 +42,7 @@ import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
+import com.accrete.warehouse.rest.FilesUploadAsyncTask;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
@@ -435,7 +436,9 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         dialogSelectEvent.setCanceledOnTouchOutside(true);
         LinearLayout linearLayout;
         LinearLayout actionsItemsInsidePackage;
+        TextView itemsInsideTextView;
         LinearLayout actionsPackageStatus;
+        TextView actionsPackageStatusText;
         LinearLayout actionsPackageHistory;
         LinearLayout actionsCustomerDetails;
         LinearLayout actionsPrintInvoice;
@@ -451,7 +454,9 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
         actionsItemsInsidePackage = (LinearLayout) dialogView.findViewById(R.id.actions_items_inside_package);
+        itemsInsideTextView = (TextView) dialogView.findViewById(R.id.items_inside_textView);
         actionsPackageStatus = (LinearLayout) dialogView.findViewById(R.id.actions_package_status);
+        actionsPackageStatusText = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
         actionsPackageHistory = (LinearLayout) dialogView.findViewById(R.id.actions_package_history);
         actionsCustomerDetails = (LinearLayout) dialogView.findViewById(R.id.actions_customer_details);
         actionsPrintInvoice = (LinearLayout) dialogView.findViewById(R.id.actions_print_invoice);
@@ -459,29 +464,31 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         actionsOtherDocuments = (LinearLayout) dialogView.findViewById(R.id.actions_other_documents);
         actionsPrintGatepass = (LinearLayout) dialogView.findViewById(R.id.actions_print_gatepass);
         actionsPrintLoadingSlip = (LinearLayout) dialogView.findViewById(R.id.actions_print_loading_slip);
-        // btnOk = (Button) dialogView.findViewById(R.id.btn_ok);
         dialogSelectActionsProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_select_warehouse_progress_bar);
-        //btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
 
-        actionsItemsInsidePackage.setVisibility(View.GONE);
-        actionsPackageStatus.setVisibility(View.GONE);
+        actionsPrintGatepass.setVisibility(View.GONE);
+        actionsPrintLoadingSlip.setVisibility(View.GONE);
+        // actionsItemsInsidePackage.setVisibility(View.GONE);
+        // actionsPackageStatus.setVisibility(View.GONE);
 
+        itemsInsideTextView.setText("Edit Package");
+        actionsPackageStatusText.setText("Cancel Package");
+
+        //Cancel Package
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intentStatus = new Intent(getActivity(), ChangePackageStatusActivity.class);
-                startActivity(intentStatus);*/
-                // dialogRevertPackageDelivery();
+
             }
         });
 
+        //Edit Package
         actionsItemsInsidePackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentItems = new Intent(getActivity(), ItemsInsidePackageActivity.class);
-                startActivity(intentItems);
+
             }
         });
 
@@ -499,7 +506,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
-                dialogUploadDoc(getActivity());
+                dialogUploadDoc(getActivity(), packedList.get(position).getPacid().toString());
             }
         });
 
@@ -580,7 +587,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     //Opening Dialog to Upload Documents
-    private void dialogUploadDoc(Activity activity) {
+    private void dialogUploadDoc(final Activity activity, final String pacId) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -610,7 +617,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
-                    dialogUploadDoc.dismiss();
+                    if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                        FilesUploadAsyncTask filesUploadAsyncTask = new FilesUploadAsyncTask(activity,
+                                uploadDocumentList, pacId, dialogUploadDoc);
+                        filesUploadAsyncTask.execute();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
                 }
@@ -917,7 +930,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     e.printStackTrace();
                 }
             }
-
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
