@@ -40,7 +40,7 @@ import com.accrete.warehouse.model.PackageItem;
 import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
-import com.accrete.warehouse.rest.FilesUploadAsyncTask;
+import com.accrete.warehouse.rest.FilesUploadingAsyncTask;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
@@ -380,9 +380,8 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
             public void onClick(View v) {
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        FilesUploadAsyncTask filesUploadAsyncTask = new FilesUploadAsyncTask(activity,
-                                uploadDocumentList, pacId, dialogUploadDoc);
-                        filesUploadAsyncTask.execute();
+                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
+                        filesUploadingAsyncTask.execute();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
