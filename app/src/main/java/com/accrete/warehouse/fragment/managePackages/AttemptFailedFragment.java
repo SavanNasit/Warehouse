@@ -41,6 +41,7 @@ import com.accrete.warehouse.model.PackageItem;
 import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
+import com.accrete.warehouse.rest.FilesUploadAsyncTask;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
@@ -94,6 +95,75 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
     private ImageView addImageView;
     private Button btnUpload;
     private ProgressBar dialogUploadProgressBar;
+
+    //Opening Dialog to Upload Documents
+    private void openDialogUploadDoc(final Activity activity, final String pacId) {
+        View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setCancelable(true);
+        dialogUploadDoc = builder.create();
+        dialogUploadDoc.setCanceledOnTouchOutside(true);
+
+        linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
+        dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);
+        addImageView = (ImageView) dialogView.findViewById(R.id.add_imageView);
+        btnUpload = (Button) dialogView.findViewById(R.id.btn_upload);
+        dialogUploadProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_upload_progress_bar);
+        Button btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
+
+        documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), uploadDocumentList, this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
+        dialogUploadDocRecyclerView.setLayoutManager(mLayoutManager);
+        dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
+
+        if (uploadDocumentList.size() > 0) {
+            uploadDocumentList.clear();
+        }
+
+        //Upload files and dismiss dialog
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
+                    if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                        FilesUploadAsyncTask filesUploadAsyncTask = new FilesUploadAsyncTask(activity,
+                                uploadDocumentList, pacId, dialogUploadDoc);
+                        filesUploadAsyncTask.execute();
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //Dismiss dialog
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
+                    uploadDocumentList.clear();
+                }
+                dialogUploadDoc.dismiss();
+            }
+        });
+
+        //Call Intent to select file and add into List
+        addImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectFile();
+            }
+        });
+
+        dialogUploadDoc.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (!dialogUploadDoc.isShowing()) {
+            dialogUploadDoc.show();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -257,10 +327,9 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
-                dialogUploadDoc(getActivity());
+                openDialogUploadDoc(getActivity(), attemptFailedList.get(position).getPacid().toString());
             }
         });
-
         imageViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

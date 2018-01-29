@@ -113,7 +113,7 @@ public class FilesUploadAsyncTask extends AsyncTask<String, String, String> {
 
                 if (sourceFile != null) {
                     dos.writeBytes(twoHyphens + boundary + lineEnd);
-                    dos.writeBytes("Content-Disposition: form-data; name=\"files[]\";filename=[" + i + "]\""
+                    dos.writeBytes("Content-Disposition: form-data; name=\"files\";filename=[" + i + "]\""
                             + uploadDocumentList.get(i).getFilePath() + "\"" + lineEnd);
                 }
                 dos.writeBytes(lineEnd);
