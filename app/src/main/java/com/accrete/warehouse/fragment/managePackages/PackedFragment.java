@@ -31,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.CustomerDetailsActivity;
-import com.accrete.warehouse.ItemsInsidePackageActivity;
 import com.accrete.warehouse.PackageHistoryActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
@@ -42,7 +41,7 @@ import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
-import com.accrete.warehouse.rest.FilesUploadAsyncTask;
+import com.accrete.warehouse.rest.FilesUploadingAsyncTask;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
@@ -401,27 +400,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
     }
 
-    private void apiCall() {
-        String status = NetworkUtil.getConnectivityStatusString(getActivity());
-        if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            loading = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getPackageDetailsList(getString(R.string.last_updated_date), "1");
-                    packedRecyclerView.setVisibility(View.VISIBLE);
-                    packedEmptyView.setVisibility(View.GONE);
-                    packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
-                }
-            }, 00);
-        } else {
-            packedRecyclerView.setVisibility(View.VISIBLE);
-            packedEmptyView.setVisibility(View.VISIBLE);
-            packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
-            packedEmptyView.setText(getString(R.string.no_internet_try_later));
-        }
-    }
-
     @Override
     public void onMessageRowClicked(int position) {
         dialogItemEvents(position);
@@ -473,13 +451,25 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         // actionsItemsInsidePackage.setVisibility(View.GONE);
         // actionsPackageStatus.setVisibility(View.GONE);
 
+        //Edit Package
         itemsInsideTextView.setText("Edit Package");
+        actionsItemsInsidePackage.setVisibility(View.GONE);
+
+        //Cancel Package
         actionsPackageStatusText.setText("Cancel Package");
 
         //Cancel Package
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                    cancelPackedPackage(packedList.get(position).getPacid());
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                }
+                if (dialogSelectEvent != null && dialogSelectEvent.isShowing()) {
+                    dialogSelectEvent.dismiss();
+                }
 
             }
         });
@@ -506,7 +496,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
-                dialogUploadDoc(getActivity(), packedList.get(position).getPacid().toString());
+                openDialogUploadDoc(getActivity(), packedList.get(position).getPacid().toString());
             }
         });
 
@@ -587,7 +577,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     //Opening Dialog to Upload Documents
-    private void dialogUploadDoc(final Activity activity, final String pacId) {
+    private void openDialogUploadDoc(final Activity activity, final String pacId) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -618,9 +608,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             public void onClick(View v) {
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        FilesUploadAsyncTask filesUploadAsyncTask = new FilesUploadAsyncTask(activity,
-                                uploadDocumentList, pacId, dialogUploadDoc);
-                        filesUploadAsyncTask.execute();
+                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
+                        filesUploadingAsyncTask.execute();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
@@ -946,5 +935,50 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         uploadDocument.setFileType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
         uploadDocumentList.add(uploadDocument);
         documentUploaderAdapter.notifyDataSetChanged();
+    }
+
+    //Cancel Package
+    private void cancelPackedPackage(String pacid) {
+        task = getString(R.string.task_cancel_package);
+        String chkid = null;
+        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
+            chkid = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ApiResponse> call = apiService.cancelPackage(version, key, task, userId, accessToken, chkid, pacid);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        //Refresh List
+                        packedList.clear();
+                        doRefresh();
+
+                    } else {
+                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("warehouse", t.getMessage());
+            }
+        });
     }
 }
