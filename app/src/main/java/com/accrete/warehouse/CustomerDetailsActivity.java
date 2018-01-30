@@ -137,10 +137,10 @@ public class CustomerDetailsActivity extends AppCompatActivity {
             customerDetailsEmail.setText(customerInfo.getEmail());
         }
 
-        customerDetailsShippingAddress.setText(customerInfo.getShippingAddrName() + ",\n" + customerInfo.getShippingAddrLine() + ",\n" +
+        customerDetailsShippingAddress.setText(customerInfo.getShippingAddrName() + ",\n" + customerInfo.getShippingAddrSitename()+ ",\n" + customerInfo.getShippingAddrLine() + ",\n" +
                 customerInfo.getShippingAddrCity() + ",\n" + customerInfo.getShippingAddrStateName() + ",\n" + customerInfo.getShippingAddrCountryName() + ",\n"
                 + customerInfo.getShippingAddrPincode());
-        customerDetailsBillingAddress.setText(customerInfo.getBillingAddrName() + ",\n" + customerInfo.getBillingAddrLine() + ",\n" +
+        customerDetailsBillingAddress.setText(customerInfo.getBillingAddrName() + ",\n" + customerInfo.getBillingAddSitename() + ",\n" + customerInfo.getBillingAddrLine() + ",\n" +
                 customerInfo.getBillingAddrCity() + ",\n" + customerInfo.getBillingAddrStateName() + ",\n" + customerInfo.getBillingAddrCountryName() + ",\n"
                 + customerInfo.getBillingAddrPincode());
     }
