@@ -36,6 +36,8 @@ import com.accrete.warehouse.utils.EmailValidator;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
+import java.net.SocketTimeoutException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -498,7 +500,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
         task = getString(R.string.login);
         userId = AppPreferences.getUserId(PasswordActivity.this, AppUtils.USER_ID);
         accessToken = AppPreferences.getAccessToken(PasswordActivity.this, AppUtils.ACCESS_TOKEN);
-        ApiClient.BASE_URL = AppPreferences.getLastDomain(PasswordActivity.this, AppUtils.LAST_DOMAIN);
+        ApiClient.BASE_URL = AppPreferences.getDomain(PasswordActivity.this, AppUtils.DOMAIN);
 
         progressBar.setMax(100);
         progressBar.setVisibility(View.VISIBLE);
@@ -530,7 +532,13 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     //Enable Button again
                     textViewNext.setEnabled(true);
                     AppPreferences.setIsLogin(PasswordActivity.this, AppUtils.ISLOGIN, true);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
                     getWarehouseList();
+                        }
+                    }, 1000);
+
                 } else if (apiResponse.getSuccessCode().equals("10005")) {
                     progressBar.setVisibility(View.GONE);
                     textViewNext.setEnabled(false);
@@ -568,11 +576,10 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
 
     private void getWarehouseList() {
         task = getString(R.string.warehouse_list_task);
-
         if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
             accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
-            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+            ApiClient.BASE_URL = AppPreferences.getDomain(this, AppUtils.DOMAIN);
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -611,7 +618,11 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                if(t instanceof SocketTimeoutException){
+                  String  message = "Socket Time out. Please try again.";
+                  Toast.makeText(PasswordActivity.this, "Unable to fetch json: " + message, Toast.LENGTH_LONG).show();
+
+                }
                 Log.d("warehouse:password", t.getMessage());
             }
         });

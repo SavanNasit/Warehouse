@@ -180,23 +180,11 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
 
     @Override
     public void onExecute(String isid, String oiid, final String maximumQuantity, final int position) {
-        executeSelectedItems(isid, oiid);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intentOrderItem = new Intent(getActivity(), OrderItemActivity.class);
-                intentOrderItem.putExtra("chkoid", chkoid);
-                intentOrderItem.putExtra("quantity", maximumQuantity);
-                intentOrderItem.putExtra("position", position);
-                intentOrderItem.putParcelableArrayListExtra("selectOrderItemList", (ArrayList<? extends Parcelable>) selectOrderItemList);
-                intentOrderItem.putParcelableArrayListExtra("pendingItemsList", (ArrayList<? extends Parcelable>) pendingItemList);
-                startActivityForResult(intentOrderItem, 1001);
+        executeSelectedItems(isid, oiid,maximumQuantity,position);
 
-            }
-        }, 1 * 200);
     }
 
-    private void executeSelectedItems(String isid, String oiid) {
+    private void executeSelectedItems(String isid, String oiid, final String maximumQuantity, final int position) {
         if (selectOrderItemList.size() > 0) {
             selectOrderItemList.clear();
         }
@@ -224,6 +212,20 @@ public class PendingItemsFragment extends Fragment implements PendingItemsAdapte
                             selectOrderItemList.add(selectOrderItem);
                         }
                     }
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intentOrderItem = new Intent(getActivity(), OrderItemActivity.class);
+                            intentOrderItem.putExtra("chkoid", chkoid);
+                            intentOrderItem.putExtra("quantity", maximumQuantity);
+                            intentOrderItem.putExtra("position", position);
+                            intentOrderItem.putParcelableArrayListExtra("selectOrderItemList", (ArrayList<? extends Parcelable>) selectOrderItemList);
+                            intentOrderItem.putParcelableArrayListExtra("pendingItemsList", (ArrayList<? extends Parcelable>) pendingItemList);
+                            startActivityForResult(intentOrderItem, 1001);
+                        }
+                    }, 1 * 200);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

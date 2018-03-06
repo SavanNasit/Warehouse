@@ -4,8 +4,12 @@ import com.accrete.warehouse.model.ApiResponse;
 
 import org.json.JSONArray;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 
@@ -174,6 +178,47 @@ public interface ApiInterface {
                                             String invoiceNumber,
                                     @Query("e_sugam")
                                             String eSugam);
+
+    @Multipart
+    @POST("?urlq=service")
+    Call<ApiResponse> createPackageMultipart(
+          @Query("version")
+            String version,
+          @Query("key")
+                  String key,
+          @Query("task")
+                  String task,
+          @Query("user_id")
+                  String userid,
+          @Query("access_token")
+                  String accessToken,
+          @Query("email")
+                  String email,
+          @Query("mobile")
+                  String mobile,
+          @Query("shipping")
+                  String shippingAddress,
+          @Query("billing")
+                  String billingAddress,
+          @Query("products")
+                  JSONArray productList,
+          @Query("chkid")
+                  String chkid,
+          @Query("order")
+                  String orderId,
+          @Query("type")
+                  String type,
+          @Query("local")
+                  String local,
+          @Query("invoice_date")
+                  String invoiceDate,
+          @Query("invoice_no")
+                  String invoiceNumber,
+          @Query("e_sugam")
+                  String eSugam,
+            @Part MultipartBody.Part[] image
+    );
+
 
     @GET("?urlq=service")
     Call<ApiResponse> getPackageDetails(@Query("version")

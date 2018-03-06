@@ -237,6 +237,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 }
             }
         });
+
+
     }
 
     public void doRefresh() {

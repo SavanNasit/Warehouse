@@ -97,6 +97,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     private String selectedFilePath;
     private Toolbar toolbar;
     boolean selectedPosition = false;
+    public boolean flagToOpenDialog=false;
+
 
     public DrawerActivity() {
     }
@@ -184,6 +186,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 1) {
+                                flagToOpenDialog = true;
                                 getWarehouseList();
                             } else if (drawerItem.getIdentifier() == 2) {
                                 Fragment f = RunningOrdersFragment.newInstance(getString(R.string.running_orders_fragment));
@@ -237,6 +240,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         if (drawerInterfaceToSend != null) {
             drawerInterfaceToSend.sendDrawer(drawer);
         }
+        getWarehouseList();
     }
 
 
@@ -302,6 +306,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
+
             @Override
             public void onResponse(Call call, Response response) {
                 // enquiryList.clear();
@@ -323,9 +328,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 }
                             }
                         }
-
-                        dialogSelectWarehouse();
-
+                        if(flagToOpenDialog){
+                            dialogSelectWarehouse();
+                            flagToOpenDialog = false;
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -500,6 +506,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
         } else if (resultCode == Activity.RESULT_OK) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
             if (requestCode == PICK_FILE_RESULT_CODE) {
 
                 // Get the Uri of the selected file
@@ -526,6 +533,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
                 if (currentFragment instanceof ManagePackagesFragment) {
                     ((ManagePackagesFragment) currentFragment).sendDocument(selectedFilePath, displayName);
+                }else if(fragment instanceof RunningOrdersExecuteFragment){
+                    ((RunningOrdersExecuteFragment) fragment).sendDocument(selectedFilePath, displayName);
                 }
             }
         }
@@ -600,9 +609,9 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         } else if (fragment instanceof RunningOrdersExecuteFragment) {
                             ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
-                        } else if (f instanceof ManagePackagesFragment) {
+                        }/* else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
-                        }
+                        }*/
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         } else {

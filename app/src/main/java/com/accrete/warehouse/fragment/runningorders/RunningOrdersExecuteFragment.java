@@ -16,6 +16,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesFragment;
 import com.accrete.warehouse.fragment.createpackage.PackageDetailsFragment;
 import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
+import com.accrete.warehouse.fragment.managePackages.PackedFragment;
 import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PendingItems;
@@ -219,6 +220,15 @@ public class RunningOrdersExecuteFragment extends Fragment {
             alreadyCreatedPackagesFragment.checkFragmentAndDownloadPDF();
 
             Log.d("PERMISSION", "ROEF");
+        }
+    }
+
+    public void sendDocument(String selectedFilePath, String displayName) {
+        if (viewPagerExecute.getCurrentItem() == 1) {
+            PackageDetailsFragment packageDetailsFragment =
+                    (PackageDetailsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute,
+                            viewPagerExecute.getCurrentItem());
+            packageDetailsFragment.addDocument(selectedFilePath, displayName);
         }
     }
 

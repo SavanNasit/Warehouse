@@ -301,7 +301,6 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
             gatepassList.clear();
         }*/
 
-
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
             accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
@@ -414,8 +413,6 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                                     manageGatepassRecyclerView.smoothScrollToPosition(0);
                                 }
                             }
-
-
                     }
 
                 } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.accrete.warehouse.fragment.runningorders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,8 +56,10 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
     private RecyclerView runningOrdersRecyclerView;
     private TextView runningOrdersEmptyView, runningOrdersCount;
     private RunningOrdersAdapter runningOrdersAdapter;
+    private ProgressBar runningOrdersProgressBar;
     private List<RunningOrder> runningOrderList = new ArrayList<>();
     private String mobileNumber;
+    private int progressStatus = 0;
 
     public static RunningOrdersFragment newInstance(String title) {
         RunningOrdersFragment f = new RunningOrdersFragment();
@@ -70,6 +74,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
         runningOrdersRecyclerView = (RecyclerView) rootview.findViewById(R.id.running_orders_recycler_view);
         runningOrdersEmptyView = (TextView) rootview.findViewById(R.id.running_orders_empty_view);
         runningOrdersCount = (TextView) rootview.findViewById(R.id.running_orders_text_count);
+        runningOrdersProgressBar = (ProgressBar)rootview.findViewById(R.id.running_orders_progress_bar);
         runningOrdersAdapter = new RunningOrdersAdapter(getActivity(), runningOrderList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         runningOrdersRecyclerView.setLayoutManager(mLayoutManager);
@@ -137,7 +142,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
     }
 
     @Override
-    public void onExecute(List<Packages> packages, List<PendingItems> pendingItems, String chkid, String chkoid) {
+    public void onExecute(List<Packages> packages, List<PendingItems> pendingItems, String chkid, String chkoid, int position) {
         RunningOrdersExecuteFragment fragment = new RunningOrdersExecuteFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
@@ -148,7 +153,6 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
         fragment.setArguments(bundle);
         ft.replace(R.id.running_orders_container, fragment, getString(R.string.running_orders_execute_fragment));
         ft.addToBackStack(null).commit();
-
     }
 
     @Override
@@ -163,6 +167,10 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
         if (runningOrderList != null && runningOrderList.size() > 0) {
             runningOrderList.clear();
         }
+
+        runningOrdersProgressBar.setMax(100);
+        runningOrdersProgressBar.setVisibility(View.VISIBLE);
+        runningOrdersProgressBar.setProgress(progressStatus);
 
         runningOrdersSwipeRefreshLayout.setRefreshing(false);
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
@@ -183,26 +191,24 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                 Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
-                    if (apiResponse.getSuccess()) {
+                    if (apiResponse.getSuccess()){
                         runningOrdersAdapter.notifyDataSetChanged();
                         runningOrdersRecyclerView.setVisibility(View.VISIBLE);
                         runningOrdersEmptyView.setVisibility(View.GONE);
 
-                        for (RunningOrder runningOrder : apiResponse.getData().getRunningOrders()) {
+                        for (RunningOrder runningOrder : apiResponse.getData().getRunningOrders()){
                             runningOrderList.add(runningOrder);
                             runningOrdersCount.setText(apiResponse.getData().getRunningOrderCount() + " Running Orders");
                             runningOrdersCount.setVisibility(View.VISIBLE);
                         }
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
-
                             runningOrdersEmptyView.setText(getString(R.string.no_data_available));
                             runningOrdersRecyclerView.setVisibility(View.GONE);
                             runningOrdersEmptyView.setVisibility(View.VISIBLE);
                             runningOrdersCount.setVisibility(View.GONE);
 
                         } else if (apiResponse.getSuccessCode().equals("20004")) {
-
                             runningOrdersEmptyView.setText(getString(R.string.no_data_available));
                             runningOrdersRecyclerView.setVisibility(View.GONE);
                             runningOrdersEmptyView.setVisibility(View.VISIBLE);
@@ -211,6 +217,9 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                     }
                     if (runningOrdersSwipeRefreshLayout != null && runningOrdersSwipeRefreshLayout.isRefreshing()) {
                         runningOrdersSwipeRefreshLayout.setRefreshing(false);
+                    }
+                    if (runningOrdersProgressBar != null && runningOrdersProgressBar.getVisibility() == View.VISIBLE) {
+                        runningOrdersProgressBar.setVisibility(View.GONE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -221,6 +230,9 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 runningOrdersSwipeRefreshLayout.setRefreshing(false);
+                if (runningOrdersProgressBar != null && runningOrdersProgressBar.getVisibility() == View.VISIBLE) {
+                    runningOrdersProgressBar.setVisibility(View.GONE);
+                }
                 Log.d("warehouse:runningOrders", t.getMessage());
             }
         });
@@ -228,7 +240,17 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
 
     @Override
     public void onRefresh() {
+        runningOrdersSwipeRefreshLayout.setEnabled(false);
         getRunningOrderList();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runningOrdersSwipeRefreshLayout.setEnabled(true);
+            }
+        },300);
+
     }
 
     public void callAction() {

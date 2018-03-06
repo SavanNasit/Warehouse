@@ -70,13 +70,12 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
         final RunningOrder runningOrder = runningOrderList.get(position);
         holder.listRowRunningOrdersOrderId.setText(AppPreferences.getCompanyCode(context, AppUtils.COMPANY_CODE)+runningOrder.getChkoid());
         holder.listRowRunningOrdersCustomer.setText(runningOrder.getCustomer());
-
         holder.listRowRunningOrdersMobile.setText(runningOrder.getContact());
         holder.listRowRunningOrdersEmail.setText(runningOrder.getCustomerInfo().getEmail());
         holder.listRowRunningOrdersExecute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onExecute(runningOrder.getPackages(), runningOrder.getSelectOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid());
+                listener.onExecute(runningOrder.getPackages(), runningOrder.getSelectOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid(),position);
             }
         });
 
@@ -195,7 +194,7 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
     public interface RunningOrdersAdapterListener {
         void onMessageRowClicked(int position);
 
-        void onExecute(List<Packages> packages, List<PendingItems> selectOrderItems, String chkid, String chkoid);
+        void onExecute(List<Packages> packages, List<PendingItems> selectOrderItems, String chkid, String chkoid, int position);
 
         void onCall(String contact);
     }
