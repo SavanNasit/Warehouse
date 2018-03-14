@@ -10,10 +10,10 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RunningOrder implements Parcelable {
+
 
     public static final Creator<RunningOrder> CREATOR = new Creator<RunningOrder>() {
         @Override
@@ -47,9 +47,12 @@ public class RunningOrder implements Parcelable {
     @SerializedName("assigned_user_name")
     @Expose
     private String assignedUserName;
+    @SerializedName("checkpointOrderID")
+    @Expose
+    private String checkpointOrderID;
     @SerializedName("order_items")
     @Expose
-    private List<PendingItems> selectOrderItems = null;
+    private List<OrderData> orderItems = null;
     @SerializedName("packages")
     @Expose
     private List<Packages> packages = null;
@@ -57,8 +60,11 @@ public class RunningOrder implements Parcelable {
     @Expose
     private CustomerInfo customerInfo;
 
+    public RunningOrder() {
 
-    protected RunningOrder(Parcel in) {
+    }
+
+    public RunningOrder(Parcel in) {
         chkoid = in.readString();
         chkid = in.readString();
         poNumber = in.readString();
@@ -66,13 +72,9 @@ public class RunningOrder implements Parcelable {
         customer = in.readString();
         contact = in.readString();
         assignedUserName = in.readString();
+        checkpointOrderID = in.readString();
+        orderItems = in.createTypedArrayList(OrderData.CREATOR);
         customerInfo = in.readParcelable(CustomerInfo.class.getClassLoader());
-        packages = new ArrayList<Packages>();
-        in.readList(packages, null);
-    }
-
-    public RunningOrder() {
-
     }
 
     public String getChkoid() {
@@ -131,12 +133,20 @@ public class RunningOrder implements Parcelable {
         this.assignedUserName = assignedUserName;
     }
 
-    public List<PendingItems> getSelectOrderItems() {
-        return selectOrderItems;
+    public String getCheckpointOrderID() {
+        return checkpointOrderID;
     }
 
-    public void setSelectOrderItems(List<PendingItems> selectOrderItems) {
-        this.selectOrderItems = selectOrderItems;
+    public void setCheckpointOrderID(String checkpointOrderID) {
+        this.checkpointOrderID = checkpointOrderID;
+    }
+
+    public List<OrderData> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderData> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public List<Packages> getPackages() {
@@ -155,7 +165,6 @@ public class RunningOrder implements Parcelable {
         this.customerInfo = customerInfo;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -170,7 +179,10 @@ public class RunningOrder implements Parcelable {
         dest.writeString(customer);
         dest.writeString(contact);
         dest.writeString(assignedUserName);
+        dest.writeString(checkpointOrderID);
+        dest.writeTypedList(orderItems);
         dest.writeParcelable(customerInfo, flags);
-        dest.writeList(packages);
     }
 }
+
+

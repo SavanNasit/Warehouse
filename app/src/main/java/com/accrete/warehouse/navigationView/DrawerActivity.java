@@ -493,8 +493,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
             if (newCurrentFragment instanceof RunningOrdersExecuteFragment) {
                 Log.e("Selected Order Item", " " + requestCode + " " + data.getIntExtra("qty", 0));
-                ((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"),
-                        data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));
+               /*((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"),
+                        data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));*/
             }
 
         } else if (resultCode == 456) {
@@ -533,8 +533,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
                 if (currentFragment instanceof ManagePackagesFragment) {
                     ((ManagePackagesFragment) currentFragment).sendDocument(selectedFilePath, displayName);
-                }else if(fragment instanceof RunningOrdersExecuteFragment){
-                    ((RunningOrdersExecuteFragment) fragment).sendDocument(selectedFilePath, displayName);
                 }
             }
         }
@@ -608,7 +606,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         } else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         } else if (fragment instanceof RunningOrdersExecuteFragment) {
-                            ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
+                          //  ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
                         }/* else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         }*/

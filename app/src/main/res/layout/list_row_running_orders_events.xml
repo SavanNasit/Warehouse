@@ -14,36 +14,59 @@
         android:weightSum="3"
         >
 
-        <ImageView
-            android:id="@+id/running_orders_info"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="30dp"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_2sdp"
-            android:background="@color/home_page_gray"
-            android:src="@drawable/ic_customer_info"/>
 
-        <ImageView
+        <TextView
             android:id="@+id/running_orders_call"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="30dp"
-            android:padding="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_2sdp"
-            android:background="@color/home_page_gray"
-            android:src="@drawable/ic_call"/>
+            style="Custom Notification Title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_2sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:text="Call"
+            android:textColor="@color/blueTurquoise"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"
+            />
 
 
 
-        <ImageView
+
+        <TextView
             android:id="@+id/running_orders_email"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="30dp"
-            android:padding="@dimen/_5sdp"
-            android:background="@color/home_page_gray"
-            android:src="@drawable/ic_customer_email"/>
+            style="Custom Notification Title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_2sdp"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:text="Email"
+            android:textColor="@color/blueTurquoise"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"/>
+
+
+        <TextView
+            android:id="@+id/running_orders_info"
+            style="Custom Notification Title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_2sdp"
+            android:paddingLeft="@dimen/_4sdp"
+            android:paddingRight="@dimen/_4sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:text="Details"
+            android:textColor="@color/blueTurquoise"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold"/>
+
+
 
     </LinearLayout>
 </LinearLayout>

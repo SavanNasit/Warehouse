@@ -137,11 +137,7 @@ public interface ApiInterface {
                                           @Query("chkid")
                                                   String chkid,
                                           @Query("chkoid")
-                                                  String chkoid,
-                                          @Query("oiid")
-                                                  String oiid,
-                                          @Query("isid")
-                                                  String isid);
+                                                  String chkoid);
 
     @GET("?urlq=service")
     Call<ApiResponse> createPackage(@Query("version")
@@ -216,7 +212,50 @@ public interface ApiInterface {
                   String invoiceNumber,
           @Query("e_sugam")
                   String eSugam,
-            @Part MultipartBody.Part[] image
+            @Part MultipartBody.Part[] image,
+          @Query("order")
+                  String order
+    );
+
+
+    @POST("?urlq=service")
+    Call<ApiResponse> createPackageWithoutMultipart(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("email")
+                    String email,
+            @Query("mobile")
+                    String mobile,
+            @Query("shipping")
+                    String shippingAddress,
+            @Query("billing")
+                    String billingAddress,
+            @Query("products")
+                    JSONArray productList,
+            @Query("chkid")
+                    String chkid,
+            @Query("order")
+                    String orderId,
+            @Query("type")
+                    String type,
+            @Query("local")
+                    String local,
+            @Query("invoice_date")
+                    String invoiceDate,
+            @Query("invoice_no")
+                    String invoiceNumber,
+            @Query("e_sugam")
+                    String eSugam,
+            @Query("order")
+                    String order
     );
 
 

@@ -64,7 +64,7 @@
     <string name="running_order_list_task">warehouse/running_orders</string>
     <string name="permission_required">Permission Required:</string>
     <string name="request_permission_from_settings">Kindly allow Permission From App Settings</string>
-    <string name="execute_order_task">warehouse/execute_select_order</string>
+    <string name="execute_order_task">warehouse/execute_order_info</string>
     <string name="email_error">Email Id is not present</string>
     <string name="mail_to">mailto</string>
     <string name="choose_email_client">Choose an Email client :</string>
@@ -201,5 +201,8 @@
 
 
     <string name="manage_packages_file_upload_task">warehouse/package_file_upload</string>
+    <string name="create_package">Create Package</string>
+    <string name="continue_text">Continue</string>
+    <string name="allot_qty">Allot Quantity</string>
 
 </resources>

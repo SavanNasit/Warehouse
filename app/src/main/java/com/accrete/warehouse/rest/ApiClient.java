@@ -31,30 +31,18 @@ public class ApiClient {
 
     public static Retrofit getClient() {
       //  if (retrofit == null) {
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+     /*       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient client = new OkHttpClient.Builder()
                     .readTimeout(50000, TimeUnit.MILLISECONDS)
                     .connectTimeout(100, TimeUnit.SECONDS)
-
-                    //.addInterceptor(interceptor)
-                /*    .addNetworkInterceptor(new Interceptor() {
-
-                        @Override
-
-                        public okhttp3.Response intercept(Interceptor.Chain chain) throws IOException {
-                            Request request = chain.request().newBuilder()
-                                    // .addHeader(Constant.Header, authToken)
-                                    .build();
-                            return chain.proceed(request);
-                        }
-                    })*/.build();
+                    .build();*/
 
 
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .baseUrl(BASE_URL)
-                    .client(client)
+                  //  .client(client)
                     .build();
        // }
         return retrofit;

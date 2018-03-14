@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.fragment.createpackage.PendingItemsFragment;
 import com.accrete.warehouse.widgets.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -200,9 +199,9 @@ public class ManagePackagesFragment extends Fragment {
     public void getData(String str) {
         if (viewPagerExecute != null && viewPagerExecute.getCurrentItem() == 0) {
             Log.e("TAG_ORDERS", "" + str);
-            PendingItemsFragment pendingItemsFragment =
+           /* PendingItemsFragment pendingItemsFragment =
                     (PendingItemsFragment) viewPagerExecute.getAdapter().instantiateItem(viewPagerExecute, viewPagerExecute.getCurrentItem());
-            pendingItemsFragment.getData(str);
+            pendingItemsFragment.getData(str);*/
 
         }
     }

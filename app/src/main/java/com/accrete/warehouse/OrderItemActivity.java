@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +38,12 @@ public class OrderItemActivity extends AppCompatActivity implements SelectOrderI
     private String maximumQuantity;
     private List<PendingItems> pendingItemList = new ArrayList<>();
     private int position;
+    private LinearLayout orderItemToAddPackage;
 
     private void findViews() {
         ordersItemRecyclerView = (RecyclerView) findViewById(R.id.orders_item_recycler_view);
         orderItemEmptyView = (TextView) findViewById(R.id.order_item_empty_view);
+        orderItemToAddPackage =(LinearLayout)findViewById(R.id.order_item_add_packages);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         selectOrderItemAdapter = new SelectOrderItemAdapter(this, selectOrderItemList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -71,6 +74,15 @@ public class OrderItemActivity extends AppCompatActivity implements SelectOrderI
             orderItemEmptyView.setVisibility(View.VISIBLE);
             orderItemEmptyView.setText(getString(R.string.no_data_available));
         }
+
+        orderItemToAddPackage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  listener.onItemExecute(selectOrderItem.getInventoryName(),selectOrderItem.getAllocatedQuantity(),
+                        holder.listRowOrderItemEdtAllotQuantity.getText().toString(),selectOrderItem.getUnit(),position);*/
+              finish();
+            }
+        });
     }
 
 
@@ -109,7 +121,8 @@ public class OrderItemActivity extends AppCompatActivity implements SelectOrderI
                 resultIntent.putExtra("qty",Integer.valueOf(quantity));
                 resultIntent.putParcelableArrayListExtra("pendingItemsList", (ArrayList<? extends Parcelable>) pendingItemList);
                 setResult(1001, resultIntent);
-                finish();
+
+                //finish();
                // RunningOrdersExecuteFragment.viewPagerExecute.setCurrentItem(1);
             }
     }
