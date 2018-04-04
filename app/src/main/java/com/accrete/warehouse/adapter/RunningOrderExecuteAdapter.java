@@ -82,14 +82,14 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
         //  holder.listRowPendingItemsStatus.setText(pendingItem.getItemStatus());
         holder.listRowPendingItemsQuantityUnit.setText(orderDataList.getItemUnit());
 
-        if (orderDataList.getItemSkuCode() != null && !orderDataList.getItemSkuCode().isEmpty()) {
+      /*  if (holder.listRowPendingItemsSkuCode!=null && orderDataList.getItemSkuCode()!= null && !orderDataList.getItemSkuCode().isEmpty()) {
             holder.listRowPendingItemsSkuCode.setText(orderDataList.getItemSkuCode());
             holder.listRowOrderItemViewOne.setVisibility(View.VISIBLE);
         } else {
             holder.listRowPendingItemsSkuCode.setVisibility(View.GONE);
             holder.listRowOrderItemViewOne.setVisibility(View.GONE);
         }
-
+*/
 
 
   /*      if (pendingItem.getItemStatus().equals("Executed")) {
