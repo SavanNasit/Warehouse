@@ -30,8 +30,9 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.AlreadyCreatedPackagesAdapter;
+import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
-import com.accrete.warehouse.model.Packages;
+import com.accrete.warehouse.model.GatepassList;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -59,13 +60,13 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
  * Created by poonam on 12/12/17.
  */
 
-public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyCreatedPackagesAdapter.AlreadyCreatedPackagesAdapterListener {
+public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyCreatedPackagesAdapter.AlreadyCreatedPackagesAdapterListener, SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout alreadyCreatedPackagesSwipeRefreshLayout;
     private RecyclerView alreadyCreatedPackagesRecyclerView;
     private TextView alreadyCreatedPackagesEmptyView;
     private AlreadyCreatedPackagesAdapter packedAdapter;
-    private List<Packages> packedList = new ArrayList<>();
-    private Packages packages = new Packages();
+    private List<AlreadyCreatedPackages> alreadyCreatedPackagesList = new ArrayList<>();
+
     private AlertDialog dialogSelectEvent;
     private String status;
     private TextView downloadConfirmMessage;
@@ -75,20 +76,32 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     private DownloadManager downloadManager;
     private ProgressBar progressBar;
     public  String strPacid, strInvid, strCuid;
+    private String chkoid;
 
     private void findViews(View rootView) {
         alreadyCreatedPackagesSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.already_created_packages_swipe_refresh_layout);
         alreadyCreatedPackagesRecyclerView = (RecyclerView) rootView.findViewById(R.id.already_created_packages_recycler_view);
         alreadyCreatedPackagesEmptyView = (TextView) rootView.findViewById(R.id.already_created_packages_empty_view);
 
-        packedAdapter = new AlreadyCreatedPackagesAdapter(getActivity(), packedList, this);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            chkoid = bundle.getString("chkoid");
+        }
+
+        packedAdapter = new AlreadyCreatedPackagesAdapter(getActivity(), alreadyCreatedPackagesList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         alreadyCreatedPackagesRecyclerView.setLayoutManager(mLayoutManager);
         alreadyCreatedPackagesRecyclerView.setHasFixedSize(true);
         alreadyCreatedPackagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         alreadyCreatedPackagesRecyclerView.setNestedScrollingEnabled(false);
         alreadyCreatedPackagesRecyclerView.setAdapter(packedAdapter);
-        alreadyCreatedPackagesSwipeRefreshLayout.setEnabled(false);
+        alreadyCreatedPackagesSwipeRefreshLayout.setOnRefreshListener(this);
+        alreadyCreatedPackagesSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                getAlreadyCreatedPackages();
+            }
+        });
         ViewAfterUpdate();
     }
 
@@ -97,9 +110,10 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
         View rootView = inflater.inflate(R.layout.fragment_already_created_packages, container, false);
         Bundle bundle = this.getArguments();
     /*    if (bundle != null) {
-            packedList = bundle.getParcelableArrayList("packagesList");
+            alreadyCreatedPackagesList = bundle.getParcelableArrayList("packagesList");
         }*/
         findViews(rootView);
+
         return rootView;
     }
 
@@ -141,7 +155,7 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
         actionsPrintPackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadPdfDialog(packedList.get(position).getInvid(), packedList.get(position).getCuid());
+                downloadPdfDialog(alreadyCreatedPackagesList.get(position).getInvid(), alreadyCreatedPackagesList.get(position).getCuid());
             }
         });
 
@@ -186,7 +200,7 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelPackage(dialogCancelGatepass, packedList.get(position).getPacid(), dialogSelectEvent);
+                cancelPackage(dialogCancelGatepass, alreadyCreatedPackagesList.get(position).getPacid(), dialogSelectEvent);
             }
         });
 
@@ -381,24 +395,25 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     }
 
 
-    public void sendPackageDetails(List<Packages> packages) {
-        packedList = new ArrayList<>();
-        packedList.addAll(packages);
-        packedAdapter = new AlreadyCreatedPackagesAdapter(getActivity(), packedList, this);
-        alreadyCreatedPackagesRecyclerView.setAdapter(packedAdapter);
-        ViewAfterUpdate();
+    public void sendPackageDetails() {
+        //alreadyCreatedPackagesList = new ArrayList<>();
+      //  alreadyCreatedPackagesList.addAll(packages);
+      //  packedAdapter = new AlreadyCreatedPackagesAdapter(getActivity(), alreadyCreatedPackagesList, this);
+      //  alreadyCreatedPackagesRecyclerView.setAdapter(packedAdapter);
+        getAlreadyCreatedPackages();
+      //  ViewAfterUpdate();
     }
 
-    public void getPackageList(List<Packages> packagesList) {
-        if (packedList.size() > 0) {
-            packedList.clear();
+    public void getPackageList(List<AlreadyCreatedPackages> packagesList) {
+        if (alreadyCreatedPackagesList.size() > 0) {
+            alreadyCreatedPackagesList.clear();
         }
-        packedList.addAll(packagesList);
+        alreadyCreatedPackagesList.addAll(packagesList);
         ViewAfterUpdate();
     }
 
     private void ViewAfterUpdate() {
-        if (packedList.size() > 0) {
+        if (alreadyCreatedPackagesList.size() > 0) {
             alreadyCreatedPackagesRecyclerView.setVisibility(View.VISIBLE);
             alreadyCreatedPackagesEmptyView.setVisibility(View.GONE);
         } else {
@@ -410,6 +425,76 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
 
     public void checkFragmentAndDownloadPDF() {
         downloadPdf(strInvid, strCuid);
+    }
+
+
+    private void getAlreadyCreatedPackages() {
+        task = getString(R.string.task_already_created_packages);
+        String chkid = null;
+        if (alreadyCreatedPackagesList != null && alreadyCreatedPackagesList.size() > 0) {
+            alreadyCreatedPackagesList.clear();
+        }
+        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
+            chkid = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.getOrderPackages(version, key, task, userId, accessToken, chkid,chkoid);
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                // enquiryList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        alreadyCreatedPackagesRecyclerView.setVisibility(View.VISIBLE);
+                        alreadyCreatedPackagesEmptyView.setVisibility(View.GONE);
+
+                        for (AlreadyCreatedPackages alreadyCreatedPackages : apiResponse.getData().getPackages()) {
+                            alreadyCreatedPackagesList.add(alreadyCreatedPackages);
+                        }
+
+                        packedAdapter.notifyDataSetChanged();
+                    } else {
+                        if (apiResponse.getSuccessCode().equals("10001")) {
+                            alreadyCreatedPackagesEmptyView.setText(getString(R.string.no_data_available));
+                            alreadyCreatedPackagesRecyclerView.setVisibility(View.GONE);
+                            alreadyCreatedPackagesEmptyView.setVisibility(View.VISIBLE);
+
+                        } else if (apiResponse.getSuccessCode().equals("20004")) {
+                            alreadyCreatedPackagesEmptyView.setText(getString(R.string.no_data_available));
+                            alreadyCreatedPackagesRecyclerView.setVisibility(View.GONE);
+                            alreadyCreatedPackagesEmptyView.setVisibility(View.VISIBLE);
+                        } else {
+                            Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if (alreadyCreatedPackagesSwipeRefreshLayout != null && alreadyCreatedPackagesSwipeRefreshLayout.isRefreshing()) {
+                        alreadyCreatedPackagesSwipeRefreshLayout.setRefreshing(false);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                alreadyCreatedPackagesSwipeRefreshLayout.setRefreshing(false);
+                Log.d("warehouse:runningOrders", t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onRefresh() {
+        getAlreadyCreatedPackages();
     }
 }
 

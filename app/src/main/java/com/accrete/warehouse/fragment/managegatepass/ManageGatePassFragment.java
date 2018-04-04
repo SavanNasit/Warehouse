@@ -33,6 +33,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.ViewPackageGatePassActivity;
 import com.accrete.warehouse.adapter.ManageGatepassAdapter;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.Consignment;
 import com.accrete.warehouse.model.GatepassList;
 import com.accrete.warehouse.model.ManageGatepass;
 import com.accrete.warehouse.rest.ApiClient;
@@ -80,6 +81,10 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     private AlertDialog alertDialog;
     private DownloadManager downloadManager;
     private ProgressBar progressBar;
+    private boolean loading;
+    private LinearLayoutManager mLayoutManager;
+    private int visibleThreshold = 2, lastVisibleItem, totalItemCount;
+    private String dataChanged;
 
     public static ManageGatePassFragment newInstance(String title) {
         ManageGatePassFragment f = new ManageGatePassFragment();
@@ -102,15 +107,48 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         manageGatepassEmptyView = (TextView) rootView.findViewById(R.id.manage_gatepass__empty_view);
 
         manageGatePassAdapter = new ManageGatepassAdapter(getActivity(), gatepassList, this);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+         mLayoutManager = new LinearLayoutManager(getActivity());
         manageGatepassRecyclerView.setLayoutManager(mLayoutManager);
         manageGatepassRecyclerView.setHasFixedSize(true);
         manageGatepassRecyclerView.setItemAnimator(new DefaultItemAnimator());
         manageGatepassRecyclerView.setNestedScrollingEnabled(false);
         manageGatepassRecyclerView.setAdapter(manageGatePassAdapter);
 
+
+        manageGatepassRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                totalItemCount = mLayoutManager.getItemCount();
+                lastVisibleItem = mLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold) && gatepassList.size() > 0) {
+                    // End has been reached
+                    // Do something
+                    loading = true;
+                    //calling API
+                    if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                        getManageGatepassList(gatepassList.get(totalItemCount - 1).getCreatedTs(), "2");
+                    } else {
+                        if (manageGatepassSwipeRefreshLayout.isRefreshing()) {
+                            manageGatepassSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
         manageGatepassSwipeRefreshLayout.setOnRefreshListener(this);
-        getManageGatepassList();
+        doRefresh();
 
     }
 
@@ -256,12 +294,13 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
 
     }
 
-    private void getManageGatepassList() {
+    private void getManageGatepassList(final String createdTs, final String traversal) {
         task = getString(R.string.task_manage_gatepass);
         String chkid = null;
-        if (gatepassList != null && gatepassList.size() > 0) {
+      /*  if (gatepassList != null && gatepassList.size() > 0) {
             gatepassList.clear();
-        }
+        }*/
+
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
             accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
@@ -270,7 +309,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getRunningOrderList(version, key, task, userId, accessToken, chkid);
+        Call<ApiResponse> call = apiService.getGatepassList(version, key, task, userId, accessToken, chkid,createdTs,traversal);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -285,12 +324,58 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                         manageGatepassEmptyView.setVisibility(View.GONE);
 
                         for (GatepassList gatepassLists : apiResponse.getData().getGatepassList()) {
-                            gatepassList.add(gatepassLists);
+                            if (gatepassLists != null) {
+                                if (traversal.equals("2")) {
+                                    if (!createdTs.equals(gatepassLists.getCreatedTs())) {
+                                        gatepassList.add(gatepassLists);
+                                    }
+                                    dataChanged = "yes";
+                                } else if (traversal.equals("1")) {
+                                    if (manageGatepassSwipeRefreshLayout != null &&
+                                            manageGatepassSwipeRefreshLayout.isRefreshing()) {
+                                        // To remove duplicacy of a new item
+                                        if (!createdTs.equals(gatepassLists.getCreatedTs())) {
+                                            gatepassList.add(0, gatepassLists);
+                                        }
+                                    } else {
+                                        if (!createdTs.equals(gatepassLists.getCreatedTs())) {
+                                            gatepassList.add(gatepassLists);
+                                        }
+                                    }
+                                    dataChanged = "yes";
+                                }
+                            }
+
+                        }
+                        loading = false;
+                        if (gatepassList != null && gatepassList.size() == 0) {
+
+                            manageGatepassEmptyView.setVisibility(View.VISIBLE);
+                            manageGatepassRecyclerView.setVisibility(View.GONE);
+                            //  customerOrderFabAdd.setVisibility(View.GONE);
+                        } else {
+                            manageGatepassEmptyView.setVisibility(View.GONE);
+                            manageGatepassRecyclerView.setVisibility(View.VISIBLE);
+                            //   customerOrderFabAdd.setVisibility(View.VISIBLE);
+                        }
+                        if (manageGatepassSwipeRefreshLayout != null &&
+                                manageGatepassSwipeRefreshLayout.isRefreshing()) {
+                            manageGatepassSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (traversal.equals("2")) {
+                            manageGatePassAdapter.notifyDataSetChanged();
+                            if (dataChanged != null && dataChanged.equals("yes")) {
+                                // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
+                            }
+                        } else if (traversal.equals("1")) {
+                            if (dataChanged != null && dataChanged.equals("yes")) {
+                                manageGatePassAdapter.notifyDataSetChanged();
+                                manageGatepassRecyclerView.smoothScrollToPosition(0);
+                            }
                         }
 
-                        manageGatePassAdapter.notifyDataSetChanged();
                     } else {
-                        if (apiResponse.getSuccessCode().equals("10001")) {
+                       /* if (apiResponse.getSuccessCode().equals("10001")) {
                             manageGatepassEmptyView.setText(getString(R.string.no_data_available));
                             manageGatepassRecyclerView.setVisibility(View.GONE);
                             manageGatepassEmptyView.setVisibility(View.VISIBLE);
@@ -301,13 +386,40 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                             manageGatepassEmptyView.setVisibility(View.VISIBLE);
                         } else {
                             Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
+
+
+                            loading = false;
+                            if (gatepassList != null && gatepassList.size() == 0) {
+                                manageGatepassEmptyView.setVisibility(View.VISIBLE);
+                                manageGatepassRecyclerView.setVisibility(View.GONE);
+                                //       customerOrderFabAdd.setVisibility(View.GONE);
+                            } else {
+                                manageGatepassEmptyView.setVisibility(View.GONE);
+                                manageGatepassRecyclerView.setVisibility(View.VISIBLE);
+                                //       customerOrderFabAdd.setVisibility(View.VISIBLE);
+                            }
+                            if (manageGatepassSwipeRefreshLayout != null && manageGatepassSwipeRefreshLayout.isRefreshing()) {
+                                manageGatepassSwipeRefreshLayout.setRefreshing(false);
+                            }
+                            if (traversal.equals("2")) {
+                                manageGatePassAdapter.notifyDataSetChanged();
+                                if (dataChanged != null && dataChanged.equals("yes")) {
+                                    // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
+                                }
+                            } else if (traversal.equals("1")) {
+                                if (dataChanged != null && dataChanged.equals("yes")) {
+                                    manageGatePassAdapter.notifyDataSetChanged();
+                                    manageGatepassRecyclerView.smoothScrollToPosition(0);
+                                }
+                            }
                     }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                     if (manageGatepassSwipeRefreshLayout != null && manageGatepassSwipeRefreshLayout.isRefreshing()) {
                         manageGatepassSwipeRefreshLayout.setRefreshing(false);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -318,6 +430,8 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                 Log.d("warehouse:runningOrders", t.getMessage());
             }
         });
+
+
     }
 
 
@@ -348,7 +462,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                         dialogSelectEvent.dismiss();
                         status = NetworkUtil.getConnectivityStatusString(getActivity());
                         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                            getManageGatepassList();
+                            getManageGatepassList(gatepassList.get(0).getCreatedTs(), "1");
                         } else {
                             manageGatepassRecyclerView.setVisibility(View.GONE);
                             manageGatepassEmptyView.setVisibility(View.VISIBLE);
@@ -492,18 +606,51 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         });
     }
 
+
+    public void doRefresh() {
+        if (gatepassList != null && gatepassList.size() == 0) {
+            status = NetworkUtil.getConnectivityStatusString(getActivity());
+            if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                loading = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        manageGatepassEmptyView.setText(getString(R.string.no_data_available));
+                        getManageGatepassList(getString(R.string.last_updated_date), "1");
+                    }
+                }, 200);
+            } else {
+                manageGatepassRecyclerView.setVisibility(View.GONE);
+                manageGatepassEmptyView.setVisibility(View.VISIBLE);
+                manageGatepassEmptyView.setText(getString(R.string.no_internet_try_later));
+                manageGatepassSwipeRefreshLayout.setRefreshing(false);
+            }
+        }
+    }
+
+
     @Override
     public void onRefresh() {
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            getManageGatepassList();
+            if (gatepassList != null && gatepassList.size() > 0) {
+                getManageGatepassList(gatepassList.get(0).getCreatedTs(), "1");
+            } else {
+                getManageGatepassList( getString(R.string.last_updated_date), "1");
+            }
+            manageGatepassRecyclerView.setVisibility(View.VISIBLE);
+            manageGatepassEmptyView.setVisibility(View.GONE);
+            manageGatepassSwipeRefreshLayout.setRefreshing(true);
+            //  customerOrderFabAdd.setVisibility(View.VISIBLE);
+
         } else {
             manageGatepassRecyclerView.setVisibility(View.GONE);
             manageGatepassEmptyView.setVisibility(View.VISIBLE);
             manageGatepassEmptyView.setText(getString(R.string.no_internet_try_later));
             manageGatepassSwipeRefreshLayout.setRefreshing(false);
         }
-    }
+
+}
 
     public void downloadPdfCall() {
         downloadPdf(strPacdelgatid);

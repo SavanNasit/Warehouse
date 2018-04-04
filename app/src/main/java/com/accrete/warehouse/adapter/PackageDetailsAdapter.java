@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.PackageDetailsList;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
 
     PackageDetailsAdapterListener listener;
     private Context context;
-    private List<PackageDetailsList> packageDetailsLists;
+    private List<OrderData> packageDetailsLists;
 
-    public PackageDetailsAdapter(Context context, List<PackageDetailsList> packageDetailsLists, PackageDetailsAdapterListener listener) {
+    public PackageDetailsAdapter(Context context, List<OrderData> packageDetailsLists, PackageDetailsAdapterListener listener) {
         this.context = context;
         this.packageDetailsLists = packageDetailsLists;
         this.listener = listener;
@@ -36,15 +37,16 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        PackageDetailsList packageDetailsList = packageDetailsLists.get(position);
+        OrderData packageDetailsList = packageDetailsLists.get(position);
         if(holder.listRowPackageDetailsItem.length()>25){
-            holder.listRowPackageDetailsItem.setText(packageDetailsList.getItem().substring(0,25)+"...");
+            holder.listRowPackageDetailsItem.setText(packageDetailsList.getItemVariationName().substring(0,25)+"...");
         }else{
-            holder.listRowPackageDetailsItem.setText(packageDetailsList.getItem());
+            holder.listRowPackageDetailsItem.setText(packageDetailsList.getItemVariationName());
         }
 
-        holder.listRowPackageDetailsBatchNumber.setText(packageDetailsList.getBatchNumber());
-        holder.listRowPackageDetailsQuantity.setText(packageDetailsList.getQuantity());
+        holder.listRowPackageDetailsUnit.setText(packageDetailsList.getItemUnit());
+        holder.listRowPackageDetailsBatchNumber.setText(packageDetailsList.getIid());
+        holder.listRowPackageDetailsQuantity.setText(packageDetailsList.getUsedQuantity());
         holder.listRowPackageDetailsRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +78,7 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
         private TextView listRowPackageDetailsBatchNumber;
         private TextView listRowPackageDetailsQuantity;
         private TextView listRowPackageDetailsRemove;
+        private TextView listRowPackageDetailsUnit;
 
 
         public MyViewHolder(View view) {
@@ -84,6 +87,7 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
                 listRowPackageDetailsBatchNumber = (TextView)view.findViewById( R.id.list_row_package_details_batch_number );
                 listRowPackageDetailsQuantity = (TextView)view.findViewById( R.id.list_row_package_details_quantity );
                 listRowPackageDetailsRemove = (TextView)view.findViewById( R.id.list_row_package_details_remove );
+                listRowPackageDetailsUnit = (TextView)view.findViewById(R.id.list_row_package_details_unit);
             }
           }
     }

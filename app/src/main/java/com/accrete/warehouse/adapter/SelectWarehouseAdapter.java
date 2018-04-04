@@ -24,12 +24,16 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
     private Context context;
     private List<WarehouseList> warehouseLists;
     private SelectWarehouseAdapterListener listener;
+    private boolean selectedPosition;
+    private String positionEnabled;
 
 
-    public SelectWarehouseAdapter(Context context, List<WarehouseList> warehouseList, SelectWarehouseAdapterListener listener) {
+    public SelectWarehouseAdapter(Context context, List<WarehouseList> warehouseList, SelectWarehouseAdapterListener listener, boolean selectedPosition, String pos) {
         this.context = context;
         this.warehouseLists = warehouseList;
         this.listener=listener;
+        this.selectedPosition=selectedPosition;
+        this.positionEnabled = pos;
     }
 
     @Override
@@ -46,6 +50,11 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final WarehouseList warehouse = warehouseLists.get(position);
         holder.textWarehouse.setText(warehouse.getName());
+       /* if(selectedPosition) {
+            if(positionEnabled.equals(warehouse.getChkid())){
+                holder.checkboxWarehouse.setChecked(true);
+            }
+        }*/
         holder.checkboxWarehouse.setTag(new Integer(position));
         holder.checkboxWarehouse.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -95,6 +95,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     private boolean doubleBackToExitPressedOnce = false;
     private DrawerInterface drawerInterfaceToSend;
     private String selectedFilePath;
+    private Toolbar toolbar;
+    boolean selectedPosition = false;
+    public boolean flagToOpenDialog=false;
+
 
     public DrawerActivity() {
     }
@@ -115,7 +119,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
 
         // Handle Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
@@ -182,6 +186,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 1) {
+                                flagToOpenDialog = true;
                                 getWarehouseList();
                             } else if (drawerItem.getIdentifier() == 2) {
                                 Fragment f = RunningOrdersFragment.newInstance(getString(R.string.running_orders_fragment));
@@ -210,6 +215,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 Intent intentDomain = new Intent(DrawerActivity.this, DomainActivity.class);
                                 startActivity(intentDomain);
                                 finish();
+                                Toast.makeText(DrawerActivity.this, getString(R.string.logout_sucessfully), Toast.LENGTH_SHORT).show();
                             }
 
                             if (intent != null) {
@@ -234,10 +240,11 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         if (drawerInterfaceToSend != null) {
             drawerInterfaceToSend.sendDrawer(drawer);
         }
+        getWarehouseList();
     }
 
 
-    private void dialogSelectWarehouse() {
+    private void dialogSelectWarehouse( ) {
         View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_select_warehouse, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
@@ -265,9 +272,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             public void onClick(View v) {
                 dialogSelectWarehouse.dismiss();
 
+
             }
         });
-        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this);
+        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this,selectedPosition,AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(),AppUtils.WAREHOUSE_CHK_ID));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         // recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -298,6 +306,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
+
             @Override
             public void onResponse(Call call, Response response) {
                 // enquiryList.clear();
@@ -319,9 +328,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 }
                             }
                         }
-
-                        dialogSelectWarehouse();
-
+                        if(flagToOpenDialog){
+                            dialogSelectWarehouse();
+                            flagToOpenDialog = false;
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -379,13 +389,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(5);
                 drawer.setSelection(0);
-
-
             } else if (currentReceiveFragment instanceof ReceiveDirectlyFragment) {
+                toolbar.setTitle(R.string.receive_consignment_fragment);
                 super.onBackPressed();
                 return;
 
             } else if (currentReceiveFragment instanceof ReceiveAgainstPurchaseOrderFragment) {
+                toolbar.setTitle(R.string.receive_consignment_fragment);
                 super.onBackPressed();
                 return;
             } else if (currentFragment instanceof ReceiveConsignmentFragment) {
@@ -396,6 +406,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
 
             } else if (currentRunningOrder instanceof RunningOrdersExecuteFragment) {
+                toolbar.setTitle(R.string.running_orders_fragment);
                 super.onBackPressed();
                 return;
 
@@ -465,6 +476,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 getFragmentRefreshListener().onRefresh(strWarehouseName);
             }
         }*/
+     selectedPosition =true;
     }
 
     @Override
@@ -481,8 +493,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
             if (newCurrentFragment instanceof RunningOrdersExecuteFragment) {
                 Log.e("Selected Order Item", " " + requestCode + " " + data.getIntExtra("qty", 0));
-                ((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"),
-                        data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));
+               /*((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"),
+                        data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));*/
             }
 
         } else if (resultCode == 456) {
@@ -494,6 +506,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
         } else if (resultCode == Activity.RESULT_OK) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
             if (requestCode == PICK_FILE_RESULT_CODE) {
 
                 // Get the Uri of the selected file
@@ -593,10 +606,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         } else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         } else if (fragment instanceof RunningOrdersExecuteFragment) {
-                            ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
-                        } else if (f instanceof ManagePackagesFragment) {
+                          //  ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
+                        }/* else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
-                        }
+                        }*/
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         } else {

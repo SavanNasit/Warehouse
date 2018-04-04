@@ -176,7 +176,7 @@ public class ConfirmGatepassFragment extends Fragment {
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.confirm_gatepass_container, manageGatePassFragment).addToBackStack(null).commit();
-                    } else {
+
                         Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 

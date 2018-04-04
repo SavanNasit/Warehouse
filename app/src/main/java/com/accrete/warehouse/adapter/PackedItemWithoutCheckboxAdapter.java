@@ -1,11 +1,15 @@
 package com.accrete.warehouse.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -78,6 +82,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -93,7 +98,6 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
 
     public interface PackedItemAdapterListener {
         void onMessageRowClicked(int position);
-
         void onExecute(ArrayList<String> packageIdList);
     }
 
@@ -122,5 +126,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
         }
     }
+
+
 
 }

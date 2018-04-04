@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="192.168.1.10"
+                    android:host="192.168.1.29"
                     android:pathPattern="/..*"
                     android:scheme="http" />
                 <data
@@ -67,14 +67,8 @@
         </activity>
         <activity
             android:name=".navigationView.DrawerActivity"
-            android:windowSoftInputMode="adjustResize" />
+         />
         <activity android:name=".ScannerActivity" />
-        <!-- android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" -->
-        <!--
-          <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" />
-        -->
 
         <activity android:name=".MainActivity" />
         <activity android:name=".OrderItemActivity" />
@@ -83,6 +77,8 @@
         <activity android:name=".ItemsInsidePackageActivity" />
         <activity android:name=".ChangePackageStatusActivity" />
         <activity android:name=".ViewConsignmentActivity" />
+        <activity android:name=".CreatePackageActivity"
+           />
         <activity
             android:name=".ViewOrderItemsActivity"
             android:label="View Order Items"
@@ -97,6 +93,9 @@
         <activity
             android:name=".ChangePackageAttemptFailedStatusActivity"
             android:theme="@style/MyMaterialTheme"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" />
     </application>
 
 </manifest>

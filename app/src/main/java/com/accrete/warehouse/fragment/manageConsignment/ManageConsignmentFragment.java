@@ -389,7 +389,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
                         if (traversalValue.equals("2")) {
                             manageConsignmentAdapter.notifyDataSetChanged();
                             if (dataChanged != null && dataChanged.equals("yes")) {
-                                // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
+                             //  manageConsignmentRecyclerView.smoothScrollToPosition(manageConsignmentAdapter.getItemCount() + 1);
                             }
                         } else if (traversalValue.equals("1")) {
                             if (dataChanged != null && dataChanged.equals("yes")) {

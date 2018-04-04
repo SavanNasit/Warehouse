@@ -16,10 +16,13 @@ import android.widget.ImageView;
 import com.accrete.warehouse.BuildConfig;
 import com.accrete.warehouse.R;
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by agt on 12/9/17.
@@ -48,7 +51,7 @@ public class ApplicationClass extends MultiDexApplication implements Application
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-       // Fabric.with(this, new Crashlytics());
+        //Fabric.with(this, new Crashlytics());
         /*Crashlytics crashlyticsKit = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build();

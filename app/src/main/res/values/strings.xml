@@ -5,6 +5,7 @@
     <string name="mobile_enabled">Mobile data enabled</string>
     <string name="not_connected_to_internet">Not connected to Internet</string>
     <string name="error_domain">Couldn\'t connect to server</string>
+    <string name="login_success">You have been successfully logged in</string>
 
     <!--tasks-->
     <string name="domain">check_service</string>
@@ -20,8 +21,15 @@
     <string name="credential_error">Email and Password does not matched</string>
     <string name="intent">intent</string>
     <string name="password">Password</string>
+    <string name="logout_sucessfully">Logout successfully</string>
+
     <!--password activity-->
     <string name="try_again">Try again</string>
+    <string name="reset_password">forgot-password/forgot-password-submit</string>
+    <string name="password_change_success">Password successfully changed</string>
+    <string name="craete_password_text">Create new password to access your account</string>
+    <string name="enter_email_for_password">Enter your email address below and we\'ll send a special reset password link to your inbox</string>
+
 
     <string name="connected_to">You\'re connected to :</string>
     <string name="running_orders_fragment">Running Orders</string>
@@ -56,7 +64,7 @@
     <string name="running_order_list_task">warehouse/running_orders</string>
     <string name="permission_required">Permission Required:</string>
     <string name="request_permission_from_settings">Kindly allow Permission From App Settings</string>
-    <string name="execute_order_task">warehouse/execute_select_order</string>
+    <string name="execute_order_task">warehouse/execute_order_info</string>
     <string name="email_error">Email Id is not present</string>
     <string name="mail_to">mailto</string>
     <string name="choose_email_client">Choose an Email client :</string>
@@ -185,7 +193,16 @@
 
     <string name="change_package_order_status_task">warehouse/change_gatepass_status</string>
     <string name="reattempt_task">warehouse/package_reAttempt</string>
+    <string name="task_already_created_packages">warehouse/fetch_order_packages</string>
     <string name="delivery_failed_task">warehouse/package_delivery_failed_submit</string>
+    <string name="something_wrong">Something went wrong</string>
+    <string name="verify_email_to_forgot_password">forgot-password/forgot-password-link</string>
+    <string name="email_link_success">We have sent an email.</string>
+
+
     <string name="manage_packages_file_upload_task">warehouse/package_file_upload</string>
+    <string name="create_package">Create Package</string>
+    <string name="continue_text">Continue</string>
+    <string name="allot_qty">Allot Quantity</string>
 
 </resources>

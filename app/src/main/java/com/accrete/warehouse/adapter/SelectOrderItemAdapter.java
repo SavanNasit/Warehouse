@@ -3,6 +3,8 @@ package com.accrete.warehouse.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +52,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
         holder.listRowOrderItemInventory.setText(selectOrderItem.getInventory());
 
 
-        holder.listRowOrderItemAvailableQuantity.setText("Avl.Quantity: "+ selectOrderItem.getAvailableQuantity());
+        holder.listRowOrderItemAvailableQuantity.setText(selectOrderItem.getAvailableQuantity());
         holder.textViewUnit.setText(selectOrderItem.getUnit());
         holder.listRowOrderItemName.setText(selectOrderItem.getInventoryName());
         holder.listRowOrderItemEdtAllotQuantity.setText(selectOrderItem.getAllocatedQuantity());
@@ -70,14 +72,24 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
         }else{
             holder.listRowOrderItemRemarks.setVisibility(View.GONE);
         }
-
-        holder.orderItemExecute.setOnClickListener(new View.OnClickListener() {
+        holder.listRowOrderItemEdtAllotQuantity.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 listener.onItemExecute(selectOrderItem.getInventoryName(),selectOrderItem.getAllocatedQuantity(),
                         holder.listRowOrderItemEdtAllotQuantity.getText().toString(),selectOrderItem.getUnit(),position);
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
+
 
         applyClickEvents(holder, position);
 
@@ -123,7 +135,6 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
             super(view);
 
             listRowOrderItemPurchasedOn = (TextView) view.findViewById(R.id.list_row_order_item_purchased_on);
-
             listRowOrderItemVendor = (TextView) view.findViewById(R.id.list_row_order_item_vendor);
             listRowOrderItemInventory = (TextView) view.findViewById(R.id.list_row_order_item_inventory);
             listRowOrderItemAvailableQuantity = (TextView) view.findViewById(R.id.list_row_order_item_available_quantity);
@@ -132,6 +143,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
             orderItemExecute = (LinearLayout) view.findViewById(R.id.order_item_execute);
             textViewUnit = (TextView) view.findViewById(R.id.list_row_order_item_unit);
             listRowOrderItemName = (TextView)view.findViewById(R.id.list_row_order_item_item_name);
+
         }
     }
 
