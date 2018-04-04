@@ -521,6 +521,8 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                     }
                 }, 200);
             } else {
+                pendingItemsRecyclerView.setVisibility(View.GONE);
+                outForDeliverySwipeRefreshLayout.setVisibility(View.GONE);
                 outForDeliveryEmptyView.setVisibility(View.VISIBLE);
                 outForDeliveryEmptyView.setText(getString(R.string.no_internet_try_later));
             }
@@ -576,8 +578,12 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                         loading = false;
                         if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
                             outForDeliveryEmptyView.setVisibility(View.VISIBLE);
+                            pendingItemsRecyclerView.setVisibility(View.GONE);
+                            outForDeliveryEmptyView.setText("No data available");
                         } else {
                             outForDeliveryEmptyView.setVisibility(View.GONE);
+                            pendingItemsRecyclerView.setVisibility(View.VISIBLE);
+                            outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (outForDeliverySwipeRefreshLayout != null &&
                                 outForDeliverySwipeRefreshLayout.isRefreshing()) {
@@ -597,8 +603,12 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                         loading = false;
                         if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
                             outForDeliveryEmptyView.setVisibility(View.VISIBLE);
+                            pendingItemsRecyclerView.setVisibility(View.GONE);
+                            outForDeliveryEmptyView.setText("No data available");
                         } else {
                             outForDeliveryEmptyView.setVisibility(View.GONE);
+                            pendingItemsRecyclerView.setVisibility(View.VISIBLE);
+                            outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
                         }
                         if (outForDeliverySwipeRefreshLayout != null && outForDeliverySwipeRefreshLayout.isRefreshing()) {
                             outForDeliverySwipeRefreshLayout.setRefreshing(false);
@@ -618,8 +628,10 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (outForDeliverySwipeRefreshLayout != null && outForDeliverySwipeRefreshLayout.isRefreshing()) {
-                        outForDeliverySwipeRefreshLayout.setRefreshing(false);
+                    if (getActivity() != null && isAdded()) {
+                        if (outForDeliverySwipeRefreshLayout != null && outForDeliverySwipeRefreshLayout.isRefreshing()) {
+                            outForDeliverySwipeRefreshLayout.setRefreshing(false);
+                        }
                     }
                 }
 
@@ -627,7 +639,6 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -804,8 +815,11 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                alertDialog.dismiss();
+                if (getActivity() != null && isAdded()) {
+                    if (alertDialog != null && alertDialog.isShowing()) {
+                        alertDialog.dismiss();
+                    }
+                }
             }
         });
     }

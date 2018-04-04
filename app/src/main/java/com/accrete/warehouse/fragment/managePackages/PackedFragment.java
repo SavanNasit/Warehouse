@@ -578,6 +578,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
     }
 
+
     //Opening Dialog to Upload Documents
     private void openDialogUploadDoc(final Activity activity, final String pacId) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
@@ -709,7 +710,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         if (packedList != null && packedList.size() == 0) {
                             packedEmptyView.setVisibility(View.VISIBLE);
                             packedEmptyView.setText("No data available");
-                            packedRecyclerView.setVisibility(View.VISIBLE);
+                            packedRecyclerView.setVisibility(View.GONE);
                             packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
                         } else {
                             packedEmptyView.setVisibility(View.GONE);

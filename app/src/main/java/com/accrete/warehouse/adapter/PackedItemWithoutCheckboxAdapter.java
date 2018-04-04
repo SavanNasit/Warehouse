@@ -1,15 +1,11 @@
 package com.accrete.warehouse.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,8 +49,12 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
         holder.outForDeliveryPackageId.setText(packed.getPackageId());
         holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packed.getInvoiceNo());
-        holder.outForDeliveryCustomerName.setText(packed.getCustomerName());
-
+        if (packed.getCustomerName() != null && !packed.getCustomerName().trim().isEmpty()) {
+            holder.outForDeliveryCustomerName.setText(packed.getCustomerName().trim());
+            holder.outForDeliveryCustomerName.setVisibility(View.VISIBLE);
+        } else {
+            holder.outForDeliveryCustomerName.setVisibility(View.GONE);
+        }
         //TODO NO GatePass ID in this process
         holder.outForDeliveryGatepassId.setVisibility(View.GONE);
 
@@ -65,7 +65,12 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             holder.outForDeliveryExpDod.setText("Exp Dod : N/A ");
         }
 
-        holder.outForDeliveryUser.setText("Delivery User : " + packed.getCustomerName());
+        if (packed.getCustomerName() != null && !packed.getCustomerName().trim().isEmpty()) {
+            holder.outForDeliveryUser.setText("Delivery User : " + packed.getCustomerName().trim());
+            holder.outForDeliveryUser.setVisibility(View.VISIBLE);
+        } else {
+            holder.outForDeliveryUser.setVisibility(View.GONE);
+        }
 
         holder.outForDeliveryContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +103,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
 
     public interface PackedItemAdapterListener {
         void onMessageRowClicked(int position);
+
         void onExecute(ArrayList<String> packageIdList);
     }
 
@@ -126,7 +132,6 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
         }
     }
-
 
 
 }
