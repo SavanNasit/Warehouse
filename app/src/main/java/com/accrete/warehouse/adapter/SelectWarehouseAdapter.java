@@ -28,11 +28,12 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
     private String positionEnabled;
 
 
-    public SelectWarehouseAdapter(Context context, List<WarehouseList> warehouseList, SelectWarehouseAdapterListener listener, boolean selectedPosition, String pos) {
+    public SelectWarehouseAdapter(Context context, List<WarehouseList> warehouseList,
+                                  SelectWarehouseAdapterListener listener, boolean selectedPosition, String pos) {
         this.context = context;
         this.warehouseLists = warehouseList;
-        this.listener=listener;
-        this.selectedPosition=selectedPosition;
+        this.listener = listener;
+        this.selectedPosition = selectedPosition;
         this.positionEnabled = pos;
     }
 
@@ -42,8 +43,12 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
                 .inflate(R.layout.list_row_warehouses, parent, false);
 
 
-
         return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -55,13 +60,17 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
                 holder.checkboxWarehouse.setChecked(true);
             }
         }*/
+     /*   if (positionEnabled.equals(warehouse.getChkid())) {
+            holder.checkboxWarehouse.setChecked(true);
+        } else {
+            holder.checkboxWarehouse.setChecked(false);
+        }*/
         holder.checkboxWarehouse.setTag(new Integer(position));
         holder.checkboxWarehouse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
                 int clickedPos = ((Integer) cb.getTag()).intValue();
-
                 if (cb.isChecked()) {
                     if (lastChecked != null) {
                         lastChecked.setChecked(false);
@@ -73,11 +82,12 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
                     lastChecked = null;
                 }
 
-                applyClickEvents(warehouseLists.get(clickedPos).getName(),warehouseLists.get(clickedPos).getChkid(),warehouseLists.get(clickedPos).getOrderCount()
-                ,warehouseLists.get(clickedPos).getPackageCount(),warehouseLists.get(clickedPos).getGatepassCount(),warehouseLists.get(clickedPos).getConsignmentCount()
-                ,warehouseLists.get(clickedPos).getReceiveConsignmentCount());
+                applyClickEvents(warehouseLists.get(clickedPos).getName(), warehouseLists.get(clickedPos).getChkid(), warehouseLists.get(clickedPos).getOrderCount()
+                        , warehouseLists.get(clickedPos).getPackageCount(), warehouseLists.get(clickedPos).getGatepassCount(), warehouseLists.get(clickedPos).getConsignmentCount()
+                        , warehouseLists.get(clickedPos).getReceiveConsignmentCount());
             }
         });
+
 
     }
 
@@ -86,13 +96,19 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
         return warehouseLists.size();
     }
 
-    public interface SelectWarehouseAdapterListener {
-        void onMessageRowClicked(String name, String chkid, String orderCount, String packageCount, String gatepassCount, String consignmentCount, String receiveConsignmentCount);
+    private void applyClickEvents(String name, String chkid, String orderCount, String packageCount, String gatepassCount, String consignmentCount, String receiveConsignmentCount) {
+        listener.onMessageRowClicked(name, chkid, orderCount, packageCount, gatepassCount, consignmentCount, receiveConsignmentCount);
+         notifyDataSetChanged();
     }
 
-    private void applyClickEvents(String name, String chkid, String orderCount, String packageCount, String gatepassCount, String consignmentCount, String receiveConsignmentCount) {
-                listener.onMessageRowClicked(name,chkid,orderCount,packageCount,gatepassCount,consignmentCount,receiveConsignmentCount);
-               // notifyDataSetChanged();
+    public interface SelectWarehouseAdapterListener {
+        void onMessageRowClicked(String name,
+                                 String chkid,
+                                 String orderCount,
+                                 String packageCount,
+                                 String gatepassCount,
+                                 String consignmentCount,
+                                 String receiveConsignmentCount);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

@@ -269,11 +269,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             @Override
             public void onClick(View v) {
                 dialogSelectWarehouse.dismiss();
-
-
             }
         });
-        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this, selectedPosition, AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(), AppUtils.WAREHOUSE_CHK_ID));
+        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this,
+                selectedPosition, AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(), AppUtils.WAREHOUSE_CHK_ID));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         // recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -315,7 +314,9 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         for (WarehouseList warehouseList : apiResponse.getData().getWarehouseList()) {
                             if (apiResponse.getData().getWarehouseList() != null) {
                                 warehouseArrayList.add(warehouseList);
-                                if (apiResponse.getData().getWarehouseList().size() > 0) {
+                                if (apiResponse.getData().getWarehouseList().size() > 0 &&
+                                        (AppPreferences.getWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID) == null ||
+                                                AppPreferences.getWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID).isEmpty())) {
                                     AppPreferences.setWarehouseDefaultName(DrawerActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, apiResponse.getData().getWarehouseList().get(0).getName());
                                     AppPreferences.setWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID, apiResponse.getData().getWarehouseList().get(0).getChkid());
                                     AppPreferences.setWarehouseOrderCount(DrawerActivity.this, AppUtils.WAREHOUSE_ORDER_COUNT, apiResponse.getData().getWarehouseList().get(0).getOrderCount());
@@ -475,6 +476,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             }
         }*/
         selectedPosition = true;
+       // mAdapter.notifyDataSetChanged();
     }
 
     @Override
