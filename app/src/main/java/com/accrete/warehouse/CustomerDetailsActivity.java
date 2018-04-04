@@ -136,11 +136,12 @@ public class CustomerDetailsActivity extends AppCompatActivity {
         if (customerInfo.getEmail() != null && !customerInfo.getEmail().isEmpty()) {
             customerDetailsEmail.setText(customerInfo.getEmail());
         }
-
-        customerDetailsShippingAddress.setText(customerInfo.getShippingAddrName() + ",\n" + customerInfo.getShippingAddrLine() + ",\n" +
+         //customerInfo.getShippingAddrName() + ",\n" +
+        //customerInfo.getBillingAddrName() + ",\n"
+        customerDetailsShippingAddress.setText(customerInfo.getShippingAddrSitename() + ",\n" + customerInfo.getShippingAddrLine() + ",\n" +
                 customerInfo.getShippingAddrCity() + ",\n" + customerInfo.getShippingAddrStateName() + ",\n" + customerInfo.getShippingAddrCountryName() + ",\n"
                 + customerInfo.getShippingAddrPincode());
-        customerDetailsBillingAddress.setText(customerInfo.getBillingAddrName() + ",\n" + customerInfo.getBillingAddrLine() + ",\n" +
+        customerDetailsBillingAddress.setText(customerInfo.getBillingAddSitename() + ",\n" + customerInfo.getBillingAddrLine() + ",\n" +
                 customerInfo.getBillingAddrCity() + ",\n" + customerInfo.getBillingAddrStateName() + ",\n" + customerInfo.getBillingAddrCountryName() + ",\n"
                 + customerInfo.getBillingAddrPincode());
     }

@@ -4,8 +4,12 @@ import com.accrete.warehouse.model.ApiResponse;
 
 import org.json.JSONArray;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 
@@ -27,6 +31,38 @@ public interface ApiInterface {
             @Query("email") String email,
             @Query("password") String password
     );
+
+    @GET("?urlq=service")
+    Call<ApiResponse> resetPassword(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("token")
+                    String token,
+            @Query("email")
+                    String email,
+            @Query("password")
+                    String password,
+            @Query("repassword")
+                    String repassword);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> verifyEmail(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("email")
+                    String mobile
+    );
+
 
     @GET("?urlq=service")
     Call<ApiResponse> isAccessTokenValid(
@@ -70,6 +106,24 @@ public interface ApiInterface {
                                                   String chkid);
 
     @GET("?urlq=service")
+    Call<ApiResponse> getGatepassList(@Query("version")
+                                                  String version,
+                                          @Query("key")
+                                                  String key,
+                                          @Query("task")
+                                                  String task,
+                                          @Query("user_id")
+                                                  String userid,
+                                          @Query("access_token")
+                                                  String accessToken,
+                                          @Query("chkid")
+                                                  String chkid,
+                                          @Query("last_fetch")
+                                                  String lastFetch,
+                                          @Query("traversal")
+                                                  String traversal);
+
+    @GET("?urlq=service")
     Call<ApiResponse> executeSelectedItem(@Query("version")
                                                   String version,
                                           @Query("key")
@@ -83,11 +137,7 @@ public interface ApiInterface {
                                           @Query("chkid")
                                                   String chkid,
                                           @Query("chkoid")
-                                                  String chkoid,
-                                          @Query("oiid")
-                                                  String oiid,
-                                          @Query("isid")
-                                                  String isid);
+                                                  String chkoid);
 
     @GET("?urlq=service")
     Call<ApiResponse> createPackage(@Query("version")
@@ -124,6 +174,90 @@ public interface ApiInterface {
                                             String invoiceNumber,
                                     @Query("e_sugam")
                                             String eSugam);
+
+    @Multipart
+    @POST("?urlq=service")
+    Call<ApiResponse> createPackageMultipart(
+          @Query("version")
+            String version,
+          @Query("key")
+                  String key,
+          @Query("task")
+                  String task,
+          @Query("user_id")
+                  String userid,
+          @Query("access_token")
+                  String accessToken,
+          @Query("email")
+                  String email,
+          @Query("mobile")
+                  String mobile,
+          @Query("shipping")
+                  String shippingAddress,
+          @Query("billing")
+                  String billingAddress,
+          @Query("products")
+                  JSONArray productList,
+          @Query("chkid")
+                  String chkid,
+          @Query("order")
+                  String orderId,
+          @Query("type")
+                  String type,
+          @Query("local")
+                  String local,
+          @Query("invoice_date")
+                  String invoiceDate,
+          @Query("invoice_no")
+                  String invoiceNumber,
+          @Query("e_sugam")
+                  String eSugam,
+            @Part MultipartBody.Part[] image,
+          @Query("order")
+                  String order
+    );
+
+
+    @POST("?urlq=service")
+    Call<ApiResponse> createPackageWithoutMultipart(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("email")
+                    String email,
+            @Query("mobile")
+                    String mobile,
+            @Query("shipping")
+                    String shippingAddress,
+            @Query("billing")
+                    String billingAddress,
+            @Query("products")
+                    JSONArray productList,
+            @Query("chkid")
+                    String chkid,
+            @Query("order")
+                    String orderId,
+            @Query("type")
+                    String type,
+            @Query("local")
+                    String local,
+            @Query("invoice_date")
+                    String invoiceDate,
+            @Query("invoice_no")
+                    String invoiceNumber,
+            @Query("e_sugam")
+                    String eSugam,
+            @Query("order")
+                    String order
+    );
+
 
     @GET("?urlq=service")
     Call<ApiResponse> getPackageDetails(@Query("version")

@@ -22,7 +22,7 @@
             android:gravity="bottom|center"
             android:lines="2"
             android:text="Warehouse"
-            android:textColor="@color/primary"
+            android:textColor="@color/text_black"
             android:textSize="13sp" />
 
         <TextView

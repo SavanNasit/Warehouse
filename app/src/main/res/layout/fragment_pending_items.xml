@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/text_black">
 
         <TextView
             android:layout_width="match_parent"

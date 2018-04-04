@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Set;
 
 /**
@@ -249,5 +251,16 @@ public class AppPreferences {
         SharedPreferences.Editor edit = preference.edit();
         edit.putString(key, value);
         edit.commit();
+    }
+
+
+    public static double roundTwoDecimals(double totalQty) {
+      /*  BigDecimal totalBigDecimal = new BigDecimal(totalQty);
+        totalBigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return  totalBigDecimal.doubleValue();*/
+
+        DecimalFormat df = new DecimalFormat("#.####");
+        totalQty = Double.parseDouble(df.format(totalQty));
+        return totalQty;
     }
 }

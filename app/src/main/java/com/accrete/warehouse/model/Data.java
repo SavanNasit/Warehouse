@@ -1,7 +1,5 @@
 package com.accrete.warehouse.model;
 
-import android.provider.ContactsContract;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,14 +9,6 @@ import java.util.List;
  * Modified by poonam on 22/9/17.
  */
 public class Data {
-
-    public String getPacid() {
-        return pacid;
-    }
-
-    public void setPacid(String pacid) {
-        this.pacid = pacid;
-    }
 
     @SerializedName("packages")
     @Expose
@@ -35,6 +25,14 @@ public class Data {
     @SerializedName("pacid")
     @Expose
     private String pacid;
+
+    public String getPacid() {
+        return pacid;
+    }
+
+    public void setPacid(String pacid) {
+        this.pacid = pacid;
+    }
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -171,6 +169,17 @@ public class Data {
     @SerializedName("logHistoryData")
     @Expose
     private List<LogHistoryDatum> logHistoryData = null;
+    @SerializedName("orderData")
+    @Expose
+    private List<OrderData> orderData = null;
+
+    public List<OrderData> getOrderData() {
+        return orderData;
+    }
+
+    public void setOrderData(List<OrderData> orderData) {
+        this.orderData = orderData;
+    }
 
     public List<LogHistoryDatum> getLogHistoryData() {
         return logHistoryData;

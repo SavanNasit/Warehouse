@@ -33,7 +33,6 @@ import com.accrete.warehouse.adapter.AlreadyCreatedPackagesAdapter;
 import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.GatepassList;
-import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -67,7 +66,7 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     private TextView alreadyCreatedPackagesEmptyView;
     private AlreadyCreatedPackagesAdapter packedAdapter;
     private List<AlreadyCreatedPackages> alreadyCreatedPackagesList = new ArrayList<>();
-    private Packages packages = new Packages();
+
     private AlertDialog dialogSelectEvent;
     private String status;
     private TextView downloadConfirmMessage;

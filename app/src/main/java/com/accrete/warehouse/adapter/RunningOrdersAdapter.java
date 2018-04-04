@@ -17,14 +17,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.CustomerDetailsActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.fragment.runningorders.RunningOrdersFragment;
+import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.RunningOrder;
@@ -68,15 +69,15 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final RunningOrder runningOrder = runningOrderList.get(position);
-        holder.listRowRunningOrdersOrderId.setText(AppPreferences.getCompanyCode(context, AppUtils.COMPANY_CODE)+runningOrder.getChkoid());
-        holder.listRowRunningOrdersCustomer.setText(runningOrder.getCustomer());
-
+     //   holder.listRowRunningOrdersOrderId.setText(AppPreferences.getCompanyCode(context, AppUtils.COMPANY_CODE)+runningOrder.getChkoid());
+        holder.listRowRunningOrdersOrderId.setText(runningOrder.getCheckpointOrderID());
+        holder.listRowRunningOrdersCustomer.setText(runningOrder.getCustomer().trim());
         holder.listRowRunningOrdersMobile.setText(runningOrder.getContact());
         holder.listRowRunningOrdersEmail.setText(runningOrder.getCustomerInfo().getEmail());
         holder.listRowRunningOrdersExecute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onExecute(runningOrder.getPackages(), runningOrder.getSelectOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid());
+                //listener.onExecute(runningOrder.getPackages(), runningOrder.getSelectOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid(),position);
             }
         });
 
@@ -191,11 +192,16 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
             }
         });
     }
+    public void next(int position, RunningOrder runningOrder) {
+        listener.onExecute(runningOrder.getPackages(), runningOrder.getOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid(),position);
+        notifyDataSetChanged();
+    }
+
 
     public interface RunningOrdersAdapterListener {
         void onMessageRowClicked(int position);
 
-        void onExecute(List<Packages> packages, List<PendingItems> selectOrderItems, String chkid, String chkoid);
+        void onExecute(List<Packages> packages, List<OrderData> selectOrderItems, String chkid, String chkoid, int position);
 
         void onCall(String contact);
     }
@@ -207,9 +213,12 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
         private TextView listRowRunningOrdersMobile;
         private TextView listRowRunningOrdersEmail;
         private LinearLayout listRowRunningOrdersExecute;
-        private ImageView imageViewCustomerInfo;
-        private ImageView imageViewMobile, imageViewEmail;
+        private TextView imageViewCustomerInfo;
+        private TextView imageViewMobile, imageViewEmail;
         private FrameLayout frameLayoutRunningOrders;
+        public RelativeLayout viewBackground;
+        public RelativeLayout relativeLayoutContainer;
+
 
 
         public MyViewHolder(View view) {
@@ -221,9 +230,11 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
             listRowRunningOrdersMobile = (TextView) view.findViewById(R.id.list_row_running_orders_customer_mobile);
             listRowRunningOrdersExecute = (LinearLayout) view.findViewById(R.id.running_orders_execute);
             listRowRunningOrdersEmail = (TextView) view.findViewById(R.id.list_row_running_orders_customer_email);
-            imageViewCustomerInfo = (ImageView) view.findViewById(R.id.running_orders_info);
-            imageViewMobile = (ImageView) view.findViewById(R.id.running_orders_call);
-            imageViewEmail = (ImageView) view.findViewById(R.id.running_orders_email);
+            imageViewCustomerInfo = (TextView) view.findViewById(R.id.running_orders_info);
+            imageViewMobile = (TextView) view.findViewById(R.id.running_orders_call);
+            imageViewEmail = (TextView) view.findViewById(R.id.running_orders_email);
+            relativeLayoutContainer = (RelativeLayout) view.findViewById(R.id.relativelayout_container);
+
         }
     }
 

@@ -317,7 +317,7 @@ public class DetailsFragment extends Fragment {
         }
 
         //Stock Request
-        if (consignmentData.getStockRequest() != null && !consignmentData.getStockRequest().isEmpty()) {
+        if (consignmentData.getStockRequest() != null && !consignmentData.getStockRequest().isEmpty() && !consignmentData.getStockRequest().equals("NA")) {
             stockRequestTextView.setText(consignmentData.getStockRequest());
             stockRequestLayout.setVisibility(View.VISIBLE);
         } else {

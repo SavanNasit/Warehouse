@@ -21,6 +21,9 @@ public class Measurement {
     @Expose
     private String conversionRate;
 
+
+
+
     public String getId() {
         return id;
     }

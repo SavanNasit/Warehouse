@@ -22,6 +22,13 @@ public class CustomerInfo implements Parcelable {
             return new CustomerInfo[size];
         }
     };
+
+    @SerializedName("shipping_addr_sitename")
+    @Expose
+    private String shippingAddrSitename;
+    @SerializedName("billing_addr_sitename")
+    @Expose
+    private String billingAddSitename;
     @SerializedName("packageId")
     @Expose
     private String packageId;
@@ -101,9 +108,30 @@ public class CustomerInfo implements Parcelable {
         billingAddrStateName = in.readString();
         billingAddrCountryName = in.readString();
         billingAddrMobile = in.readString();
+        shippingAddrSitename=in.readString();
+        billingAddSitename=in.readString();
     }
     public CustomerInfo() {
 
+    }
+
+
+
+
+    public String getShippingAddrSitename() {
+        return shippingAddrSitename;
+    }
+
+    public void setShippingAddrSitename(String shippingAddrSitename) {
+        this.shippingAddrSitename = shippingAddrSitename;
+    }
+
+    public String getBillingAddSitename() {
+        return billingAddSitename;
+    }
+
+    public void setBillingAddSitename(String billingAddSitename) {
+        this.billingAddSitename = billingAddSitename;
     }
 
     public String getPackageId() {
@@ -290,5 +318,7 @@ public class CustomerInfo implements Parcelable {
         dest.writeString(billingAddrStateName);
         dest.writeString(billingAddrCountryName);
         dest.writeString(billingAddrMobile);
+        dest.writeString(shippingAddrSitename);
+        dest.writeString(billingAddSitename);
     }
 }

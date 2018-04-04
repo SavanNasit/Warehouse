@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="192.168.1.10"
+                    android:host="192.168.1.29"
                     android:pathPattern="/..*"
                     android:scheme="http" />
                 <data
@@ -67,7 +67,7 @@
         </activity>
         <activity
             android:name=".navigationView.DrawerActivity"
-            android:windowSoftInputMode="adjustResize" />
+         />
         <activity android:name=".ScannerActivity" />
 
         <activity android:name=".MainActivity" />
@@ -77,6 +77,8 @@
         <activity android:name=".ItemsInsidePackageActivity" />
         <activity android:name=".ChangePackageStatusActivity" />
         <activity android:name=".ViewConsignmentActivity" />
+        <activity android:name=".CreatePackageActivity"
+           />
         <activity
             android:name=".ViewOrderItemsActivity"
             android:label="View Order Items"

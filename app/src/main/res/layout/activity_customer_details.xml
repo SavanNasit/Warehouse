@@ -135,7 +135,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/_5sdp"
         android:gravity="left|center"
-        android:lines="3"
+        android:lines="5"
         android:textColor="@color/black"
         android:textSize="14sp" />
 
@@ -172,7 +172,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="@dimen/_5sdp"
         android:gravity="left|center"
-        android:lines="3"
+        android:lines="5"
         android:textColor="@color/black"
         android:textSize="14sp" />
 </LinearLayout>
