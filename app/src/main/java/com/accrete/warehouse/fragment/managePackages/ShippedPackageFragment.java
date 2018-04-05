@@ -1,10 +1,13 @@
 package com.accrete.warehouse.fragment.managePackages;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -52,6 +55,8 @@ import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.userId;
 import static com.accrete.warehouse.utils.Constants.version;
 import static com.accrete.warehouse.utils.MSupportConstants.PICK_FILE_RESULT_CODE;
+import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_ASK_STORAGE_PERMISSIONS;
+import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWithRationale;
 
 /**
  * Created by agt on 22/1/18.
@@ -283,6 +288,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnUpload.setEnabled(false);
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                         FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
@@ -431,10 +437,39 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
 
     //Intent to select file
     private void selectFile() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            askStoragePermission(0, getString(R.string.add_file));
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+        }
+    }
+
+    public void askStoragePermission(int position, String type) {
+        if (checkPermissionWithRationale(getActivity(), new PackedAgainstStockFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            } else {
+                if (type.equals(getString(R.string.add_file))) {
+                    if (dialogUploadDoc != null && dialogUploadDoc.isShowing()) {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("*/*");
+                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+                    }
+                }
+
+            }
+        }
     }
 
     @Override

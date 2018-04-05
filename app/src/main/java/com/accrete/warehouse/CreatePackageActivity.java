@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.support.design.widget.TextInputEditText;
@@ -320,6 +321,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnUpload.setEnabled(false);
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     /*if (!NetworkUtil.getConnectivityStatusString(getApplicationContext()).equals(getString(R.string.not_connected_to_internet))) {
                        //FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
@@ -331,6 +333,13 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                 } else {
                     Toast.makeText(getApplicationContext(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
                 }
+                //Enable Again
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnUpload.setEnabled(true);
+                    }
+                }, 4000);
             }
         });
 

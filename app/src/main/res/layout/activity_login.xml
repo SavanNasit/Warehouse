@@ -16,7 +16,7 @@
         android:layout_marginTop="60dp"
         android:gravity="left|center"
         android:hint="Email Address"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:lines="1"
         android:maxLines="1"
         android:textSize="18sp"

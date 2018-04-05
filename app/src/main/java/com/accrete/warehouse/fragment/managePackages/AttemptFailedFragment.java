@@ -126,6 +126,7 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnUpload.setEnabled(false);
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                         FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
@@ -136,6 +137,13 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                 } else {
                     Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
                 }
+                //Enable Again
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnUpload.setEnabled(true);
+                    }
+                }, 4000);
             }
         });
 
@@ -450,6 +458,13 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                 } else if (type.equals(getString(R.string.loading_slip))) {
                     downloadDialog(attemptFailedList.get(position).getPackageId(), getString(R.string.loading_slip),
                             attemptFailedList.get(position).getPacdelgatid(), "");
+                } else if (type.equals(getString(R.string.add_file))) {
+                    if (dialogUploadDoc != null && dialogUploadDoc.isShowing()) {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("*/*");
+                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+                    }
                 }
 
             }
@@ -566,10 +581,14 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
 
     //Intent to select file
     private void selectFile() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            askStoragePermission(0, getString(R.string.add_file));
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -73,7 +74,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             holder.outForDeliveryUser.setVisibility(View.GONE);
         }
 
-        holder.outForDeliveryContainer.setOnClickListener(new View.OnClickListener() {
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onMessageRowClicked(position);
@@ -137,6 +138,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
         private TextView outForDeliveryUser;
         private LinearLayout outForDeliveryContainer;
         private TextView statusTextView;
+        private RelativeLayout mainLayout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -150,6 +152,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             outForDeliveryExpDod = (TextView) view.findViewById(R.id.out_for_delivery_exp_dod);
             outForDeliveryUser = (TextView) view.findViewById(R.id.out_for_delivery_user);
             outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
+            mainLayout = (RelativeLayout) view.findViewById(R.id.main_layout);
         }
     }
 
