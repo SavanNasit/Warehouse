@@ -70,7 +70,14 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
         holder.listRowRunningOrdersOrderId.setText(runningOrder.getCheckpointOrderID());
         holder.listRowRunningOrdersCustomer.setText(runningOrder.getCustomerInfo().getName().trim());
         holder.listRowRunningOrdersMobile.setText(runningOrder.getContact());
-        holder.listRowRunningOrdersAttendee.setText("Assignee: " + runningOrder.getAssignedUserName());
+        if (runningOrder.getAssignedUserName() != null && !runningOrder.getAssignedUserName().isEmpty()) {
+            holder.listRowRunningOrdersAttendee.setText("Attendee: " + runningOrder.getAssignedUserName());
+            holder.listRowRunningOrdersAttendee.setVisibility(View.VISIBLE);
+            holder.viewAttendee.setVisibility(View.VISIBLE);
+        } else {
+            holder.listRowRunningOrdersAttendee.setVisibility(View.GONE);
+            holder.viewAttendee.setVisibility(View.GONE);
+        }
         holder.listRowRunningOrdersExecute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,10 +223,11 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
         private TextView imageViewCustomerInfo;
         private TextView imageViewMobile, imageViewEmail;
         private FrameLayout frameLayoutRunningOrders;
-
+        private View viewAttendee;
 
         public MyViewHolder(View view) {
             super(view);
+            viewAttendee = (View) view.findViewById(R.id.view_attendee);
             listRowRunningOrdersOrderId = (TextView) view.findViewById(R.id.list_row_running_orders_order_id);
             listRowRunningOrdersCustomer = (TextView) view.findViewById(R.id.list_row_running_orders_customer);
             listRowRunningOrdersDate = (TextView) view.findViewById(R.id.list_row_running_orders_date);
