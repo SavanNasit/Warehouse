@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.PackedItemAdapter;
-import com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.ShippingBy;
@@ -220,7 +219,7 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getRunningOrderList(version, key, task, userId, accessToken, chkid);
+        Call<ApiResponse> call = apiService.getPackageSelectionList(version, key, task, userId, accessToken, chkid);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -300,7 +299,7 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
                             textViewEmptyView.setText(getString(R.string.no_data_available));
                             packageSelectionRecyclerView.setVisibility(View.GONE);
                             textViewEmptyView.setVisibility(View.VISIBLE);
-                        }else if(apiResponse.getSuccessCode().equals("20004")){
+                        } else if (apiResponse.getSuccessCode().equals("20004")) {
                             textViewEmptyView.setText(apiResponse.getMessage());
                             packageSelectionRecyclerView.setVisibility(View.GONE);
                             textViewEmptyView.setVisibility(View.VISIBLE);

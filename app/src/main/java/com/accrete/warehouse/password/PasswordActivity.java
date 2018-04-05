@@ -535,7 +535,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                    getWarehouseList();
+                            getWarehouseList();
                         }
                     }, 1000);
 
@@ -609,7 +609,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                         }
                         navigateToHome();
 
-                    }else{
+                    } else {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -618,12 +618,12 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                if(t instanceof SocketTimeoutException){
-                  String  message = "Socket Time out. Please try again.";
-                  Toast.makeText(PasswordActivity.this, "Unable to fetch json: " + message, Toast.LENGTH_LONG).show();
-
+                if (PasswordActivity.this != null) {
+                    if (t instanceof SocketTimeoutException) {
+                        String message = "Socket Time out. Please try again.";
+                        Toast.makeText(PasswordActivity.this, "Unable to fetch json: " + message, Toast.LENGTH_LONG).show();
+                    }
                 }
-                Log.d("warehouse:password", t.getMessage());
             }
         });
     }

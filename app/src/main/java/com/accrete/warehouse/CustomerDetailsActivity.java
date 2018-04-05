@@ -136,13 +136,117 @@ public class CustomerDetailsActivity extends AppCompatActivity {
         if (customerInfo.getEmail() != null && !customerInfo.getEmail().isEmpty()) {
             customerDetailsEmail.setText(customerInfo.getEmail());
         }
-         //customerInfo.getShippingAddrName() + ",\n" +
-        //customerInfo.getBillingAddrName() + ",\n"
-        customerDetailsShippingAddress.setText(customerInfo.getShippingAddrSitename() + ",\n" + customerInfo.getShippingAddrLine() + ",\n" +
+
+        //Shipping Address
+        if ((customerInfo.getShippingAddrSitename()!= null && !customerInfo.getShippingAddrSitename().isEmpty())
+                || (customerInfo.getShippingAddrLine() != null && !customerInfo.getShippingAddrLine().isEmpty())
+                || (customerInfo.getShippingAddrCity() != null && !customerInfo.getShippingAddrCity().isEmpty())
+                || (customerInfo.getShippingAddrPincode() != null && !customerInfo.getShippingAddrPincode().isEmpty())
+                || (customerInfo.getShippingAddrCountryName() != null && !customerInfo.getShippingAddrCountryName().isEmpty())) {
+
+            String currentAddress = "";
+
+            //Address Site Name
+            if (customerInfo.getShippingAddrSitename() != null && !customerInfo.getShippingAddrSitename().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getShippingAddrSitename() + ", ";
+            }
+
+            //Address Line 1
+            if (customerInfo.getShippingAddrLine() != null && !customerInfo.getShippingAddrLine().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getShippingAddrLine() + ", ";
+            }
+
+            //City & Zip Code
+            if (customerInfo.getShippingAddrCity() != null &&
+                    !customerInfo.getShippingAddrCity().toString().trim().isEmpty() &&
+                    customerInfo.getShippingAddrPincode() != null &&
+                    !customerInfo.getShippingAddrPincode().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        customerInfo.getShippingAddrCity().toString().trim() + " - " +
+                        customerInfo.getShippingAddrPincode()
+                                .toString().trim() + "," + "\n";
+            } else if (customerInfo.getShippingAddrCity() != null &&
+                    !customerInfo.getShippingAddrCity().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        customerInfo.getShippingAddrCity().toString().trim() + ", ";
+            } else if (customerInfo.getShippingAddrPincode() != null &&
+                    !customerInfo.getShippingAddrPincode().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        customerInfo.getShippingAddrPincode()
+                                .toString().trim() + ", ";
+            }
+            //State
+            if (customerInfo.getShippingAddrStateName() != null &&
+                    !customerInfo.getShippingAddrStateName().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getShippingAddrStateName() + ", ";
+            }
+
+            //Country
+            if (customerInfo.getShippingAddrCountryName() != null &&
+                    !customerInfo.getShippingAddrCountryName().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getShippingAddrCountryName() + " ";
+            }
+
+            customerDetailsShippingAddress.setText(currentAddress + "");
+        }
+
+        //Billing Address
+        if ((customerInfo.getBillingAddSitename()!= null && !customerInfo.getBillingAddSitename().isEmpty())
+                || (customerInfo.getBillingAddrLine() != null && !customerInfo.getBillingAddrLine().isEmpty())
+                || (customerInfo.getBillingAddrCity() != null && !customerInfo.getBillingAddrCity().isEmpty())
+                || (customerInfo.getBillingAddrPincode() != null && !customerInfo.getBillingAddrPincode().isEmpty())
+                || (customerInfo.getBillingAddrCountryName() != null && !customerInfo.getBillingAddrCountryName().isEmpty())) {
+
+            String currentAddress = "";
+
+            //Address Site Name
+            if (customerInfo.getBillingAddSitename() != null && !customerInfo.getBillingAddSitename().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getBillingAddSitename() + ", ";
+            }
+
+            //Address Line 1
+            if (customerInfo.getBillingAddrLine() != null && !customerInfo.getBillingAddrLine().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getBillingAddrLine() + ", ";
+            }
+
+            //City & Zip Code
+            if (customerInfo.getBillingAddrCity() != null &&
+                    !customerInfo.getBillingAddrCity().toString().trim().isEmpty() &&
+                    customerInfo.getBillingAddrPincode() != null &&
+                    !customerInfo.getBillingAddrPincode().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        customerInfo.getBillingAddrCity().toString().trim() + " - " +
+                        customerInfo.getBillingAddrPincode()
+                                .toString().trim() + "," + "\n";
+            } else if (customerInfo.getBillingAddrCity() != null &&
+                    !customerInfo.getBillingAddrCity().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        customerInfo.getBillingAddrCity().toString().trim() + ", ";
+            } else if (customerInfo.getBillingAddrPincode() != null &&
+                    !customerInfo.getBillingAddrPincode().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        customerInfo.getBillingAddrPincode()
+                                .toString().trim() + ", ";
+            }
+            //State
+            if (customerInfo.getBillingAddrStateName() != null &&
+                    !customerInfo.getBillingAddrStateName().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getBillingAddrStateName() + ", ";
+            }
+
+            //Country
+            if (customerInfo.getBillingAddrCountryName() != null &&
+                    !customerInfo.getBillingAddrCountryName().isEmpty()) {
+                currentAddress = currentAddress + customerInfo.getBillingAddrCountryName() + " ";
+            }
+
+            customerDetailsBillingAddress.setText(currentAddress + "");
+        }
+      /* *//* customerDetailsShippingAddress.setText(customerInfo.getShippingAddrSitename() + ",\n" + customerInfo.getShippingAddrLine() + ",\n" +
                 customerInfo.getShippingAddrCity() + ",\n" + customerInfo.getShippingAddrStateName() + ",\n" + customerInfo.getShippingAddrCountryName() + ",\n"
-                + customerInfo.getShippingAddrPincode());
+                + customerInfo.getShippingAddrPincode());*//*
         customerDetailsBillingAddress.setText(customerInfo.getBillingAddSitename() + ",\n" + customerInfo.getBillingAddrLine() + ",\n" +
                 customerInfo.getBillingAddrCity() + ",\n" + customerInfo.getBillingAddrStateName() + ",\n" + customerInfo.getBillingAddrCountryName() + ",\n"
-                + customerInfo.getBillingAddrPincode());
+                + customerInfo.getBillingAddrPincode());*/
     }
 }

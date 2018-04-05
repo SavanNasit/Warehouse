@@ -40,8 +40,6 @@ import com.accrete.warehouse.fragment.receiveConsignment.ReceiveDirectlyFragment
 import com.accrete.warehouse.fragment.runningorders.RunningOrdersExecuteFragment;
 import com.accrete.warehouse.fragment.runningorders.RunningOrdersFragment;
 import com.accrete.warehouse.model.ApiResponse;
-import com.accrete.warehouse.model.PendingItems;
-import com.accrete.warehouse.model.SelectOrderItem;
 import com.accrete.warehouse.model.WarehouseList;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
@@ -82,7 +80,9 @@ import static com.accrete.warehouse.utils.MSupportConstants.REQUEST_CODE_FOR_RUN
 
 public class DrawerActivity extends AppCompatActivity implements SelectWarehouseAdapter.SelectWarehouseAdapterListener {
     public static Drawer drawer;
+    public boolean flagToOpenDialog = false;
     List<WarehouseList> warehouseArrayList = new ArrayList<>();
+    boolean selectedPosition = false;
     private FragmentRefreshListener fragmentRefreshListener;
     private AccountHeader headerResult = null;
     private ArrayList<String> drawerItemList = new ArrayList();
@@ -96,8 +96,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     private DrawerInterface drawerInterfaceToSend;
     private String selectedFilePath;
     private Toolbar toolbar;
-    boolean selectedPosition = false;
-    public boolean flagToOpenDialog=false;
 
 
     public DrawerActivity() {
@@ -244,7 +242,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     }
 
 
-    private void dialogSelectWarehouse( ) {
+    private void dialogSelectWarehouse() {
         View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_select_warehouse, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
@@ -271,11 +269,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             @Override
             public void onClick(View v) {
                 dialogSelectWarehouse.dismiss();
-
-
             }
         });
-        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this,selectedPosition,AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(),AppUtils.WAREHOUSE_CHK_ID));
+        mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this,
+                selectedPosition, AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(), AppUtils.WAREHOUSE_CHK_ID));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         // recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -317,7 +314,9 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         for (WarehouseList warehouseList : apiResponse.getData().getWarehouseList()) {
                             if (apiResponse.getData().getWarehouseList() != null) {
                                 warehouseArrayList.add(warehouseList);
-                                if (apiResponse.getData().getWarehouseList().size() > 0) {
+                                if (apiResponse.getData().getWarehouseList().size() > 0 &&
+                                        (AppPreferences.getWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID) == null ||
+                                                AppPreferences.getWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID).isEmpty())) {
                                     AppPreferences.setWarehouseDefaultName(DrawerActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, apiResponse.getData().getWarehouseList().get(0).getName());
                                     AppPreferences.setWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID, apiResponse.getData().getWarehouseList().get(0).getChkid());
                                     AppPreferences.setWarehouseOrderCount(DrawerActivity.this, AppUtils.WAREHOUSE_ORDER_COUNT, apiResponse.getData().getWarehouseList().get(0).getOrderCount());
@@ -328,7 +327,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 }
                             }
                         }
-                        if(flagToOpenDialog){
+                        if (flagToOpenDialog) {
                             dialogSelectWarehouse();
                             flagToOpenDialog = false;
                         }
@@ -476,7 +475,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 getFragmentRefreshListener().onRefresh(strWarehouseName);
             }
         }*/
-     selectedPosition =true;
+        selectedPosition = true;
+       // mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -506,7 +506,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
         } else if (resultCode == Activity.RESULT_OK) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
             if (requestCode == PICK_FILE_RESULT_CODE) {
 
                 // Get the Uri of the selected file
@@ -533,6 +532,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
                 if (currentFragment instanceof ManagePackagesFragment) {
                     ((ManagePackagesFragment) currentFragment).sendDocument(selectedFilePath, displayName);
+                }
+            }
+        } else if (requestCode == 100) {
+            if (resultCode == Activity.RESULT_OK) {
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                if (currentFragment instanceof ManagePackagesFragment) {
+                    ((ManagePackagesFragment) currentFragment).checkFragmentAndRefresh();
                 }
             }
         }
@@ -606,7 +612,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         } else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         } else if (fragment instanceof RunningOrdersExecuteFragment) {
-                          //  ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
+                            //  ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
                         }/* else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         }*/

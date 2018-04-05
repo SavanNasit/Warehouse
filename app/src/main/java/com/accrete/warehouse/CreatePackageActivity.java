@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -62,6 +63,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -135,7 +137,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private Button btnUpload;
     private ProgressBar dialogUploadProgressBar;
     private String selectedFilePath;
-
+    private TextInputLayout invoiceSerialNoTextInputLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,10 +146,8 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         findViews();
     }
 
-
     public void doRefresh() {
     }
-
 
     private void findViews() {
         packageDetailsList = getIntent().getParcelableArrayListExtra("packageDetails");
@@ -169,6 +169,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         packageDetailsEmail = (TextInputEditText) findViewById(R.id.package_details_email);
         packageDetailsBillingAddress = (TextInputEditText) findViewById(R.id.package_details_billing_address);
         packageDetailsDeliveryAddress = (TextInputEditText) findViewById(R.id.package_details_delivery_address);
+        invoiceSerialNoTextInputLayout = (TextInputLayout) findViewById(R.id.invoice_serial_no_textInputLayout);
         packageDetailsTaxInvoiceSerialNo = (TextInputEditText) findViewById(R.id.package_details_tax_invoice_serial_no);
         packageDetailsInvoiceDate = (TextInputEditText) findViewById(R.id.package_details_invoice_date);
         packageDetailsInvoiceType = (AutoCompleteTextView) findViewById(R.id.package_details_invoice_type);
@@ -178,6 +179,24 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         packageDetailsCreatePackage = (TextView) findViewById(R.id.package_details_create_package);
         packageDetailsInvoiceType.setVisibility(View.GONE);
 
+        //TODO - Package's Invoice Date is of current date
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = df.format(c);
+        packageDetailsInvoiceDate.setText(formattedDate);
+
+        if (packageDetailsList.get(0).getInvoiceNumber() != null &&
+                !packageDetailsList.get(0).getInvoiceNumber().isEmpty()) {
+            packageDetailsTaxInvoiceSerialNo.setText(packageDetailsList.get(0).getInvoiceNumber());
+        }
+
+        if (packageDetailsList.get(0).getInvoiceNumberLabel() != null &&
+                !packageDetailsList.get(0).getInvoiceNumberLabel().isEmpty()) {
+            invoiceSerialNoTextInputLayout.setHint("Tax Invoice Serial No.: " +
+                    packageDetailsList.get(0).getInvoiceNumberLabel());
+        } else {
+            invoiceSerialNoTextInputLayout.setHint("Tax Invoice Serial No.: ");
+        }
 
         packageDetailsAdapter = new PackageDetailsAdapter(getApplicationContext(), packageDetailsList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -234,6 +253,12 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     public void onExecute(int position) {
         packageDetailsList.remove(position);
         packageDetailsAdapter.notifyDataSetChanged();
+
+        //Clear values of Serial Invoice Number
+        if (packageDetailsList != null && packageDetailsList.size() == 0) {
+            packageDetailsTaxInvoiceSerialNo.setText("");
+            invoiceSerialNoTextInputLayout.setHint("Tax Invoice Serial No.: ");
+        }
     }
 
     @Override
@@ -393,7 +418,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                                     Double.parseDouble(packageDetailsList.get(i).getCurrentConversionRate()),
                                     packageDetailsList.get(i).getPreviousConversionRate());
                             Log.d("conversionRate", String.valueOf(packageDetailsList.get(i).getCurrentConversionRate()));
-                            jsonObjectPackageDetails.put(getString(R.string.qty),qty);
+                            jsonObjectPackageDetails.put(getString(R.string.qty), qty);
                         } else {
                             jsonObjectPackageDetails.put(getString(R.string.qty),
                                     packageDetailsList.get(i).getUsedQuantity());
@@ -459,6 +484,10 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
 
                     if (apiResponse.getSuccess()) {
                         Toast.makeText(CreatePackageActivity.this, "Package created " + apiResponse.getData().getPacid(), Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+                        finish();
                    /*     AlreadyCreatedPackages packages = new AlreadyCreatedPackages();
                         packages.setInvoiceDate(strInvoiceDate);
                         packages.setInvoiceNo(strInvoiceNumber);
@@ -486,8 +515,9 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
 
                 @Override
                 public void onFailure(Call<ApiResponse> call, Throwable t) {
-                    Toast.makeText(CreatePackageActivity.this, "Order Execution failed", Toast.LENGTH_LONG).show();
-                    Log.d("wh:createdPackage", t.getMessage());
+                    if (CreatePackageActivity.this != null) {
+                        Toast.makeText(CreatePackageActivity.this, "Order Execution failed", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 

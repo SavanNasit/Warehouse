@@ -71,10 +71,15 @@ public class OrderData implements Parcelable {
     @Expose
     private ExecuteItemData executeItemData;
     private double previousConversionRate;
-
-
     private String currentConversionRate;
     private String previousUnit;
+    //TODO - Added on 4th of April
+    @SerializedName("invoice_number")
+    @Expose
+    private String invoiceNumber;
+    @SerializedName("invoice_number_label")
+    @Expose
+    private String invoiceNumberLabel;
 
     protected OrderData(Parcel in) {
         itemVariationName = in.readString();
@@ -94,7 +99,24 @@ public class OrderData implements Parcelable {
         previousConversionRate = in.readDouble();
         currentConversionRate = in.readString();
         previousUnit = in.readString();
+        invoiceNumber = in.readString();
+        invoiceNumberLabel = in.readString();
+    }
 
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public String getInvoiceNumberLabel() {
+        return invoiceNumberLabel;
+    }
+
+    public void setInvoiceNumberLabel(String invoiceNumberLabel) {
+        this.invoiceNumberLabel = invoiceNumberLabel;
     }
 
     public String getUsedQuantity() {
@@ -225,29 +247,28 @@ public class OrderData implements Parcelable {
         this.executeItemData = executeItemData;
     }
 
-    public void setPreviousConversionRate(double previousConversionRate) {
-        this.previousConversionRate = previousConversionRate;
-    }
-
-    public void setPreviousUnit(String previousUnit) {
-        this.previousUnit = previousUnit;
-    }
-
-    public void setCurrentConversionRate(String currentConversionRate) {
-        this.currentConversionRate = currentConversionRate;
-    }
-
-
     public double getPreviousConversionRate() {
         return previousConversionRate;
+    }
+
+    public void setPreviousConversionRate(double previousConversionRate) {
+        this.previousConversionRate = previousConversionRate;
     }
 
     public String getCurrentConversionRate() {
         return currentConversionRate;
     }
 
+    public void setCurrentConversionRate(String currentConversionRate) {
+        this.currentConversionRate = currentConversionRate;
+    }
+
     public String getPreviousUnit() {
         return previousUnit;
+    }
+
+    public void setPreviousUnit(String previousUnit) {
+        this.previousUnit = previousUnit;
     }
 
     @Override
@@ -274,8 +295,8 @@ public class OrderData implements Parcelable {
         dest.writeDouble(previousConversionRate);
         dest.writeString(currentConversionRate);
         dest.writeString(previousUnit);
-
-
+        dest.writeString(invoiceNumber);
+        dest.writeString(invoiceNumberLabel);
     }
 
 

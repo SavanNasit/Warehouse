@@ -20,6 +20,7 @@ apply plugin: 'io.fabric'*/
 
 android {
     compileSdkVersion 26
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.accrete.warehouse"
         minSdkVersion 19
