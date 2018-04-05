@@ -23,20 +23,19 @@
         <LinearLayout
             android:id="@+id/running_orders_text_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-         >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/running_orders_text_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="5 Running Orders"
-                android:padding="@dimen/_5sdp"
                 android:background="@color/blue"
-                android:visibility="gone"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="5 Running Orders"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp"
-                android:textColor="@color/white" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -55,7 +54,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/running_orders_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:scrollbars="none" />
 
             </android.support.v4.widget.SwipeRefreshLayout>

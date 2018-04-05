@@ -8,9 +8,9 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.8"
         android:layout_marginLeft="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:layout_weight="0.8"
         android:orientation="vertical"
         android:weightSum="1">
 
@@ -27,8 +27,8 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_weight="0.7"
                 android:gravity="left|center"
-                android:padding="@dimen/_3sdp"
                 android:lines="1"
+                android:padding="@dimen/_3sdp"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/_9sdp" />
 
@@ -52,28 +52,28 @@
             android:layout_weight="0.5"
             android:weightSum="1">
 
-        <TextView
-            android:id="@+id/list_row_package_details_quantity"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_weight="0.6"
-            android:gravity="left|center"
-            android:padding="@dimen/_3sdp"
-            android:textColor="@color/text_black"
-            android:textSize="@dimen/_9sdp" />
+            <TextView
+                android:id="@+id/list_row_package_details_quantity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.7"
+                android:gravity="left|center"
+                android:padding="@dimen/_3sdp"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/_9sdp" />
 
 
-        <TextView
-            android:id="@+id/list_row_package_details_unit"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_weight="0.4"
-            android:gravity="left|center"
-            android:padding="@dimen/_3sdp"
-            android:textColor="@color/text_black"
-            android:textSize="@dimen/_9sdp" />
+            <TextView
+                android:id="@+id/list_row_package_details_unit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.4"
+                android:gravity="left|center"
+                android:padding="@dimen/_3sdp"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/_9sdp" />
 
         </LinearLayout>
 
@@ -81,8 +81,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/_18sdp"
-            android:layout_marginRight="@dimen/_18sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@color/text_black" />
 
@@ -91,24 +89,20 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/_22sdp"
-        android:paddingRight="@dimen/_22sdp"
-        android:paddingTop="@dimen/_14sdp"
-        android:paddingBottom="@dimen/_14sdp"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/list_row_package_details_remove"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/md_red_400"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:drawable/ic_delete"
             android:gravity="center"
-            android:text="X"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>

@@ -103,25 +103,43 @@ public interface ApiInterface {
                                           @Query("access_token")
                                                   String accessToken,
                                           @Query("chkid")
-                                                  String chkid);
-
-    @GET("?urlq=service")
-    Call<ApiResponse> getGatepassList(@Query("version")
-                                                  String version,
-                                          @Query("key")
-                                                  String key,
-                                          @Query("task")
-                                                  String task,
-                                          @Query("user_id")
-                                                  String userid,
-                                          @Query("access_token")
-                                                  String accessToken,
-                                          @Query("chkid")
                                                   String chkid,
                                           @Query("last_fetch")
                                                   String lastFetch,
                                           @Query("traversal")
                                                   String traversal);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getPackageSelectionList(@Query("version")
+                                                      String version,
+                                              @Query("key")
+                                                      String key,
+                                              @Query("task")
+                                                      String task,
+                                              @Query("user_id")
+                                                      String userid,
+                                              @Query("access_token")
+                                                      String accessToken,
+                                              @Query("chkid")
+                                                      String chkid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getGatepassList(@Query("version")
+                                              String version,
+                                      @Query("key")
+                                              String key,
+                                      @Query("task")
+                                              String task,
+                                      @Query("user_id")
+                                              String userid,
+                                      @Query("access_token")
+                                              String accessToken,
+                                      @Query("chkid")
+                                              String chkid,
+                                      @Query("last_fetch")
+                                              String lastFetch,
+                                      @Query("traversal")
+                                              String traversal);
 
     @GET("?urlq=service")
     Call<ApiResponse> executeSelectedItem(@Query("version")
@@ -178,43 +196,43 @@ public interface ApiInterface {
     @Multipart
     @POST("?urlq=service")
     Call<ApiResponse> createPackageMultipart(
-          @Query("version")
-            String version,
-          @Query("key")
-                  String key,
-          @Query("task")
-                  String task,
-          @Query("user_id")
-                  String userid,
-          @Query("access_token")
-                  String accessToken,
-          @Query("email")
-                  String email,
-          @Query("mobile")
-                  String mobile,
-          @Query("shipping")
-                  String shippingAddress,
-          @Query("billing")
-                  String billingAddress,
-          @Query("products")
-                  JSONArray productList,
-          @Query("chkid")
-                  String chkid,
-          @Query("order")
-                  String orderId,
-          @Query("type")
-                  String type,
-          @Query("local")
-                  String local,
-          @Query("invoice_date")
-                  String invoiceDate,
-          @Query("invoice_no")
-                  String invoiceNumber,
-          @Query("e_sugam")
-                  String eSugam,
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("email")
+                    String email,
+            @Query("mobile")
+                    String mobile,
+            @Query("shipping")
+                    String shippingAddress,
+            @Query("billing")
+                    String billingAddress,
+            @Query("products")
+                    JSONArray productList,
+            @Query("chkid")
+                    String chkid,
+            @Query("order")
+                    String orderId,
+            @Query("type")
+                    String type,
+            @Query("local")
+                    String local,
+            @Query("invoice_date")
+                    String invoiceDate,
+            @Query("invoice_no")
+                    String invoiceNumber,
+            @Query("e_sugam")
+                    String eSugam,
             @Part MultipartBody.Part[] image,
-          @Query("order")
-                  String order
+            @Query("order")
+                    String order
     );
 
 
@@ -770,17 +788,17 @@ public interface ApiInterface {
 
     @GET("?urlq=service")
     Call<ApiResponse> reAttemptDeliveryFailedTask(@Query("version")
-                                                  String version,
+                                                          String version,
                                                   @Query("key")
-                                                  String key,
+                                                          String key,
                                                   @Query("task")
-                                                  String task,
+                                                          String task,
                                                   @Query("user_id")
-                                                  String userid,
+                                                          String userid,
                                                   @Query("access_token")
-                                                  String accessToken,
+                                                          String accessToken,
                                                   @Query("pacdelgatpacid")
-                                                  String pacdelgatpacid,
+                                                          String pacdelgatpacid,
                                                   @Query("narration") String narration);
 
 

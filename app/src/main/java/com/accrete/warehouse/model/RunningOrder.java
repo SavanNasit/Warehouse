@@ -59,6 +59,9 @@ public class RunningOrder implements Parcelable {
     @SerializedName("customer_info")
     @Expose
     private CustomerInfo customerInfo;
+    @SerializedName("created_ts")
+    @Expose
+    private String createdTs;
 
     public RunningOrder() {
 
@@ -75,6 +78,15 @@ public class RunningOrder implements Parcelable {
         checkpointOrderID = in.readString();
         orderItems = in.createTypedArrayList(OrderData.CREATOR);
         customerInfo = in.readParcelable(CustomerInfo.class.getClassLoader());
+        createdTs = in.readString();
+    }
+
+    public String getCreatedTs() {
+        return createdTs;
+    }
+
+    public void setCreatedTs(String createdTs) {
+        this.createdTs = createdTs;
     }
 
     public String getChkoid() {
@@ -182,6 +194,7 @@ public class RunningOrder implements Parcelable {
         dest.writeString(checkpointOrderID);
         dest.writeTypedList(orderItems);
         dest.writeParcelable(customerInfo, flags);
+        dest.writeString(createdTs);
     }
 }
 

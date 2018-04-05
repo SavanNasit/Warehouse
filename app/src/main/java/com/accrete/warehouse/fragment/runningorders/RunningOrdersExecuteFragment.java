@@ -216,7 +216,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                     Intent intentCreatePackage = new Intent(getActivity(), CreatePackageActivity.class);
                     intentCreatePackage.putExtra("chkoid", chkoid);
                     intentCreatePackage.putParcelableArrayListExtra("packageDetails", packageDetailsList);
-                    startActivity(intentCreatePackage);
+                    startActivityForResult(intentCreatePackage, 100);
                 } else {
                     Toast.makeText(getActivity(), "Please add one or more items to create package", Toast.LENGTH_SHORT).show();
                 }
@@ -224,8 +224,6 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         });
 
         executeSelectedItems();
-
-
     }
 
 
@@ -296,8 +294,8 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
             dialogCreatePackageQuantityUnit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                    for (int i = 0; i <orderDataList.getMeasurements().size() ; i++) {
-                        if(orderDataList.getMeasurements().get(i).getSelected()) {
+                    for (int i = 0; i < orderDataList.getMeasurements().size(); i++) {
+                        if (orderDataList.getMeasurements().get(i).getSelected()) {
                             previousConversionRate = Double.parseDouble(orderDataList.getMeasurements().get(i).getConversionRate());
                             orderDataList.getMeasurements().get(i).setSelected(false);
                         }
@@ -308,14 +306,14 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                     orderDataList.setItemUnit(measurementArrayAdapter.getItem(pos).toString());
                     orderDataList.getMeasurements().get(pos).setSelected(true);
                     orderDataList.getExecuteItemData().setUnit(orderDataList.getItemUnit());
-                    if(dialogCreatePackageQuantityAllocated.getText().toString()!=null &&
+                    if (dialogCreatePackageQuantityAllocated.getText().toString() != null &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty()) {
                         orderDataList.getExecuteItemData().setAllocatedQuantity(calculateQuantity(
                                 Double.valueOf(dialogCreatePackageQuantityAllocated.getText().toString()),
                                 Double.parseDouble(measurementsArrayList.get(pos).getConversionRate()), previousConversionRate));
                         dialogCreatePackageQuantityAllocated.setText(orderDataList.getExecuteItemData().getAllocatedQuantity());
-                        orderDataList.setItemQuantity(calculateQuantity(Double.valueOf(orderDataList.getItemQuantity()),Double.parseDouble(measurementsArrayList.get(pos).getConversionRate()),previousConversionRate));
-                    }else{
+                        orderDataList.setItemQuantity(calculateQuantity(Double.valueOf(orderDataList.getItemQuantity()), Double.parseDouble(measurementsArrayList.get(pos).getConversionRate()), previousConversionRate));
+                    } else {
                         dialogCreatePackageQuantityAllocated.setText("0");
                     }
 
@@ -373,14 +371,20 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                         Toast.makeText(getActivity(), "Please enter quantity", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    if (dialogCreatePackageQuantityAllocated.getText().toString() != null && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty()
+                    if (dialogCreatePackageQuantityAllocated.getText().toString() != null &&
+                            !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
+                            !dialogCreatePackageQuantityAllocated.getText().toString().equals("null")
                             && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) == 0) {
                         Toast.makeText(getActivity(), "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
-                    } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty()
+                    } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null &&
+                            !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
+                            !dialogCreatePackageQuantityAllocated.getText().toString().equals("null")
                             && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) != 0 && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) > Integer.parseInt(orderDataList.getExecuteItemData().getAllocatedQuantity())) {
                         Toast.makeText(getActivity(), "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
                     } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null
-                            && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) > 0) {
+                            && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
+                            !dialogCreatePackageQuantityAllocated.getText().toString().equals("null") &&
+                            Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) > 0) {
                         orderDataList.setUsedQuantity(dialogCreatePackageQuantityAllocated.getText().toString());
                         packageData.put(orderDataList, position);
                         Toast.makeText(getActivity(), "Item added Successfully", Toast.LENGTH_SHORT).show();
@@ -401,7 +405,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
     }
 
     private String calculateQuantity(double allocatedQuantity, double selectedConversionRate, double previousConversionRate) {
-        Log.d("allocated quantity",allocatedQuantity +"   "+selectedConversionRate +"  "+previousConversionRate);
+        Log.d("allocated quantity", allocatedQuantity + "   " + selectedConversionRate + "  " + previousConversionRate);
         double allocatedQuantityValue = (allocatedQuantity / selectedConversionRate) * previousConversionRate;
         return String.valueOf(roundTwoDecimals(allocatedQuantityValue));
     }
@@ -460,8 +464,8 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
 
                         for (OrderData orderData : apiResponse.getData().getOrderData()) {
                             orderData.setUsedQuantity("0");
-                            for (int i = 0; i <orderData.getMeasurements().size() ; i++) {
-                                if(orderData.getMeasurements().get(i).getSelected()){
+                            for (int i = 0; i < orderData.getMeasurements().size(); i++) {
+                                if (orderData.getMeasurements().get(i).getSelected()) {
                                     orderData.setPreviousConversionRate(Double.parseDouble(orderData.getMeasurements().get(i).getConversionRate()));
                                 }
                             }
