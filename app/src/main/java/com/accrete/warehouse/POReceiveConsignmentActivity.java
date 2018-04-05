@@ -778,7 +778,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
 
     @Override
     public void editItemAndOpenDialog(int position, ConsignmentItem consignmentItem) {
-        openDialogAddEditItems(this, "edit", 0, consignmentItem);
+        openDialogAddEditItems(this, "edit", position, consignmentItem);
     }
 
     @Override

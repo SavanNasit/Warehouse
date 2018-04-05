@@ -41,6 +41,7 @@ import com.accrete.warehouse.adapter.SelectOrderItemAdapter;
 import com.accrete.warehouse.fragment.HomeFragment;
 import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.CustomerInfo;
 import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.PackageDetailsList;
 import com.accrete.warehouse.model.PendingItems;
@@ -140,6 +141,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private String selectedFilePath;
     private TextInputLayout invoiceSerialNoTextInputLayout;
     private LinearLayout linearLayoutSuccess;
+    private CustomerInfo customerInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +155,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
 
     private void findViews() {
         packageDetailsList = getIntent().getParcelableArrayListExtra("packageDetails");
+        customerInfo = getIntent().getParcelableExtra("customerInfo");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.create_package));
         toolbar.setTitleTextColor(Color.WHITE);
@@ -181,6 +184,10 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         packageDetailsCreatePackage = (TextView) findViewById(R.id.package_details_create_package);
         linearLayoutSuccess = (LinearLayout) findViewById(R.id.activity_add_package_added_succesfully);
         packageDetailsInvoiceType.setVisibility(View.GONE);
+
+        if(customerInfo!=null){
+            packageDetailsName.setText(customerInfo.getName());
+        }
 
         //TODO - Package's Invoice Date is of current date
         Date c = Calendar.getInstance().getTime();

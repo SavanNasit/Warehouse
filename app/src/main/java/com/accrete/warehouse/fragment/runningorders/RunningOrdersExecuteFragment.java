@@ -216,6 +216,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                     Intent intentCreatePackage = new Intent(getActivity(), CreatePackageActivity.class);
                     intentCreatePackage.putExtra("chkoid", chkoid);
                     intentCreatePackage.putParcelableArrayListExtra("packageDetails", packageDetailsList);
+                    intentCreatePackage.putExtra("customerInfo", getActivity().getIntent().getParcelableExtra("customerInfo"));
                     startActivityForResult(intentCreatePackage, 100);
                 } else {
                     Toast.makeText(getActivity(), "Please add one or more items to create package", Toast.LENGTH_SHORT).show();

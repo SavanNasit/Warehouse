@@ -210,4 +210,6 @@ public class ConsignmentItem {
     public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
     }
+
+
 }

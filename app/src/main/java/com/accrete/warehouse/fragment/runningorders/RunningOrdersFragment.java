@@ -223,6 +223,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("packages", (ArrayList<? extends Parcelable>) packages);
         bundle.putParcelableArrayList("pendingItems", (ArrayList<? extends Parcelable>) pendingItems);
+        bundle.putParcelable("customerInfo", runningOrderList.get(position).getCustomerInfo());
         bundle.putString("chkid", chkid);
         bundle.putString("chkoid", chkoid);
         fragment.setArguments(bundle);

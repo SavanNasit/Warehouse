@@ -80,7 +80,6 @@
                         android:imeOptions="actionNext"
                         android:inputType="textCapSentences"
                         android:maxLines="1"
-                        android:text="Poonam"
                         android:textColor="@color/darkGray"
                         android:textColorHint="@color/gray"
                         android:textCursorDrawable="@drawable/cursor_primary"
