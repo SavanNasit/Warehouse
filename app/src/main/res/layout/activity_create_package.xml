@@ -311,4 +311,15 @@
             android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+    </LinearLayout>
 </RelativeLayout>
