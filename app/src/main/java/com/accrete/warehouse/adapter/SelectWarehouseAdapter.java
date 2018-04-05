@@ -60,11 +60,7 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
                 holder.checkboxWarehouse.setChecked(true);
             }
         }*/
-     /*   if (positionEnabled.equals(warehouse.getChkid())) {
-            holder.checkboxWarehouse.setChecked(true);
-        } else {
-            holder.checkboxWarehouse.setChecked(false);
-        }*/
+
         holder.checkboxWarehouse.setTag(new Integer(position));
         holder.checkboxWarehouse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,12 +78,21 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
                     lastChecked = null;
                 }
 
-                applyClickEvents(warehouseLists.get(clickedPos).getName(), warehouseLists.get(clickedPos).getChkid(), warehouseLists.get(clickedPos).getOrderCount()
-                        , warehouseLists.get(clickedPos).getPackageCount(), warehouseLists.get(clickedPos).getGatepassCount(), warehouseLists.get(clickedPos).getConsignmentCount()
-                        , warehouseLists.get(clickedPos).getReceiveConsignmentCount());
+                applyClickEvents(warehouseLists.get(clickedPos).getName(),
+                        warehouseLists.get(clickedPos).getChkid(),
+                        warehouseLists.get(clickedPos).getOrderCount(),
+                        warehouseLists.get(clickedPos).getPackageCount(),
+                        warehouseLists.get(clickedPos).getGatepassCount(),
+                        warehouseLists.get(clickedPos).getConsignmentCount(),
+                        warehouseLists.get(clickedPos).getReceiveConsignmentCount());
             }
         });
 
+        /*if (positionEnabled.equals(warehouse.getChkid())) {
+            holder.checkboxWarehouse.setChecked(true);
+        } else {
+            holder.checkboxWarehouse.setChecked(false);
+        }*/
 
     }
 
@@ -98,7 +103,7 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
 
     private void applyClickEvents(String name, String chkid, String orderCount, String packageCount, String gatepassCount, String consignmentCount, String receiveConsignmentCount) {
         listener.onMessageRowClicked(name, chkid, orderCount, packageCount, gatepassCount, consignmentCount, receiveConsignmentCount);
-         notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public interface SelectWarehouseAdapterListener {

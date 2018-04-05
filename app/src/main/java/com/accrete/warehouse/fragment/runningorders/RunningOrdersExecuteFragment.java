@@ -38,6 +38,7 @@ import com.accrete.warehouse.CreatePackageActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.ScannerActivity;
 import com.accrete.warehouse.adapter.RunningOrderExecuteAdapter;
+import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Measurement;
 import com.accrete.warehouse.model.OrderData;
@@ -552,4 +553,12 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Fragment f = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
+            getChildFragmentManager().beginTransaction().replace(R.id.home_container, f).commitAllowingStateLoss();
+        }
+    }
 }

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
-    android:layout_width="match_parent">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_18sdp"
         android:layout_marginRight="@dimen/_18sdp"
-        android:layout_height="wrap_content"
-        android:weightSum="3"
-        >
+        android:orientation="horizontal"
+        android:weightSum="3">
 
 
         <TextView
@@ -21,16 +19,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_6sdp"
             android:paddingRight="@dimen/_4sdp"
-            android:paddingTop="@dimen/_8sdp"
+            android:paddingTop="@dimen/_4sdp"
             android:text="Call"
             android:textColor="@color/blueTurquoise"
             android:textSize="@dimen/_9sdp"
-            android:textStyle="bold"
-            />
-
-
+            android:textStyle="bold" />
 
 
         <TextView
@@ -40,14 +35,14 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/_10sdp"
             android:gravity="center"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_6sdp"
             android:paddingLeft="@dimen/_4sdp"
             android:paddingRight="@dimen/_4sdp"
-            android:paddingTop="@dimen/_8sdp"
+            android:paddingTop="@dimen/_4sdp"
             android:text="Email"
             android:textColor="@color/blueTurquoise"
             android:textSize="@dimen/_9sdp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
 
         <TextView
@@ -57,15 +52,14 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/_10sdp"
             android:gravity="center"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_6sdp"
             android:paddingLeft="@dimen/_4sdp"
             android:paddingRight="@dimen/_4sdp"
-            android:paddingTop="@dimen/_8sdp"
+            android:paddingTop="@dimen/_4sdp"
             android:text="Details"
             android:textColor="@color/blueTurquoise"
             android:textSize="@dimen/_9sdp"
-            android:textStyle="bold"/>
-
+            android:textStyle="bold" />
 
 
     </LinearLayout>

@@ -465,7 +465,9 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                    cancelPackedPackage(packedList.get(position).getPacid());
+                    if (packedList != null && packedList.size() > 0) {
+                        cancelPackedPackage(packedList.get(position).getPacid());
+                    }
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }

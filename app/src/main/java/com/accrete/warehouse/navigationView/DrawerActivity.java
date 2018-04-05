@@ -476,7 +476,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             }
         }*/
         selectedPosition = true;
-       // mAdapter.notifyDataSetChanged();
+        // mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -506,7 +506,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
         } else if (resultCode == Activity.RESULT_OK) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-            if (requestCode == PICK_FILE_RESULT_CODE) {
+           /* if (currentFragment instanceof RunningOrdersExecuteFragment) {
+                Fragment f = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
+            } else*/ if (requestCode == PICK_FILE_RESULT_CODE) {
 
                 // Get the Uri of the selected file
                 Uri uri = data.getData();
@@ -532,13 +535,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
                 if (currentFragment instanceof ManagePackagesFragment) {
                     ((ManagePackagesFragment) currentFragment).sendDocument(selectedFilePath, displayName);
-                }
-            }
-        } else if (requestCode == 100) {
-            if (resultCode == Activity.RESULT_OK) {
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-                if (currentFragment instanceof ManagePackagesFragment) {
-                    ((ManagePackagesFragment) currentFragment).checkFragmentAndRefresh();
                 }
             }
         }
