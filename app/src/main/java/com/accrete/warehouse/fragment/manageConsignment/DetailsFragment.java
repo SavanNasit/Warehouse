@@ -289,7 +289,7 @@ public class DetailsFragment extends Fragment {
         if (consignmentData.getCreatedTime() != null && !consignmentData.getCreatedTime().isEmpty()) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
             try {
-                DateFormat outputFormat = new SimpleDateFormat("HH:mm a - dd MMM, yyyy");
+                DateFormat outputFormat = new SimpleDateFormat("hh:mm aa - dd MMM, yyyy");
                 Date date = simpleDateFormat.parse(consignmentData.getCreatedTime());
                 createdTimeTextView.setText(outputFormat.format(date).toString().trim());
             } catch (ParseException e) {

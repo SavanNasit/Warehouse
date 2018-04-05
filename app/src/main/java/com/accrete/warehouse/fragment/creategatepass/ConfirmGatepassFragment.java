@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.CreatePackageActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.model.ApiResponse;
@@ -72,7 +73,6 @@ public class ConfirmGatepassFragment extends Fragment {
         dialogGatepassAuthenticationDeliveryUser.setAdapter(arrayAdapterDeliveryUser);
 
 
-
         dialogGatepassAuthenticationDeliveryUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,8 +98,6 @@ public class ConfirmGatepassFragment extends Fragment {
                 }
 
             });*/
-
-
 
 
         dialogGatepassConfirm.setOnClickListener(new View.OnClickListener() {
@@ -172,11 +170,16 @@ public class ConfirmGatepassFragment extends Fragment {
                 try {
                     if (apiResponse.getSuccess()) {
                         Toast.makeText(getActivity(), "Gatepass created successfully", Toast.LENGTH_SHORT).show();
-                        ManageGatePassFragment manageGatePassFragment = new ManageGatePassFragment();
+                        Fragment manageGatePassFragment = ManageGatePassFragment.newInstance(getString(R.string.manage_gatepass_fragment));
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.confirm_gatepass_container, manageGatePassFragment).addToBackStack(null).commit();
 
+                        ((CreatePackageActivity)getActivity()).getSupportActionBar().setTitle("Manage GatePass");
+
+
+                       // Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
                         Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
@@ -188,8 +191,9 @@ public class ConfirmGatepassFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.d("error", t.getMessage());
-                Toast.makeText(getActivity(), "Oops, Something went wrong", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null && isAdded()) {
+                    Toast.makeText(getActivity(), "Oops, Something went wrong", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -236,7 +240,7 @@ public class ConfirmGatepassFragment extends Fragment {
                         dialogGatepassAuthenticationDeliveryUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                if(deliveryUserLists.size()>0){
+                                if (deliveryUserLists.size() > 0) {
                                     uid = deliveryUserLists.get(position).getId();
                                 }
                             }

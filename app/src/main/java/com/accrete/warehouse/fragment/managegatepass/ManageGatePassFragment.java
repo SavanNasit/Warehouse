@@ -33,7 +33,6 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.ViewPackageGatePassActivity;
 import com.accrete.warehouse.adapter.ManageGatepassAdapter;
 import com.accrete.warehouse.model.ApiResponse;
-import com.accrete.warehouse.model.Consignment;
 import com.accrete.warehouse.model.GatepassList;
 import com.accrete.warehouse.model.ManageGatepass;
 import com.accrete.warehouse.rest.ApiClient;
@@ -98,6 +97,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_manage_gatepass, container, false);
         findViews(rootView);
+        getActivity().setTitle(R.string.manage_gatepass_fragment);
         return rootView;
     }
 
@@ -107,7 +107,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         manageGatepassEmptyView = (TextView) rootView.findViewById(R.id.manage_gatepass__empty_view);
 
         manageGatePassAdapter = new ManageGatepassAdapter(getActivity(), gatepassList, this);
-         mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         manageGatepassRecyclerView.setLayoutManager(mLayoutManager);
         manageGatepassRecyclerView.setHasFixedSize(true);
         manageGatepassRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -309,7 +309,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getGatepassList(version, key, task, userId, accessToken, chkid,createdTs,traversal);
+        Call<ApiResponse> call = apiService.getGatepassList(version, key, task, userId, accessToken, chkid, createdTs, traversal);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -389,30 +389,30 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                         }*/
 
 
-                            loading = false;
-                            if (gatepassList != null && gatepassList.size() == 0) {
-                                manageGatepassEmptyView.setVisibility(View.VISIBLE);
-                                manageGatepassRecyclerView.setVisibility(View.GONE);
-                                //       customerOrderFabAdd.setVisibility(View.GONE);
-                            } else {
-                                manageGatepassEmptyView.setVisibility(View.GONE);
-                                manageGatepassRecyclerView.setVisibility(View.VISIBLE);
-                                //       customerOrderFabAdd.setVisibility(View.VISIBLE);
+                        loading = false;
+                        if (gatepassList != null && gatepassList.size() == 0) {
+                            manageGatepassEmptyView.setVisibility(View.VISIBLE);
+                            manageGatepassRecyclerView.setVisibility(View.GONE);
+                            //       customerOrderFabAdd.setVisibility(View.GONE);
+                        } else {
+                            manageGatepassEmptyView.setVisibility(View.GONE);
+                            manageGatepassRecyclerView.setVisibility(View.VISIBLE);
+                            //       customerOrderFabAdd.setVisibility(View.VISIBLE);
+                        }
+                        if (manageGatepassSwipeRefreshLayout != null && manageGatepassSwipeRefreshLayout.isRefreshing()) {
+                            manageGatepassSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (traversal.equals("2")) {
+                            manageGatePassAdapter.notifyDataSetChanged();
+                            if (dataChanged != null && dataChanged.equals("yes")) {
+                                // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
                             }
-                            if (manageGatepassSwipeRefreshLayout != null && manageGatepassSwipeRefreshLayout.isRefreshing()) {
-                                manageGatepassSwipeRefreshLayout.setRefreshing(false);
-                            }
-                            if (traversal.equals("2")) {
+                        } else if (traversal.equals("1")) {
+                            if (dataChanged != null && dataChanged.equals("yes")) {
                                 manageGatePassAdapter.notifyDataSetChanged();
-                                if (dataChanged != null && dataChanged.equals("yes")) {
-                                    // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
-                                }
-                            } else if (traversal.equals("1")) {
-                                if (dataChanged != null && dataChanged.equals("yes")) {
-                                    manageGatePassAdapter.notifyDataSetChanged();
-                                    manageGatepassRecyclerView.smoothScrollToPosition(0);
-                                }
+                                manageGatepassRecyclerView.smoothScrollToPosition(0);
                             }
+                        }
                     }
 
                 } catch (Exception e) {
@@ -636,7 +636,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
             if (gatepassList != null && gatepassList.size() > 0) {
                 getManageGatepassList(gatepassList.get(0).getCreatedTs(), "1");
             } else {
-                getManageGatepassList( getString(R.string.last_updated_date), "1");
+                getManageGatepassList(getString(R.string.last_updated_date), "1");
             }
             manageGatepassRecyclerView.setVisibility(View.VISIBLE);
             manageGatepassEmptyView.setVisibility(View.GONE);
@@ -650,7 +650,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
             manageGatepassSwipeRefreshLayout.setRefreshing(false);
         }
 
-}
+    }
 
     public void downloadPdfCall() {
         downloadPdf(strPacdelgatid);
