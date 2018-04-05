@@ -65,9 +65,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -919,7 +921,9 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             final TextView textViewAdd = (TextView) productsDialog.findViewById(R.id.textView_add);
             final TextView textViewBack = (TextView) productsDialog.findViewById(R.id.textView_back);
             final EditText editTextHSNCode = (EditText) productsDialog.findViewById(R.id.hsn_edittext);
-
+            DecimalFormat df2 = new DecimalFormat(".###");
+            df2.setRoundingMode(RoundingMode.UP);
+            String value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
             productNameEdittext.setText(consignmentItem.getName());
             skuCodeEdittext.setText(consignmentItem.getInternalCode());
             orderQuantityEdittext.setText(consignmentItem.getOrderQuantity());
@@ -927,7 +931,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             receiveQuantityEdittext.setText(consignmentItem.getReceiveQuantity());
 
             if (operationType.equals("edit")) {
-                receiveQuantityEdittext.setText(consignmentItem.getReceiveQuantity());
+                receiveQuantityEdittext.setText(value);
                 commentEdittext.setText(consignmentItem.getComment());
                 reasonRejectionEdittext.setText(consignmentItem.getReasonRejection());
                 expiryDateTitleTextView.setText(consignmentItem.getExpiryDate());

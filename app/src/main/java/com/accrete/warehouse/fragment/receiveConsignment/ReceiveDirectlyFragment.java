@@ -64,9 +64,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -822,6 +824,10 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
         productsDialog.setContentView(R.layout.dialog_add_item);
         Window window = productsDialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
+        DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
+        DecimalFormat df2 = new DecimalFormat(".###");
+        df2.setRoundingMode(RoundingMode.UP);
+        String value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
         try {
             final ArrayList<Measurement> measurementArrayList = new ArrayList<>();
             final LinearLayout linearLayout = (LinearLayout) productsDialog.findViewById(R.id.linearLayout);
@@ -850,7 +856,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             receiveQuantityEdittext.setText("");
 
             if (operationType.equals("edit")) {
-                receiveQuantityEdittext.setText(consignmentItem.getReceiveQuantity());
+                receiveQuantityEdittext.setText(value);
                 commentEdittext.setText(consignmentItem.getComment());
                 reasonRejectionEdittext.setText(consignmentItem.getReasonRejection());
                 expiryDateTitleTextView.setText(consignmentItem.getExpiryDate());
@@ -983,6 +989,17 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             consignmentItemList.remove(position);
             receiveConsignmentItemsAdapter.notifyDataSetChanged();
         }
+    }
+
+
+    double ParseDouble(String strNumber) {
+        if (strNumber != null && strNumber.length() > 0) {
+            try {
+                return Double.parseDouble(strNumber);
+            } catch (Exception e) {
+                return -1;   // or some value to mark this field is wrong. or make a function validates field first ...
+            }
+        } else return 0;
     }
 
     //Open Dialog to select Items
@@ -1156,9 +1173,9 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
 
                     if (consignmentItemList.get(i).getPrice() != null &&
                             !consignmentItemList.get(i).getPrice().isEmpty()) {
-                        productsItemJsonObject.put("item-mrp", consignmentItemList.get(i).getPrice());
+                        productsItemJsonObject.put("item-mrp", "10");
                     } else {
-                        productsItemJsonObject.put("item-mrp", "0");
+                        productsItemJsonObject.put("item-mrp", "10");
                     }
 
                     if (consignmentItemList.get(i).getIsvid() != null &&

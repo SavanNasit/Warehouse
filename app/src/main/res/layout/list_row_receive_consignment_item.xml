@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         card_view:cardBackgroundColor="#ececec"
+        android:layout_margin="@dimen/_5sdp"
         card_view:cardCornerRadius="@dimen/_2sdp"
         card_view:cardElevation="@dimen/_2sdp">
 

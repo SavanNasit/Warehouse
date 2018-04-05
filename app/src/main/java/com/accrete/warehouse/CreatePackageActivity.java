@@ -139,6 +139,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private ProgressBar dialogUploadProgressBar;
     private String selectedFilePath;
     private TextInputLayout invoiceSerialNoTextInputLayout;
+    private LinearLayout linearLayoutSuccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +179,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         packageDetailsRecyclerView = (RecyclerView) findViewById(R.id.package_details_recycler_view);
         packageDetailsEmptyView = (TextView) findViewById(R.id.package_details_empty_view);
         packageDetailsCreatePackage = (TextView) findViewById(R.id.package_details_create_package);
+        linearLayoutSuccess = (LinearLayout) findViewById(R.id.activity_add_package_added_succesfully);
         packageDetailsInvoiceType.setVisibility(View.GONE);
 
         //TODO - Package's Invoice Date is of current date
@@ -492,11 +494,12 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                     final ApiResponse apiResponse = (ApiResponse) response.body();
 
                     if (apiResponse.getSuccess()) {
-                        Toast.makeText(CreatePackageActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+                        // Toast.makeText(CreatePackageActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        linearLayoutSuccess.setVisibility(View.VISIBLE);
+                     //   Intent intent = new Intent();
+                       // setResult(RESULT_OK, intent);
+                     //
+                     //   finish();
                    /*     AlreadyCreatedPackages packages = new AlreadyCreatedPackages();
                         packages.setInvoiceDate(strInvoiceDate);
                         packages.setInvoiceNo(strInvoiceNumber);

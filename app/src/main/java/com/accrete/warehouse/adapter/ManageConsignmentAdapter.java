@@ -75,7 +75,11 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
         //  holder.listRowManageConsignmentInvoiceDate.setText(manageConsignment.getInvoiceDate());
         //  holder.listRowManageConsignmentPurchaseOrderDate.setText(manageConsignment.getPurchaseOrderDate());
         if (manageConsignment.getVendor() != null && !manageConsignment.getVendor().isEmpty()) {
-            holder.listRowManageConsignmentVendor.setText(capitalize(manageConsignment.getVendor()));
+            if(manageConsignment.getVendor().length()>25){
+                holder.listRowManageConsignmentVendor.setText(capitalize(manageConsignment.getVendor().substring(0,25)+"..."));
+            }else{
+                holder.listRowManageConsignmentVendor.setText(capitalize(manageConsignment.getVendor()));
+            }
         }
         // holder.listRowManageConsignmentWarehouse.setText(manageConsignment.getWarehouse());
 
