@@ -85,7 +85,7 @@
     <string name="error_message_create_package">Please add one or more items to create package</string>
     <string name="Rs">\u20B9</string>
     <string name="receive_directly">Receive Directly</string>
-    <string name="receive_po">Receive PO</string>
+    <string name="receive_po">Receive Against PO</string>
     <string name="add_items">Add Items</string>
     <string name="select_shipping_company">Select Shipping Company</string>
     <string name="create_gatepass">Create Gatepass</string>
@@ -106,8 +106,8 @@
     <string name="create_gatepass_task">warehouse/create_gatepass</string>
     <string name="fetch_consignment_inventories">warehouse/fetch_receive_consignment_inventories</string>
     <string name="download_consignment_receipt">warehouse/print_consignment_goods_receipt</string>
-    <string name="download_goods_receipt">Download goods receipt</string>
-    <string name="download_receipt_confirm_msg">Are you sure to download receipt?</string>
+    <string name="download_goods_receipt">Download GRIN</string>
+    <string name="download_receipt_confirm_msg">Are you sure to download?</string>
     <string name="yes">Yes</string>
     <string name="no_cancel">No, cancel</string>
 
@@ -162,9 +162,9 @@
     <!-- Purchase Order -->
     <string name="vendor_details_title">Vendor Details</string>
     <string name="vendor_details_subtitle">Details of the vendor</string>
-    <string name="order_details_title">Order Details</string>
-    <string name="order_details_subtitle">Details of the order</string>
-    <string name="received_details_title">Received Details</string>
+    <string name="order_details_title">Purchase Order Details</string>
+    <string name="order_details_subtitle">Details of the purchase order</string>
+    <string name="received_details_title">Received Item Details</string>
     <string name="received_details_subtitle">Details of the ordered items, which are received</string>
     <string name="consignment_details_title">Consignment Details</string>
     <string name="consignment_details_subtitle">List of the consignments related to the PO</string>
@@ -182,7 +182,7 @@
     <string name="invoice_download_title">Download Invoice</string>
     <string name="download_gatepass_invoice_confirm_msg">Are you sure to download invoice?</string>
     <string name="package_history_gatepass_list_task">warehouse/fetch_package_history</string>
-    <string name="receive">Receive</string>
+    <string name="receive">Swipe right to receive</string>
     <string name="pacId">pacid</string>
     <string name="pacdelgatpacid">pacdelgatpacid</string>
     <string name="revert_package_task">warehouse/revert_package_delivery</string>

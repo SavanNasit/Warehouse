@@ -34,6 +34,18 @@ public class PurchaseOrderData {
     @Expose
     private String status;
 
+    public String getPoDate() {
+        return poDate;
+    }
+
+    public void setPoDate(String poDate) {
+        this.poDate = poDate;
+    }
+
+    @SerializedName("created_ts")
+    @Expose
+    private String poDate;
+
     public String getPurorid() {
         return purorid;
     }

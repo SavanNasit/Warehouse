@@ -31,10 +31,11 @@
 
         <TextView
             android:id="@+id/download_confirm_message"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingLeft="@dimen/_10sdp"
+            android:gravity="center"
             android:text="@string/download_receipt_confirm_msg"
             android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />

@@ -71,6 +71,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -90,6 +91,11 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         ItemsVariationAdapter.ItemsVariationAdapterListener {
     DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+
+    private LinearLayout poIdDateLayout;
+    private TextView poIdDateTextView;
+    private LinearLayout vendorNameLayout;
+    private TextView vendorNameTextView;
     private NestedScrollView nestedScrollView;
     private TextView purchaseOrderDetailsTitleTextView;
     private TextView purchaseOrderDetailsSubTitleTextView;
@@ -214,6 +220,11 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         expectedDateValueTextView = (TextView) findViewById(R.id.expected_date_value_textView);
         saveTextView = (TextView) findViewById(R.id.save_textView);
 
+        poIdDateLayout = (LinearLayout)findViewById( R.id.poId_date_layout );
+        poIdDateTextView = (TextView)findViewById( R.id.poId_date_textView );
+        vendorNameLayout = (LinearLayout)findViewById( R.id.vendor_name_layout );
+        vendorNameTextView = (TextView)findViewById( R.id.vendor_name_textView );
+
         //Items RecyclerView
         receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
                 this, "PurchaseOrder");
@@ -233,8 +244,8 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.RED), 0,
                 end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         receiveDateTitleTextView.setText(TextUtils.concat(getString(R.string.receive_date_title), spannableStringBuilder));
-        invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
-        invoiceDateTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_date_title), spannableStringBuilder));
+       // invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
+       // invoiceDateTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_date_title), spannableStringBuilder));
 
         clearVendorInfoImageButton.setOnClickListener(this);
         clearTransporterInfoImageButton.setOnClickListener(this);
@@ -329,10 +340,10 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
 
     //Get data from fields and post
     public boolean getPostData() {
-        if (invoiceNumberValueTextView.getText().toString().trim().length() == 0) {
+      /*  if (invoiceNumberValueTextView.getText().toString().trim().length() == 0) {
             Toast.makeText(this, "Please enter Invoice number.", Toast.LENGTH_SHORT).show();
             return false;
-        }
+        }*/
 
         strInvoiceNumber = invoiceNumberValueTextView.getText().toString().trim();
         strChkId = AppPreferences.getWarehouseDefaultCheckId(this, AppUtils.WAREHOUSE_CHK_ID);
@@ -431,6 +442,26 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             poIdLayout.setVisibility(View.GONE);
         }
 
+        //PO Date
+        if (purchaseOrderData.getPoDate() != null && !purchaseOrderData.getPoDate().isEmpty()) {
+            poIdDateLayout.setVisibility(View.VISIBLE);
+            try {
+                poIdDateTextView.setText(formatter.format(targetFormat.parse(purchaseOrderData.getPoDate())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            poIdDateLayout.setVisibility(View.GONE);
+        }
+
+        //Vendor
+        if (purchaseOrderData.getVendorName() != null && !purchaseOrderData.getVendorName().isEmpty()) {
+            vendorNameLayout.setVisibility(View.VISIBLE);
+            vendorNameTextView.setText(purchaseOrderData.getVendorName());
+        } else {
+            vendorNameLayout.setVisibility(View.GONE);
+        }
+
         //Authorized By
         if (purchaseOrderData.getAuthorizedBy() != null && !purchaseOrderData.getAuthorizedBy().isEmpty()) {
             authorizedByLayout.setVisibility(View.VISIBLE);
@@ -515,21 +546,25 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         if (purchaseDetails.getReceiveDate() != null && !purchaseDetails.getReceiveDate().isEmpty()) {
             try {
                 Date startDate = targetFormat.parse(purchaseDetails.getReceiveDate());
-                receiveDateValueTextView.setText(formatter.format(startDate));
+                Calendar c = Calendar.getInstance();
+                System.out.println("Current time => " + c.getTime());
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                String formattedDate = df.format(c.getTime());
+                receiveDateValueTextView.setText(formattedDate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
 
         //Invoice Date
-        if (purchaseDetails.getInvoiceDate() != null && !purchaseDetails.getInvoiceDate().isEmpty()) {
+      /*  if (purchaseDetails.getInvoiceDate() != null && !purchaseDetails.getInvoiceDate().isEmpty()) {
             try {
                 Date startDate = targetFormat.parse(purchaseDetails.getInvoiceDate());
                 invoiceDateValueTextView.setText(formatter.format(startDate));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override

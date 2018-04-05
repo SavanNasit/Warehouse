@@ -5,7 +5,7 @@
     android:id="@+id/manage_consignment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f7f7f7">
+    android:background="@color/home_page_gray">
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,13 +18,13 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/manage_consignment_swipe_refresh_layout"
             android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/manage_consignment_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_8sdp"
+                android:layout_height="match_parent"
                 android:scrollbars="none" />
 
         </android.support.v4.widget.SwipeRefreshLayout>

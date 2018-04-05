@@ -66,7 +66,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.48"
                     android:gravity="left|center"
-                    android:text="Container Id :"
+                    android:text="Consignment Id :"
                     android:textColor="#8D8D8D"
                     android:textSize="@dimen/_10sdp" />
 
@@ -83,7 +83,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/authorizedBy_layout"
+                android:id="@+id/receivedOn_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
@@ -98,12 +98,12 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.48"
                     android:gravity="left|center"
-                    android:text="Authorized by :"
+                    android:text="Received On:"
                     android:textColor="#8D8D8D"
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView
-                    android:id="@+id/authorizedBy_textView"
+                    android:id="@+id/receivedOn_textView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -115,7 +115,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/purchaseOrder_layout"
+                android:id="@+id/wareHouse_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
@@ -130,12 +130,12 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.48"
                     android:gravity="left|center"
-                    android:text="Purchase Order :"
+                    android:text="Warehouse:"
                     android:textColor="#8D8D8D"
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView
-                    android:id="@+id/purchaseOrder_textView"
+                    android:id="@+id/wareHouse_textView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -146,8 +146,10 @@
 
             </LinearLayout>
 
+
+
             <LinearLayout
-                android:id="@+id/purchasedOn_layout"
+                android:id="@+id/stockRequest_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
@@ -162,12 +164,12 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.48"
                     android:gravity="left|center"
-                    android:text="Purchased On :"
+                    android:text="Stock Request:"
                     android:textColor="#8D8D8D"
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView
-                    android:id="@+id/purchasedOn_textView"
+                    android:id="@+id/stockRequest_textView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -275,6 +277,105 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/purchaseOrder_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_18sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Purchase Order :"
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/purchaseOrder_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.52"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/purchasedOn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_18sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Purchased On :"
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/purchasedOn_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.52"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/authorizedBy_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_18sdp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Authorized by :"
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/authorizedBy_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.52"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/createdBy_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -338,101 +439,9 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/wareHouse_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_marginRight="@dimen/_18sdp"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="1">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.48"
-                    android:gravity="left|center"
-                    android:text="Warehouse:"
-                    android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_10sdp" />
 
-                <TextView
-                    android:id="@+id/wareHouse_textView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.52"
-                    android:gravity="left"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_10sdp" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/receivedOn_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_marginRight="@dimen/_18sdp"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.48"
-                    android:gravity="left|center"
-                    android:text="Received On:"
-                    android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_10sdp" />
-
-                <TextView
-                    android:id="@+id/receivedOn_textView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.52"
-                    android:gravity="left"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_10sdp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/stockRequest_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_marginRight="@dimen/_18sdp"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.48"
-                    android:gravity="left|center"
-                    android:text="Stock Request:"
-                    android:textColor="#8D8D8D"
-                    android:textSize="@dimen/_10sdp" />
-
-                <TextView
-                    android:id="@+id/stockRequest_textView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.52"
-                    android:gravity="left"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_10sdp" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/status_layout"

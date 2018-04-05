@@ -53,6 +53,13 @@ public class VendorsAdapter extends RecyclerView.Adapter<VendorsAdapter.MyViewHo
             holder.nameLayout.setVisibility(View.GONE);
         }
 
+        if (objectItem.getMobile().toString().trim() != null && !objectItem.getMobile().toString().trim().isEmpty()) {
+            holder.mobileLayout.setVisibility(View.VISIBLE);
+            holder.mobileTextview.setText(objectItem.getMobile().toString().trim());
+        } else {
+            holder.mobileLayout.setVisibility(View.GONE);
+        }
+
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,9 +78,9 @@ public class VendorsAdapter extends RecyclerView.Adapter<VendorsAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout nameLayout, mainLayout;
-        private TextView nameTitleTextView;
-        private TextView nameTextView;
+        private LinearLayout nameLayout, mainLayout,mobileLayout;
+        private TextView nameTitleTextView,mobileTitleTextview;
+        private TextView nameTextView,mobileTextview;
 
         public MyViewHolder(View view) {
             super(view);
@@ -81,6 +88,9 @@ public class VendorsAdapter extends RecyclerView.Adapter<VendorsAdapter.MyViewHo
             nameLayout = (LinearLayout) view.findViewById(R.id.name_layout);
             nameTitleTextView = (TextView) view.findViewById(R.id.name_title_textView);
             nameTextView = (TextView) view.findViewById(R.id.name_textView);
+            mobileLayout = (LinearLayout) view.findViewById(R.id.mobile_layout);
+            mobileTitleTextview = (TextView) view.findViewById(R.id.mobile_title_textView);
+            mobileTextview = (TextView) view.findViewById(R.id.mobile_textView);
         }
     }
 }
