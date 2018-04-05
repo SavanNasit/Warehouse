@@ -20,10 +20,10 @@ import java.util.List;
  */
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyViewHolder> {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
     private Context context;
     private InventoryAdapterListener listener;
     private List<Inventory> inventoryList = new ArrayList<>();
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
 
     public InventoryAdapter(Context context, List<Inventory> inventoryList, InventoryAdapterListener listener) {
         this.context = context;
@@ -45,43 +45,42 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
 
         //holder.listRowInventorySkucode.setText(inventory.getSkuCode());
 
-        if(inventory.getInventoryID()!=null && !inventory.getInventoryID().isEmpty()
-                && !inventory.getInventoryID().equals("NA")) {
-            holder.listRowInventoryId.setText("ID: " + inventory.getInventoryID());
+        if (inventory.getIsidNumber() != null && !inventory.getIsidNumber().isEmpty()
+                && !inventory.getIsidNumber().equals("NA")) {
+            holder.listRowInventoryId.setText("ID: " + inventory.getIsidNumber());
 
-        }else{
+        } else {
             holder.listRowInventoryId.setVisibility(View.GONE);
         }
 
 
-
-        if(inventory.getItem()!=null && !inventory.getItem().isEmpty()
+        if (inventory.getItem() != null && !inventory.getItem().isEmpty()
                 && !inventory.getItem().equals("NA")) {
-            holder.listRowInventoryItem.setText(inventory.getItem());
+            holder.listRowInventoryItem.setText(inventory.getItem().toString().trim());
 
-        }else{
+        } else {
             holder.listRowInventoryItem.setText("NA");
         }
 
 
-        if(inventory.getSkuCode()!=null && !inventory.getSkuCode().isEmpty()
+        if (inventory.getSkuCode() != null && !inventory.getSkuCode().isEmpty()
                 && !inventory.getSkuCode().equals("NA")) {
             holder.listRowInventorySkuCode.setText(inventory.getSkuCode());
-        }else{
+        } else {
             holder.listRowInventorySkuCode.setText("NA");
         }
 
-        if(inventory.getAvailableStock()!=null && !inventory.getAvailableStock().isEmpty()
+        if (inventory.getAvailableStock() != null && !inventory.getAvailableStock().isEmpty()
                 && !inventory.getAvailableStock().equals("NA")) {
             holder.listRowInventoryAvailableStock.setText("Available : " + inventory.getAvailableStock());
-        }else{
+        } else {
             holder.listRowInventoryAvailableStock.setText("NA");
         }
 
-        if(inventory.getReceivedQuantity()!=null && !inventory.getReceivedQuantity().isEmpty()
+        if (inventory.getReceivedQuantity() != null && !inventory.getReceivedQuantity().isEmpty()
                 && !inventory.getReceivedQuantity().equals("NA")) {
             holder.listRowInventoryReceivedQuantity.setText("Received : " + inventory.getReceivedQuantity());
-        }else{
+        } else {
             holder.listRowInventoryReceivedQuantity.setText("NA");
         }
 
@@ -89,18 +88,18 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd,MMM,yyyy");
         try {
 
-            if(!inventory.getManufacturingDate().equals("0000-00-00")&& inventory.getManufacturingDate()!=null && !inventory.getManufacturingDate().isEmpty()
+            if (!inventory.getManufacturingDate().equals("0000-00-00") && inventory.getManufacturingDate() != null && !inventory.getManufacturingDate().isEmpty()
                     && !inventory.getManufacturingDate().equals("NA")) {
-                holder.listRowInventoryManufactureDate.setText("Manufacturing Date : "+dateFormat.format(simpleDateFormat.parse(inventory.getManufacturingDate())));
-            }else{
+                holder.listRowInventoryManufactureDate.setText("Manufacturing Date : " + dateFormat.format(simpleDateFormat.parse(inventory.getManufacturingDate())));
+            } else {
                 holder.listRowInventoryManufactureDate.setVisibility(View.GONE);
             }
 
-            if(!inventory.getExpiry_date().equals("0000-00-00")&& inventory.getExpiry_date()!=null && !inventory.getExpiry_date().isEmpty()
+            if (!inventory.getExpiry_date().equals("0000-00-00") && inventory.getExpiry_date() != null && !inventory.getExpiry_date().isEmpty()
                     && !inventory.getExpiry_date().equals("NA")) {
-                holder.listRowInventoryExpDate.setText("Expiry Date : "+ dateFormat.format(simpleDateFormat.parse(inventory.getExpiry_date())));
+                holder.listRowInventoryExpDate.setText("Expiry Date : " + dateFormat.format(simpleDateFormat.parse(inventory.getExpiry_date())));
 
-            }else{
+            } else {
                 holder.listRowInventoryExpDate.setVisibility(View.GONE);
             }
 
@@ -139,15 +138,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.MyVi
 
         public MyViewHolder(View view) {
             super(view);
-            listRowInventoryItem = (TextView)view.findViewById( R.id.list_row_inventory_item );
-            listRowInventorySkuCode = (TextView)view.findViewById( R.id.list_row_inventory_sku_code );
-            listRowInventoryId = (TextView)view.findViewById( R.id.list_row_inventory_id );
-            listRowInventoryManufactureDate = (TextView)view.findViewById( R.id.list_row_inventory_manufacture_date );
-            listRowInventoryReceivedQuantity = (TextView)view.findViewById( R.id.list_row_inventory_received_quantity );
-            listRowInventoryExpDate = (TextView)view.findViewById( R.id.list_row_inventory_exp_date );
-            listRowInventoryAvailableStock = (TextView)view.findViewById( R.id.list_row_inventory_available_stock );
-
-
+            listRowInventoryItem = (TextView) view.findViewById(R.id.list_row_inventory_item);
+            listRowInventorySkuCode = (TextView) view.findViewById(R.id.list_row_inventory_sku_code);
+            listRowInventoryId = (TextView) view.findViewById(R.id.list_row_inventory_id);
+            listRowInventoryManufactureDate = (TextView) view.findViewById(R.id.list_row_inventory_manufacture_date);
+            listRowInventoryReceivedQuantity = (TextView) view.findViewById(R.id.list_row_inventory_received_quantity);
+            listRowInventoryExpDate = (TextView) view.findViewById(R.id.list_row_inventory_exp_date);
+            listRowInventoryAvailableStock = (TextView) view.findViewById(R.id.list_row_inventory_available_stock);
 
 
         }

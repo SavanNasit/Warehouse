@@ -146,7 +146,7 @@
                 android:layout_gravity="right"
                 android:maxLines="1"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_8sdp"
                 android:textStyle="bold" />
 
             <TextView

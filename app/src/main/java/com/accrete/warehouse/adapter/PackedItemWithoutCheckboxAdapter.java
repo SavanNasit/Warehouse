@@ -2,6 +2,7 @@ package com.accrete.warehouse.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +89,23 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             e.printStackTrace();
         }
 
+        //Status
+        if (packed.getPaymentStatus() != null && !packed.getPaymentStatus().isEmpty()) {
+            holder.statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
+            GradientDrawable drawable = (GradientDrawable) holder.statusTextView.getBackground();
+            if (packed.getPaymentStatus().contains("Partially")) {
+                drawable.setColor(context.getResources().getColor(R.color.orange_purchase_order));
+            } else if (packed.getPaymentStatus().contains("Invoice")) {
+                drawable.setColor(context.getResources().getColor(R.color.green_purchase_order));
+            } else {
+                drawable.setColor(context.getResources().getColor(R.color.red_purchase_order));
+            }
+            holder.statusTextView.setText(packed.getPaymentStatus());
+            holder.statusTextView.setVisibility(View.VISIBLE);
+        } else {
+            holder.statusTextView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -118,9 +136,11 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
         private TextView outForDeliveryExpDod;
         private TextView outForDeliveryUser;
         private LinearLayout outForDeliveryContainer;
+        private TextView statusTextView;
 
         public MyViewHolder(View view) {
             super(view);
+            statusTextView = (TextView) view.findViewById(R.id.status_textView);
             outForDeliveryPackageId = (TextView) view.findViewById(R.id.out_for_delivery_package_id);
             outForDeliveryInvoiceNo = (TextView) view.findViewById(R.id.out_for_delivery_invoice_no);
             outForDeliveryInvoiceDate = (TextView) view.findViewById(R.id.out_for_delivery_invoice_date);

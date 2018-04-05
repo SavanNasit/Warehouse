@@ -477,7 +477,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_8sdp" />
                 </LinearLayout>
             </LinearLayout>
 
