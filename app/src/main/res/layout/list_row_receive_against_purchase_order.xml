@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_layout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/_18sdp"
-    android:paddingRight="@dimen/_18sdp">
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/green">
+
+        <ImageView
+            android:id="@+id/list_row_receive_against_po"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:src="@drawable/ic_receive_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="13dp"
+            android:layout_toStartOf="@+id/list_row_receive_against_po"
+            android:text="Receive"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textSize="13dp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        >
 
     <LinearLayout
         android:id="@+id/child_layout"
@@ -15,7 +47,9 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/_6sdp"
         android:paddingTop="@dimen/_10sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:weightSum="2.5">
+
 
         <LinearLayout
             android:id="@+id/left_layout"
@@ -30,9 +64,9 @@
                 android:id="@+id/vendorName_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray_order"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/orderId_textView"
@@ -92,6 +126,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/_3sdp"
                 android:paddingTop="@dimen/_3sdp"
+                android:visibility="gone"
                 android:textSize="@dimen/_10sdp" />
         </LinearLayout>
 
@@ -121,6 +156,7 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:maxLines="1"
+                android:visibility="gone"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="bold" />
 
@@ -139,20 +175,17 @@
                 android:id="@+id/textView_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
                 android:text="@string/receive"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp" />
+                android:visibility="gone"
+                android:textColor="@color/green"
+                android:textStyle="italic"
+                android:textSize="@dimen/_9sdp" />
         </LinearLayout>
+
     </LinearLayout>
+    </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/child_layout"
-        android:layout_marginTop="@dimen/_4sdp"
-        android:background="@color/home_page_text_gray" />
-
-</RelativeLayout>
+</FrameLayout>

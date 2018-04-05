@@ -1,7 +1,7 @@
 package com.accrete.warehouse.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -10,10 +10,10 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.accrete.warehouse.POReceiveConsignmentActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PurchaseOrder;
 
@@ -77,11 +77,18 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         final PurchaseOrder purchaseOrder = purchaseOrderList.get(position);
 
-        holder.orderIdTextView.setText(purchaseOrder.getPurchaseOrderId());
-        holder.orderIdTextView.setMovementMethod(LinkMovementMethod.getInstance());
-        holder.orderIdTextView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        if (purchaseOrder.getPurchaseOrderId() != null && !purchaseOrder.getPurchaseOrderId().isEmpty()) {
+            holder.orderIdTextView.setText("PO : " + purchaseOrder.getPurchaseOrderId());
+            holder.orderIdTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            holder.orderIdTextView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+        } else {
+            holder.orderIdTextView.setText("NA");
+        }
+
 
         if (purchaseOrder.getVendorName() != null && !purchaseOrder.getVendorName().isEmpty()) {
             holder.vendorNameTextView.setText(capitalize(purchaseOrder.getVendorName()));
@@ -162,16 +169,16 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
 
         //Receive
         GradientDrawable drawableReceive = (GradientDrawable) holder.textViewReceive.getBackground();
-        drawableReceive.setColor(activity.getResources().getColor(R.color.sky_blue_bg));
+        drawableReceive.setColor(Color.TRANSPARENT);
 
-        holder.textViewReceive.setOnClickListener(new View.OnClickListener() {
+       /* holder.textViewReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, POReceiveConsignmentActivity.class);
                 intent.putExtra(activity.getString(R.string.purOrId), purchaseOrder.getPurorid());
                 activity.startActivity(intent);
             }
-        });
+        });*/
         //Click Item
         applyClickEvents(holder, position, purchaseOrder.getOrderId(), purchaseOrder.getPurchaseOrderId());
     }
@@ -195,7 +202,9 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private RelativeLayout mainLayout;
+        public RelativeLayout relativeLayoutContainer;
+        RelativeLayout viewBackground;
+        private LinearLayout mainLayout;
         private TextView orderIdTextView;
         private TextView dateTextView;
         private TextView statusTextView, wareHouseTextView, vendorNameTextView;
@@ -205,7 +214,7 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
 
         public MyViewHolder(View view) {
             super(view);
-            mainLayout = (RelativeLayout) view.findViewById(R.id.main_layout);
+            mainLayout = (LinearLayout) view.findViewById(R.id.child_layout);
             orderIdTextView = (TextView) view.findViewById(R.id.orderId_textView);
             dateTextView = (TextView) view.findViewById(R.id.date_textView);
             statusTextView = (TextView) view.findViewById(R.id.status_textView);
@@ -220,6 +229,8 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
 
             fontAwesomeFont = Typeface.createFromAsset(activity.getAssets(), "font/fontawesome-webfont.ttf");
             textViewReceive.setTypeface(fontAwesomeFont);
+            viewBackground = (RelativeLayout) view.findViewById(R.id.view_background);
+            relativeLayoutContainer = (RelativeLayout) view.findViewById(R.id.relativelayout_container);
         }
     }
 }

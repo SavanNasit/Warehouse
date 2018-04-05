@@ -62,26 +62,58 @@ public class OrderConsignmentDetailsAdapter extends RecyclerView.Adapter<OrderCo
             holder.consignmentIdValueTextView.setText(consignmentDetail.getConsignmentID().toString().trim());
             holder.consignmentIdValueTextView.setPaintFlags(holder.consignmentIdValueTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         } else {
-            //    holder.consignmentIdLayout.setVisibility(View.GONE);
+               holder.consignmentIdValueTextView.setVisibility(View.GONE);
         }
 
-        //Vendor
+
+        //Invoice Date
+        if (consignmentDetail.getInvoiceDate() != null && !consignmentDetail.getInvoiceDate().isEmpty()) {
+            try {
+                holder.invoiceDateTextView.setText(outputFormat.format(simpleDateFormat.parse(consignmentDetail.getInvoiceDate().toString().trim())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            holder.invoiceDateTextView.setVisibility(View.GONE);
+        }
+
+        //Invoice Number
+        if (consignmentDetail.getInvoiceDate() != null && !consignmentDetail.getInvoiceDate().isEmpty()) {
+            holder.invoiceTextView.setText(consignmentDetail.getPurchaseNumber().toString().trim());
+        } else {
+            holder.invoiceTextView.setVisibility(View.GONE);
+        }
+
+
+        //Consignment Id
+        if (consignmentDetail.getConsignmentID() != null && !consignmentDetail.getConsignmentID().isEmpty()) {
+            holder.consignmentIdValueTextView.setText(consignmentDetail.getConsignmentID().toString().trim());
+            holder.consignmentIdValueTextView.setPaintFlags(holder.consignmentIdValueTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        } else {
+            holder.consignmentIdValueTextView.setVisibility(View.GONE);
+        }
+
+        /*//Vendor
         if (consignmentDetail.getVendor() != null && !consignmentDetail.getVendor().isEmpty()) {
             holder.vendorValueTextView.setText(capitalize(consignmentDetail.getVendor().toString().trim()));
         } else {
             //   holder.vendorLayout.setVisibility(View.GONE);
         }
-
+*/
         //Purchase Date
         if (consignmentDetail.getPurchaseDate() != null && !consignmentDetail.getPurchaseDate().isEmpty()) {
             try {
-                holder.purchaseDateValueTextView.setText((outputFormat.format(simpleDateFormat.parse(
+               /* holder.purchaseDateValueTextView.setText((outputFormat.format(simpleDateFormat.parse(
+                        consignmentDetail.getPurchaseDate()))) + "");*/
+
+                holder.receiveOnTextView.setText((outputFormat.format(simpleDateFormat.parse(
                         consignmentDetail.getPurchaseDate()))) + "");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else {
             //   holder.purchaseDateLayout.setVisibility(View.GONE);
+            holder.receiveOnTextView.setVisibility(View.GONE);
         }
 
         //Status
@@ -113,31 +145,24 @@ public class OrderConsignmentDetailsAdapter extends RecyclerView.Adapter<OrderCo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        //  private TextView consignmentIdTextView;
-        private TextView consignmentIdValueTextView;
-        //    private LinearLayout vendorLayout;
-        //   private TextView vendorTextView;
         private TextView vendorValueTextView;
-        //  private LinearLayout purchaseDateLayout;
-        //  private TextView purchaseDateTextView;
-        private TextView purchaseDateValueTextView;
-        //  private LinearLayout statusLayout;
-        //  private TextView statusTextView;
+        private TextView consignmentIdValueTextView;
+        private TextView receiveOnTextView;
+        private TextView invoiceTextView;
+        private TextView invoiceDateTextView;
         private TextView statusValueTextView;
+        private TextView purchaseDateValueTextView;
+
+   
 
         public MyViewHolder(View view) {
             super(view);
-            //consignmentIdTextView = (TextView) view.findViewById(R.id.consignmentId_textView);
-            consignmentIdValueTextView = (TextView) view.findViewById(R.id.consignmentId_value_textView);
-            //  vendorLayout = (LinearLayout) view.findViewById(R.id.vendor_layout);
-            //  vendorTextView = (TextView) view.findViewById(R.id.vendor_textView);
-            vendorValueTextView = (TextView) view.findViewById(R.id.vendor_value_textView);
-            //  purchaseDateLayout = (LinearLayout) view.findViewById(R.id.purchaseDate_layout);
-            //   purchaseDateTextView = (TextView) view.findViewById(R.id.purchaseDate_textView);
-            purchaseDateValueTextView = (TextView) view.findViewById(R.id.purchaseDate_value_textView);
-            //   statusLayout = (LinearLayout) view.findViewById(R.id.status_layout);
-            //   statusTextView = (TextView) view.findViewById(R.id.status_textView);
-            statusValueTextView = (TextView) view.findViewById(R.id.status_value_textView);
+            consignmentIdValueTextView = (TextView)view.findViewById( R.id.consignmentId_value_textView );
+            receiveOnTextView = (TextView)view.findViewById( R.id.receive_on_textView );
+            invoiceTextView = (TextView)view.findViewById( R.id.invoice_textView );
+            invoiceDateTextView = (TextView)view.findViewById( R.id.invoice_date_textView );
+            statusValueTextView = (TextView)view.findViewById( R.id.status_value_textView );
+            purchaseDateValueTextView = (TextView)view.findViewById( R.id.purchaseDate_value_textView );
         }
     }
 }

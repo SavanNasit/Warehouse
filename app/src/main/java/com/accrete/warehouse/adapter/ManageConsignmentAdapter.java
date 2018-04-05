@@ -58,12 +58,20 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
         DateFormat outputFormat = new SimpleDateFormat("dd MMM, yyyy");
 
         Consignment manageConsignment = consignmentList.get(position);
-        holder.listRowManageConsignmentConsignmentId.setText(manageConsignment.getConsignmentId());
+        holder.listRowManageConsignmentConsignmentId.setText("ID : "+manageConsignment.getConsignmentId());
         holder.listRowManageConsignmentConsignmentId.setPaintFlags(holder.listRowManageConsignmentConsignmentId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        if (manageConsignment.getPurchaseNumber() != null && !manageConsignment.getPurchaseNumber().isEmpty()) {
-            holder.listRowManageConsignmentPurchaseOrder.setText("Invoice No. : " + manageConsignment.getPurchaseNumber());
+        if (manageConsignment.getPurchaseOrderID() != null && !manageConsignment.getPurchaseOrderID().isEmpty()) {
+            holder.listRowManageConsignmentPurchaseOrder.setText("PO : " + manageConsignment.getPurchaseOrderID());
+        }else{
+            holder.listRowManageConsignmentPurchaseOrder.setVisibility(View.GONE);
         }
-        holder.listRowManageConsignmentInvoiceNumber.setText("PO : " + manageConsignment.getPurchaseOrderID());
+
+        if (manageConsignment.getPurchaseNumber() != null && !manageConsignment.getPurchaseNumber().isEmpty()
+                && !manageConsignment.getPurchaseNumber().equals("NA")) {
+            holder.listRowManageConsignmentInvoiceNumber.setText ("Invoice : " + manageConsignment.getPurchaseNumber());
+        }else{
+            holder.listRowManageConsignmentInvoiceNumber.setText("Invoice : " + "NA");
+        }
         //  holder.listRowManageConsignmentInvoiceDate.setText(manageConsignment.getInvoiceDate());
         //  holder.listRowManageConsignmentPurchaseOrderDate.setText(manageConsignment.getPurchaseOrderDate());
         if (manageConsignment.getVendor() != null && !manageConsignment.getVendor().isEmpty()) {

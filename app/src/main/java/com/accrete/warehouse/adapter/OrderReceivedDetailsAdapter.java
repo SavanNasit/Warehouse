@@ -53,6 +53,10 @@ public class OrderReceivedDetailsAdapter extends RecyclerView.Adapter<OrderRecei
             holder.receiveQuantityTextView.setText(receivedDetail.getReceivedQuantity().toString().trim());
         }
 
+
+            holder.itemsSrNoTextView.setText(String.valueOf(position+1));
+
+
     }
 
     @Override
@@ -62,6 +66,7 @@ public class OrderReceivedDetailsAdapter extends RecyclerView.Adapter<OrderRecei
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout titlesLayout;
+        private TextView itemsSrNoTextView;
         private TextView itemsTextView;
         private TextView purchaseOrderQuantityTextView;
         private TextView receiveQuantityTextView;
@@ -73,6 +78,7 @@ public class OrderReceivedDetailsAdapter extends RecyclerView.Adapter<OrderRecei
             itemsTextView = (TextView) view.findViewById(R.id.items_textView);
             purchaseOrderQuantityTextView = (TextView) view.findViewById(R.id.purchaseOrderQuantity_textView);
             receiveQuantityTextView = (TextView) view.findViewById(R.id.receiveQuantity_textView);
+            itemsSrNoTextView =(TextView)view.findViewById(R.id.items_sr_no_textView);
         }
     }
 }

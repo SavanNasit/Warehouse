@@ -12,13 +12,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/items_sr_no_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:paddingLeft="@dimen/_3sdp"
+            android:paddingRight="@dimen/_3sdp"
+            android:text="#"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/items_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:gravity="center"
             android:paddingLeft="@dimen/_3sdp"
             android:paddingRight="@dimen/_3sdp"
@@ -29,7 +42,7 @@
             android:id="@+id/purchaseOrderQuantity_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.3"
             android:gravity="center"
             android:paddingLeft="@dimen/_3sdp"
             android:paddingRight="@dimen/_3sdp"
