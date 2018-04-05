@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -46,12 +46,17 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
         holder.listRowManageGatepassPackages.setText(manageGatepass.getPackages());
         holder.listRowManageGatepassDeliveryUser.setText(manageGatepass.getUserName());
         holder.listRowManageGatepassStatus.setText(manageGatepass.getGatepassStatus());
-        holder.listRowManageGatepassShippingType.setText(manageGatepass.getShippingType());
+        if (manageGatepass.getGatepassStatus() != null && !manageGatepass.getGatepassStatus().isEmpty()) {
+            holder.listRowManageGatepassShippingType.setText(manageGatepass.getShippingType());
+            holder.listRowManageGatepassShippingType.setVisibility(View.VISIBLE);
+        } else {
+            holder.listRowManageGatepassShippingType.setVisibility(View.GONE);
+        }
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                applyClickEvents(position,manageGatepass.getGatepassStatus());
+                applyClickEvents(position, manageGatepass.getGatepassStatus());
             }
         });
     }
@@ -63,11 +68,12 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
     }
 
     private void applyClickEvents(final int position, String status) {
-        listener.onMessageRowClicked(position,status);
+        listener.onMessageRowClicked(position, status);
     }
 
     public interface ManageGatepassAdapterrListener {
-        void onMessageRowClicked(int position,String status);
+        void onMessageRowClicked(int position, String status);
+
         void onExecute();
     }
 
@@ -79,11 +85,11 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
         private TextView listRowManageGatepassDeliveryUser;
         private TextView listRowManageGatepassStatus;
         private TextView listRowManageGatepassShippingType;
-        private LinearLayout layout;
+        private RelativeLayout layout;
 
         public MyViewHolder(View view) {
             super(view);
-            layout = (LinearLayout) view.findViewById(R.id.linear_layout_manage_gatepass);
+            layout = (RelativeLayout) view.findViewById(R.id.main_layout);
             listRowManageGatepassShippingCompanyName = (TextView) view.findViewById(R.id.list_row_manage_gatepass_shipping_company_name);
             listRowManageGatepassGatepassId = (TextView) view.findViewById(R.id.list_row_manage_gatepass_gatepass_id);
             listRowManageGatepassGenerateOn = (TextView) view.findViewById(R.id.list_row_manage_gatepass_generate_on);
