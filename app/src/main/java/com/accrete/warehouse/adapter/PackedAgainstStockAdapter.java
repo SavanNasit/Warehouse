@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -55,7 +56,7 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
             holder.customerNameTextView.setVisibility(View.GONE);
         }
 
-        holder.containerLayout.setOnClickListener(new View.OnClickListener() {
+        holder.mainlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onMessageRowClicked(position);
@@ -95,9 +96,11 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
         private TextView customerNameTextView;
         private TextView invoiceNoTextView;
         private LinearLayout containerLayout;
+        private RelativeLayout mainlayout;
 
         public MyViewHolder(View view) {
             super(view);
+            mainlayout = (RelativeLayout) view.findViewById(R.id.main_layout);
             containerLayout = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
             packageIdTextView = (TextView) view.findViewById(R.id.package_id_textView);
             invoiceDateTextView = (TextView) view.findViewById(R.id.invoice_date_textView);

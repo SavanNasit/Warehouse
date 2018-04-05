@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -56,7 +57,7 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
         }
         holder.outForDeliveryUser.setText("Delivery User : " + packageItem.getName());
 
-        holder.outForDeliveryContainer.setOnClickListener(new View.OnClickListener() {
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onMessageRowClicked(position);
@@ -101,9 +102,11 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
         private TextView outForDeliveryExpDod;
         private TextView outForDeliveryUser;
         private LinearLayout outForDeliveryContainer;
+        private RelativeLayout mainLayout;
 
         public MyViewHolder(View view) {
             super(view);
+            mainLayout = (RelativeLayout) view.findViewById(R.id.main_layout);
             outForDeliveryPackageId = (TextView) view.findViewById(R.id.out_for_delivery_package_id);
             outForDeliveryInvoiceNo = (TextView) view.findViewById(R.id.out_for_delivery_invoice_no);
             outForDeliveryInvoiceDate = (TextView) view.findViewById(R.id.out_for_delivery_invoice_date);

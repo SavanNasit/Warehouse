@@ -300,6 +300,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                                 runningOrdersEmptyView.setText("No data available");
                                 runningOrdersRecyclerView.setVisibility(View.VISIBLE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                                runningOrdersCount.setVisibility(View.GONE);
                             } else {
                                 runningOrdersEmptyView.setVisibility(View.GONE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -319,7 +320,14 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                                     runningOrdersRecyclerView.smoothScrollToPosition(0);
                                 }
                             }
-
+                            if (runningOrderList != null && runningOrderList.size() > 0) {
+                                runningOrdersCount.setVisibility(View.VISIBLE);
+                                if (apiResponse.getData().getRunningOrderCount().equals("1")) {
+                                    runningOrdersCount.setText(apiResponse.getData().getRunningOrderCount() + " Running Order");
+                                } else {
+                                    runningOrdersCount.setText(apiResponse.getData().getRunningOrderCount() + " Running Orders");
+                                }
+                            }
 
                         } else {
                             if (runningOrderList != null && runningOrderList.size() == 0) {
@@ -327,6 +335,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                                 runningOrdersEmptyView.setText("No data available");
                                 runningOrdersRecyclerView.setVisibility(View.VISIBLE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                                runningOrdersCount.setVisibility(View.GONE);
                             } else {
                                 runningOrdersEmptyView.setVisibility(View.GONE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
