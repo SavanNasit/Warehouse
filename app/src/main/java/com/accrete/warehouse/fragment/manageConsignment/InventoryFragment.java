@@ -80,7 +80,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Inve
         inventoryRecyclerView.setLayoutManager(mLayoutManager);
         inventoryRecyclerView.setHasFixedSize(true);
         inventoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        inventoryRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        //inventoryRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         inventoryRecyclerView.setNestedScrollingEnabled(false);
         inventoryRecyclerView.setAdapter(inventoryAdapter);
 

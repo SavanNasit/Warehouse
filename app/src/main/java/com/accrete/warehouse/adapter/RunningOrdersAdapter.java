@@ -27,10 +27,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.fragment.runningorders.RunningOrdersFragment;
 import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.Packages;
-import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.RunningOrder;
-import com.accrete.warehouse.utils.AppPreferences;
-import com.accrete.warehouse.utils.AppUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -69,11 +66,11 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final RunningOrder runningOrder = runningOrderList.get(position);
-     //   holder.listRowRunningOrdersOrderId.setText(AppPreferences.getCompanyCode(context, AppUtils.COMPANY_CODE)+runningOrder.getChkoid());
+        //   holder.listRowRunningOrdersOrderId.setText(AppPreferences.getCompanyCode(context, AppUtils.COMPANY_CODE)+runningOrder.getChkoid());
         holder.listRowRunningOrdersOrderId.setText(runningOrder.getCheckpointOrderID());
-        holder.listRowRunningOrdersCustomer.setText(runningOrder.getCustomer().trim());
+        holder.listRowRunningOrdersCustomer.setText(runningOrder.getCustomerInfo().getName().trim());
         holder.listRowRunningOrdersMobile.setText(runningOrder.getContact());
-        holder.listRowRunningOrdersEmail.setText(runningOrder.getCustomerInfo().getEmail());
+        holder.listRowRunningOrdersAttendee.setText("Assignee: " + runningOrder.getAssignedUserName());
         holder.listRowRunningOrdersExecute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +78,7 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
             }
         });
 
-     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
             DateFormat outputFormat = new SimpleDateFormat("dd MMM, yyyy");
@@ -192,8 +189,9 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
             }
         });
     }
+
     public void next(int position, RunningOrder runningOrder) {
-        listener.onExecute(runningOrder.getPackages(), runningOrder.getOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid(),position);
+        listener.onExecute(runningOrder.getPackages(), runningOrder.getOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid(), position);
         notifyDataSetChanged();
     }
 
@@ -207,18 +205,17 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        public RelativeLayout viewBackground;
+        public RelativeLayout relativeLayoutContainer;
         private TextView listRowRunningOrdersOrderId;
         private TextView listRowRunningOrdersCustomer;
         private TextView listRowRunningOrdersDate;
         private TextView listRowRunningOrdersMobile;
-        private TextView listRowRunningOrdersEmail;
+        private TextView listRowRunningOrdersAttendee;
         private LinearLayout listRowRunningOrdersExecute;
         private TextView imageViewCustomerInfo;
         private TextView imageViewMobile, imageViewEmail;
         private FrameLayout frameLayoutRunningOrders;
-        public RelativeLayout viewBackground;
-        public RelativeLayout relativeLayoutContainer;
-
 
 
         public MyViewHolder(View view) {
@@ -229,7 +226,7 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
             frameLayoutRunningOrders = (FrameLayout) view.findViewById(R.id.frame_container_running_orders);
             listRowRunningOrdersMobile = (TextView) view.findViewById(R.id.list_row_running_orders_customer_mobile);
             listRowRunningOrdersExecute = (LinearLayout) view.findViewById(R.id.running_orders_execute);
-            listRowRunningOrdersEmail = (TextView) view.findViewById(R.id.list_row_running_orders_customer_email);
+            listRowRunningOrdersAttendee = (TextView) view.findViewById(R.id.list_row_running_orders_attendee);
             imageViewCustomerInfo = (TextView) view.findViewById(R.id.running_orders_info);
             imageViewMobile = (TextView) view.findViewById(R.id.running_orders_call);
             imageViewEmail = (TextView) view.findViewById(R.id.running_orders_email);
