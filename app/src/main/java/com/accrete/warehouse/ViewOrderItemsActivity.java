@@ -86,14 +86,14 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
     private View consignmentDetailsView;
     private RelativeLayout layoutConsignmentDetails;
     private RecyclerView recyclerViewConsignmentDetails;
-    private TextView textviewConsignmentDetailsEmpty;
+    private TextView textviewConsignmentDetailsEmpty,textViewPODate;
     private String purOrId;
     private OrderConsignmentDetailsAdapter orderConsignmentDetailsAdapter;
     private OrderReceivedDetailsAdapter orderReceivedDetailsAdapter;
     private List<ConsignmentDetail> consignmentDetailList = new ArrayList<ConsignmentDetail>();
     private List<ReceivedDetail> receivedDetailList = new ArrayList<ReceivedDetail>();
     private View viewTitles;
-    private LinearLayout titlesLayout;
+    private LinearLayout titlesLayout,linearLayoutPoDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,6 +121,8 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
         vendorDetailsTitleTextView = (TextView) findViewById(R.id.vendorDetailsTitle_textView);
         vendorDetailsSubTitleTextView = (TextView) findViewById(R.id.vendorDetailsSubTitle_textView);
         vendorDetailsView = (View) findViewById(R.id.vendorDetails_view);
+        linearLayoutPoDate = (LinearLayout) findViewById(R.id.po_date_layout);
+        textViewPODate = (TextView) findViewById(R.id.po_date_textView);
         nameLayout = (LinearLayout) findViewById(R.id.name_layout);
         nameTextView = (TextView) findViewById(R.id.name_textView);
         contactNoLayout = (LinearLayout) findViewById(R.id.contactNo_layout);
@@ -309,6 +311,13 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
             orderIdLayout.setVisibility(View.GONE);
         }
 
+        if (orderDetail.getPoDate() != null && !orderDetail.getPoDate().isEmpty()) {
+            linearLayoutPoDate.setVisibility(View.VISIBLE);
+            textViewPODate.setText(orderDetail.getPoDate());
+        } else {
+            linearLayoutPoDate.setVisibility(View.GONE);
+        }
+
         if (orderDetail.getStatus() != null && !orderDetail.getStatus().isEmpty()) {
             statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
             GradientDrawable drawable = (GradientDrawable) statusTextView.getBackground();
@@ -351,12 +360,12 @@ public class ViewOrderItemsActivity extends AppCompatActivity {
             totalLayout.setVisibility(View.GONE);
         }
 
-        if (orderDetail.getRoundOff() != null && !orderDetail.getRoundOff().isEmpty()) {
+       /* if (orderDetail.getRoundOff() != null && !orderDetail.getRoundOff().isEmpty()) {
             roundOffLayout.setVisibility(View.VISIBLE);
             roundOffTextView.setText(getString(R.string.Rs) + " " + formatter.format(ParseDouble(orderDetail.getRoundOff())));
         } else {
             roundOffLayout.setVisibility(View.GONE);
-        }
+        }*/
 
         if (orderDetail.getPayable() != null && !orderDetail.getPayable().isEmpty()) {
             payableLayout.setVisibility(View.VISIBLE);

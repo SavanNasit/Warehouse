@@ -92,7 +92,6 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
         manageConsignmentRecyclerView.setAdapter(manageConsignmentAdapter);
 
         chkId = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
-
         floatingActionButtonPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -24,6 +24,29 @@ public class ConsignmentDetail {
     @Expose
     private String iscid;
 
+    public String getPurchaseNumber() {
+        return purchaseNumber;
+    }
+
+    public void setPurchaseNumber(String purchaseNumber) {
+        this.purchaseNumber = purchaseNumber;
+    }
+
+    public String getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(String invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    @SerializedName("purchase_number")
+    @Expose
+    private String purchaseNumber;
+    @SerializedName("invoice_date")
+    @Expose
+    private String invoiceDate;
+
     public String getIscid() {
         return iscid;
     }

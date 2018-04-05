@@ -27,6 +27,30 @@ public class Inventory {
     @Expose
     private String createdTs;
 
+    @SerializedName("manufacturing_date")
+    @Expose
+    private String manufacturingDate;
+    @SerializedName("expiry_date")
+    @Expose
+    private String expiryDate;
+
+    public String getManufacturingDate() {
+        return manufacturingDate;
+    }
+
+    public void setManufacturingDate(String manufacturingDate) {
+        this.manufacturingDate = manufacturingDate;
+    }
+
+    public String getExpiry_date() {
+        return expiryDate;
+    }
+
+    public void setExpiry_date(String expiry_date) {
+        this.expiryDate = expiry_date;
+    }
+
+
     public String getCreatedTs() {
         return createdTs;
     }

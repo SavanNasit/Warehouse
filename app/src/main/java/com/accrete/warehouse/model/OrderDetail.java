@@ -27,6 +27,20 @@ public class OrderDetail {
     @Expose
     private String payable;
 
+    @SerializedName("created_ts")
+    @Expose
+    private String poDate;
+
+
+
+    public String getPoDate() {
+        return poDate;
+    }
+
+    public void setPoDate(String poDate) {
+        this.poDate = poDate;
+    }
+
     public String getOrderId() {
         return orderId;
     }

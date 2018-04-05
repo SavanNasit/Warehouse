@@ -184,7 +184,7 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
             cardView = (CardView) view.findViewById(R.id.card_view);
             listRowPendingItemsItem = (TextView) view.findViewById(R.id.list_row_pending_items_item);
             listRowOrderItemVendor = (TextView) view.findViewById(R.id.list_row_order_item_vendor);
-         //   listRowPendingItemsSkuCode = (TextView) view.findViewById(R.id.list_row_pending_items_sku_code);
+          //  listRowPendingItemsSkuCode = (TextView) view.findViewById(R.id.list_row_pending_items_sku_code);
             listRowPendingItemsView = (View) view.findViewById(R.id.list_row_pending_items_view);
             listRowPendingItemsBatchNumber = (TextView) view.findViewById(R.id.list_row_pending_items_batch_number);
             listRowOrderItemAvailableQuantity = (TextView) view.findViewById(R.id.list_row_order_item_available_quantity);

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -79,6 +80,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Inve
         inventoryRecyclerView.setLayoutManager(mLayoutManager);
         inventoryRecyclerView.setHasFixedSize(true);
         inventoryRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        inventoryRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         inventoryRecyclerView.setNestedScrollingEnabled(false);
         inventoryRecyclerView.setAdapter(inventoryAdapter);
 

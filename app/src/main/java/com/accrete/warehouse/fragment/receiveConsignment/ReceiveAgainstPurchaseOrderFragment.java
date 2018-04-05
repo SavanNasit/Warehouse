@@ -6,8 +6,10 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.POReceiveConsignmentActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.ViewOrderItemsActivity;
 import com.accrete.warehouse.adapter.PurchaseOrderAdapter;
@@ -25,6 +28,7 @@ import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
+import com.accrete.warehouse.utils.RecyclerItemForReceiveAgainstPO;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -44,7 +48,7 @@ import static com.accrete.warehouse.utils.Constants.version;
  */
 
 public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements PurchaseOrderAdapter.PurchaseOrderAdapterListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, RecyclerItemForReceiveAgainstPO.RecyclerItemTouchHelperListener {
     private static String KEY_TITLE = "receive_po";
     private SwipeRefreshLayout receiveAgainstPurchaseOrderSwipeRefreshLayout;
     private RecyclerView receiveAgainstPurchaseOrderRecyclerView;
@@ -80,6 +84,7 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
         receiveAgainstPurchaseOrderRecyclerView.setLayoutManager(mLayoutManager);
         receiveAgainstPurchaseOrderRecyclerView.setHasFixedSize(true);
         receiveAgainstPurchaseOrderRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        receiveAgainstPurchaseOrderRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         receiveAgainstPurchaseOrderRecyclerView.setNestedScrollingEnabled(false);
         receiveAgainstPurchaseOrderRecyclerView.setAdapter(purchaseOrderAdapter);
 
@@ -123,6 +128,8 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
                 }
             }
         });
+
+        setSwipeForRecyclerView();
 
     }
 
@@ -211,7 +218,10 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
                             if (purchaseOrder != null) {
                                 if (traversalValue.equals("2")) {
                                     if (!time.equals(purchaseOrder.getCreatedTs())) {
-                                        purchaseOrderList.add(purchaseOrder);
+                                        if(!purchaseOrder.getPurorsid().equals("3")) {
+                                            purchaseOrderList.add(purchaseOrder);
+                                        }
+
                                     }
                                     dataChanged = "yes";
                                 } else if (traversalValue.equals("1")) {
@@ -219,12 +229,16 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
                                             receiveAgainstPurchaseOrderSwipeRefreshLayout.isRefreshing()) {
                                         // To remove duplicacy of a new item
                                         if (!time.equals(purchaseOrder.getCreatedTs())) {
-                                            purchaseOrderList.add(0, purchaseOrder);
+                                            if(!purchaseOrder.getPurorsid().equals("3")) {
+                                                purchaseOrderList.add(0, purchaseOrder);
+
+                                            }
                                         }
                                     } else {
                                         if (!time.equals(purchaseOrder.getCreatedTs())) {
-                                            purchaseOrderList.add(purchaseOrder);
-                                        }
+                                            if(!purchaseOrder.getPurorsid().equals("3")) {
+                                                purchaseOrderList.add(purchaseOrder);
+                                            }                                        }
                                     }
                                     dataChanged = "yes";
                                 }
@@ -318,5 +332,19 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
             receiveAgainstPurchaseOrderContainerEmptyView.setText(getString(R.string.no_internet_try_later));
             receiveAgainstPurchaseOrderSwipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    private void setSwipeForRecyclerView() {
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemForReceiveAgainstPO(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(receiveAgainstPurchaseOrderRecyclerView);
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+       // Toast.makeText(getActivity(), "Print coming soon..", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), POReceiveConsignmentActivity.class);
+        intent.putExtra(getString(R.string.purOrId), purchaseOrderList.get(position).getPurorid());
+        startActivity(intent);
+        purchaseOrderAdapter.notifyDataSetChanged();
     }
 }

@@ -70,6 +70,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -213,8 +214,8 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
         spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.RED), 0,
                 end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         receiveDateTitleTextView.setText(TextUtils.concat(getString(R.string.receive_date_title), spannableStringBuilder));
-        invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
-        invoiceDateTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_date_title), spannableStringBuilder));
+        // invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
+        //  invoiceDateTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_date_title), spannableStringBuilder));
         vendorTitleTextView.setText(TextUtils.concat(getString(R.string.vendor_title), spannableStringBuilder));
         transporterTitleTextView.setText(TextUtils.concat(getString(R.string.transporter_title), spannableStringBuilder));
         weightTitleTextView.setText(TextUtils.concat(getString(R.string.weight), spannableStringBuilder));
@@ -237,6 +238,13 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
         datePickerFragment = new AllDatePickerFragment();
         datePickerFragment.setListener(this);
 
+        //Receive Date
+
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = df.format(c.getTime());
+        receiveDateValueTextView.setText(formattedDate);
     }
 
     @Override
@@ -369,14 +377,14 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             Toast.makeText(getActivity(), "Please select receive date.", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (invoiceNumberValueTextView.getText().toString().trim().length() == 0) {
+       /* if (invoiceNumberValueTextView.getText().toString().trim().length() == 0) {
             Toast.makeText(getActivity(), "Please enter Invoice number.", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (invoiceDateValueTextView.getText().toString().trim().length() == 0) {
             Toast.makeText(getActivity(), "Please select Invoice date.", Toast.LENGTH_SHORT).show();
             return false;
-        }
+        }*/
 
         strInvoiceNumber = invoiceNumberValueTextView.getText().toString().trim();
         strChkId = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
