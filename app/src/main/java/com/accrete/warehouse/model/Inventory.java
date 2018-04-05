@@ -33,6 +33,26 @@ public class Inventory {
     @SerializedName("expiry_date")
     @Expose
     private String expiryDate;
+    @SerializedName("isid_number")
+    @Expose
+    private String isidNumber;
+
+    public String getIsidNumber() {
+        return isidNumber;
+    }
+
+    public void setIsidNumber(String isidNumber) {
+        this.isidNumber = isidNumber;
+    }
+
+    public String getExpiryDate() {
+
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
     public String getManufacturingDate() {
         return manufacturingDate;

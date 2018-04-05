@@ -57,18 +57,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_50sdp"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/_10sdp" />
-
-
-                    <TextView
-                        android:id="@+id/out_for_delivery_order_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:lines="1"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp" />
 
                     <TextView
                         android:id="@+id/out_for_delivery_gatepass_id"
@@ -83,19 +73,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:text="Delivery User"
                         android:textColor="@color/gray_order"
                         android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        android:id="@+id/out_for_delivery_exp_dod"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/_10sdp"
-                        android:textStyle="normal" />
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -114,7 +93,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:id="@+id/right_layout"
                     android:layout_width="wrap_content"
@@ -122,6 +100,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignRight="@id/left_layout"
                     android:layout_alignTop="@id/left_layout"
+                    android:layout_marginRight="@dimen/_4sdp"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/_8sdp">
 
@@ -134,6 +113,29 @@
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="normal" />
 
+
+                    <TextView
+                        android:id="@+id/out_for_delivery_order_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:lines="1"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                    <TextView
+                        android:id="@+id/out_for_delivery_exp_dod"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="normal" />
+
+
                     <TextView
                         android:id="@+id/status_textView"
                         android:layout_width="wrap_content"
@@ -141,11 +143,8 @@
                         android:layout_gravity="right"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:gravity="bottom"
-                        android:maxLines="1"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_8sdp"
-                        android:textStyle="normal"
-                        android:visibility="invisible" />
+                        android:textSize="@dimen/_8sdp" />
 
                 </LinearLayout>
             </RelativeLayout>

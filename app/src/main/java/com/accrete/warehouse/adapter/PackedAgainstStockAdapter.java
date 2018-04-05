@@ -54,16 +54,6 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
         } else {
             holder.customerNameTextView.setVisibility(View.GONE);
         }
-        if (packedItem.getToDate() != null && !packedItem.getToDate().isEmpty()) {
-            holder.expDodTextView.setText("Exp Dod : " + packedItem.getToDate());
-        } else {
-            holder.expDodTextView.setText("Exp Dod : N/A ");
-        }
-        if (packedItem.getZipCode() != null && !packedItem.getZipCode().isEmpty()) {
-            holder.zipCodeTextView.setText(packedItem.getZipCode());
-        } else {
-            holder.zipCodeTextView.setText("ZIp Code : N/A ");
-        }
 
         holder.containerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,19 +94,15 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
         private TextView invoiceDateTextView;
         private TextView customerNameTextView;
         private TextView invoiceNoTextView;
-        private TextView expDodTextView;
-        private TextView zipCodeTextView;
         private LinearLayout containerLayout;
 
         public MyViewHolder(View view) {
             super(view);
-            containerLayout = (LinearLayout) view.findViewById(R.id.container_layout);
+            containerLayout = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
             packageIdTextView = (TextView) view.findViewById(R.id.package_id_textView);
             invoiceDateTextView = (TextView) view.findViewById(R.id.invoice_date_textView);
             customerNameTextView = (TextView) view.findViewById(R.id.customer_name_textView);
             invoiceNoTextView = (TextView) view.findViewById(R.id.invoice_no_textView);
-            expDodTextView = (TextView) view.findViewById(R.id.exp_dod_textView);
-            zipCodeTextView = (TextView) view.findViewById(R.id.zipCode_textView);
         }
     }
 

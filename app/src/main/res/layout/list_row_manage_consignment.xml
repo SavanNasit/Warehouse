@@ -58,7 +58,7 @@
                         android:layout_centerVertical="true"
                         android:paddingRight="@dimen/_10sdp"
                         android:textColor="#999"
-                        android:textSize="@dimen/_9sdp" />
+                        android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
 
                 <View
@@ -119,6 +119,7 @@
                             android:id="@+id/list_row_manage_consignment_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_1sdp"
                             android:gravity="right"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_8sdp"

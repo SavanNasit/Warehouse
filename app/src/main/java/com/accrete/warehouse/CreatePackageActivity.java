@@ -483,7 +483,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                     final ApiResponse apiResponse = (ApiResponse) response.body();
 
                     if (apiResponse.getSuccess()) {
-                        Toast.makeText(CreatePackageActivity.this, "Package created " + apiResponse.getData().getPacid(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreatePackageActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent();
                         setResult(RESULT_OK, intent);
@@ -505,9 +505,9 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                         } else if (apiResponse.getSuccessCode().equals("10006")) {
                             Toast.makeText(CreatePackageActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         } else if (apiResponse.getSuccessCode().equals("20004")) {
-                            /*packageDetailsEmptyView.setText(apiResponse.getMessage());
-                            packageDetailsRecyclerView.setVisibility(View.GONE);
-                            packageDetailsEmptyView.setVisibility(View.VISIBLE);*/
+
+                        } else {
+                            Toast.makeText(CreatePackageActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 

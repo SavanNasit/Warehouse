@@ -91,11 +91,11 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     private ProgressBar progressBarSelectWarehouse;
     private AlertDialog dialogSelectWarehouse;
     private SelectWarehouseAdapter mAdapter;
-    private String stringWarehouseName;
     private boolean doubleBackToExitPressedOnce = false;
     private DrawerInterface drawerInterfaceToSend;
     private String selectedFilePath;
     private Toolbar toolbar;
+    private int selectedWareHousePosition = 0;
 
 
     public DrawerActivity() {
@@ -254,11 +254,34 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         progressBarSelectWarehouse = (ProgressBar) dialogView.findViewById(R.id.dialog_select_warehouse_progress_bar);
         RecyclerView recyclerView = (RecyclerView) dialogView.findViewById(R.id.select_dialog_recycler_view);
 
+        for (int i = 0; i < warehouseArrayList.size(); i++) {
+            if (AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(), AppUtils.WAREHOUSE_CHK_ID).
+                    equals(warehouseArrayList.get(i).getChkid())) {
+                warehouseArrayList.get(i).setSelected(true);
+            } else {
+                warehouseArrayList.get(i).setSelected(false);
+            }
+        }
 
         textViewOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DrawerActivity.this, " You have selected Warehouse: " + stringWarehouseName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DrawerActivity.this, " You have selected Warehouse: " +
+                        warehouseArrayList.get(selectedWareHousePosition).getName(), Toast.LENGTH_SHORT).show();
+                AppPreferences.setWarehouseDefaultName(DrawerActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME,
+                        warehouseArrayList.get(selectedWareHousePosition).getName());
+                AppPreferences.setWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID,
+                        warehouseArrayList.get(selectedWareHousePosition).getChkid());
+                AppPreferences.setWarehouseOrderCount(DrawerActivity.this, AppUtils.WAREHOUSE_ORDER_COUNT,
+                        warehouseArrayList.get(selectedWareHousePosition).getOrderCount());
+                AppPreferences.setWarehousePackageCount(DrawerActivity.this, AppUtils.WAREHOUSE_PACKAGE_COUNT,
+                        warehouseArrayList.get(selectedWareHousePosition).getPackageCount());
+                AppPreferences.setWarehouseGatepassCount(DrawerActivity.this, AppUtils.WAREHOUSE_GATEPASS_COUNT,
+                        warehouseArrayList.get(selectedWareHousePosition).getGatepassCount());
+                AppPreferences.setWarehouseConsignmentCount(DrawerActivity.this, AppUtils.WAREHOUSE_CONSIGNMENT_COUNT,
+                        warehouseArrayList.get(selectedWareHousePosition).getConsignmentCount());
+                AppPreferences.setWarehouseReceiveConsignmentCount(DrawerActivity.this, AppUtils.WAREHOUSE_RECEIVE_CONSIGNMENT,
+                        warehouseArrayList.get(selectedWareHousePosition).getReceiveConsignmentCount());
                 dialogSelectWarehouse.dismiss();
                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
@@ -457,26 +480,19 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
 
     @Override
-    public void onMessageRowClicked(String strWarehouseName, String strWarehouseChkId, String orderCount,
-                                    String packageCount, String gatepassCount, String consignmentCount, String receiveConsignmentCount) {
-        stringWarehouseName = strWarehouseName;
-        AppPreferences.setWarehouseDefaultName(DrawerActivity.this, AppUtils.WAREHOUSE_DEFAULT_NAME, strWarehouseName);
-        AppPreferences.setWarehouseDefaultCheckId(DrawerActivity.this, AppUtils.WAREHOUSE_CHK_ID, strWarehouseChkId);
-        AppPreferences.setWarehouseOrderCount(DrawerActivity.this, AppUtils.WAREHOUSE_ORDER_COUNT, orderCount);
-        AppPreferences.setWarehousePackageCount(DrawerActivity.this, AppUtils.WAREHOUSE_PACKAGE_COUNT, packageCount);
-        AppPreferences.setWarehouseGatepassCount(DrawerActivity.this, AppUtils.WAREHOUSE_GATEPASS_COUNT, gatepassCount);
-        AppPreferences.setWarehouseConsignmentCount(DrawerActivity.this, AppUtils.WAREHOUSE_CONSIGNMENT_COUNT, consignmentCount);
-        AppPreferences.setWarehouseReceiveConsignmentCount(DrawerActivity.this, AppUtils.WAREHOUSE_RECEIVE_CONSIGNMENT, receiveConsignmentCount);
-        //setCallback(strWarehouseName);
-     /*   Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-        if (currentFragment instanceof HomeFragment) {
-            if (getFragmentRefreshListener() != null) {
-                Log.d("warehouse", strWarehouseName);
-                getFragmentRefreshListener().onRefresh(strWarehouseName);
-            }
-        }*/
+    public void onMessageRowClicked(int position) {
         selectedPosition = true;
-       // mAdapter.notifyDataSetChanged();
+
+        selectedWareHousePosition = position;
+
+        for (int i = 0; i < warehouseArrayList.size(); i++) {
+            if (position == i) {
+                warehouseArrayList.get(i).setSelected(true);
+            } else {
+                warehouseArrayList.get(i).setSelected(false);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -506,6 +522,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
         } else if (resultCode == Activity.RESULT_OK) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+           /* if (currentFragment instanceof RunningOrdersExecuteFragment) {
+                Fragment f = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
+            } else*/
             if (requestCode == PICK_FILE_RESULT_CODE) {
 
                 // Get the Uri of the selected file
@@ -532,13 +552,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
                 if (currentFragment instanceof ManagePackagesFragment) {
                     ((ManagePackagesFragment) currentFragment).sendDocument(selectedFilePath, displayName);
-                }
-            }
-        } else if (requestCode == 100) {
-            if (resultCode == Activity.RESULT_OK) {
-                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-                if (currentFragment instanceof ManagePackagesFragment) {
-                    ((ManagePackagesFragment) currentFragment).checkFragmentAndRefresh();
                 }
             }
         }
