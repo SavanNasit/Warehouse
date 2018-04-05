@@ -133,7 +133,6 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         if (bundle != null) {
             chkid = bundle.getString("chkid");
             chkoid = bundle.getString("chkoid");
-
         }
 
         findViews(rootView);
@@ -556,9 +555,9 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
+       /* if (resultCode == Activity.RESULT_OK) {
             Fragment f = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
-            getChildFragmentManager().beginTransaction().replace(R.id.home_container, f).commitAllowingStateLoss();
-        }
+            getChildFragmentManager().beginTransaction().add(R.id.home_container, f).commitAllowingStateLoss();
+        }*/
     }
 }
