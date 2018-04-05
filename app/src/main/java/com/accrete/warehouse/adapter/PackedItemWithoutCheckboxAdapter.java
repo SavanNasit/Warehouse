@@ -50,7 +50,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
         final PackedItem packed = packedList.get(position);
         holder.outForDeliveryPackageId.setText(packed.getPackageId());
         holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packed.getInvoiceNo());
+        holder.outForDeliveryInvoiceNo.setText("Invoice No: " + packed.getInvoiceNo());
         if (packed.getCustomerName() != null && !packed.getCustomerName().trim().isEmpty()) {
             holder.outForDeliveryCustomerName.setText(packed.getCustomerName().trim());
             holder.outForDeliveryCustomerName.setVisibility(View.VISIBLE);
@@ -60,15 +60,16 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
         //TODO NO GatePass ID in this process
         holder.outForDeliveryGatepassId.setVisibility(View.GONE);
 
-        holder.outForDeliveryOrderId.setText("Order Id : " + packed.getOrderID());
+        holder.outForDeliveryOrderId.setText("Order ID: " + packed.getOrderID());
         if (packed.getToDate() != null && !packed.getToDate().isEmpty()) {
-            holder.outForDeliveryExpDod.setText("Exp Dod : " + packed.getToDate());
+            holder.outForDeliveryExpDod.setText("Exp DOD: " + packed.getToDate());
+            holder.outForDeliveryExpDod.setVisibility(View.VISIBLE);
         } else {
-            holder.outForDeliveryExpDod.setText("Exp Dod : N/A ");
+            holder.outForDeliveryExpDod.setVisibility(View.GONE);
         }
 
         if (packed.getCustomerName() != null && !packed.getCustomerName().trim().isEmpty()) {
-            holder.outForDeliveryUser.setText("Delivery User : " + packed.getCustomerName().trim());
+            holder.outForDeliveryUser.setText("Delivery By: " + packed.getCustomerName().trim());
             holder.outForDeliveryUser.setVisibility(View.VISIBLE);
         } else {
             holder.outForDeliveryUser.setVisibility(View.GONE);
@@ -95,13 +96,19 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             holder.statusTextView.setBackgroundResource(R.drawable.tags_rounded_corner);
             GradientDrawable drawable = (GradientDrawable) holder.statusTextView.getBackground();
             if (packed.getPaymentStatus().contains("Partially")) {
+                holder.statusTextView.setText(packed.getPaymentStatus());
                 drawable.setColor(context.getResources().getColor(R.color.orange_purchase_order));
             } else if (packed.getPaymentStatus().contains("Invoice")) {
+                holder.statusTextView.setText(packed.getPaymentStatus());
                 drawable.setColor(context.getResources().getColor(R.color.green_purchase_order));
+            } else if (packed.getPaymentStatus().contains("Pending")) {
+                holder.statusTextView.setText("Payment " + packed.getPaymentStatus());
+                drawable.setColor(context.getResources().getColor(R.color.red_purchase_order));
             } else {
+                holder.statusTextView.setText(packed.getPaymentStatus());
                 drawable.setColor(context.getResources().getColor(R.color.red_purchase_order));
             }
-            holder.statusTextView.setText(packed.getPaymentStatus());
+
             holder.statusTextView.setVisibility(View.VISIBLE);
         } else {
             holder.statusTextView.setVisibility(View.GONE);
