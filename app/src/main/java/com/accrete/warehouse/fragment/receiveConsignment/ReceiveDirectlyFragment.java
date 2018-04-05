@@ -762,7 +762,6 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             strAuthorizedById = selected.getId();
         }
 
-
         if (authorizedByDialog != null && authorizedByDialog.isShowing()) {
             authorizedByDialog.dismiss();
         }
@@ -915,6 +914,27 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                         }
                     }
 
+
+                }
+            });
+
+
+
+            rejectedQuantityEdittext.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
 
                 }
             });
