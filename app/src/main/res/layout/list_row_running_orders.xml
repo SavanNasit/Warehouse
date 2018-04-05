@@ -133,6 +133,7 @@
 
 
                         <View
+                            android:id="@+id/view_attendee"
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/_5sdp"

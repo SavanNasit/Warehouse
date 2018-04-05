@@ -5,12 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.GatepassList;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,14 +44,29 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final GatepassList manageGatepass = gatepassList.get(position);
+
+        if (manageGatepass.getCreatedOn() != null && !manageGatepass.getCreatedOn().isEmpty()) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM, yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date startDate = targetFormat.parse(manageGatepass.getCreatedOn());
+                holder.listRowManageGatepassGenerateOn.setText(formatter.format(startDate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         holder.listRowManageGatepassGatepassId.setText("(" + manageGatepass.getGatePassId() + ")");
         holder.listRowManageGatepassShippingCompanyName.setText(manageGatepass.getShippingCompanyName());
-        holder.listRowManageGatepassGenerateOn.setText(manageGatepass.getCreatedOn());
-        holder.listRowManageGatepassPackages.setText(manageGatepass.getPackages());
+        holder.listRowManageGatepassPackages.setText("Pkg: " + manageGatepass.getPackages());
         holder.listRowManageGatepassDeliveryUser.setText(manageGatepass.getUserName());
-        holder.listRowManageGatepassStatus.setText(manageGatepass.getGatepassStatus());
         if (manageGatepass.getGatepassStatus() != null && !manageGatepass.getGatepassStatus().isEmpty()) {
-            holder.listRowManageGatepassShippingType.setText(manageGatepass.getShippingType());
+            holder.listRowManageGatepassStatus.setText("Status: " + manageGatepass.getGatepassStatus());
+        } else {
+            holder.listRowManageGatepassStatus.setText("");
+        }
+        if (manageGatepass.getShippingType() != null && !manageGatepass.getShippingType().isEmpty()) {
+            holder.listRowManageGatepassShippingType.setText("Type: " + manageGatepass.getShippingType());
             holder.listRowManageGatepassShippingType.setVisibility(View.VISIBLE);
         } else {
             holder.listRowManageGatepassShippingType.setVisibility(View.GONE);
@@ -85,11 +104,11 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
         private TextView listRowManageGatepassDeliveryUser;
         private TextView listRowManageGatepassStatus;
         private TextView listRowManageGatepassShippingType;
-        private RelativeLayout layout;
+        private LinearLayout layout;
 
         public MyViewHolder(View view) {
             super(view);
-            layout = (RelativeLayout) view.findViewById(R.id.main_layout);
+            layout = (LinearLayout) view.findViewById(R.id.main_layout);
             listRowManageGatepassShippingCompanyName = (TextView) view.findViewById(R.id.list_row_manage_gatepass_shipping_company_name);
             listRowManageGatepassGatepassId = (TextView) view.findViewById(R.id.list_row_manage_gatepass_gatepass_id);
             listRowManageGatepassGenerateOn = (TextView) view.findViewById(R.id.list_row_manage_gatepass_generate_on);
