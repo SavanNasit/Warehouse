@@ -1,13 +1,12 @@
 package com.accrete.warehouse.adapter;
 
 import android.app.Activity;
-import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +25,7 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
     private Activity activity;
     private ReceiveConsignmentItemsAdapterListener listener;
     private String type;
+    private String strUnit;
 
     public ReceiveConsignmentItemsAdapter(Activity activity, List<ConsignmentItem> consignmentItemList,
                                           ReceiveConsignmentItemsAdapterListener listener, String type) {
@@ -60,50 +60,110 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
     }
 
     private void applyClickEvents(MyViewHolder holder, final int position) {
-        final ConsignmentItem objectItem = consignmentItemList.get(position);
+        final ConsignmentItem consignmentItem = consignmentItemList.get(position);
 
         DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
 
-        holder.itemAutoCompleteTextView.setText(objectItem.getName());
-        holder.skuCodeEdittext.setText(objectItem.getInternalCode());
-        holder.orderQuantityEdittext.setText(formatter.format(ParseDouble(objectItem.getOrderQuantity())));
-        holder.receivingQuantityEdittext.setText(formatter.format(ParseDouble(objectItem.getReceiveQuantity())));
-        holder.priceEdittext.setText(formatter.format(ParseDouble(objectItem.getUnitPrice())));
-        holder.commentEdittext.setText(objectItem.getComment());
-        holder.expiryDateEdittext.setText(objectItem.getExpiryDate());
-        holder.rejectedQuantityEdittext.setText(formatter.format(ParseDouble(objectItem.getRejectedQuantity())));
-        holder.rejectedReasonEdittext.setText(objectItem.getReasonRejection());
-        holder.unitEdittext.setText(objectItem.getUnit());
+        if(consignmentItem.getUnit()==null || consignmentItem.getUnit().isEmpty()){
+            consignmentItem.setUnit("PCS");
+        }
+        
+        if(consignmentItem.getName()!=null && !consignmentItem.getName().isEmpty()) {
+            holder.receiveConsignmentItemName.setText(consignmentItem.getName().trim());
+        }else {
+            holder.receiveConsignmentItemName.setText("Item Name : NA");
 
-        if (type.equals("Directly")) {
-            holder.skuCodeEdittext.setVisibility(View.GONE);
-            holder.orderQuantityEdittext.setVisibility(View.GONE);
-        } else {
-            holder.skuCodeEdittext.setVisibility(View.VISIBLE);
-            holder.orderQuantityEdittext.setVisibility(View.VISIBLE);
         }
 
-        for (int i = 0; i > objectItem.getMeasurements().size(); i++) {
-            if (objectItem.getMeasurements().get(i).getSelected()) {
-                holder.unitEdittext.setText(objectItem.getMeasurements().get(i).getName());
+        if(consignmentItem.getInternalCode()!=null && !consignmentItem.getInternalCode().isEmpty()) {
+            holder.receiveConsignmentItemSkuCode.setText("SKU Code : "+consignmentItem.getInternalCode());
+        }else {
+            holder.receiveConsignmentItemSkuCode.setText("SKU Code : NA");
+        }
+
+        if(consignmentItem.getOrderQuantity()!=null && !consignmentItem.getOrderQuantity().isEmpty()) {
+            holder.receiveConsignmentItemOrderedQty.setText("Ordered Qty : "+formatter.format(ParseDouble(consignmentItem.getOrderQuantity()))+" "+consignmentItem.getUnit());
+        }else {
+            holder.receiveConsignmentItemOrderedQty.setText("Ordered Qty : NA");
+        }
+
+        if(consignmentItem.getReceiveQuantity()!=null && !consignmentItem.getReceiveQuantity().isEmpty()) {
+            holder.receiveConsignmentItemReceivedQty.setText("Received Qty : "+formatter.format(ParseDouble(consignmentItem.getReceiveQuantity()))+" "+consignmentItem.getUnit());
+        }else {
+            holder.receiveConsignmentItemReceivedQty.setText("Received Qty : NA");
+        }
+
+        if(consignmentItem.getComment()!=null && !consignmentItem.getComment().isEmpty()) {
+            holder.receiveConsignmentItemComment.setText(consignmentItem.getComment());
+            holder.receiveConsignmentItemCommentLayout.setVisibility(View.VISIBLE);
+            holder.receiveConsignmentItemComment.setVisibility(View.VISIBLE);
+        }else {
+            holder.receiveConsignmentItemCommentLayout.setVisibility(View.GONE);
+            holder.receiveConsignmentItemComment.setVisibility(View.GONE);
+        }
+
+        if(consignmentItem.getExpiryDate()!=null && !consignmentItem.getExpiryDate().isEmpty()) {
+            holder.receiveConsignmentItemExpDate.setText(consignmentItem.getExpiryDate());
+            holder.receiveConsignmentItemExpDate.setVisibility(View.VISIBLE);
+        }else {
+            holder.receiveConsignmentItemExpDate.setVisibility(View.GONE);
+        }
+
+
+
+        if(consignmentItem.getRejectedQuantity()!=null && !consignmentItem.getRejectedQuantity().isEmpty()) {
+            holder.receiveConsignmentItemRejectedQuantity.setText(formatter.format(ParseDouble(consignmentItem.getRejectedQuantity()))+" "+consignmentItem.getUnit());
+            holder.receiveConsignmentItemRejectQuantityLayout.setVisibility(View.VISIBLE);
+            holder.receiveConsignmentItemRejectedQuantity.setVisibility(View.VISIBLE);
+            holder.receiveConsignmentItemReasonOfRejection.setText(consignmentItem.getReasonRejection());
+            holder.receiveConsignmentItemReasonOfRejection.setVisibility(View.VISIBLE);
+            holder.receiveConsignmentItemReasonOfRejectionLayout.setVisibility(View.VISIBLE);
+
+        }else {
+            holder.receiveConsignmentItemRejectedQuantity.setVisibility(View.GONE);
+            holder.receiveConsignmentItemRejectQuantityLayout.setVisibility(View.GONE);
+            holder.receiveConsignmentItemReasonOfRejection.setVisibility(View.GONE);
+            holder.receiveConsignmentItemReasonOfRejectionLayout.setVisibility(View.GONE);
+
+        }
+
+
+        // holder.priceEdittext.setText(formatter.format(ParseDouble(consignmentItem.getUnitPrice())));
+
+
+     //   holder.unitEdittext.setText(consignmentItem.getUnit());
+
+        if (type.equals("Directly")) {
+           // holder.receiveConsignmentItemSkuCode.setVisibility(View.GONE);
+            holder.receiveConsignmentItemOrderedQty.setVisibility(View.GONE);
+            holder.receiveConsignmentItemOrderedQty.setVisibility(View.GONE);
+
+        } else {
+           // holder.receiveConsignmentItemSkuCode.setVisibility(View.VISIBLE);
+            holder.receiveConsignmentItemOrderedQty.setVisibility(View.VISIBLE);
+        }
+
+        for (int i = 0; i > consignmentItem.getMeasurements().size(); i++) {
+            if (consignmentItem.getMeasurements().get(i).getSelected()) {
+               strUnit =consignmentItem.getMeasurements().get(i).getName();
             }
         }
 
-        holder.imageBtnClose.setOnClickListener(new View.OnClickListener() {
+        holder.removeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.removeItemAndNotify(position);
             }
         });
 
-        holder.imageBtnEdit.setOnClickListener(new View.OnClickListener() {
+        holder.editLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.editItemAndOpenDialog(position);
+                listener.editItemAndOpenDialog(position,consignmentItem);
             }
         });
 
-        holder.imageBtnEdit.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -112,49 +172,49 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
     }
 
     public interface ReceiveConsignmentItemsAdapterListener {
-        void editItemAndOpenDialog(int position);
+        void editItemAndOpenDialog(int position, ConsignmentItem consignmentItem);
 
         void removeItemAndNotify(int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageButton imageBtnClose;
-        private ImageButton imageBtnEdit;
-        private TextInputLayout itemTextInputLayout;
-        private TextView itemAutoCompleteTextView;
-        private LinearLayout codeQuantityLayout;
-        private EditText skuCodeEdittext;
-        private EditText orderQuantityEdittext;
-        private LinearLayout quantityUnitLayout;
-        private EditText receivingQuantityEdittext;
-        private EditText unitEdittext;
-        private LinearLayout priceCommentLayout;
-        private EditText priceEdittext;
-        private EditText commentEdittext;
-        private LinearLayout expiryDateRejectedQuantityLayout;
-        private EditText expiryDateEdittext;
-        private EditText rejectedQuantityEdittext;
-        private EditText rejectedReasonEdittext;
+        private CardView cardView;
+        private TextView receiveConsignmentItemName;
+        private TextView receiveConsignmentItemSkuCode;
+        private TextView receiveConsignmentItemExpDate;
+        private TextView receiveConsignmentItemOrderedQty;
+        private TextView receiveConsignmentItemReceivedQty;
+        private LinearLayout receiveConsignmentItemCommentLayout;
+        private TextView receiveConsignmentItemComment;
+        private LinearLayout receiveConsignmentItemRejectQuantityLayout;
+        private TextView receiveConsignmentItemRejectedQuantity;
+        private LinearLayout receiveConsignmentItemReasonOfRejectionLayout;
+        private TextView receiveConsignmentItemReasonOfRejection;
+        private LinearLayout expandViewLayout;
+        private LinearLayout editLayout;
+        private ImageView imgEdit;
+        private LinearLayout removeLayout;
+
 
         public MyViewHolder(View view) {
             super(view);
-            imageBtnClose = (ImageButton) view.findViewById(R.id.imageBtn_close);
-            imageBtnEdit = (ImageButton) view.findViewById(R.id.imageBtn_edit);
-            itemTextInputLayout = (TextInputLayout) view.findViewById(R.id.item_textInputLayout);
-            itemAutoCompleteTextView = (TextView) view.findViewById(R.id.item_autoCompleteTextView);
-            codeQuantityLayout = (LinearLayout) view.findViewById(R.id.code_quantity_layout);
-            skuCodeEdittext = (EditText) view.findViewById(R.id.sku_code_edittext);
-            orderQuantityEdittext = (EditText) view.findViewById(R.id.order_quantity_edittext);
-            quantityUnitLayout = (LinearLayout) view.findViewById(R.id.quantity_unit_layout);
-            receivingQuantityEdittext = (EditText) view.findViewById(R.id.receiving_quantity_edittext);
-            unitEdittext = (EditText) view.findViewById(R.id.unit_edittext);
-            priceCommentLayout = (LinearLayout) view.findViewById(R.id.price_comment_layout);
-            priceEdittext = (EditText) view.findViewById(R.id.price_edittext);
-            commentEdittext = (EditText) view.findViewById(R.id.comment_edittext);
-            expiryDateRejectedQuantityLayout = (LinearLayout) view.findViewById(R.id.expiryDate_rejectedQuantity_layout);
-            expiryDateEdittext = (EditText) view.findViewById(R.id.expiryDate_edittext);
-            rejectedQuantityEdittext = (EditText) view.findViewById(R.id.rejectedQuantity_edittext);
-            rejectedReasonEdittext = (EditText) view.findViewById(R.id.rejectedReason_edittext);
+
+            cardView = (CardView)view.findViewById( R.id.card_view );
+            receiveConsignmentItemName = (TextView)view.findViewById( R.id.receive_consignment_item_name );
+            receiveConsignmentItemSkuCode = (TextView)view.findViewById( R.id.receive_consignment_item_sku_code );
+            receiveConsignmentItemExpDate = (TextView)view.findViewById( R.id.receive_consignment_item_exp_date );
+            receiveConsignmentItemOrderedQty = (TextView)view.findViewById( R.id.receive_consignment_item_ordered_qty );
+            receiveConsignmentItemReceivedQty = (TextView)view.findViewById( R.id.receive_consignment_item_received_qty );
+            receiveConsignmentItemCommentLayout = (LinearLayout)view.findViewById( R.id.receive_consignment_item_comment_layout );
+            receiveConsignmentItemComment = (TextView)view.findViewById( R.id.receive_consignment_item_comment );
+            receiveConsignmentItemRejectQuantityLayout = (LinearLayout)view.findViewById( R.id.receive_consignment_item_reject_quantity_layout );
+            receiveConsignmentItemRejectedQuantity = (TextView)view.findViewById( R.id.receive_consignment_item_rejected_quantity );
+            receiveConsignmentItemReasonOfRejectionLayout = (LinearLayout)view.findViewById( R.id.receive_consignment_item_reason_of_rejection_layout );
+            receiveConsignmentItemReasonOfRejection = (TextView)view.findViewById( R.id.receive_consignment_item_reason_of_rejection );
+            expandViewLayout = (LinearLayout)view.findViewById( R.id.expand_viewLayout );
+            editLayout = (LinearLayout)view.findViewById( R.id.edit_layout );
+            imgEdit = (ImageView)view.findViewById( R.id.imgEdit );
+            removeLayout = (LinearLayout)view.findViewById( R.id.remove_layout );
 
         }
     }

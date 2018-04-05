@@ -23,7 +23,6 @@ public class Measurement {
 
 
 
-
     public String getId() {
         return id;
     }
