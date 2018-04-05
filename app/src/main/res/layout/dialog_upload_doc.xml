@@ -83,7 +83,7 @@
                     android:layout_width="@dimen/_16sdp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
                     android:indeterminateTint="@color/white"
                     android:visibility="visible" />
 

@@ -122,6 +122,7 @@
     <string name="download_delivery_challan_task">warehouse/print_delivery_challan</string>
     <string name="download_loading_slip_task">warehouse/print_loading_slip</string>
     <string name="invoice">invoice</string>
+    <string name="add_file">addfile</string>
     <string name="challan">challan</string>
     <string name="gatepass">gatepass</string>
     <string name="loading_slip">loadingSlip</string>
