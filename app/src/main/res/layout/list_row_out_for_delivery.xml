@@ -39,6 +39,7 @@
                     android:id="@+id/out_for_delivery_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_80sdp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:orientation="vertical">

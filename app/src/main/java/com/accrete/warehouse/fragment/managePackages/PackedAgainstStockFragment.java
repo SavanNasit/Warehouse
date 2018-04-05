@@ -337,6 +337,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnUpload.setEnabled(false);
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                         FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
@@ -347,6 +348,14 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 } else {
                     Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
                 }
+
+                //Enable Again
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnUpload.setEnabled(true);
+                    }
+                }, 4000);
             }
         });
 
@@ -390,6 +399,13 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 if (type.equals(getString(R.string.challan))) {
                     downloadDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.challan),
                             packedAgainstList.get(position).getPacid(), "");
+                } else if (type.equals(getString(R.string.add_file))) {
+                    if (dialogUploadDoc != null && dialogUploadDoc.isShowing()) {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("*/*");
+                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+                    }
                 } else {
                     downloadDialog(packedAgainstList.get(position).getPackageId(), getString(R.string.invoice),
                             packedAgainstList.get(position).getCuid(), packedAgainstList.get(position).getInvid());
@@ -508,10 +524,14 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
 
     //Intent to select file
     private void selectFile() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            askStoragePermission(0, getString(R.string.add_file));
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+        }
     }
 
     //Remove file/document from list

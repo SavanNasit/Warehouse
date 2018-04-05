@@ -32,7 +32,6 @@
                 android:background="@color/blue"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:text="5 Running Orders"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp"
                 android:visibility="gone" />
