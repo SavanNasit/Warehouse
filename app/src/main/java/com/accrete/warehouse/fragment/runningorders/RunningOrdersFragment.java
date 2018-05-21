@@ -322,10 +322,10 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                             }
                             if (runningOrderList != null && runningOrderList.size() > 0) {
                                 runningOrdersCount.setVisibility(View.VISIBLE);
-                                if (apiResponse.getData().getRunningOrderCount().equals("1")) {
-                                    runningOrdersCount.setText(apiResponse.getData().getRunningOrderCount() + " Running Order");
+                                if (runningOrderList.size() == 1) {
+                                    runningOrdersCount.setText(runningOrderList.size() + " Running Order");
                                 } else {
-                                    runningOrdersCount.setText(apiResponse.getData().getRunningOrderCount() + " Running Orders");
+                                    runningOrdersCount.setText(runningOrderList.size() + " Running Orders");
                                 }
                             }
 
