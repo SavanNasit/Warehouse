@@ -38,7 +38,6 @@ import com.accrete.warehouse.CreatePackageActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.ScannerActivity;
 import com.accrete.warehouse.adapter.RunningOrderExecuteAdapter;
-import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Measurement;
 import com.accrete.warehouse.model.OrderData;
@@ -379,7 +378,11 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                     } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().equals("null")
-                            && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) != 0 && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) > Integer.parseInt(orderDataList.getExecuteItemData().getAllocatedQuantity())) {
+                            && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) != 0
+                            && orderDataList.getExecuteItemData().getAllocatedQuantity() != null
+                            && !orderDataList.getExecuteItemData().getAllocatedQuantity().isEmpty()
+                            && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) >
+                            Integer.parseInt(orderDataList.getExecuteItemData().getAllocatedQuantity())) {
                         Toast.makeText(getActivity(), "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
                     } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null
                             && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
@@ -466,7 +469,8 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                             orderData.setUsedQuantity("0");
                             for (int i = 0; i < orderData.getMeasurements().size(); i++) {
                                 if (orderData.getMeasurements().get(i).getSelected()) {
-                                    orderData.setPreviousConversionRate(Double.parseDouble(orderData.getMeasurements().get(i).getConversionRate()));
+                                    orderData.setPreviousConversionRate(Double.parseDouble(orderData.getMeasurements()
+                                            .get(i).getConversionRate()));
                                 }
                             }
                             orderData.setCurrentConversionRate(String.valueOf(orderData.getPreviousConversionRate()));
