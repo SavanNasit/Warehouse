@@ -155,7 +155,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
     private LinearLayoutManager mLayoutManager;
     private ItemsVariationAdapter itemsVariationAdapter;
     private String strInvoiceNumber, strVendor, strPurchaseOrderId, strChkId, strWeight, strExpectedDate, strPurchaseDate,
-            strInvoiceDate, strTransporatationCheckBoxValue, strLRNumber, strVehicleNumber;
+            strInvoiceDate, strTransportationCheckBoxValue, strLRNumber, strVehicleNumber;
     private TextView expiryDateValueTextView;
 
     @Override
@@ -376,11 +376,11 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         }
 
         if (addTransportationCheckBoxTextView.isChecked()) {
-            strTransporatationCheckBoxValue = "1";
+            strTransportationCheckBoxValue = "1";
             strLRNumber = lrNumberValueEditText.getText().toString().trim();
             strVehicleNumber = vehicleNumberValueEditText.getText().toString().trim();
         } else {
-            strTransporatationCheckBoxValue = "0";
+            strTransportationCheckBoxValue = "0";
         }
         return true;
     }
@@ -1106,7 +1106,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 jsonObject.put("purorid", strPurchaseOrderId);
                 jsonObject.put("purchase_date", strPurchaseDate);
                 jsonObject.put("chkid", strChkId);
-                jsonObject.put("vendor-transportation-check_new", strTransporatationCheckBoxValue);
+                jsonObject.put("vendor-transportation-check_new", strTransportationCheckBoxValue);
                 jsonObject.put("venid", transporterId + "");
                 jsonObject.put("weight", strWeight + "");
                 jsonObject.put("expected_date", strExpectedDate + "");
