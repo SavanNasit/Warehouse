@@ -65,9 +65,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -220,10 +222,10 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         expectedDateValueTextView = (TextView) findViewById(R.id.expected_date_value_textView);
         saveTextView = (TextView) findViewById(R.id.save_textView);
 
-        poIdDateLayout = (LinearLayout)findViewById( R.id.poId_date_layout );
-        poIdDateTextView = (TextView)findViewById( R.id.poId_date_textView );
-        vendorNameLayout = (LinearLayout)findViewById( R.id.vendor_name_layout );
-        vendorNameTextView = (TextView)findViewById( R.id.vendor_name_textView );
+        poIdDateLayout = (LinearLayout) findViewById(R.id.poId_date_layout);
+        poIdDateTextView = (TextView) findViewById(R.id.poId_date_textView);
+        vendorNameLayout = (LinearLayout) findViewById(R.id.vendor_name_layout);
+        vendorNameTextView = (TextView) findViewById(R.id.vendor_name_textView);
 
         //Items RecyclerView
         receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
@@ -244,8 +246,8 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.RED), 0,
                 end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         receiveDateTitleTextView.setText(TextUtils.concat(getString(R.string.receive_date_title), spannableStringBuilder));
-       // invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
-       // invoiceDateTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_date_title), spannableStringBuilder));
+        // invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
+        // invoiceDateTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_date_title), spannableStringBuilder));
 
         clearVendorInfoImageButton.setOnClickListener(this);
         clearTransporterInfoImageButton.setOnClickListener(this);
@@ -775,8 +777,8 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
     }
 
     @Override
-    public void editItemAndOpenDialog(int position) {
-
+    public void editItemAndOpenDialog(int position, ConsignmentItem consignmentItem) {
+        openDialogAddEditItems(this, "edit", position, consignmentItem);
     }
 
     @Override
@@ -905,9 +907,9 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             final TextView titleTextView = (TextView) productsDialog.findViewById(R.id.title_textView);
             final EditText productNameEdittext = (EditText) productsDialog.findViewById(R.id.product_name_edittext);
             final EditText skuCodeEdittext = (EditText) productsDialog.findViewById(R.id.skuCode_edittext);
-            final EditText orderQuantityEdittext = (EditText) productsDialog.findViewById(R.id.orderQuantity_edittext);
+            final TextView orderQuantityEdittext = (TextView) productsDialog.findViewById(R.id.orderQuantity_edittext);
             final EditText receiveQuantityEdittext = (EditText) productsDialog.findViewById(R.id.receiveQuantity_edittext);
-            final TextView unitTitleTextView = (TextView) productsDialog.findViewById(R.id.unit_title_textView);
+            //   final TextView unitTitleTextView = (TextView) productsDialog.findViewById(R.id.unit_title_textView);
             final Spinner unitsTypeSpinner = (Spinner) productsDialog.findViewById(R.id.units_type_spinner);
             final ImageView balanceTypeImageView = (ImageView) productsDialog.findViewById(R.id.balance_type_imageView);
             final EditText priceEdittext = (EditText) productsDialog.findViewById(R.id.price_edittext);
@@ -918,13 +920,36 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             final EditText rejectedQuantityEdittext = (EditText) productsDialog.findViewById(R.id.rejectedQuantity_edittext);
             final TextView textViewAdd = (TextView) productsDialog.findViewById(R.id.textView_add);
             final TextView textViewBack = (TextView) productsDialog.findViewById(R.id.textView_back);
-
+            final EditText editTextHSNCode = (EditText) productsDialog.findViewById(R.id.hsn_edittext);
+            DecimalFormat df2 = new DecimalFormat(".###");
+            df2.setRoundingMode(RoundingMode.UP);
+            String value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
             productNameEdittext.setText(consignmentItem.getName());
             skuCodeEdittext.setText(consignmentItem.getInternalCode());
             orderQuantityEdittext.setText(consignmentItem.getOrderQuantity());
-            receiveQuantityEdittext.setText("");
+            editTextHSNCode.setText(consignmentItem.getHsnCode());
+            receiveQuantityEdittext.setText(consignmentItem.getReceiveQuantity());
 
-            measurementArrayList.addAll(consignmentItem.getMeasurements());
+            if (operationType.equals("edit")) {
+                receiveQuantityEdittext.setText(value);
+                commentEdittext.setText(consignmentItem.getComment());
+                reasonRejectionEdittext.setText(consignmentItem.getReasonRejection());
+                expiryDateTitleTextView.setText(consignmentItem.getExpiryDate());
+                // unitsTypeSpinner.setSelection(consignmentItem.getUnit());
+            }
+
+            if (consignmentItem.getMeasurements().size() > 0) {
+                if (measurementArrayList != null && measurementArrayList.size() > 0) {
+                    measurementArrayList.clear();
+                }
+                measurementArrayList.addAll(consignmentItem.getMeasurements());
+            } else {
+                Measurement measurement = new Measurement();
+                measurement.setName(consignmentItem.getMeasurementUnit());
+                measurement.setId("");
+                measurementArrayList.add(measurement);
+            }
+
             ArrayAdapter<Measurement> measurementArrayAdapter =
                     new ArrayAdapter<Measurement>(activity, R.layout.simple_spinner_item, measurementArrayList);
             measurementArrayAdapter.setDropDownViewResource(R.layout.spinner_common_item);
@@ -941,26 +966,29 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             textViewAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    consignmentItem.setUnitPrice(priceEdittext.getText().toString().trim());
-                    consignmentItem.setComment(commentEdittext.getText().toString().trim());
-                    consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
-                    consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
-                    consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
-                    consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
-                    consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
-                    consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
-                    if (operationType.equals("edit")) {
-                        consignmentItemList.set(positionToEdit, consignmentItem);
+                    if (receiveQuantityEdittext.getText().toString() == null || receiveQuantityEdittext.getText().toString().isEmpty()) {
+                        Toast.makeText(POReceiveConsignmentActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
                     } else {
-                        consignmentItemList.add(consignmentItem);
-                    }
+                        consignmentItem.setPrice(priceEdittext.getText().toString().trim());
+                        consignmentItem.setComment(commentEdittext.getText().toString().trim());
+                        consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
+                        consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
+                        consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
+                        consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
+                        consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
+                        consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
+                        if (operationType.equals("edit")) {
+                            consignmentItemList.set(positionToEdit, consignmentItem);
+                        } else {
+                            consignmentItemList.add(consignmentItem);
+                        }
 
-                    receiveConsignmentItemsAdapter.notifyDataSetChanged();
-                    productsDialog.dismiss();
-                    if (dialog != null && dialog.isShowing()) {
-                        dialog.dismiss();
+                        receiveConsignmentItemsAdapter.notifyDataSetChanged();
+                        productsDialog.dismiss();
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
                     }
-
 
                 }
             });
@@ -977,11 +1005,15 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             productNameEdittext.setFocusable(false);
 
             //Check Item is going to edit or add
+            //Check Item is going to edit or
+
             if (operationType.equals("add")) {
                 titleTextView.setText("Add Product");
             } else {
                 titleTextView.setText("Edit Product");
+                textViewAdd.setText("Edit item");
             }
+
 
         } catch (NumberFormatException ex) { // handle your exception
             ex.printStackTrace();

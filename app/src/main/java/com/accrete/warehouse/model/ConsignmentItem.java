@@ -43,6 +43,31 @@ public class ConsignmentItem {
     @SerializedName("unit_price")
     @Expose
     private String unitPrice;
+
+    public String getHsnCode() {
+        return hsnCode;
+    }
+
+    public void setHsnCode(String hsnCode) {
+        this.hsnCode = hsnCode;
+    }
+
+    @SerializedName("hsn_code")
+    @Expose
+    private String hsnCode;
+    public String getMeasurementUnit() {
+        return measurementUnit;
+    }
+
+    public void setMeasurementUnit(String measurementUnit) {
+        this.measurementUnit = measurementUnit;
+    }
+
+    @SerializedName("measurement_unit")
+    @Expose
+    private String measurementUnit;
+
+
     private String price;
     private String unitId;
     private String comment;
@@ -185,4 +210,6 @@ public class ConsignmentItem {
     public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
     }
+
+
 }

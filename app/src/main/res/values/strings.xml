@@ -205,5 +205,9 @@
     <string name="create_package">Create Package</string>
     <string name="continue_text">Continue</string>
     <string name="allot_qty">Allot Quantity</string>
+    <string name="comment">Comment</string>
+    <string name="rejected_qty">Rejected Quantity</string>
+    <string name="rejected_reason">Reason for rejection</string>
+    <string name="btn_go_back">Go to manage packages</string>
 
 </resources>
