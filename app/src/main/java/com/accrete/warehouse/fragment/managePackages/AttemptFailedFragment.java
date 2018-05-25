@@ -638,26 +638,29 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        for (final PackageItem packageItem : apiResponse.getData().getPackageItems()) {
-                            if (packageItem != null) {
-                                if (traversalValue.equals("2")) {
-                                    if (!time.equals(packageItem.getCreatedTs())) {
-                                        attemptFailedList.add(packageItem);
-                                    }
-                                    dataChanged = "yes";
-                                } else if (traversalValue.equals("1")) {
-                                    if (attemptFailedRefreshLayout != null &&
-                                            attemptFailedRefreshLayout.isRefreshing()) {
-                                        // To remove duplicacy of a new item
-                                        if (!time.equals(packageItem.getCreatedTs())) {
-                                            attemptFailedList.add(0, packageItem);
-                                        }
-                                    } else {
+                        if (apiResponse.getData().getPackageItems() != null &&
+                                !apiResponse.getData().getPackageItems().isEmpty()) {
+                            for (final PackageItem packageItem : apiResponse.getData().getPackageItems()) {
+                                if (packageItem != null) {
+                                    if (traversalValue.equals("2")) {
                                         if (!time.equals(packageItem.getCreatedTs())) {
                                             attemptFailedList.add(packageItem);
                                         }
+                                        dataChanged = "yes";
+                                    } else if (traversalValue.equals("1")) {
+                                        if (attemptFailedRefreshLayout != null &&
+                                                attemptFailedRefreshLayout.isRefreshing()) {
+                                            // To remove duplicacy of a new item
+                                            if (!time.equals(packageItem.getCreatedTs())) {
+                                                attemptFailedList.add(0, packageItem);
+                                            }
+                                        } else {
+                                            if (!time.equals(packageItem.getCreatedTs())) {
+                                                attemptFailedList.add(packageItem);
+                                            }
+                                        }
+                                        dataChanged = "yes";
                                     }
-                                    dataChanged = "yes";
                                 }
                             }
                         }

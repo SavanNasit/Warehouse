@@ -571,26 +571,29 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        for (final PackageItem packageItem : apiResponse.getData().getPackageItems()) {
-                            if (packageItem != null) {
-                                if (traversalValue.equals("2")) {
-                                    if (!time.equals(packageItem.getCreatedTs())) {
-                                        outForDeliveryList.add(packageItem);
-                                    }
-                                    dataChanged = "yes";
-                                } else if (traversalValue.equals("1")) {
-                                    if (outForDeliverySwipeRefreshLayout != null &&
-                                            outForDeliverySwipeRefreshLayout.isRefreshing()) {
-                                        // To remove duplicacy of a new item
-                                        if (!time.equals(packageItem.getCreatedTs())) {
-                                            outForDeliveryList.add(0, packageItem);
-                                        }
-                                    } else {
+                        if (apiResponse.getData().getPackageItems() != null &&
+                                !apiResponse.getData().getPackageItems().isEmpty()) {
+                            for (final PackageItem packageItem : apiResponse.getData().getPackageItems()) {
+                                if (packageItem != null) {
+                                    if (traversalValue.equals("2")) {
                                         if (!time.equals(packageItem.getCreatedTs())) {
                                             outForDeliveryList.add(packageItem);
                                         }
+                                        dataChanged = "yes";
+                                    } else if (traversalValue.equals("1")) {
+                                        if (outForDeliverySwipeRefreshLayout != null &&
+                                                outForDeliverySwipeRefreshLayout.isRefreshing()) {
+                                            // To remove duplicacy of a new item
+                                            if (!time.equals(packageItem.getCreatedTs())) {
+                                                outForDeliveryList.add(0, packageItem);
+                                            }
+                                        } else {
+                                            if (!time.equals(packageItem.getCreatedTs())) {
+                                                outForDeliveryList.add(packageItem);
+                                            }
+                                        }
+                                        dataChanged = "yes";
                                     }
-                                    dataChanged = "yes";
                                 }
                             }
                         }

@@ -101,7 +101,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     public DrawerActivity() {
     }
 
-    public static void hideSoftKeyboard(Activity activity) {
+    private void hideSoftKeyboard(Activity activity) {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -285,6 +285,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 dialogSelectWarehouse.dismiss();
                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
+                drawer.setSelection(0);
+                hideSoftKeyboard(DrawerActivity.this);
             }
         });
 
@@ -292,6 +294,28 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             @Override
             public void onClick(View v) {
                 dialogSelectWarehouse.dismiss();
+
+                //TODO Close dialog and set selection in drawer
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                if (currentFragment instanceof HomeFragment) {
+                    drawer.setSelection(0);
+                    hideSoftKeyboard(DrawerActivity.this);
+                } else if (currentFragment instanceof RunningOrdersFragment) {
+                    drawer.setSelection(2);
+                    hideSoftKeyboard(DrawerActivity.this);
+                } else if (currentFragment instanceof ManagePackagesFragment) {
+                    drawer.setSelection(3);
+                    hideSoftKeyboard(DrawerActivity.this);
+                } else if (currentFragment instanceof ManageGatePassFragment) {
+                    drawer.setSelection(4);
+                    hideSoftKeyboard(DrawerActivity.this);
+                } else if (currentFragment instanceof ManageConsignmentFragment) {
+                    drawer.setSelection(5);
+                    hideSoftKeyboard(DrawerActivity.this);
+                } else if (currentFragment instanceof ReceiveConsignmentFragment) {
+                    drawer.setSelection(6);
+                    hideSoftKeyboard(DrawerActivity.this);
+                }
             }
         });
         mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this,
@@ -699,6 +723,18 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         alertDialog.show();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+        if (currentFragment instanceof HomeFragment) {
+            drawer.setSelection(1);
+            hideSoftKeyboard(DrawerActivity.this);
+            //Enable Touch Back
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+    }
 
     public interface FragmentRefreshListener {
         void onRefresh(String warehouseName);
