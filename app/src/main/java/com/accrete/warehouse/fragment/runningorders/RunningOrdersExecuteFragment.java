@@ -107,11 +107,9 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                 if (Integer.parseInt(orderDataList.get(i).getItemQuantity()) == 0) {
                     Toast.makeText(getActivity(), "No item available", Toast.LENGTH_SHORT).show();
                 } else {
-
                     if (orderDataList.get(i).getMeaid() != null && !orderDataList.get(i).getMeaid().isEmpty()) {
                         bottomSheetAddItemQuantity(orderDataList.get(i), i);
                     } else {
-
                         orderDataList.get(i).setUsedQuantity(String.valueOf(Integer.valueOf(orderDataList.get(i).getUsedQuantity()) + 1));
                         flagScan = true;
                         posToupdate = i;
@@ -136,8 +134,6 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         }
 
         findViews(rootView);
-
-
         return rootView;
     }
 
@@ -180,8 +176,6 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
             public void afterTextChanged(Editable s) {
                 for (int i = 0; i < orderDataList.size(); i++) {
                     if (pendingItemsEdtScan.getText().toString().trim().equals(orderDataList.get(i).getIsid())) {
-
-
                         if (Integer.parseInt(orderDataList.get(i).getItemQuantity()) == 0) {
                             Toast.makeText(getActivity(), "No item available", Toast.LENGTH_SHORT).show();
                         } else {
@@ -241,7 +235,6 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
     }
 
     private void bottomSheetAddItemQuantity(final OrderData orderDataList, final int position) {
-
         final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dialog.setContentView(R.layout.dialog_create_package_add_quantity);
@@ -270,7 +263,6 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         } else {
             dialogCreatePackageImage.setVisibility(View.GONE);
         }
-
 
         dialogCreatePackageInventory.setText(orderDataList.getExecuteItemData().getInventory());
         dialogCreatePackageQuantityAvailable.setText(orderDataList.getExecuteItemData().getAvailableQuantity());
@@ -481,7 +473,6 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                             pendingItemsEmptyView.setText(getString(R.string.no_data_available));
                             pendingItemsRecyclerView.setVisibility(View.GONE);
                             pendingItemsEmptyView.setVisibility(View.VISIBLE);
-
 
                         } else if (apiResponse.getSuccessCode().equals("20004")) {
                             pendingItemsEmptyView.setText(getString(R.string.no_data_available));

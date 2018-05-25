@@ -11,7 +11,8 @@ import com.google.gson.annotations.SerializedName;
  * Created by poonam on 11/29/17.
  */
 
-public class SelectOrderItem implements Parcelable{
+public class
+SelectOrderItem implements Parcelable{
     @SerializedName("inventory")
     @Expose
     private String inventory;

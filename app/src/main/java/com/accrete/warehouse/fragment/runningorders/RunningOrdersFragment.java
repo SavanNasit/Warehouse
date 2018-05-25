@@ -153,7 +153,9 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                     public void run() {
                         if (runningOrderList != null && runningOrderList.size() == 0) {
                         }
-                        getRunningOrderList(getString(R.string.last_updated_date), "1");
+                        if(getActivity()!=null && isAdded()) {
+                            getRunningOrderList(getString(R.string.last_updated_date), "1");
+                        }
                     }
                 }, 200);
             } else {

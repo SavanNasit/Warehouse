@@ -571,78 +571,85 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        for (final PackageItem packageItem : apiResponse.getData().getPackageItems()) {
-                            if (packageItem != null) {
-                                if (traversalValue.equals("2")) {
-                                    if (!time.equals(packageItem.getCreatedTs())) {
-                                        outForDeliveryList.add(packageItem);
-                                    }
-                                    dataChanged = "yes";
-                                } else if (traversalValue.equals("1")) {
-                                    if (outForDeliverySwipeRefreshLayout != null &&
-                                            outForDeliverySwipeRefreshLayout.isRefreshing()) {
-                                        // To remove duplicacy of a new item
-                                        if (!time.equals(packageItem.getCreatedTs())) {
-                                            outForDeliveryList.add(0, packageItem);
-                                        }
-                                    } else {
+                        if (apiResponse.getData().getPackageItems() != null && apiResponse.getData().getPackageItems().size() > 0) {
+
+                            for (final PackageItem packageItem : apiResponse.getData().getPackageItems()) {
+                                if (packageItem != null) {
+                                    if (traversalValue.equals("2")) {
                                         if (!time.equals(packageItem.getCreatedTs())) {
                                             outForDeliveryList.add(packageItem);
                                         }
+                                        dataChanged = "yes";
+                                    } else if (traversalValue.equals("1")) {
+                                        if (outForDeliverySwipeRefreshLayout != null &&
+                                                outForDeliverySwipeRefreshLayout.isRefreshing()) {
+                                            // To remove duplicacy of a new item
+                                            if (!time.equals(packageItem.getCreatedTs())) {
+                                                outForDeliveryList.add(0, packageItem);
+                                            }
+                                        } else {
+                                            if (!time.equals(packageItem.getCreatedTs())) {
+                                                outForDeliveryList.add(packageItem);
+                                            }
+                                        }
+                                        dataChanged = "yes";
                                     }
-                                    dataChanged = "yes";
+                                }
+                            }
+                            loading = false;
+                            if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
+                                outForDeliveryEmptyView.setVisibility(View.VISIBLE);
+                                pendingItemsRecyclerView.setVisibility(View.GONE);
+                                outForDeliveryEmptyView.setText("No data available");
+                            } else {
+                                outForDeliveryEmptyView.setVisibility(View.GONE);
+                                pendingItemsRecyclerView.setVisibility(View.VISIBLE);
+                                outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
+                            }
+                            if (outForDeliverySwipeRefreshLayout != null &&
+                                    outForDeliverySwipeRefreshLayout.isRefreshing()) {
+                                outForDeliverySwipeRefreshLayout.setRefreshing(false);
+                            }
+                            if (traversalValue.equals("2")) {
+                                outForDeliveryAdapter.notifyDataSetChanged();
+                                if (dataChanged != null && dataChanged.equals("yes")) {
+                                }
+                            } else if (traversalValue.equals("1")) {
+                                if (dataChanged != null && dataChanged.equals("yes")) {
+                                    outForDeliveryAdapter.notifyDataSetChanged();
+                                    pendingItemsRecyclerView.smoothScrollToPosition(0);
+                                }
+                            }
+                        } else {
+                            loading = false;
+                            if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
+                                outForDeliveryEmptyView.setVisibility(View.VISIBLE);
+                                pendingItemsRecyclerView.setVisibility(View.GONE);
+                                outForDeliveryEmptyView.setText("No data available");
+                            } else {
+                                outForDeliveryEmptyView.setVisibility(View.GONE);
+                                pendingItemsRecyclerView.setVisibility(View.VISIBLE);
+                                outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
+                            }
+                            if (outForDeliverySwipeRefreshLayout != null && outForDeliverySwipeRefreshLayout.isRefreshing()) {
+                                outForDeliverySwipeRefreshLayout.setRefreshing(false);
+                            }
+                            if (traversalValue.equals("2")) {
+                                outForDeliveryAdapter.notifyDataSetChanged();
+                                if (dataChanged != null && dataChanged.equals("yes")) {
+                                    // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
+                                }
+                            } else if (traversalValue.equals("1")) {
+                                if (dataChanged != null && dataChanged.equals("yes")) {
+                                    outForDeliveryAdapter.notifyDataSetChanged();
+                                    pendingItemsRecyclerView.smoothScrollToPosition(0);
                                 }
                             }
                         }
-                        loading = false;
-                        if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
-                            outForDeliveryEmptyView.setVisibility(View.VISIBLE);
-                            pendingItemsRecyclerView.setVisibility(View.GONE);
-                            outForDeliveryEmptyView.setText("No data available");
-                        } else {
-                            outForDeliveryEmptyView.setVisibility(View.GONE);
-                            pendingItemsRecyclerView.setVisibility(View.VISIBLE);
-                            outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
-                        }
-                        if (outForDeliverySwipeRefreshLayout != null &&
-                                outForDeliverySwipeRefreshLayout.isRefreshing()) {
-                            outForDeliverySwipeRefreshLayout.setRefreshing(false);
-                        }
-                        if (traversalValue.equals("2")) {
-                            outForDeliveryAdapter.notifyDataSetChanged();
-                            if (dataChanged != null && dataChanged.equals("yes")) {
-                            }
-                        } else if (traversalValue.equals("1")) {
-                            if (dataChanged != null && dataChanged.equals("yes")) {
-                                outForDeliveryAdapter.notifyDataSetChanged();
-                                pendingItemsRecyclerView.smoothScrollToPosition(0);
-                            }
-                        }
-                    } else {
-                        loading = false;
-                        if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
-                            outForDeliveryEmptyView.setVisibility(View.VISIBLE);
-                            pendingItemsRecyclerView.setVisibility(View.GONE);
-                            outForDeliveryEmptyView.setText("No data available");
-                        } else {
-                            outForDeliveryEmptyView.setVisibility(View.GONE);
-                            pendingItemsRecyclerView.setVisibility(View.VISIBLE);
-                            outForDeliverySwipeRefreshLayout.setVisibility(View.VISIBLE);
-                        }
-                        if (outForDeliverySwipeRefreshLayout != null && outForDeliverySwipeRefreshLayout.isRefreshing()) {
-                            outForDeliverySwipeRefreshLayout.setRefreshing(false);
-                        }
-                        if (traversalValue.equals("2")) {
-                            outForDeliveryAdapter.notifyDataSetChanged();
-                            if (dataChanged != null && dataChanged.equals("yes")) {
-                                // recyclerView.smoothScrollToPosition(mAdapter.getItemCount() + 1);
-                            }
-                        } else if (traversalValue.equals("1")) {
-                            if (dataChanged != null && dataChanged.equals("yes")) {
-                                outForDeliveryAdapter.notifyDataSetChanged();
-                                pendingItemsRecyclerView.smoothScrollToPosition(0);
-                            }
-                        }
+                    }else {
+                        outForDeliveryEmptyView.setVisibility(View.VISIBLE);
+                        pendingItemsRecyclerView.setVisibility(View.GONE);
+                        outForDeliveryEmptyView.setText("No data available");
                     }
 
                 } catch (Exception e) {
