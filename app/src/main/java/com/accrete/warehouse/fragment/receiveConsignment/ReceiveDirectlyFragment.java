@@ -64,9 +64,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -762,7 +764,6 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             strAuthorizedById = selected.getId();
         }
 
-
         if (authorizedByDialog != null && authorizedByDialog.isShowing()) {
             authorizedByDialog.dismiss();
         }
@@ -816,22 +817,26 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
 
     }
 
-    public void openDialogAddEditItems(Activity activity, final String operationType, final int positionToEdit,
+    public void openDialogAddEditItems(final Activity activity, final String operationType, final int positionToEdit,
                                        final ConsignmentItem consignmentItem) {
         productsDialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         productsDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         productsDialog.setContentView(R.layout.dialog_add_item);
         Window window = productsDialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
+        DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
+        DecimalFormat df2 = new DecimalFormat(".###");
+        df2.setRoundingMode(RoundingMode.UP);
+        String value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
         try {
             final ArrayList<Measurement> measurementArrayList = new ArrayList<>();
             final LinearLayout linearLayout = (LinearLayout) productsDialog.findViewById(R.id.linearLayout);
             final TextView titleTextView = (TextView) productsDialog.findViewById(R.id.title_textView);
             final EditText productNameEdittext = (EditText) productsDialog.findViewById(R.id.product_name_edittext);
             final EditText skuCodeEdittext = (EditText) productsDialog.findViewById(R.id.skuCode_edittext);
-            final EditText orderQuantityEdittext = (EditText) productsDialog.findViewById(R.id.orderQuantity_edittext);
+            final TextView orderQuantityEdittext = (TextView) productsDialog.findViewById(R.id.orderQuantity_edittext);
             final EditText receiveQuantityEdittext = (EditText) productsDialog.findViewById(R.id.receiveQuantity_edittext);
-            final TextView unitTitleTextView = (TextView) productsDialog.findViewById(R.id.unit_title_textView);
+            //   final TextView unitTitleTextView = (TextView) productsDialog.findViewById(R.id.unit_title_textView);
             final Spinner unitsTypeSpinner = (Spinner) productsDialog.findViewById(R.id.units_type_spinner);
             final ImageView balanceTypeImageView = (ImageView) productsDialog.findViewById(R.id.balance_type_imageView);
             final EditText priceEdittext = (EditText) productsDialog.findViewById(R.id.price_edittext);
@@ -842,17 +847,39 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             final EditText rejectedQuantityEdittext = (EditText) productsDialog.findViewById(R.id.rejectedQuantity_edittext);
             final TextView textViewAdd = (TextView) productsDialog.findViewById(R.id.textView_add);
             final TextView textViewBack = (TextView) productsDialog.findViewById(R.id.textView_back);
+            final EditText editTextHSNCode = (EditText) productsDialog.findViewById(R.id.hsn_edittext);
 
             productNameEdittext.setText(consignmentItem.getName());
             skuCodeEdittext.setText(consignmentItem.getInternalCode());
             orderQuantityEdittext.setText(consignmentItem.getOrderQuantity());
+            editTextHSNCode.setText(consignmentItem.getHsnCode());
             receiveQuantityEdittext.setText("");
 
+            if (operationType.equals("edit")) {
+                receiveQuantityEdittext.setText(value);
+                commentEdittext.setText(consignmentItem.getComment());
+                reasonRejectionEdittext.setText(consignmentItem.getReasonRejection());
+                expiryDateTitleTextView.setText(consignmentItem.getExpiryDate());
+                // unitsTypeSpinner.setSelection(consignmentItem.getUnit());
+            }
+
             //TODO Order Quantity and SKU Code fields will be hidden
-            skuCodeEdittext.setVisibility(View.GONE);
+            skuCodeEdittext.setVisibility(View.VISIBLE);
             orderQuantityEdittext.setVisibility(View.GONE);
 
-            measurementArrayList.addAll(consignmentItem.getMeasurements());
+            if (consignmentItem.getMeasurements().size() > 0) {
+                if (measurementArrayList != null && measurementArrayList.size() > 0) {
+                    measurementArrayList.clear();
+                }
+                measurementArrayList.addAll(consignmentItem.getMeasurements());
+            } else {
+                Measurement measurement = new Measurement();
+                measurement.setName(consignmentItem.getMeasurementUnit());
+                measurement.setId("");
+                measurementArrayList.add(measurement);
+            }
+
+
             ArrayAdapter<Measurement> measurementArrayAdapter =
                     new ArrayAdapter<Measurement>(activity, R.layout.simple_spinner_item, measurementArrayList);
             measurementArrayAdapter.setDropDownViewResource(R.layout.spinner_common_item);
@@ -869,26 +896,51 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             textViewAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    consignmentItem.setPrice(priceEdittext.getText().toString().trim());
-                    consignmentItem.setComment(commentEdittext.getText().toString().trim());
-                    consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
-                    consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
-                    consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
-                    consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
-                    consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
-                    consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
-                    if (operationType.equals("edit")) {
-                        consignmentItemList.set(positionToEdit, consignmentItem);
+                    if (receiveQuantityEdittext.getText().toString() == null || receiveQuantityEdittext.getText().toString().isEmpty()) {
+                        Toast.makeText(activity, "Please enter quantity", Toast.LENGTH_SHORT).show();
                     } else {
-                        consignmentItemList.add(consignmentItem);
+                        consignmentItem.setPrice(priceEdittext.getText().toString().trim());
+                        consignmentItem.setComment(commentEdittext.getText().toString().trim());
+                        consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
+                        consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
+                        consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
+                        consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
+                        consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
+                        consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
+                        if (operationType.equals("edit")) {
+                            consignmentItemList.set(positionToEdit, consignmentItem);
+                        } else {
+                            consignmentItemList.add(consignmentItem);
+                        }
+
+                        receiveConsignmentItemsAdapter.notifyDataSetChanged();
+                        productsDialog.dismiss();
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
                     }
 
-                    receiveConsignmentItemsAdapter.notifyDataSetChanged();
-                    productsDialog.dismiss();
-                    if (dialog != null && dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
 
+                }
+            });
+
+
+
+            rejectedQuantityEdittext.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
 
                 }
             });
@@ -909,6 +961,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                 titleTextView.setText("Add Product");
             } else {
                 titleTextView.setText("Edit Product");
+                textViewAdd.setText("Edit item");
             }
 
         } catch (NumberFormatException ex) { // handle your exception
@@ -926,8 +979,8 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
     }
 
     @Override
-    public void editItemAndOpenDialog(int position) {
-
+    public void editItemAndOpenDialog(int position, ConsignmentItem consignmentItem) {
+        openDialogAddEditItems(getActivity(), "edit", 0, consignmentItem);
     }
 
     @Override
@@ -936,6 +989,17 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             consignmentItemList.remove(position);
             receiveConsignmentItemsAdapter.notifyDataSetChanged();
         }
+    }
+
+
+    double ParseDouble(String strNumber) {
+        if (strNumber != null && strNumber.length() > 0) {
+            try {
+                return Double.parseDouble(strNumber);
+            } catch (Exception e) {
+                return -1;   // or some value to mark this field is wrong. or make a function validates field first ...
+            }
+        } else return 0;
     }
 
     //Open Dialog to select Items
@@ -1109,9 +1173,9 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
 
                     if (consignmentItemList.get(i).getPrice() != null &&
                             !consignmentItemList.get(i).getPrice().isEmpty()) {
-                        productsItemJsonObject.put("item-mrp", consignmentItemList.get(i).getPrice());
+                        productsItemJsonObject.put("item-mrp", "10");
                     } else {
-                        productsItemJsonObject.put("item-mrp", "0");
+                        productsItemJsonObject.put("item-mrp", "10");
                     }
 
                     if (consignmentItemList.get(i).getIsvid() != null &&

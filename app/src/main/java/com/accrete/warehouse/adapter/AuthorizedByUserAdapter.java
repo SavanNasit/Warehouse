@@ -34,7 +34,7 @@ public class AuthorizedByUserAdapter extends RecyclerView.Adapter<AuthorizedByUs
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_vendor_name, parent, false);
+                .inflate(R.layout.list_row_user_name, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -45,10 +45,10 @@ public class AuthorizedByUserAdapter extends RecyclerView.Adapter<AuthorizedByUs
     }
 
     private void applyClickEvents(MyViewHolder holder, final int position) {
-        final User objectItem = itemDataList.get(position);
-        if (objectItem.getName().toString().trim() != null && !objectItem.getName().toString().trim().isEmpty()) {
+        final User user = itemDataList.get(position);
+        if (user.getName().toString().trim() != null && !user.getName().toString().trim().isEmpty()) {
             holder.nameLayout.setVisibility(View.VISIBLE);
-            holder.nameTextView.setText(objectItem.getName().toString().trim());
+            holder.nameTextView.setText(user.getName().toString().trim());
         } else {
             holder.nameLayout.setVisibility(View.GONE);
         }
