@@ -274,7 +274,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelGatepass(dialogCancelGatepass, gatepassList.get(position).getPacdelgatid(), dialogSelectEvent);
+                cancelGatepass(position,dialogCancelGatepass, gatepassList.get(position).getPacdelgatid(), dialogSelectEvent);
             }
         });
 
@@ -435,7 +435,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     }
 
 
-    private void cancelGatepass(final AlertDialog dialogCancelGatepass, String gatepassId, final AlertDialog dialogSelectEvent) {
+    private void cancelGatepass(final int position, final AlertDialog dialogCancelGatepass, String gatepassId, final AlertDialog dialogSelectEvent) {
         task = getString(R.string.task_cancel_gatepass);
         if (gatepassList != null && gatepassList.size() > 0) {
             gatepassList.clear();
@@ -462,7 +462,9 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                         dialogSelectEvent.dismiss();
                         status = NetworkUtil.getConnectivityStatusString(getActivity());
                         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                            getManageGatepassList(gatepassList.get(0).getCreatedTs(), "1");
+                            gatepassList.remove(position);
+                            manageGatePassAdapter.notifyDataSetChanged();
+                           // getManageGatepassList(gatepassList.get(0).getCreatedTs(), "1");
                         } else {
                             manageGatepassRecyclerView.setVisibility(View.GONE);
                             manageGatepassEmptyView.setVisibility(View.VISIBLE);
@@ -610,15 +612,19 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     public void doRefresh() {
         if (gatepassList != null && gatepassList.size() == 0) {
             status = NetworkUtil.getConnectivityStatusString(getActivity());
-            if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                loading = true;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        manageGatepassEmptyView.setText(getString(R.string.no_data_available));
-                        getManageGatepassList(getString(R.string.last_updated_date), "1");
-                    }
-                }, 200);
+            if(!status.equals(getString(R.string.not_connected_to_internet))){
+              /*  if (getActivity()!=null && !loading && isAdded()
+                    && isVisible()) {*/
+
+                    loading = true;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            manageGatepassEmptyView.setText(getString(R.string.no_data_available));
+                            getManageGatepassList(getString(R.string.last_updated_date), "1");
+                        }
+                    }, 200);
+               // }
             } else {
                 manageGatepassRecyclerView.setVisibility(View.GONE);
                 manageGatepassEmptyView.setVisibility(View.VISIBLE);

@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -143,7 +144,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/_5sdp"
+        android:visibility="visible"
         android:scrollbars="none" />
 
-
+    <TextView
+        android:id="@+id/package_history_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:gravity="center"
+        android:text="No Logs found for this package"
+        android:textSize="@dimen/_13sdp"
+        android:visibility="gone" />
 </LinearLayout>

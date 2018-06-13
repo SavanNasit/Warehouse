@@ -2,7 +2,6 @@ package com.accrete.warehouse;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.accrete.warehouse.fragment.creategatepass.CreatePassMainTabFragment;
-import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 
 /**
  * Created by poonam on 12/21/17.
  */
 
-public class CreateGatepassActivity extends AppCompatActivity{
+public class CreateGatepassActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +50,12 @@ public class CreateGatepassActivity extends AppCompatActivity{
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
 
 

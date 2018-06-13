@@ -258,7 +258,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
             @Override
             public void onClick(View v) {
                 if (!NetworkUtil.getConnectivityStatusString(getApplicationContext()).equals(getString(R.string.not_connected_to_internet))) {
-                    customerDetailApi(chkoid);
+                    customerDetailApi(pacid);
 
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
@@ -297,7 +297,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
         }
     }
 
-    private void customerDetailApi(String chkoid) {
+    private void customerDetailApi(String pacid) {
         task = getString(R.string.customer_info_gatepass_task);
         if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
@@ -306,7 +306,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.customerInfoInGatepassPackage(version, key, task, userId, accessToken, chkoid);
+        Call<ApiResponse> call = apiService.customerInfoInGatepassPackage(version, key, task, userId, accessToken, pacid);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {

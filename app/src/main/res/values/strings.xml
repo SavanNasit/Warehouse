@@ -33,6 +33,7 @@
 
     <string name="connected_to">You\'re connected to :</string>
     <string name="running_orders_fragment">Running Orders</string>
+    <string name="running_orders_tab_title">Orders</string>
     <string name="select_warehouse">Select Warehouse</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
@@ -209,5 +210,12 @@
     <string name="rejected_qty">Rejected Quantity</string>
     <string name="rejected_reason">Reason for rejection</string>
     <string name="btn_go_back">Go to manage packages</string>
+    <string name="running_stock_request_list_task">warehouse/running_stock_request</string>
+    <string name="title_already_created_packages">Already Created Packages</string>
+    <string name="edit_package">Edit Package</string>
+    <string name="add_transporter_name_error">not found</string>
+    <string name="task_transporter_name_search">chkorder/account_ledger_search</string>
+    <string name="fetch_info_for_edit_packages_task">warehouse/edit_package_formData</string>
+    <string name="edit_packages_task">warehouse/edit_package_submit</string>
 
 </resources>

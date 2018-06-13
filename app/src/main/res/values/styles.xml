@@ -63,5 +63,8 @@
 
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/_11sdp</item>
+    </style>
 
 </resources>

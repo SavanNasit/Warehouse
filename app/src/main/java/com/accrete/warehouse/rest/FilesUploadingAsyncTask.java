@@ -68,6 +68,7 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
             for (int i = 0; i < uploadDocumentList.size(); i++) {
                 utility.addFilePart("files[]", new File(uploadDocumentList.get(i).getFilePath()));
             }
+
             byte[] response = utility.finish();
             return new String(response);
         } catch (IOException ex) {
@@ -102,6 +103,10 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
                     alertDialog.dismiss();
                 }
             } else {
+                Toast.makeText(activity, jsonObject.getString("message") + "", Toast.LENGTH_SHORT).show();
+                if (alertDialog != null && alertDialog.isShowing()) {
+                    alertDialog.dismiss();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

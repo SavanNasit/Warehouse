@@ -9,13 +9,16 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs_execute"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/primary"
-        app:tabSelectedTextColor="@color/primary"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="bottom"
+        android:background="@color/tabColor"
+        app:tabIndicatorColor="@android:color/white"
+        app:tabMinWidth="@dimen/_80sdp"
         app:tabMode="scrollable"
-        app:tabTextColor="@color/home_page_text_gray"
-        app:tabBackground="@color/home_page_gray"
-        />
+        app:tabPaddingEnd="-0.5dp"
+        app:tabPaddingStart="-0.5dp"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@color/gray" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager_execute"

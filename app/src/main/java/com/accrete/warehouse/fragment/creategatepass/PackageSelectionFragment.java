@@ -222,6 +222,7 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
         Call<ApiResponse> call = apiService.getPackageSelectionList(version, key, task, userId, accessToken, chkid);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
+        final String finalChkid = chkid;
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call call, Response response) {
@@ -232,7 +233,7 @@ public class PackageSelectionFragment extends Fragment implements PackedItemAdap
                     if (apiResponse.getSuccess()) {
 
                         ((CreatePassMainTabFragment) getParentFragment()).getResult(packageIdListToAdd,
-                                apiResponse.getData().getShippingTypes(), apiResponse.getData().getShippingBy());
+                                apiResponse.getData().getShippingTypes(), apiResponse.getData().getTransprotModes(), finalChkid);
                         //((CreateGatepassActivity)getActivity()).getResult(packageIdListToAdd,apiResponse.getData().getShippingTypes(),apiResponse.getData().getShippingBy());
                         createGatepassViewpager.setCurrentItem(1);
 

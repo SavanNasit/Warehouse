@@ -119,88 +119,138 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2.2"
-        android:layout_marginTop="@dimen/_20sdp"
         android:orientation="vertical">
 
 
-            <Spinner
-                android:id="@+id/dialog_create_gatepass_shipping_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/spinner_bg"
-                />
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_transport_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_transport_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:visibility="visible" />
 
 
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_shipping_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:visibility="gone" />
 
-            <EditText
-                android:id="@+id/dialog_create_gatepass_vehicle_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:gravity="left"
-                android:hint="Vehicle Number:"
-                android:imeOptions="actionNext"
-                android:padding="@dimen/_7sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/border_edittext_gray"
-                android:inputType="textCapSentences"
-                android:maxLines="1"
-                android:textColor="@color/darkGray"
-                android:textColorHint="@color/gray"
-                android:textSize="@dimen/_10sdp" />
-
-
-            <Spinner
-                android:id="@+id/dialog_create_gatepass_shipping_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/spinner_bg"
-               />
-
-
-            <Spinner
-                android:id="@+id/dialog_create_gatepass_shipping_company"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@drawable/spinner_bg"
-                android:visibility="gone"
-                android:textSize="@dimen/_10sdp" />
+        <EditText
+            android:id="@+id/dialog_create_gatepass_transporter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/border_edittext_gray"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Transporter:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:padding="@dimen/_7sdp"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
 
 
-        <TextView
-            android:id="@+id/dialog_create_gatepass_back"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Back to Package Selection"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingRight="@dimen/_12sdp"
-            android:paddingLeft="@dimen/_12sdp"
-            android:drawableLeft="@drawable/ic_back_arrow"
-            android:textColor="@color/white"
-            android:background="@color/blueTurquoise"/>
+        <EditText
+            android:id="@+id/dialog_create_gatepass_vehicle_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/border_edittext_gray"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Vehicle Number:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:padding="@dimen/_7sdp"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_shipping_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg" />
+
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_shipping_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone" />
+
+
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/dialog_create_gatepass"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.22"
-        android:background="@color/text_black">
+        android:background="@color/text_black"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/dialog_create_gatepass_back"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/_5sdp"
+            android:gravity="center|center_vertical"
+            android:background="@color/blueTurquoise"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="bold"  />
+
+
+        <TextView
+            android:id="@+id/dialog_create_gatepass"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
             android:gravity="center|center_vertical"
             android:text="@string/create"
             android:textColor="@color/white"
-            android:textSize="@dimen/_16sdp" />
+            android:textAllCaps="true"
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="bold"  />
     </LinearLayout>
 </LinearLayout>

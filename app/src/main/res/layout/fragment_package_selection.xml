@@ -144,6 +144,7 @@
             android:id="@+id/package_selection_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:scrollbars="none" />
 
         <TextView

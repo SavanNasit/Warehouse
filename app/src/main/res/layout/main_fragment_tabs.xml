@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,20 +10,22 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_30sdp"
         android:layout_gravity="bottom"
-        android:background="@color/primary"
-        app:tabBackground="@color/home_page_gray"
-        app:tabIndicatorColor="@color/primary"
+        android:background="@color/tabColor"
+        app:tabIndicatorColor="@android:color/white"
         app:tabMinWidth="@dimen/_80sdp"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/primary"
-        app:tabTextColor="@color/home_page_text_gray" />
+        app:tabMode="fixed"
+        app:tabPaddingEnd="-0.5dp"
+        app:tabPaddingStart="-0.5dp"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@color/gray" />
 
-    <android.support.v4.view.ViewPager
+    <com.accrete.warehouse.utils.NonSwipeableViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/toolbar_bottom"
-        android:layout_alignParentTop="true" />
-</LinearLayout>
+        android:layout_below="@+id/tabs" />
+
+
+</RelativeLayout>

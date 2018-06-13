@@ -65,11 +65,8 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".navigationView.DrawerActivity"
-         />
+        <activity android:name=".navigationView.DrawerActivity" />
         <activity android:name=".ScannerActivity" />
-
         <activity android:name=".MainActivity" />
         <activity android:name=".OrderItemActivity" />
         <activity android:name=".CustomerDetailsActivity" />
@@ -77,8 +74,7 @@
         <activity android:name=".ItemsInsidePackageActivity" />
         <activity android:name=".ChangePackageStatusActivity" />
         <activity android:name=".ViewConsignmentActivity" />
-        <activity android:name=".CreatePackageActivity"
-           />
+        <activity android:name=".CreatePackageActivity" />
         <activity
             android:name=".ViewOrderItemsActivity"
             android:label="View Order Items"
@@ -92,10 +88,15 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".ChangePackageAttemptFailedStatusActivity"
-            android:theme="@style/MyMaterialTheme"></activity>
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".fragment.createpackage.AlreadyCreatedPackagesActivity"></activity>
+        <activity android:name=".fragment.runningorders.RunningOrdersExecuteActivity"></activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" />
+
+        <activity android:name=".EditPackageActivity"></activity>
     </application>
 
 </manifest>

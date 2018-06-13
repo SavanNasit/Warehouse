@@ -31,13 +31,13 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.HomeFragment;
+import com.accrete.warehouse.fragment.RunningOrdersTabFragment;
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveAgainstPurchaseOrderFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveDirectlyFragment;
-import com.accrete.warehouse.fragment.runningorders.RunningOrdersExecuteFragment;
 import com.accrete.warehouse.fragment.runningorders.RunningOrdersFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.WarehouseList;
@@ -147,6 +147,14 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         drawerItemList.add("Warehouse 6");*/
 
 
+        if (getIntent().getStringExtra("flagToManage") != null
+                && !getIntent().getStringExtra("flagToManage").isEmpty()
+                && getIntent().getStringExtra("flagToManage").equals("true")) {
+            Fragment managePackagesFragment = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, managePackagesFragment).commitAllowingStateLoss();
+        }
+
+
         //Create the drawer
 
 
@@ -183,11 +191,12 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                             if (drawerItem.getIdentifier() == 0) {
                                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
+
                             } else if (drawerItem.getIdentifier() == 1) {
                                 flagToOpenDialog = true;
                                 getWarehouseList();
                             } else if (drawerItem.getIdentifier() == 2) {
-                                Fragment f = RunningOrdersFragment.newInstance(getString(R.string.running_orders_fragment));
+                                Fragment f = RunningOrdersTabFragment.newInstance(getString(R.string.running_orders_tab_title));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 3) {
                                 Fragment f = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
@@ -238,7 +247,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         if (drawerInterfaceToSend != null) {
             drawerInterfaceToSend.sendDrawer(drawer);
         }
-        getWarehouseList();
+        //getWarehouseList();
+
+        //Enable Touch Back
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
 
@@ -337,6 +349,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         if (warehouseArrayList.size() > 0) {
             warehouseArrayList.clear();
         }
+
         task = getString(R.string.warehouse_list_task);
 
         if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
@@ -451,12 +464,11 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 drawer.setSelection(0);
 
 
-            } else if (currentRunningOrder instanceof RunningOrdersExecuteFragment) {
+            } else if (currentFragment instanceof RunningOrdersFragment) {
                 toolbar.setTitle(R.string.running_orders_fragment);
                 super.onBackPressed();
                 return;
-
-            } else if (currentFragment instanceof RunningOrdersFragment) {
+            } else if (currentFragment instanceof RunningOrdersTabFragment) {
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(2);
                 drawer.setSelection(0);
@@ -506,7 +518,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     @Override
     public void onMessageRowClicked(int position) {
         selectedPosition = true;
-
         selectedWareHousePosition = position;
 
         for (int i = 0; i < warehouseArrayList.size(); i++) {
@@ -524,18 +535,18 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         super.onActivityResult(requestCode, resultCode, data);
         Log.e("TAG_REQUEST", " " + requestCode + " " + resultCode);
         if (resultCode == 1000) {
-            Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
-            if (newCurrentFragment instanceof RunningOrdersExecuteFragment) {
-                Log.e("NEW RUNNING ORDER", " " + requestCode + " " + resultCode);
-                ((RunningOrdersExecuteFragment) newCurrentFragment).getData(data.getStringExtra("scanResult"));
-            }
+            //Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
+            // if (newCurrentFragment instanceof RunningOrdersExecuteActivity) {
+            // Log.e("NEW RUNNING ORDER", " " + requestCode + " " + resultCode);
+            // ((RunningOrdersExecuteActivity).getData(data.getStringExtra("scanResult"));
+            // }
         } else if (resultCode == 1001) {
-            Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
-            if (newCurrentFragment instanceof RunningOrdersExecuteFragment) {
+           /* Fragment newCurrentFragment = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
+            if (newCurrentFragment instanceof RunningOrdersExecuteActivity) {
                 Log.e("Selected Order Item", " " + requestCode + " " + data.getIntExtra("qty", 0));
-               /*((RunningOrdersExecuteFragment) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"),
-                        data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));*/
-            }
+               *//*((RunningOrdersExecuteActivity) newCurrentFragment).getOrderItemList(data.<SelectOrderItem>getParcelableArrayListExtra("selectOrderItem"), data.<PendingItems>getParcelableArrayListExtra("pendingItemsList"), data.getStringExtra("chkoid"),
+                        data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));*//*
+            }*/
 
         } else if (resultCode == 456) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
@@ -546,7 +557,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
         } else if (resultCode == Activity.RESULT_OK) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-           /* if (currentFragment instanceof RunningOrdersExecuteFragment) {
+           /* if (currentFragment instanceof RunningOrdersExecuteActivity) {
                 Fragment f = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
             } else*/
@@ -610,8 +621,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         Log.d("PERMISSION", "Call and Phone services permission granted");
 
                         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frame_container);
-                        if (f instanceof RunningOrdersFragment) {
-                            ((RunningOrdersFragment) f).callAction();
+                        if (f instanceof RunningOrdersTabFragment) {
+                            ((RunningOrdersTabFragment) f).callAction();
                         }
                     } else {
                         Log.d("PERMISSION", "Some permissions are not granted ask again ");
@@ -648,9 +659,9 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                             ((ManageGatePassFragment) f).downloadPdfCall();
                         } else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
-                        } else if (fragment instanceof RunningOrdersExecuteFragment) {
-                            //  ((RunningOrdersExecuteFragment) fragment).checkFragmentAndDownloadPDF();
-                        }/* else if (f instanceof ManagePackagesFragment) {
+                        }/* else if (fragment instanceof RunningOrdersExecuteActivity) {
+                            //  ((RunningOrdersExecuteActivity) fragment).checkFragmentAndDownloadPDF();
+                        }*//* else if (f instanceof ManagePackagesFragment) {
                             ((ManagePackagesFragment) f).checkFragmentAndDownloadPDF();
                         }*/
                     } else {
@@ -673,10 +684,10 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                     if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         Log.d("PERMISSION", "Camera");
                         Fragment f = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
-                        if (f instanceof RunningOrdersExecuteFragment) {
-                            ((RunningOrdersExecuteFragment) f).scanBarcode();
+                        /*if (f instanceof RunningOrdersExecuteActivity) {
+                            ((RunningOrdersExecuteActivity) f).scanBarcode();
                             Log.d("PERMISSION", "Camera2");
-                        }
+                        }*/
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                         } else {
@@ -729,7 +740,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
 
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
         if (currentFragment instanceof HomeFragment) {
-            drawer.setSelection(1);
+            drawer.setSelection(0);
             hideSoftKeyboard(DrawerActivity.this);
             //Enable Touch Back
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

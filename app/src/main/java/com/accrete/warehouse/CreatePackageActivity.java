@@ -2,6 +2,7 @@ package com.accrete.warehouse;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,13 +11,16 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,35 +28,51 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
+import com.accrete.warehouse.adapter.DynamicChargeAdapter;
 import com.accrete.warehouse.adapter.PackageDetailsAdapter;
+import com.accrete.warehouse.adapter.ReferredByTransporterNameAdapter;
 import com.accrete.warehouse.adapter.SelectOrderItemAdapter;
 import com.accrete.warehouse.fragment.HomeFragment;
 import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
-import com.accrete.warehouse.model.CustomerInfo;
+import com.accrete.warehouse.model.Charge;
 import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.PackageDetailsList;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
+import com.accrete.warehouse.model.TransportMode;
+import com.accrete.warehouse.model.TransporterNameSearchDatum;
 import com.accrete.warehouse.model.UploadDocument;
+import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AllDatePickerFragment;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.CustomisedEdiText;
+import com.accrete.warehouse.utils.CustomisedEdiTextListener;
 import com.accrete.warehouse.utils.FilePath;
+import com.accrete.warehouse.utils.NetworkUtil;
 import com.accrete.warehouse.utils.PassDateToCounsellor;
 import com.google.gson.GsonBuilder;
 
@@ -92,7 +112,7 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
  * Created by poonam on 11/29/17.
  */
 
-public class CreatePackageActivity extends AppCompatActivity implements PackageDetailsAdapter.PackageDetailsAdapterListener, DocumentUploaderAdapter.DocAdapterListener, PassDateToCounsellor {
+public class CreatePackageActivity extends AppCompatActivity implements PackageDetailsAdapter.PackageDetailsAdapterListener, DocumentUploaderAdapter.DocAdapterListener, PassDateToCounsellor, DynamicChargeAdapter.DynamicChargeAdapterListener, View.OnClickListener, ReferredByTransporterNameAdapter.ReferredByTransporterNameAdapterListener {
     public Toolbar toolbar;
     PackageDetailsList packageDetails = new PackageDetailsList();
     private RecyclerView ordersItemRecyclerView;
@@ -104,6 +124,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private int position;
     private LinearLayout orderItemToAddPackage;
     private RecyclerView packageDetailsRecyclerView;
+    private RecyclerView dynamicChargesRecyclerView;
     private TextView packageDetailsEmptyView, packageDetailsCreatePackage;
     private TextInputEditText packageDetailsName;
     private TextInputEditText packageDetailsMobile;
@@ -113,13 +134,17 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private TextInputEditText packageDetailsTaxInvoiceSerialNo;
     private TextInputEditText packageDetailsInvoiceDate;
     private AutoCompleteTextView packageDetailsInvoiceType;
+    private Spinner packageDetailsTransportType, packageDetailsTransportMode;
     private TextView packageDetailsUploadDoc;
     private PackageDetailsAdapter packageDetailsAdapter;
     private List<OrderData> packageDetailsList = new ArrayList<>();
     private AllDatePickerFragment datePickerFragment;
     private String stringDateOfInvoice;
     private ArrayList<String> invoiceTypeList = new ArrayList<>();
-    private String strEmail, strMobile, strShippingAddress, strBillingAddress, strOrder, strType, strLocal, strInvoiceDate, strInvoiceNumber, strESugam;
+    private ArrayList<TransportMode> transportTypeList = new ArrayList<>();
+    private ArrayList<Charge> dynamicChargesList = new ArrayList<>();
+    private ArrayList<String> transportMode = new ArrayList<>();
+    private String strEmail, strMobile, strShippingAddress, strBillingAddress, strOrder, strType, strLocal, strInvoiceDate, strInvoiceNumber, strESugam, strDistance, strVehicleNumber, strDate, strTransportNumber, strTransportId, strMode;
     private String chkid;
     private String orderId;
     private List<PendingItems> pendingItemList = new ArrayList<>();
@@ -141,7 +166,29 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private String selectedFilePath;
     private TextInputLayout invoiceSerialNoTextInputLayout;
     private LinearLayout linearLayoutSuccess;
-    private CustomerInfo customerInfo;
+    private String customerName,customerMobile,customerEmail,customerBillingAddress,customerDeliveryAddress;
+    private TextView packageGoBack;
+    private String flagToCallApi;
+    private ArrayAdapter arrayAdapterTransportMode;
+    private DynamicChargeAdapter dynamicChargesAdapter;
+    private TextInputEditText packageDetailsDistance;
+    private TextInputEditText packageDetailsDate;
+    private TextInputEditText packageDetailsTransportNumber;
+    private TextInputEditText packageDetailsTransportName;
+    private TextInputEditText packageDetailsVehicleNumber;
+    private TextInputEditText packageDetailsE_wayNumber;
+    private TextInputLayout packageDetailsDistanceLayout;
+    private TextInputLayout packageDetailsDateLayout;
+    private TextInputLayout packageDetailsTransportNumberLayout;
+    private TextInputLayout packageDetailsTransportNameLayout;
+    private TextInputLayout packageDetailsVehicleNumberLayout;
+    private boolean flagToShowTransportDate;
+    private String strDateForTransport;
+    private Dialog dialog;
+    private CustomisedEdiText transporterNameSearchEditText;
+    private ReferredByTransporterNameAdapter referredByTransporterNameAdapter;
+    private List<TransporterNameSearchDatum> transporterNameList = new ArrayList<>();
+    private String strEwayNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,9 +200,24 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     public void doRefresh() {
     }
 
+
     private void findViews() {
+        if (packageDetailsList != null && packageDetailsList.size() > 0) {
+            packageDetailsList.clear();
+        }
+
+        if (dynamicChargesList != null && dynamicChargesList.size() > 0) {
+            dynamicChargesList.clear();
+        }
+
         packageDetailsList = getIntent().getParcelableArrayListExtra("packageDetails");
-        customerInfo = getIntent().getParcelableExtra("customerInfo");
+        customerName = getIntent().getStringExtra("customerName");
+        customerMobile = getIntent().getStringExtra("customerMobile");
+                customerEmail=getIntent().getStringExtra("customerEmail");
+                customerBillingAddress=getIntent().getStringExtra("customerBillingAddress");
+                        customerDeliveryAddress=getIntent().getStringExtra("customerDeliveryAddress");
+        flagToCallApi = getIntent().getStringExtra("flag");
+        dynamicChargesList = getIntent().getParcelableArrayListExtra("dynamicCharges");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.create_package));
         toolbar.setTitleTextColor(Color.WHITE);
@@ -163,14 +225,10 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
         packageDetailsName = (TextInputEditText) findViewById(R.id.package_details_name);
         packageDetailsMobile = (TextInputEditText) findViewById(R.id.package_details_mobile);
+        packageGoBack = (TextView) findViewById(R.id.activity_go_back);
         packageDetailsEmail = (TextInputEditText) findViewById(R.id.package_details_email);
         packageDetailsBillingAddress = (TextInputEditText) findViewById(R.id.package_details_billing_address);
         packageDetailsDeliveryAddress = (TextInputEditText) findViewById(R.id.package_details_delivery_address);
@@ -183,10 +241,54 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         packageDetailsEmptyView = (TextView) findViewById(R.id.package_details_empty_view);
         packageDetailsCreatePackage = (TextView) findViewById(R.id.package_details_create_package);
         linearLayoutSuccess = (LinearLayout) findViewById(R.id.activity_add_package_added_succesfully);
+        packageDetailsTransportType = (Spinner) findViewById(R.id.package_details_transport_type);
+        packageDetailsTransportMode = (Spinner) findViewById(R.id.package_details_transport_mode);
+        dynamicChargesRecyclerView = (RecyclerView) findViewById(R.id.package_details_charge_field_recycler_view);
+        packageDetailsDistance = (TextInputEditText) findViewById(R.id.package_details_distance);
+        packageDetailsDate = (TextInputEditText) findViewById(R.id.package_details_date);
+        packageDetailsTransportNumber = (TextInputEditText) findViewById(R.id.package_details_transport_number);
+        packageDetailsTransportName = (TextInputEditText) findViewById(R.id.package_details_transport_name);
+        packageDetailsDistanceLayout = (TextInputLayout) findViewById(R.id.package_details_distance_text_input_layout);
+        packageDetailsDateLayout = (TextInputLayout) findViewById(R.id.package_details_date_text_input_layout);
+        packageDetailsTransportNumberLayout = (TextInputLayout) findViewById(R.id.package_details_transport_number_text_input_layout);
+        packageDetailsTransportNameLayout = (TextInputLayout) findViewById(R.id.package_details_transport_name_text_input_layout);
+        packageDetailsVehicleNumber = (TextInputEditText) findViewById(R.id.package_details_vehicle_number);
+        packageDetailsVehicleNumberLayout = (TextInputLayout) findViewById(R.id.package_details_vehicle_number_text_input_layout);
+        packageDetailsE_wayNumber = (TextInputEditText) findViewById(R.id.package_details_e_way_number);
         packageDetailsInvoiceType.setVisibility(View.GONE);
+        packageDetailsTransportName.setOnClickListener(this);
+        packageDetailsTransportName.clearFocus();
+        packageDetailsTransportName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (packageDetailsTransportName.getText().toString().trim().length() == 0) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            openTransporterNameSearchDialog();
+                        }
+                    }
+                }
+            }
+        });
 
-        if(customerInfo!=null){
-            packageDetailsName.setText(customerInfo.getName());
+        if (customerName != null){
+            packageDetailsName.setText(customerName);
+        }
+        if (customerEmail != null){
+            packageDetailsEmail.setText(customerEmail);
+        }
+
+        if (customerMobile != null){
+            packageDetailsMobile.setText(customerMobile);
+        }
+
+
+        if (customerBillingAddress != null){
+            packageDetailsBillingAddress.setText(customerBillingAddress);
+        }
+
+        if (customerDeliveryAddress != null){
+            packageDetailsDeliveryAddress.setText(customerDeliveryAddress);
         }
 
         //TODO - Package's Invoice Date is of current date
@@ -194,6 +296,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c);
         packageDetailsInvoiceDate.setText(formattedDate);
+        packageDetailsDate.setText(formattedDate);
 
         if (packageDetailsList.get(0).getInvoiceNumber() != null &&
                 !packageDetailsList.get(0).getInvoiceNumber().isEmpty()) {
@@ -216,6 +319,15 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         packageDetailsRecyclerView.setNestedScrollingEnabled(false);
         packageDetailsRecyclerView.setAdapter(packageDetailsAdapter);
 
+
+        dynamicChargesAdapter = new DynamicChargeAdapter(getApplicationContext(), dynamicChargesList, this);
+        LinearLayoutManager mDynamicChargesLayoutManager = new LinearLayoutManager(getApplicationContext());
+        dynamicChargesRecyclerView.setLayoutManager(mDynamicChargesLayoutManager);
+        dynamicChargesRecyclerView.setHasFixedSize(true);
+        dynamicChargesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        dynamicChargesRecyclerView.setNestedScrollingEnabled(false);
+        dynamicChargesRecyclerView.setAdapter(dynamicChargesAdapter);
+
         datePickerFragment = new AllDatePickerFragment();
         datePickerFragment.setListener(this);
 
@@ -233,7 +345,74 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
             }
         });
 
+
+        packageDetailsDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerFragment.show(getSupportFragmentManager(), getString(R.string.dialog_from));
+                flagToShowTransportDate = true;
+            }
+        });
+
+
+        if (transportTypeList.size() > 0) {
+            transportTypeList.clear();
+            transportTypeList = getIntent().getParcelableArrayListExtra("transportData");
+        } else {
+            transportTypeList = getIntent().getParcelableArrayListExtra("transportData");
+        }
+
+
         invoiceTypeAdapter();
+        tansportTypeAdapter();
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (linearLayoutSuccess.getVisibility() == View.VISIBLE) {
+                    Intent intent = new Intent("notifyOrderInfo");
+                    // You can also include some extra data.
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                }
+                finish();
+
+            }
+        });
+        //dynamicFields();
+
+        packageDetailsTransportType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                transportModeAdapter(position);
+                dynamicFields();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+      /*  packageDetailsTransportType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                packageDetailsTransportType.showDropDown();
+            }
+        });
+*/
+
+      /*  packageDetailsTransportMode.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (transportMode != null && transportMode.size() == 0) {
+                    Toast.makeText(CreatePackageActivity.this, "Please select transport type to select mode", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+*/
+
         packageDetailsInvoiceType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,10 +431,267 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
             }
         });
 
+
+        packageGoBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDrawerActivity = new Intent(CreatePackageActivity.this, DrawerActivity.class);
+                intentDrawerActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentDrawerActivity.putExtra("flagToManage", "true");
+                startActivity(intentDrawerActivity);
+                finish();
+            }
+        });
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void openTransporterNameSearchDialog() {
+
+        dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_transporter_name_search);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+
+        transporterNameSearchEditText = (CustomisedEdiText) dialog.findViewById(R.id.customer_search_autoCompleteTextView);
+        RecyclerView customerRecyclerView = (RecyclerView) dialog.findViewById(R.id.recyclerView);
+
+
+        //Customers RecyclerView
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        referredByTransporterNameAdapter = new ReferredByTransporterNameAdapter(this,
+                transporterNameList, this);
+
+        customerRecyclerView.setLayoutManager(mLayoutManager);
+        customerRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        customerRecyclerView.setAdapter(referredByTransporterNameAdapter);
+        customerRecyclerView.setNestedScrollingEnabled(false);
+
+        transporterNameSearchEditText.setHint("Search Transporter");
+        transporterNameSearchEditText.setThreshold(1);
+        transporterNameSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (transporterNameSearchEditText.isPerformingCompletion()) {
+
+                } else {
+                    String status = NetworkUtil.getConnectivityStatusString(CreatePackageActivity.this);
+                    if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                        searchTransporter(s.toString().trim());
+                    } else {
+                        //Toast.makeText(getActivity(), getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
+                        if (transporterNameSearchEditText.getText().toString() != null && !transporterNameSearchEditText.getText().toString().isEmpty()) {
+                            //Toast.makeText(getActivity(), getString(R.string.add_customer_error), Toast.LENGTH_SHORT).show();
+                            //CustomisedToast.info(getActivity(), getString(R.string.add_customer_error)).show();
+                            Toast.makeText(CreatePackageActivity.this, getString(R.string.add_transporter_name_error), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        transporterNameSearchEditText.addListener(new CustomisedEdiTextListener() {
+            @Override
+            public void onUpdate() {
+                if (transporterNameList != null && transporterNameList.size() > 0) {
+                    transporterNameList.clear();
+                }
+
+                referredByTransporterNameAdapter.notifyDataSetChanged();
+            }
+        });
+
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+        window.setAttributes(wlp);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        dialog.show();
+
+
+    }
+
+    private void searchTransporter(String s) {
+        task = getString(R.string.task_transporter_name_search);
+        if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.getTransporterName(version, key, task, userId, accessToken, chkid, s, "26");
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                // leadList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        if (transporterNameList != null && transporterNameList.size() > 0) {
+                            transporterNameList.clear();
+                        }
+
+                        for (final TransporterNameSearchDatum searchRefferedDatum : apiResponse.getData().getLedgerSearchData()) {
+                            if (searchRefferedDatum != null) {
+                                transporterNameList.add(searchRefferedDatum);
+                            }
+                        }
+                        refreshTransporterNameRecyclerView();
+                    } else {
+                       /* if (apiResponse.getSuccessCode().equals("10001")) {
+                            //redirectToDomain(apiResponse);
+                            // CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10002")) {
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            //  redirectToDomain(apiResponse);
+                        } else if (apiResponse.getSuccessCode().equals("10003")) {
+                            // redirectToDomain(apiResponse);
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        } else if (apiResponse.getSuccessCode().equals("10004")) {
+                            // redirectToDomain(apiResponse);
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        } else if (apiResponse.getSuccessCode().equals("10005")) {
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10006")) {
+                            //redirectToDomain(apiResponse);
+                            //  CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            getDataInvoiceDataFromDB();
+                            if (NetworkUtil.getConnectivityStatusString(getActivity()).equals("Not connected to Internet")) {
+                                CustomisedToast.error(getActivity(), getString(R.string.not_connected_to_internet)).show();
+                            } else if (invoiceList.size() > 0) {
+                                CustomisedToast.error(getActivity(), getString(R.string.customer_support_error)).show();
+                            } else {
+                                logout();
+                            }
+                        } else if (apiResponse.getSuccessCode().equals("10007")) {
+                            //redirectToDomain(apiResponse);
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10008")) {
+                            // CustomisedToast.error(getActivity(), getString(R.string.error_login), Toast.LENGTH_SHORT).show();
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10009")) {
+                            // CustomisedToast.error(getActivity(), getString(R.string.error_login_mac), Toast.LENGTH_SHORT).show();
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10010")) {
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("100011")) {
+                            // redirectToDomain(apiResponse);
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10012")) {
+                            // redirectToDomain(apiResponse);
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10013")) {
+                            //  redirectToDomain(apiResponse);
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            CustomisedToast.error(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }*/
+
+                        Toast.makeText(CreatePackageActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                if (getApplicationContext() != null) {
+                    //Toast.makeText(getActivity(), getString(R.string.connect_server_failed), Toast.LENGTH_SHORT).show();
+                    // Log.d("error message",getString(R.string.connect_server_failed));
+                }
+            }
+        });
+    }
+
+    private void refreshTransporterNameRecyclerView() {
+        //Refreshing data after getting input from openCustomerSearchDialog
+        referredByTransporterNameAdapter.notifyDataSetChanged();
+
+        transporterNameSearchEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                TransporterNameSearchDatum selected = (TransporterNameSearchDatum) arg0.getAdapter().getItem(arg2);
+                if (selected.getName() != null && !selected.getName().toString().trim().isEmpty()) {
+                    transporterNameSearchEditText.setText(selected.getName().toString().trim());
+                }
+
+                packageDetailsTransportName.setVisibility(View.VISIBLE);
+
+                if (selected.getName() != null && !selected.getName().toString().trim().isEmpty()) {
+                    packageDetailsTransportName.setText(selected.getName().toString().trim());
+                    strTransportId = selected.getId();
+                }
+
+                //currentAddressLayout.setVisibility(View.VISIBLE);
+                transporterNameSearchEditText.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        transporterNameSearchEditText.setSelection(transporterNameSearchEditText.getText().toString().length());
+                    }
+                });
+
+
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+
+    }
+
+    private void dynamicFields() {
+        if (packageDetailsTransportType.getSelectedItem().toString().equals("Air")
+                || packageDetailsTransportType.getSelectedItem().toString().equals("Rail")
+                || packageDetailsTransportType.getSelectedItem().toString().equals("Ship")) {
+            packageDetailsDistanceLayout.setVisibility(View.VISIBLE);
+            packageDetailsDateLayout.setVisibility(View.VISIBLE);
+            packageDetailsTransportNumberLayout.setVisibility(View.VISIBLE);
+            packageDetailsVehicleNumberLayout.setVisibility(View.GONE);
+            packageDetailsTransportNameLayout.setVisibility(View.GONE);
+        } else if (packageDetailsTransportType.getSelectedItem().toString().equals("Road")) {
+            packageDetailsDistanceLayout.setVisibility(View.VISIBLE);
+            packageDetailsDateLayout.setVisibility(View.VISIBLE);
+            packageDetailsTransportNumberLayout.setVisibility(View.GONE);
+            packageDetailsTransportNameLayout.setVisibility(View.VISIBLE);
+            packageDetailsVehicleNumberLayout.setVisibility(View.VISIBLE);
+        } else {
+            packageDetailsDistanceLayout.setVisibility(View.GONE);
+            packageDetailsDateLayout.setVisibility(View.GONE);
+            packageDetailsTransportNumberLayout.setVisibility(View.GONE);
+            packageDetailsTransportNameLayout.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public void onMessageRowClicked(int position) {
+
+    }
+
+    @Override
+    public void onExecute() {
 
     }
 
@@ -276,10 +712,17 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            stringDateOfInvoice = s;
-            Date startDate = formatter.parse(stringDateOfInvoice);
-            stringDateOfInvoice = targetFormat.format(startDate);
-            packageDetailsInvoiceDate.setText(s);
+            if (!flagToShowTransportDate) {
+                stringDateOfInvoice = s;
+                Date startDate = formatter.parse(stringDateOfInvoice);
+                stringDateOfInvoice = targetFormat.format(startDate);
+                packageDetailsInvoiceDate.setText(s);
+            } else {
+                strDateForTransport = s;
+                Date startDate = formatter.parse(strDateForTransport);
+                strDateForTransport = targetFormat.format(startDate);
+                packageDetailsDate.setText(s);
+            }
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -297,6 +740,41 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         ArrayAdapter arrayAdapterInvoiceType = new ArrayAdapter(getApplicationContext(), R.layout.simple_spinner_item, invoiceTypeList);
         arrayAdapterInvoiceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         packageDetailsInvoiceType.setAdapter(arrayAdapterInvoiceType);
+    }
+
+    private void tansportTypeAdapter() {
+        List<String> transportType = new ArrayList<>();
+        for (int i = 0; i < transportTypeList.size(); i++) {
+            transportType.add(transportTypeList.get(i).getType());
+        }
+      /*  if (transportTypeList != null && transportTypeList.size() > 0) {
+            packageDetailsTransportType.setText(transportTypeList.get(0).getType());
+        }*/
+        ArrayAdapter arrayAdapterInvoiceType = new ArrayAdapter(getApplicationContext(), R.layout.simple_spinner_item, transportType);
+        arrayAdapterInvoiceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        packageDetailsTransportType.setAdapter(arrayAdapterInvoiceType);
+
+        if (arrayAdapterTransportMode != null) {
+            arrayAdapterTransportMode.notifyDataSetChanged();
+        }
+    }
+
+
+    private void transportModeAdapter(int position) {
+        transportMode = new ArrayList<>();
+        if (packageDetailsTransportType.getSelectedItem().toString().equals(transportTypeList.get(position).getType())) {
+            for (int y = 0; y < transportTypeList.get(position).getModes().size(); y++) {
+                transportMode.add(transportTypeList.get(position).getModes().get(y).getName());
+            }
+
+            if (transportTypeList != null && transportTypeList.size() > 0 && transportTypeList.get(position).getModes().get(0).getName() != null) {
+                packageDetailsTransportMode.setSelection(0);
+                strMode = transportTypeList.get(position).getModes().get(0).getPacdelgatpactid();
+            }
+        }
+        arrayAdapterTransportMode = new ArrayAdapter(getApplicationContext(), R.layout.simple_spinner_item, transportMode);
+        arrayAdapterTransportMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        packageDetailsTransportMode.setAdapter(arrayAdapterTransportMode);
     }
 
 
@@ -332,12 +810,13 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
             public void onClick(View v) {
                 btnUpload.setEnabled(false);
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
-                    /*if (!NetworkUtil.getConnectivityStatusString(getApplicationContext()).equals(getString(R.string.not_connected_to_internet))) {
-                       //FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
-                     //  filesUploadingAsyncTask.execute();
+                   /* if (!NetworkUtil.getConnectivityStatusString(getApplicationContext()).equals(getString(R.string.not_connected_to_internet))) {
+                       FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
+                      filesUploadingAsyncTask.execute();
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }*/
+                    Toast.makeText(getApplicationContext(), "document uploaded successfully", Toast.LENGTH_SHORT).show();
                     dialogUploadDoc.dismiss();
                 } else {
                     Toast.makeText(getApplicationContext(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
@@ -400,7 +879,18 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
             strMobile = packageDetailsMobile.getText().toString();
             strShippingAddress = packageDetailsDeliveryAddress.getText().toString();
             strBillingAddress = packageDetailsBillingAddress.getText().toString();
-            strType = "1";
+            strDistance = packageDetailsDistance.getText().toString();
+            strVehicleNumber = packageDetailsVehicleNumber.getText().toString();
+            strTransportNumber = packageDetailsTransportNumber.getText().toString();
+            strDate = strDateForTransport;
+            strEwayNumber = packageDetailsE_wayNumber.getText().toString();
+
+            if (flagToCallApi.equals("runningOrder")) {
+                strType = "1";
+            } else {
+                strType = "2";
+            }
+
             strLocal = "1";
             strOrder = orderId;
             String strChkoid = getIntent().getExtras().getString("chkoid");
@@ -455,6 +945,25 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
             } catch (IndexOutOfBoundsException ex) {
                 ex.printStackTrace();
             }
+
+            JSONArray jsonArrayDynamicCharges = new JSONArray();
+
+            try {
+                Log.e("Charge List", String.valueOf(dynamicChargesList.size()));
+                if (dynamicChargesList != null && dynamicChargesList.size() > 0) {
+                    for (int i = 0; i < dynamicChargesList.size(); i++) {
+                        JSONObject jsonObjectDynamicChargeDetails = new JSONObject();
+                        jsonObjectDynamicChargeDetails.put("id", dynamicChargesList.get(i).getChkoecid());
+                        jsonObjectDynamicChargeDetails.put("value", dynamicChargesList.get(i).getValue());
+                        jsonArrayDynamicCharges.put(jsonObjectDynamicChargeDetails);
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IndexOutOfBoundsException ex) {
+                ex.printStackTrace();
+            }
             UploadDocument uploadDocument = new UploadDocument();
 //        File propertyImageFile = new File(uploadDocument.getFilePath());
             //  RequestBody propertyImage = RequestBody.create(MediaType.parse("image/*"), propertyImageFile);
@@ -479,17 +988,16 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
             }
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
             Call<ApiResponse> call = null;
 
             if (surveyImagesParts != null && surveyImagesParts.length > 0) {
                 call = apiService.createPackageMultipart(version, key, task, userId, accessToken,
                         strEmail, strMobile, strShippingAddress, strBillingAddress, jsonArrayPackageDetails, chkid, strOrder, strType, strLocal, strInvoiceDate
-                        , strInvoiceNumber, strESugam, surveyImagesParts, strChkoid);
+                        , strInvoiceNumber, strESugam, surveyImagesParts, strChkoid, strDistance, strVehicleNumber, strTransportNumber, strDate, strMode, strTransportId, jsonArrayDynamicCharges, strEwayNumber);
             } else {
                 call = apiService.createPackageWithoutMultipart(version, key, task, userId, accessToken,
                         strEmail, strMobile, strShippingAddress, strBillingAddress, jsonArrayPackageDetails, chkid, strOrder, strType, strLocal, strInvoiceDate
-                        , strInvoiceNumber, strESugam, strChkoid);
+                        , strInvoiceNumber, strESugam, strChkoid, strDistance, strVehicleNumber, strTransportNumber, strDate, strMode, strTransportId, jsonArrayDynamicCharges, strEwayNumber);
             }
             Log.d("Request", String.valueOf(call));
             Log.d("url", String.valueOf(call.request().url()));
@@ -503,10 +1011,10 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                     if (apiResponse.getSuccess()) {
                         // Toast.makeText(CreatePackageActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         linearLayoutSuccess.setVisibility(View.VISIBLE);
-                     //   Intent intent = new Intent();
-                       // setResult(RESULT_OK, intent);
-                     //
-                     //   finish();
+                        //   Intent intent = new Intent();
+                        // setResult(RESULT_OK, intent);
+                        //
+                        //   finish();
                    /*     AlreadyCreatedPackages packages = new AlreadyCreatedPackages();
                         packages.setInvoiceDate(strInvoiceDate);
                         packages.setInvoiceNo(strInvoiceNumber);
@@ -516,7 +1024,10 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
 
                         packedList.add(packages);*/
 
-                        //     ((RunningOrdersExecuteFragment) getParentFragment()).sendPackageDetails();
+                        //     ((RunningOrdersExecuteActivity) getParentFragment()).sendPackageDetails();
+                        Intent intent = new Intent("notifyOrderInfo");
+                        // You can also include some extra data.
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
@@ -650,7 +1161,6 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
 
 
     public void askUserToAllowPermissionFromSetting() {
-
         android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
         // set title
         alertDialogBuilder.setTitle(R.string.permission_required);
@@ -683,4 +1193,52 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         alertDialog.show();
     }
 
+    @Override
+    public void onClick(View v) {
+        packageDetailsTransportName.setEnabled(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            openTransporterNameSearchDialog();
+        }
+        //Enable Again
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                packageDetailsTransportName.setEnabled(true);
+            }
+        }, 4000);
+    }
+
+    @Override
+    public void onCustomerClick(int position) {
+        TransporterNameSearchDatum selected = transporterNameList.get(position);
+        if (selected.getName() != null && !selected.getName().toString().trim().isEmpty()) {
+            packageDetailsTransportName.setText(selected.getName().toString().trim());
+            strTransportId = selected.getId();
+        }
+
+        packageDetailsTransportName.setVisibility(View.VISIBLE);
+        //currentAddressLayout.setVisibility(View.VISIBLE);
+        packageDetailsTransportName.post(new Runnable() {
+            @Override
+            public void run() {
+                packageDetailsTransportName.setSelection(packageDetailsTransportName.getText().toString().length());
+            }
+        });
+
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if (linearLayoutSuccess.getVisibility() == View.VISIBLE) {
+            Intent intent = new Intent("notifyOrderInfo");
+            // You can also include some extra data.
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+        }
+    }
 }

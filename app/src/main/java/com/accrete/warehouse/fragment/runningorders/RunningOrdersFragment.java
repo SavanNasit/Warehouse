@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,9 @@ import android.widget.Toast;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.RecyclerItemTouchHelper;
 import com.accrete.warehouse.adapter.RunningOrdersAdapter;
+import com.accrete.warehouse.fragment.RunningOrdersTabFragment;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.CustomerInfo;
 import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.RunningOrder;
@@ -33,6 +36,8 @@ import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.builder.AnimateGifMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,21 +73,23 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
     private String dataChanged, status;
     private int progressStatus = 0;
     private LinearLayoutManager mLayoutManager;
+    private ImageView imageViewLoader;
 
-    public static RunningOrdersFragment newInstance(String title) {
-        RunningOrdersFragment f = new RunningOrdersFragment();
-        Bundle args = new Bundle();
-        args.putString(KEY_TITLE, title);
-        f.setArguments(args);
-        return (f);
-    }
-
+    /* public static RunningOrdersFragment newInstance(String title) {
+         RunningOrdersFragment f = new RunningOrdersFragment();
+         Bundle args = new Bundle();
+         args.putString(KEY_TITLE, title);
+         f.setArguments(args);
+         return (f);
+     }
+ */
     private void findViews(View rootview) {
         runningOrdersSwipeRefreshLayout = (SwipeRefreshLayout) rootview.findViewById(R.id.running_orders_swipe_refresh_layout);
         runningOrdersRecyclerView = (RecyclerView) rootview.findViewById(R.id.running_orders_recycler_view);
         runningOrdersEmptyView = (TextView) rootview.findViewById(R.id.running_orders_empty_view);
         runningOrdersCount = (TextView) rootview.findViewById(R.id.running_orders_text_count);
         runningOrdersProgressBar = (ProgressBar) rootview.findViewById(R.id.running_orders_progress_bar);
+        imageViewLoader = (ImageView) rootview.findViewById(R.id.imageView_loader);
         runningOrdersAdapter = new RunningOrdersAdapter(getActivity(), runningOrderList, this);
         mLayoutManager = new LinearLayoutManager(getActivity());
         runningOrdersRecyclerView.setLayoutManager(mLayoutManager);
@@ -116,7 +123,12 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                     loading = true;
                     //calling API
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        getRunningOrderList(runningOrderList.get(totalItemCount - 1).getCreatedTs(), "2");
+
+                        if (getActivity() != null) {
+                            showLoader();
+                            getRunningOrderList(runningOrderList.get(totalItemCount - 1).getCreatedTs(), "2");
+                        }
+
                     } else {
                         if (runningOrdersSwipeRefreshLayout.isRefreshing()) {
                             runningOrdersSwipeRefreshLayout.setRefreshing(false);
@@ -136,24 +148,24 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
             }
         });
 
-        runningOrdersSwipeRefreshLayout.setOnRefreshListener(this);
+        //  runningOrdersSwipeRefreshLayout.setOnRefreshListener(this);
+
         doRefresh();
-
         setSwipeForRecyclerView();
-
     }
 
     public void doRefresh() {
         if (runningOrderList != null && runningOrderList.size() == 0) {
             status = NetworkUtil.getConnectivityStatusString(getActivity());
-            if (!status.equals(getString(R.string.not_connected_to_internet))) {
+            if (!loading && !status.equals(getString(R.string.not_connected_to_internet))) {
                 loading = true;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (runningOrderList != null && runningOrderList.size() == 0) {
                         }
-                        if(getActivity()!=null && isAdded()) {
+                        if (getActivity() != null && isAdded()) {
+                            showLoader();
                             getRunningOrderList(getString(R.string.last_updated_date), "1");
                         }
                     }
@@ -179,8 +191,14 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_running_orders, container, false);
         findViews(rootView);
+        //  Log.e("onCreate","jkjjkjjk");
+
+        ((RunningOrdersTabFragment)getParentFragment()).updateCount(AppPreferences.getWarehouseOrderCount(getActivity(), AppUtils.WAREHOUSE_ORDER_COUNT),0);
         return rootView;
     }
+
+
+/*
 
     @Override
     public void onResume() {
@@ -211,6 +229,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                     .setTitle(getString(R.string.running_orders_fragment));
         }
     }
+*/
 
 
     @Override
@@ -220,17 +239,125 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
 
     @Override
     public void onExecute(List<Packages> packages, List<OrderData> pendingItems, String chkid, String chkoid, int position) {
-        RunningOrdersExecuteFragment fragment = new RunningOrdersExecuteFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("packages", (ArrayList<? extends Parcelable>) packages);
-        bundle.putParcelableArrayList("pendingItems", (ArrayList<? extends Parcelable>) pendingItems);
-        bundle.putParcelable("customerInfo", runningOrderList.get(position).getCustomerInfo());
-        bundle.putString("chkid", chkid);
-        bundle.putString("chkoid", chkoid);
-        fragment.setArguments(bundle);
-        ft.replace(R.id.running_orders_container, fragment, getString(R.string.running_orders_execute_fragment));
-        ft.addToBackStack(null).commit();
+        String currentAddress = "";
+        String shippingAddress = "";
+
+        //Shipping Address
+        if ((runningOrderList.get(position).getCustomerInfo().getShippingAddrSitename()!= null && !runningOrderList.get(position).getCustomerInfo().getShippingAddrSitename().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getShippingAddrLine() != null && !runningOrderList.get(position).getCustomerInfo().getShippingAddrLine().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getShippingAddrCity() != null && !runningOrderList.get(position).getCustomerInfo().getShippingAddrCity().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode() != null && !runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getShippingAddrCountryName() != null && !runningOrderList.get(position).getCustomerInfo().getShippingAddrCountryName().isEmpty())) {
+
+
+            //Address Site Name
+            if (runningOrderList.get(position).getCustomerInfo().getShippingAddrSitename() != null && !runningOrderList.get(position).getCustomerInfo().getShippingAddrSitename().isEmpty()) {
+                shippingAddress = shippingAddress + runningOrderList.get(position).getCustomerInfo().getShippingAddrSitename() + ", ";
+            }
+
+            //Address Line 1
+            if (runningOrderList.get(position).getCustomerInfo().getShippingAddrLine() != null && !runningOrderList.get(position).getCustomerInfo().getShippingAddrLine().isEmpty()) {
+                shippingAddress = shippingAddress + runningOrderList.get(position).getCustomerInfo().getShippingAddrLine() + ", ";
+            }
+
+            //City & Zip Code
+            if (runningOrderList.get(position).getCustomerInfo().getShippingAddrCity() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getShippingAddrCity().toString().trim().isEmpty() &&
+                    runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode().toString().trim().isEmpty()) {
+                shippingAddress = shippingAddress +
+                        runningOrderList.get(position).getCustomerInfo().getShippingAddrCity().toString().trim() + " - " +
+                        runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode()
+                                .toString().trim() + "," + "\n";
+            } else if (runningOrderList.get(position).getCustomerInfo().getShippingAddrCity() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getShippingAddrCity().toString().trim().isEmpty()) {
+                shippingAddress = shippingAddress +
+                        runningOrderList.get(position).getCustomerInfo().getShippingAddrCity().toString().trim() + ", ";
+            } else if (runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode().toString().trim().isEmpty()) {
+                shippingAddress = shippingAddress +
+                        runningOrderList.get(position).getCustomerInfo().getShippingAddrPincode()
+                                .toString().trim() + ", ";
+            }
+            //State
+            if (runningOrderList.get(position).getCustomerInfo().getShippingAddrStateName() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getShippingAddrStateName().isEmpty()) {
+                shippingAddress = shippingAddress + runningOrderList.get(position).getCustomerInfo().getShippingAddrStateName() + ", ";
+            }
+
+            //Country
+            if (runningOrderList.get(position).getCustomerInfo().getShippingAddrCountryName() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getShippingAddrCountryName().isEmpty()) {
+                shippingAddress = shippingAddress + runningOrderList.get(position).getCustomerInfo().getShippingAddrCountryName() + " ";
+            }
+
+        }
+
+        //Billing Address
+        if ((runningOrderList.get(position).getCustomerInfo().getBillingAddSitename()!= null && !runningOrderList.get(position).getCustomerInfo().getBillingAddSitename().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getBillingAddrLine() != null && !runningOrderList.get(position).getCustomerInfo().getBillingAddrLine().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getBillingAddrCity() != null && !runningOrderList.get(position).getCustomerInfo().getBillingAddrCity().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode() != null && !runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode().isEmpty())
+                || (runningOrderList.get(position).getCustomerInfo().getBillingAddrCountryName() != null && !runningOrderList.get(position).getCustomerInfo().getBillingAddrCountryName().isEmpty())) {
+
+
+
+            //Address Site Name
+            if (runningOrderList.get(position).getCustomerInfo().getBillingAddSitename() != null && !runningOrderList.get(position).getCustomerInfo().getBillingAddSitename().isEmpty()) {
+                currentAddress = currentAddress + runningOrderList.get(position).getCustomerInfo().getBillingAddSitename() + ", ";
+            }
+
+            //Address Line 1
+            if (runningOrderList.get(position).getCustomerInfo().getBillingAddrLine() != null && !runningOrderList.get(position).getCustomerInfo().getBillingAddrLine().isEmpty()) {
+                currentAddress = currentAddress + runningOrderList.get(position).getCustomerInfo().getBillingAddrLine() + ", ";
+            }
+
+            //City & Zip Code
+            if (runningOrderList.get(position).getCustomerInfo().getBillingAddrCity() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getBillingAddrCity().toString().trim().isEmpty() &&
+                    runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        runningOrderList.get(position).getCustomerInfo().getBillingAddrCity().toString().trim() + " - " +
+                        runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode()
+                                .toString().trim() + "," + "\n";
+            } else if (runningOrderList.get(position).getCustomerInfo().getBillingAddrCity() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getBillingAddrCity().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        runningOrderList.get(position).getCustomerInfo().getBillingAddrCity().toString().trim() + ", ";
+            } else if (runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode().toString().trim().isEmpty()) {
+                currentAddress = currentAddress +
+                        runningOrderList.get(position).getCustomerInfo().getBillingAddrPincode()
+                                .toString().trim() + ", ";
+            }
+            //State
+            if (runningOrderList.get(position).getCustomerInfo().getBillingAddrStateName() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getBillingAddrStateName().isEmpty()) {
+                currentAddress = currentAddress + runningOrderList.get(position).getCustomerInfo().getBillingAddrStateName() + ", ";
+            }
+
+            //Country
+            if (runningOrderList.get(position).getCustomerInfo().getBillingAddrCountryName() != null &&
+                    !runningOrderList.get(position).getCustomerInfo().getBillingAddrCountryName().isEmpty()) {
+                currentAddress = currentAddress + runningOrderList.get(position).getCustomerInfo().getBillingAddrCountryName() + " ";
+            }
+
+        }
+
+            Intent intentExecute = new Intent(getActivity(), RunningOrdersExecuteActivity.class);
+        intentExecute.putParcelableArrayListExtra("packages", (ArrayList<? extends Parcelable>) packages);
+        intentExecute.putParcelableArrayListExtra("pendingItems", (ArrayList<? extends Parcelable>) pendingItems);
+        intentExecute.putExtra("customerName", runningOrderList.get(position).getCustomerInfo().getName());
+        intentExecute.putExtra("customerEmail", runningOrderList.get(position).getCustomerInfo().getEmail());
+        intentExecute.putExtra("customerMobile", runningOrderList.get(position).getCustomerInfo().getMobile());
+        intentExecute.putExtra("customerBillingAddress",currentAddress);
+        intentExecute.putExtra("customerDeliveryAddress",shippingAddress);
+        intentExecute.putExtra("chkid", chkid);
+        intentExecute.putExtra("chkoid", chkoid);
+        intentExecute.putExtra("orderId",runningOrderList.get(position).getCheckpointOrderID());
+        intentExecute.putExtra("flag", "runningOrder");
+        startActivity(intentExecute);
     }
 
     @Override
@@ -246,10 +373,10 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
            /* if (runningOrderList != null && runningOrderList.size() > 0) {
                 runningOrderList.clear();
             }*/
-
-            runningOrdersProgressBar.setMax(100);
+            runningOrdersProgressBar.setVisibility(View.GONE);
+  /*          runningOrdersProgressBar.setMax(100);
             runningOrdersProgressBar.setVisibility(View.VISIBLE);
-            runningOrdersProgressBar.setProgress(progressStatus);
+            runningOrdersProgressBar.setProgress(progressStatus);*/
 
             runningOrdersSwipeRefreshLayout.setRefreshing(false);
             if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
@@ -262,7 +389,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<ApiResponse> call = apiService.getRunningOrderList(version, key, task, userId, accessToken, chkid,
                     updatedDate, traversalValue);
-            Log.d("Request", String.valueOf(call));
+            //  Log.d("Request", String.valueOf(call));
             Log.d("url", String.valueOf(call.request().url()));
             call.enqueue(new Callback<ApiResponse>() {
                 @Override
@@ -303,7 +430,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                                 runningOrdersEmptyView.setText("No data available");
                                 runningOrdersRecyclerView.setVisibility(View.VISIBLE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
-                                runningOrdersCount.setVisibility(View.GONE);
+                               // runningOrdersCount.setVisibility(View.GONE);
                             } else {
                                 runningOrdersEmptyView.setVisibility(View.GONE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -324,11 +451,11 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                                 }
                             }
                             if (runningOrderList != null && runningOrderList.size() > 0) {
-                                runningOrdersCount.setVisibility(View.VISIBLE);
+                               // runningOrdersCount.setVisibility(View.VISIBLE);
                                 if (runningOrderList.size() == 1) {
-                                    runningOrdersCount.setText(runningOrderList.size() + " Running Order");
+                                   // runningOrdersCount.setText(runningOrderList.size() + " Running Order");
                                 } else {
-                                    runningOrdersCount.setText(runningOrderList.size() + " Running Orders");
+                                  //  runningOrdersCount.setText(runningOrderList.size() + " Running Orders");
                                 }
                             }
 
@@ -338,7 +465,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                                 runningOrdersEmptyView.setText("No data available");
                                 runningOrdersRecyclerView.setVisibility(View.VISIBLE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
-                                runningOrdersCount.setVisibility(View.GONE);
+                              //  runningOrdersCount.setVisibility(View.GONE);
                             } else {
                                 runningOrdersEmptyView.setVisibility(View.GONE);
                                 runningOrdersSwipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -363,7 +490,7 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                                 runningOrdersEmptyView.setText(getString(R.string.no_data_available));
                                 runningOrdersRecyclerView.setVisibility(View.GONE);
                                 runningOrdersEmptyView.setVisibility(View.VISIBLE);
-                                runningOrdersCount.setVisibility(View.GONE);
+                             //   runningOrdersCount.setVisibility(View.GONE);
 
                             } else if (apiResponse.getSuccessCode().equals("20004")) {
 
@@ -375,8 +502,15 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                         if (runningOrdersProgressBar != null && runningOrdersProgressBar.getVisibility() == View.VISIBLE) {
                             runningOrdersProgressBar.setVisibility(View.GONE);
                         }
+                        if (getActivity() != null && isAdded()) {
+                            hideLoader();
+                        }
+
+                        ((RunningOrdersTabFragment)getParentFragment()).updateCount(AppPreferences.getWarehouseOrderCount(getActivity(), AppUtils.WAREHOUSE_ORDER_COUNT),0);
+
                     } catch (Exception e) {
                         e.printStackTrace();
+                        hideLoader();
                     }
                 }
 
@@ -384,10 +518,12 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
                 public void onFailure(Call<ApiResponse> call, Throwable t) {
                     if (getActivity() != null && isAdded()) {
                         runningOrdersSwipeRefreshLayout.setRefreshing(false);
+                        hideLoader();
                         if (runningOrdersProgressBar != null && runningOrdersProgressBar.getVisibility() == View.VISIBLE) {
                             runningOrdersProgressBar.setVisibility(View.GONE);
                         }
                     }
+
                 }
             });
         } catch (Exception ex) {
@@ -432,7 +568,46 @@ public class RunningOrdersFragment extends Fragment implements RunningOrdersAdap
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         int swipedPosition = viewHolder.getAdapterPosition();
         runningOrdersAdapter.next(swipedPosition, runningOrderList.get(position));
+    }
 
+
+    private void hideLoader() {
+        if (getActivity() != null) {
+            if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
+                imageViewLoader.setVisibility(View.GONE);
+            }
+            //Enable Touch Back
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+    }
+
+    private void showLoader() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getActivity() != null) {
+                            if (runningOrderList != null && runningOrderList.size() == 0) {
+                                if (imageViewLoader.getVisibility() == View.GONE) {
+                                    if (runningOrdersEmptyView.getVisibility() != View.VISIBLE)
+                                        imageViewLoader.setVisibility(View.VISIBLE);
+                                }
+                                //Disable Touch
+                                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                Ion.with(imageViewLoader)
+                                        .animateGif(AnimateGifMode.ANIMATE)
+                                        .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
+                                        .withBitmapInfo();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 }
 

@@ -53,10 +53,11 @@ public class ConfirmGatepassFragment extends Fragment {
     String uid, pacid, pacshtid, chkid, scompid, vehicle;
     private AutoCompleteTextView dialogGatepassAuthenticationDeliveryUser;
     private TextView dialogGatepassBack;
-    private LinearLayout dialogGatepassConfirm;
+    private TextView dialogGatepassConfirm;
     private String strDeliveryUser;
     private ArrayAdapter arrayAdapterDeliveryUser;
     private String shippingBy;
+    private String transporterId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +67,7 @@ public class ConfirmGatepassFragment extends Fragment {
 
         dialogGatepassAuthenticationDeliveryUser = (AutoCompleteTextView) rootView.findViewById(R.id.dialog_gatepass_authentication_delivery_user);
         dialogGatepassBack = (TextView) rootView.findViewById(R.id.dialog_gatepass_back);
-        dialogGatepassConfirm = (LinearLayout) rootView.findViewById(R.id.dialog_gatepass_confirm);
+        dialogGatepassConfirm = (TextView) rootView.findViewById(R.id.dialog_gatepass_confirm);
 
         arrayAdapterDeliveryUser = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, usernameList);
         arrayAdapterDeliveryUser.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -159,7 +160,7 @@ public class ConfirmGatepassFragment extends Fragment {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ApiResponse> call = apiService.createGatePass(version, key, task, userId, accessToken, uid,
-                pacid, pacshtid, scompid, chkid, "0", "0", shippingBy, vehicle);
+                pacid, pacshtid, scompid, chkid, "0", "0", shippingBy, vehicle,transporterId);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -270,11 +271,12 @@ public class ConfirmGatepassFragment extends Fragment {
         });
     }
 
-    public void getData(String strPacid, String strPacdelgatpactid, String strPacshtid, String strShippingCompanyId, String sirVehicleNumber) {
+    public void getData(String strPacid, String strPacdelgatpactid, String strPacshtid, String strShippingCompanyId, String sirVehicleNumber,String tarnsporterId) {
         pacid = strPacid;
         shippingBy = strPacdelgatpactid;
         pacshtid = strPacshtid;
         scompid = strShippingCompanyId;
         vehicle = sirVehicleNumber;
+        transporterId = tarnsporterId;
     }
 }

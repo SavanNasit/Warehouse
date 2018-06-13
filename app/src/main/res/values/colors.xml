@@ -63,4 +63,6 @@
     <color name="sky_blue_bg">#D9EDF7</color>
 
     <color name="gray_custom">#ECEDEF</color>
+    <color name="tabColor">#222D3A</color>
+
 </resources>

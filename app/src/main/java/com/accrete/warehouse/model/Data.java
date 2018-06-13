@@ -10,6 +10,24 @@ import java.util.List;
  */
 public class Data {
 
+    @SerializedName("edit_package_formdata")
+    @Expose
+    private EditPackageFormdata editPackageFormdata;
+    @SerializedName("ledger_search_data")
+    @Expose
+    private List<TransporterNameSearchDatum> ledgerSearchData = null;
+    @SerializedName("is_execute_order_taxes_edit")
+    @Expose
+    private Boolean isExecuteOrderTaxesEdit;
+    @SerializedName("charges")
+    @Expose
+    private List<Charge> charges = null;
+    @SerializedName("transport_modes")
+    @Expose
+    private List<TransportMode> transprotModes = null;
+    @SerializedName("stock_request_data")
+    @Expose
+    private List<StockRequestDatum> stockRequestData = null;
     @SerializedName("packages")
     @Expose
     private List<AlreadyCreatedPackages> packages = null;
@@ -539,4 +557,54 @@ public class Data {
     public void ListWarehouseList(List<WarehouseList> warehouseList) {
         this.warehouseList = warehouseList;
     }
+
+    public List<TransportMode> getTransprotModes() {
+        return transprotModes;
+    }
+
+    public void setTransprotModes(List<TransportMode> transprotModes) {
+        this.transprotModes = transprotModes;
+    }
+
+    public List<Charge> getCharges() {
+        return charges;
+    }
+
+    public void setCharges(List<Charge> charges) {
+        this.charges = charges;
+    }
+
+    public Boolean getExecuteOrderTaxesEdit() {
+        return isExecuteOrderTaxesEdit;
+    }
+
+    public void setExecuteOrderTaxesEdit(Boolean executeOrderTaxesEdit) {
+        isExecuteOrderTaxesEdit = executeOrderTaxesEdit;
+    }
+
+    public List<StockRequestDatum> getStockRequestData() {
+        return stockRequestData;
+    }
+
+    public void setStockRequestData(List<StockRequestDatum> stockRequestData) {
+        this.stockRequestData = stockRequestData;
+    }
+
+
+    public List<TransporterNameSearchDatum> getLedgerSearchData() {
+        return ledgerSearchData;
+    }
+
+    public void setLedgerSearchData(List<TransporterNameSearchDatum> ledgerSearchData) {
+        this.ledgerSearchData = ledgerSearchData;
+    }
+
+    public EditPackageFormdata getEditPackageFormdata() {
+        return editPackageFormdata;
+    }
+
+    public void setEditPackageFormdata(EditPackageFormdata editPackageFormdata) {
+        this.editPackageFormdata = editPackageFormdata;
+    }
+
 }

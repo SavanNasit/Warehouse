@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -21,8 +22,8 @@ public class ReceiveConsignmentFragment extends Fragment {
     private static final String KEY_TITLE = "ReceiveConsignment";
     private ViewPager viewPagerReceive;
     private TabLayout tabLayoutReceive;
-    private TextView fragmentReceiveConsignmentReceiveDirectly;
-    private TextView fragmentReceiveConsignmentReceivePo;
+    private LinearLayout fragmentReceiveConsignmentReceiveDirectly;
+    private LinearLayout fragmentReceiveConsignmentReceivePo;
 
     public static ReceiveConsignmentFragment newInstance(String title) {
         ReceiveConsignmentFragment f = new ReceiveConsignmentFragment();
@@ -71,8 +72,8 @@ public class ReceiveConsignmentFragment extends Fragment {
 
 
     private void findViews(View rootView) {
-            fragmentReceiveConsignmentReceiveDirectly = (TextView)rootView.findViewById( R.id.fragment_receive_consignment_receive_directly );
-            fragmentReceiveConsignmentReceivePo = (TextView)rootView.findViewById( R.id.fragment_receive_consignment_receive_po );
+            fragmentReceiveConsignmentReceiveDirectly = (LinearLayout)rootView.findViewById( R.id.fragment_receive_consignment_receive_directly );
+            fragmentReceiveConsignmentReceivePo = (LinearLayout)rootView.findViewById( R.id.fragment_receive_consignment_receive_po );
 
         fragmentReceiveConsignmentReceiveDirectly.setOnClickListener(new View.OnClickListener() {
                 @Override

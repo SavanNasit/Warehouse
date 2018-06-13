@@ -48,14 +48,20 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
         holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packageItem.getInvoiceNo());
         holder.outForDeliveryCustomerName.setText(packageItem.getCustomerName());
-        holder.outForDeliveryGatepassId.setText("Gatepass Id : " + packageItem.getPacdelgatid());
+        holder.outForDeliveryGatepassId.setText("Gatepass Id : " + packageItem.getGatePassId());
         holder.outForDeliveryOrderId.setText("Order Id : " + packageItem.getOrderId());
         if (packageItem.getToDate() != null && !packageItem.getToDate().isEmpty()) {
             holder.outForDeliveryExpDod.setText("Exp Dod : " + packageItem.getToDate());
         } else {
             holder.outForDeliveryExpDod.setText("Exp Dod : N/A ");
         }
-        holder.outForDeliveryUser.setText("Delivery User : " + packageItem.getName());
+
+        if (packageItem.getName() != null && !packageItem.getName().isEmpty()) {
+            holder.outForDeliveryUser.setText("Delivery User : " + packageItem.getName());
+            holder.outForDeliveryUser.setVisibility(View.VISIBLE);
+        }else{
+            holder.outForDeliveryUser.setVisibility(View.GONE);
+        }
 
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override

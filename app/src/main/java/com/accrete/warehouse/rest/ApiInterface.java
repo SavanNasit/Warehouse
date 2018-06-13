@@ -15,7 +15,6 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
-
     @GET("?urlq=service")
     Call<ApiResponse> doGetDomain(
             @Query("version") String version,
@@ -63,7 +62,6 @@ public interface ApiInterface {
                     String mobile
     );
 
-
     @GET("?urlq=service")
     Call<ApiResponse> isAccessTokenValid(
             @Query("version")
@@ -89,7 +87,6 @@ public interface ApiInterface {
                                                String userid,
                                        @Query("access_token")
                                                String accessToken);
-
 
     @GET("?urlq=service")
     Call<ApiResponse> getRunningOrderList(@Query("version")
@@ -156,6 +153,22 @@ public interface ApiInterface {
                                                   String chkid,
                                           @Query("chkoid")
                                                   String chkoid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> executeRequestSelectedItem(@Query("version")
+                                                         String version,
+                                                 @Query("key")
+                                                         String key,
+                                                 @Query("task")
+                                                         String task,
+                                                 @Query("user_id")
+                                                         String userid,
+                                                 @Query("access_token")
+                                                         String accessToken,
+                                                 @Query("chkid")
+                                                         String chkid,
+                                                 @Query("stockreqid")
+                                                         String chkoid);
 
     @GET("?urlq=service")
     Call<ApiResponse> createPackage(@Query("version")
@@ -232,9 +245,23 @@ public interface ApiInterface {
                     String eSugam,
             @Part MultipartBody.Part[] image,
             @Query("order")
-                    String order
-    );
-
+                    String order,
+            @Query("distance")
+                    String distance,
+            @Query("vehicle")
+                    String vehicle,
+            @Query("rrno")
+                    String rrno,
+            @Query("rrdate")
+                    String rrdate,
+            @Query("mode")
+                    String mode,
+            @Query("transporter")
+                    String transporter,
+            @Query("charges")
+                    JSONArray jsonCharges,
+            @Query("e_sugam")
+                    String strEwayNumber);
 
     @POST("?urlq=service")
     Call<ApiResponse> createPackageWithoutMultipart(
@@ -273,9 +300,24 @@ public interface ApiInterface {
             @Query("e_sugam")
                     String eSugam,
             @Query("order")
-                    String order
+                    String order,
+            @Query("distance")
+                    String distance,
+            @Query("vehicle")
+                    String vehicle,
+            @Query("rrno")
+                    String rrno,
+            @Query("rrdate")
+                    String rrdate,
+            @Query("mode")
+                    String mode,
+            @Query("transporter")
+                    String transporter,
+            @Query("charges")
+                    JSONArray jsonCharges,
+            @Query("e_sugam")
+                    String strEwayNumber
     );
-
 
     @GET("?urlq=service")
     Call<ApiResponse> getPackageDetails(@Query("version")
@@ -297,7 +339,6 @@ public interface ApiInterface {
                                         @Query("traversal")
                                                 String traversal);
 
-
     @GET("?urlq=service")
     Call<ApiResponse> getDeliveryUserList(@Query("version")
                                                   String version,
@@ -311,7 +352,6 @@ public interface ApiInterface {
                                                   String accessToken,
                                           @Query("search")
                                                   String search);
-
 
     @GET("?urlq=service")
     Call<ApiResponse> getConsignmentLists(@Query("version")
@@ -390,7 +430,10 @@ public interface ApiInterface {
                                      @Query("by")
                                              String by,
                                      @Query("vehicle")
-                                             String vehicle);
+                                             String vehicle,
+                                     @Query("transporter")
+                                             String transporter
+    );
 
     @GET("?urlq=service")
     Call<ApiResponse> getInventoryList(@Query("version")
@@ -516,6 +559,21 @@ public interface ApiInterface {
                                             String pacid);
 
     @GET("?urlq=service")
+    Call<ApiResponse> editInfoPackage(@Query("version")
+                                              String version,
+                                      @Query("key")
+                                              String key,
+                                      @Query("task")
+                                              String task,
+                                      @Query("user_id")
+                                              String userid,
+                                      @Query("access_token")
+                                              String accessToken,
+                                      @Query("pacid")
+                                              String pacid);
+
+
+    @GET("?urlq=service")
     Call<ApiResponse> viewGatepassPackages(@Query("version")
                                                    String version,
                                            @Query("key")
@@ -558,8 +616,8 @@ public interface ApiInterface {
                                                             String userid,
                                                     @Query("access_token")
                                                             String accessToken,
-                                                    @Query("chkoid")
-                                                            String chkoid);
+                                                    @Query("pacid")
+                                                            String pacid);
 
     @GET("?urlq=service")
     Call<ApiResponse> getPackageHistoryInGatepass(@Query("version")
@@ -817,5 +875,42 @@ public interface ApiInterface {
                                                String chkid,
                                        @Query("chkoid") String chkoid);
 
+    @GET("?urlq=service")
+    Call<ApiResponse> getTransporterName(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("chkid")
+                    String chkid,
+            @Query("search")
+                    String s,
+            @Query("agid")
+                    String s1);
 
+    @GET("?urlq=service")
+    Call<ApiResponse> editPackage(@Query("version")
+                                          String version,
+                                  @Query("key")
+                                          String key,
+                                  @Query("task")
+                                          String task,
+                                  @Query("user_id")
+                                          String userid,
+                                  @Query("access_token")
+                                          String accessToken,
+                                  @Query("pacid")
+                                          String pacid,
+                                  @Query("e_sugam")
+                                          String s,
+                                  @Query("invoice_date")
+                                          String stringDateOfInvoice,
+                                  @Query("invoice_no")
+                                          String invoiceNo);
 }

@@ -89,8 +89,6 @@ public class SelectWarehouseAdapter extends RecyclerView.Adapter<SelectWarehouse
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
-
         private CheckBox checkboxWarehouse;
         private TextView textWarehouse;
 

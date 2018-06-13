@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/follow_up_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:descendantFocusability="blocksDescendants">
+
+
+
     <ProgressBar
         android:id="@+id/running_orders_progress_bar"
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"
@@ -167,6 +177,20 @@
                          app:srcCompat="@drawable/ic_add" />
                  </LinearLayout>-->
 
+
+
+
         </android.support.design.widget.CoordinatorLayout>
+
+
     </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
 </FrameLayout>

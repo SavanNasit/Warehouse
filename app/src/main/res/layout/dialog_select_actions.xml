@@ -41,6 +41,8 @@
             android:textStyle="normal" />
 
 
+
+
         <LinearLayout
             android:id="@+id/actions_items_inside_package"
             android:layout_width="match_parent"
@@ -218,12 +220,34 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/actions_edit_package"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/edit_package_textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Edit Package"
+                android:textColor="#8D8D8D"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
         <ImageView
             android:id="@+id/image_back"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:src="@drawable/ic_return" />
 
 

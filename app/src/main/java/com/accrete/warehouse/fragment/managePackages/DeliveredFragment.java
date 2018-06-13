@@ -644,7 +644,7 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                                             deliveredList.add(packageItem);
                                         }
                                         dataChanged = "yes";
-                                    } else if (traversalValue.equals("1")) {
+                                    } else if (traversalValue.equals("1")){
                                         if (deliveredSwipeRefreshLayout != null &&
                                                 deliveredSwipeRefreshLayout.isRefreshing()) {
                                             // To remove duplicacy of a new item
@@ -661,11 +661,13 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                                 }
                             }
                             loading = false;
-                            if (deliveredList != null && deliveredList.size() == 0) {
+                            if (deliveredList != null && deliveredList.size() == 0){
                                 deliveredEmptyView.setVisibility(View.VISIBLE);
                                 deliveredEmptyView.setText("No data available");
                             } else {
                                 deliveredEmptyView.setVisibility(View.GONE);
+                                deliveredRecyclerView.setVisibility(View.VISIBLE);
+                                deliveredSwipeRefreshLayout.setRefreshing(false);
                             }
                             if (deliveredSwipeRefreshLayout != null &&
                                     deliveredSwipeRefreshLayout.isRefreshing()) {
@@ -706,10 +708,12 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
                         }
 
                     }else{
-                        deliveredEmptyView.setVisibility(View.VISIBLE);
-                        deliveredEmptyView.setText("No data available");
-                        deliveredRecyclerView.setVisibility(View.GONE);
 
+                        if (deliveredList != null && deliveredList.size() == 0) {
+                            deliveredEmptyView.setVisibility(View.VISIBLE);
+                            deliveredEmptyView.setText("No data available");
+                            deliveredRecyclerView.setVisibility(View.GONE);
+                        }
                     }
 
                 } catch (Exception e) {

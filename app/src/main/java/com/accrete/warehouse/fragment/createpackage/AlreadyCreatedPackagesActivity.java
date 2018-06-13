@@ -3,24 +3,28 @@ package com.accrete.warehouse.fragment.createpackage;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,9 +34,9 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.AlreadyCreatedPackagesAdapter;
+import com.accrete.warehouse.fragment.RunningOrdersTabFragment;
 import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
-import com.accrete.warehouse.model.GatepassList;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -41,13 +45,14 @@ import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.DOWNLOAD_SERVICE;
 import static com.accrete.warehouse.utils.Constants.accessToken;
 import static com.accrete.warehouse.utils.Constants.key;
 import static com.accrete.warehouse.utils.Constants.task;
@@ -60,13 +65,13 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
  * Created by poonam on 12/12/17.
  */
 
-public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyCreatedPackagesAdapter.AlreadyCreatedPackagesAdapterListener, SwipeRefreshLayout.OnRefreshListener {
+public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements AlreadyCreatedPackagesAdapter.AlreadyCreatedPackagesAdapterListener, SwipeRefreshLayout.OnRefreshListener {
+    public String strPacid, strInvid, strCuid;
     private SwipeRefreshLayout alreadyCreatedPackagesSwipeRefreshLayout;
     private RecyclerView alreadyCreatedPackagesRecyclerView;
     private TextView alreadyCreatedPackagesEmptyView;
     private AlreadyCreatedPackagesAdapter packedAdapter;
     private List<AlreadyCreatedPackages> alreadyCreatedPackagesList = new ArrayList<>();
-
     private AlertDialog dialogSelectEvent;
     private String status;
     private TextView downloadConfirmMessage;
@@ -75,21 +80,38 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     private AlertDialog alertDialog;
     private DownloadManager downloadManager;
     private ProgressBar progressBar;
-    public  String strPacid, strInvid, strCuid;
     private String chkoid;
+    private String flagToCallApi;
 
-    private void findViews(View rootView) {
-        alreadyCreatedPackagesSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.already_created_packages_swipe_refresh_layout);
-        alreadyCreatedPackagesRecyclerView = (RecyclerView) rootView.findViewById(R.id.already_created_packages_recycler_view);
-        alreadyCreatedPackagesEmptyView = (TextView) rootView.findViewById(R.id.already_created_packages_empty_view);
+    private void findViews() {
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            chkoid = bundle.getString("chkoid");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.title_already_created_packages));
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //do something you want
+                finish();
+            }
+        });
+
+        alreadyCreatedPackagesSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.already_created_packages_swipe_refresh_layout);
+        alreadyCreatedPackagesRecyclerView = (RecyclerView) findViewById(R.id.already_created_packages_recycler_view);
+        alreadyCreatedPackagesEmptyView = (TextView) findViewById(R.id.already_created_packages_empty_view);
+
+
+        if (getIntent().getStringExtra("chkoid") != null) {
+            chkoid = getIntent().getStringExtra("chkoid");
+            flagToCallApi = getIntent().getStringExtra("flag");
         }
 
-        packedAdapter = new AlreadyCreatedPackagesAdapter(getActivity(), alreadyCreatedPackagesList, this);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        packedAdapter = new AlreadyCreatedPackagesAdapter(getApplicationContext(), alreadyCreatedPackagesList, this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         alreadyCreatedPackagesRecyclerView.setLayoutManager(mLayoutManager);
         alreadyCreatedPackagesRecyclerView.setHasFixedSize(true);
         alreadyCreatedPackagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -106,15 +128,10 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_already_created_packages, container, false);
-        Bundle bundle = this.getArguments();
-    /*    if (bundle != null) {
-            alreadyCreatedPackagesList = bundle.getParcelableArrayList("packagesList");
-        }*/
-        findViews(rootView);
-
-        return rootView;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_already_created_packages);
+        findViews();
     }
 
 
@@ -130,8 +147,8 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
 
 
     private void dialogItemEvents(final int position) {
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions_gatepass, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View dialogView = View.inflate(this, R.layout.dialog_select_actions_gatepass, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
                 .setCancelable(true);
         dialogSelectEvent = builder.create();
@@ -147,9 +164,21 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
         actionsViewPackage = (LinearLayout) dialogView.findViewById(R.id.actions_view_package);
         actionsPrintPackage = (LinearLayout) dialogView.findViewById(R.id.actions_print_package);
         actionsCancelGatepass = (LinearLayout) dialogView.findViewById(R.id.actions_cancel_gatepass);
-        TextView textViewCancelTitle =(TextView)dialogView.findViewById(R.id.cancel_gatepass_textview_title);
+        TextView textViewCancelTitle = (TextView) dialogView.findViewById(R.id.cancel_gatepass_textview_title);
         imageBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewCancelTitle.setText("Cancel Package");
+
+        if(flagToCallApi.equals("runningOrders")){
+            actionsPrintPackage.setVisibility(View.VISIBLE);
+        }else{
+            if(alreadyCreatedPackagesList.get(position).getPrintFlag()) {
+                actionsPrintPackage.setVisibility(View.VISIBLE);
+
+            }else {
+                actionsPrintPackage.setVisibility(View.GONE);
+
+            }
+        }
 
         actionsViewPackage.setVisibility(View.GONE);
         actionsPrintPackage.setOnClickListener(new View.OnClickListener() {
@@ -181,8 +210,8 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
 
 
     private void dialogCancel(final int position, final AlertDialog dialogSelectEvent) {
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_cancel_gatepass, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View dialogView = View.inflate(this, R.layout.dialog_cancel_gatepass, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
                 .setCancelable(true);
         final AlertDialog dialogCancelGatepass = builder.create();
@@ -200,7 +229,7 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelPackage(dialogCancelGatepass, alreadyCreatedPackagesList.get(position).getPacid(), dialogSelectEvent);
+                cancelPackage(position, dialogCancelGatepass, alreadyCreatedPackagesList.get(position).getPacid(), dialogSelectEvent);
             }
         });
 
@@ -220,19 +249,19 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
 
     }
 
-    private void cancelPackage(final AlertDialog dialogCancel, String pacid, final AlertDialog dialogSelectEvent) {
+    private void cancelPackage(final int position, final AlertDialog dialogCancel, final String pacid, final AlertDialog dialogSelectEvent) {
         task = getString(R.string.task_cancel_package);
-        String chkid=null;
-        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
-            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
-            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
-            chkid=AppPreferences.getWarehouseDefaultCheckId(getActivity(),AppUtils.WAREHOUSE_CHK_ID);
-            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        String chkid = null;
+        if (AppPreferences.getIsLogin(getApplicationContext(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getApplicationContext(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getApplicationContext(), AppUtils.ACCESS_TOKEN);
+            chkid = AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(), AppUtils.WAREHOUSE_CHK_ID);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getApplicationContext(), AppUtils.DOMAIN);
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ApiResponse> call = apiService.cancelPackage(version, key, task, userId, accessToken,chkid, pacid);
+        Call<ApiResponse> call = apiService.cancelPackage(version, key, task, userId, accessToken, chkid, pacid);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -243,20 +272,29 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
+                        if (pacid.equals(apiResponse.getData().getPacid())) {
+                            alreadyCreatedPackagesList.remove(position);
+                        }
                         dialogCancel.dismiss();
                         dialogSelectEvent.dismiss();
-                        status = NetworkUtil.getConnectivityStatusString(getActivity());
+                        packedAdapter.notifyDataSetChanged();
+                        Intent intent = new Intent("notifyOrderInfo");
+                        // You can also include some extra data.
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
+
+                        status = NetworkUtil.getConnectivityStatusString(getApplicationContext());
                         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                            // getManageGatepassList();
+                             getAlreadyCreatedPackages();
                         } else {
-                        /*    manageGatepassRecyclerView.setVisibility(View.GONE);
-                            manageGatepassEmptyView.setVisibility(View.VISIBLE);
-                            manageGatepassEmptyView.setText(getString(R.string.no_internet_try_later));
-                            manageGatepassSwipeRefreshLayout.setRefreshing(false);*/
+                            alreadyCreatedPackagesRecyclerView.setVisibility(View.GONE);
+                            alreadyCreatedPackagesEmptyView.setVisibility(View.VISIBLE);
+                            alreadyCreatedPackagesEmptyView.setText(getString(R.string.no_internet_try_later));
+                            alreadyCreatedPackagesSwipeRefreshLayout.setRefreshing(false);
                         }
 
                     } else {
-                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         dialogCancel.dismiss();
                     }
 
@@ -275,8 +313,8 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     }
 
     public void downloadPdfDialog(final String invid, final String cuid) {
-        final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final View dialogView = View.inflate(this, R.layout.dialog_download_receipt, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
                 .setCancelable(true);
         alertDialog = builder.create();
@@ -304,10 +342,10 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
                 //calling API
                 btnYes.setEnabled(false);
                 progressBar.setVisibility(View.VISIBLE);
-                if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                if (!NetworkUtil.getConnectivityStatusString(AlreadyCreatedPackagesActivity.this).equals(getString(R.string.not_connected_to_internet))) {
                     if (Build.VERSION.SDK_INT >= 23) {
-                        if (checkPermissionWithRationale((Activity) getActivity(), new AlreadyCreatedPackagesFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
-                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        if (checkPermissionWithRationale((Activity) AlreadyCreatedPackagesActivity.this, new RunningOrdersTabFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
+                            if (ActivityCompat.checkSelfPermission(AlreadyCreatedPackagesActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 return;
                             }
                         }
@@ -316,7 +354,7 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
                     }
 
                 } else {
-                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                 }
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -333,10 +371,10 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
 
     private void downloadPdf(final String strInvid, String strCuid) {
         task = getString(R.string.download_invoice_task);
-        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
-            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
-            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
-            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        if (AppPreferences.getIsLogin(getApplicationContext(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getApplicationContext(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getApplicationContext(), AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getApplicationContext(), AppUtils.DOMAIN);
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -350,14 +388,14 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                        if (!NetworkUtil.getConnectivityStatusString(getApplicationContext()).equals(getString(R.string.not_connected_to_internet))) {
                             alertDialog.dismiss();
 
                             //Download a file and display in phone's download folder
                             Environment
                                     .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                                     .mkdirs();
-                            downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                            downloadManager = (DownloadManager) getApplicationContext().getSystemService(DOWNLOAD_SERVICE);
                             String url = apiResponse.getData().getFilename();
                             Uri uri = Uri.parse(url);
                             DownloadManager.Request request = new DownloadManager.Request(uri)
@@ -367,14 +405,14 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
                                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                             downloadManager.enqueue(request);
                         } else {
-                            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }
                     } else if (apiResponse.getSuccessCode().equals("10001")) {
                         alertDialog.dismiss();
-                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    }else {
+                        Toast.makeText(getApplicationContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
                         alertDialog.dismiss();
-                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     if (progressBar != null && progressBar.getVisibility() == View.VISIBLE) {
@@ -397,11 +435,11 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
 
     public void sendPackageDetails() {
         //alreadyCreatedPackagesList = new ArrayList<>();
-      //  alreadyCreatedPackagesList.addAll(packages);
-      //  packedAdapter = new AlreadyCreatedPackagesAdapter(getActivity(), alreadyCreatedPackagesList, this);
-      //  alreadyCreatedPackagesRecyclerView.setAdapter(packedAdapter);
+        //  alreadyCreatedPackagesList.addAll(packages);
+        //  packedAdapter = new AlreadyCreatedPackagesAdapter(getApplicationContext(), alreadyCreatedPackagesList, this);
+        //  alreadyCreatedPackagesRecyclerView.setAdapter(packedAdapter);
         getAlreadyCreatedPackages();
-      //  ViewAfterUpdate();
+        //  ViewAfterUpdate();
     }
 
     public void getPackageList(List<AlreadyCreatedPackages> packagesList) {
@@ -434,15 +472,22 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
         if (alreadyCreatedPackagesList != null && alreadyCreatedPackagesList.size() > 0) {
             alreadyCreatedPackagesList.clear();
         }
-        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
-            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
-            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
-            chkid = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
-            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        if (AppPreferences.getIsLogin(getApplicationContext(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getApplicationContext(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getApplicationContext(), AppUtils.ACCESS_TOKEN);
+            chkid = AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(), AppUtils.WAREHOUSE_CHK_ID);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getApplicationContext(), AppUtils.DOMAIN);
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getOrderPackages(version, key, task, userId, accessToken, chkid,chkoid);
+
+        Call<ApiResponse> call;
+        if (flagToCallApi.equals("runningOrder")) {
+            call = apiService.getOrderPackages(version, key, task, userId, accessToken, chkid, chkoid);
+        } else {
+            call = apiService.executeRequestSelectedItem(version, key, task, userId, accessToken, chkid, chkoid);
+        }
+
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -472,7 +517,7 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
                             alreadyCreatedPackagesRecyclerView.setVisibility(View.GONE);
                             alreadyCreatedPackagesEmptyView.setVisibility(View.VISIBLE);
                         } else {
-                            Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                     if (alreadyCreatedPackagesSwipeRefreshLayout != null && alreadyCreatedPackagesSwipeRefreshLayout.isRefreshing()) {
@@ -493,8 +538,85 @@ public class AlreadyCreatedPackagesFragment extends Fragment implements AlreadyC
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void onRefresh() {
         getAlreadyCreatedPackages();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("TAG_REQUEST", " " + requestCode + " " + resultCode);
+        if (resultCode == REQUEST_CODE_ASK_STORAGE_PERMISSIONS) {
+            checkFragmentAndDownloadPDF();
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_STORAGE_PERMISSIONS: {
+                Map<String, Integer> perms = new HashMap<>();
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("PERMISSION", "Storage permission granted");
+                               checkFragmentAndDownloadPDF();
+                    } else {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        } else {
+                            askUserToAllowPermissionFromSetting();
+                        }
+                    }
+                }
+            }
+            break;
+
+        }
+    }
+
+    public void askUserToAllowPermissionFromSetting() {
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        // set title
+        alertDialogBuilder.setTitle(R.string.permission_required);
+        // set dialog messageTextView
+        alertDialogBuilder
+                .setMessage(getString(R.string.request_permission_from_settings))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity;
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
     }
 }
 

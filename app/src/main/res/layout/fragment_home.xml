@@ -5,267 +5,361 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <LinearLayout
-        android:id="@+id/drawer_linear_layout_main"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/home_page_gray"
-        android:orientation="vertical"
-        android:weightSum="4">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:layout_marginTop="10dp"
-            android:layout_weight="0.35"
-            android:gravity="bottom|center"
-            android:lines="2"
-            android:text="Warehouse"
-            android:textColor="@color/text_black"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/activity_drawer_warehouse_name"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:layout_weight="0.35"
-            android:gravity="top|center"
-            android:lines="2"
-            android:text=""
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/drawer_linear_layout_main"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.075"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_height="match_parent"
+            android:background="@color/home_page_gray"
+            android:orientation="vertical"
+            android:weightSum="4">
 
             <LinearLayout
-                android:id="@+id/home_running_orders_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/home_running_orders_count"
-                    android:layout_width="32dp"
-                    android:layout_height="0dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="0.4"
-                    android:background="@drawable/border_circle_green"
-                    android:gravity="center"
-                    android:text="71"
-                    android:layout_margin="@dimen/_2sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="10sp" />
-
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
-                    android:background="@color/white"
-                    android:paddingTop="20dp"
-                    android:src="@drawable/ic_running_orders" />
+                android:id="@+id/home_header"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.70"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.8"
-                    android:background="@color/white"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0.35"
+                    android:gravity="bottom|center"
+                    android:lines="2"
+                    android:text="Warehouse"
+                    android:textColor="@color/text_black"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/activity_drawer_warehouse_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="top"
+                    android:layout_weight="0.35"
                     android:gravity="top|center"
-                    android:text="Running Orders"
-                    android:textColor="#8D8D8D"
-                    android:textSize="14sp" />
+                    android:lines="2"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
             </LinearLayout>
 
+
             <LinearLayout
-                android:id="@+id/home_manage_packages_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.075"
+                android:orientation="horizontal"
                 android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/home_manage_packages_count"
-                    android:layout_width="32dp"
-                    android:layout_height="0dp"
-                    android:layout_gravity="right"
-                    android:layout_weight="0.4"
-                    android:background="@drawable/border_circle_brown"
-                    android:gravity="center"
-                    android:text="7"
-                    android:layout_margin="@dimen/_2sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="10sp" />
-
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
-                    android:background="@color/white"
-                    android:paddingTop="20dp"
-                    android:src="@drawable/ic_manage_package" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.8"
-                    android:background="@color/white"
-                    android:gravity="top|center"
-                    android:text="Manage Packages"
-                    android:textColor="#8D8D8D"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_weight="1.075"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:weightSum="1">
 
                 <LinearLayout
-                    android:id="@+id/home_manage_gate_pass_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.75"
+                    android:id="@+id/home_running_orders_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@color/white"
                     android:orientation="vertical"
                     android:weightSum="2">
 
                     <TextView
-                        android:id="@+id/home_manage_gate_pass_count"
+                        android:id="@+id/home_running_orders_count"
                         android:layout_width="32dp"
                         android:layout_height="0dp"
                         android:layout_gravity="right"
-                        android:layout_weight="0.6"
-                        android:background="@drawable/border_circle_primary"
+                        android:layout_margin="@dimen/_2sdp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/border_circle_green"
                         android:gravity="center"
-                        android:text="211"
-                        android:layout_margin="@dimen/_5sdp"
                         android:padding="@dimen/_5sdp"
+                        android:text="71"
                         android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
-                    android:background="@color/white"
-                    android:paddingTop="0dp"
-                    android:src="@drawable/ic_manage_gatepass" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.6"
-                    android:background="@color/white"
-                    android:gravity="top|center"
-                    android:text="Manage Gate Pass"
-                    android:textColor="#8D8D8D"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/home_manage_create_gatepass"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.25"
-                    android:background="@color/primary"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
 
                     <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:paddingTop="@dimen/_6sdp"
-                        android:paddingLeft="@dimen/_6sdp"
-                        android:paddingBottom="@dimen/_6sdp"
-                        android:src="@drawable/ic_round_add" />
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.8"
+                        android:background="@color/white"
+                        android:paddingTop="20dp"
+                        android:src="@drawable/ic_running_orders" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_gravity="center"
-                        android:layout_weight="0.7"
-                        android:gravity="center_vertical|left"
-                        android:text="Create Gate Pass"
-                        android:textColor="@color/white"
+                        android:layout_weight="0.8"
+                        android:background="@color/white"
+                        android:gravity="top|center"
+                        android:text="Running Orders"
+                        android:textColor="#8D8D8D"
                         android:textSize="14sp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/home_manage_packages_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/home_manage_packages_count"
+                        android:layout_width="32dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="right"
+                        android:layout_margin="@dimen/_2sdp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/border_circle_brown"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="7"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.8"
+                        android:background="@color/white"
+                        android:paddingTop="20dp"
+                        android:src="@drawable/ic_manage_package" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.8"
+                        android:background="@color/white"
+                        android:gravity="top|center"
+                        android:text="Manage Packages"
+                        android:textColor="#8D8D8D"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
 
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:weightSum="1">
-
-            <LinearLayout
-                android:id="@+id/home_manage_consignment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/_2sdp"
-                android:layout_weight="0.75"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_weight="1.075"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:id="@+id/home_manage_gate_pass_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.75"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/home_manage_gate_pass_count"
+                            android:layout_width="32dp"
+                            android:layout_height="0dp"
+                            android:layout_gravity="right"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_weight="0.6"
+                            android:background="@drawable/border_circle_primary"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="211"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.8"
+                            android:background="@color/white"
+                            android:paddingTop="0dp"
+                            android:src="@drawable/ic_manage_gatepass" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.6"
+                            android:background="@color/white"
+                            android:gravity="top|center"
+                            android:text="Manage Gate Pass"
+                            android:textColor="#8D8D8D"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/home_manage_create_gatepass"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"
+                        android:background="@color/primary"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_weight="0.2"
+                            android:paddingBottom="@dimen/_6sdp"
+                            android:paddingLeft="@dimen/_6sdp"
+                            android:paddingTop="@dimen/_6sdp"
+                            android:src="@drawable/ic_round_add" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+                            android:gravity="center_vertical|left"
+                            android:text="Create Gate Pass"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:id="@+id/home_manage_consignment_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_weight="0.75"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/home_manage_consignment_count"
+                            android:layout_width="32dp"
+                            android:layout_height="0dp"
+                            android:layout_gravity="right"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_weight="0.6"
+                            android:background="@drawable/border_circle_blue"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:text="145"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.8"
+                            android:background="@color/white"
+                            android:paddingTop="0dp"
+                            android:src="@drawable/ic_manage_consignment" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.6"
+                            android:background="@color/white"
+                            android:gravity="top|center"
+                            android:text="Manage Consignment"
+                            android:textSize="14sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.25"
+                        android:background="@color/primary"
+                        android:orientation="horizontal"
+                        android:visibility="invisible"
+                        android:weightSum="1">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_weight="0.2"
+                            android:paddingBottom="@dimen/_6sdp"
+                            android:paddingLeft="@dimen/_6sdp"
+                            android:paddingTop="@dimen/_6sdp"
+                            android:src="@drawable/ic_round_add" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.7"
+                            android:gravity="center_vertical|left"
+                            android:text="Create Gate Pass"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/home_receive_consignment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_weight="1.15"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:weightSum="2">
 
                 <TextView
-                    android:id="@+id/home_manage_consignment_count"
+                    android:id="@+id/home_receive_consignment_count"
                     android:layout_width="32dp"
                     android:layout_height="0dp"
                     android:layout_gravity="right"
-                    android:layout_weight="0.6"
-                    android:background="@drawable/border_circle_blue"
-                    android:gravity="center"
-                    android:text="145"
                     android:layout_margin="@dimen/_5sdp"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/border_circle_yellow"
+                    android:gravity="center"
                     android:padding="@dimen/_5sdp"
+                    android:text="34"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="10sp" />
-
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
 
                 <ImageView
@@ -273,118 +367,43 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.8"
                     android:background="@color/white"
-                    android:paddingTop="0dp"
-                    android:src="@drawable/ic_manage_consignment" />
+                    android:paddingTop="20dp"
+                    android:src="@drawable/ic_receive_consignment" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.8"
                     android:background="@color/white"
                     android:gravity="top|center"
-                    android:text="Manage Consignment"
+                    android:text="Receive Consignment"
+                    android:textColor="@color/home_page_text_gray"
                     android:textSize="14sp" />
 
-
-            </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.25"
-                    android:background="@color/primary"
-                    android:visibility="invisible"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
-
-                    <ImageView
+                <!--    <TextView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.2"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:paddingTop="@dimen/_6sdp"
-                        android:paddingLeft="@dimen/_6sdp"
-                        android:paddingBottom="@dimen/_6sdp"
-                        android:src="@drawable/ic_round_add" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="100dp"
                         android:layout_gravity="center"
-                        android:layout_weight="0.7"
-                        android:gravity="center_vertical|left"
-                        android:text="Create Gate Pass"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:textColor="@color/home_page_text_gray"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:textSize="14sp" />-->
 
             </LinearLayout>
-            
-            
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/home_receive_consignment_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_weight="1.15"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/home_receive_consignment_count"
-                android:layout_width="32dp"
-                android:layout_height="0dp"
-                android:layout_gravity="right"
-                android:layout_weight="0.4"
-                android:background="@drawable/border_circle_yellow"
-                android:gravity="center"
-                android:text="34"
-                android:layout_margin="@dimen/_5sdp"
-                android:padding="@dimen/_5sdp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="12sp" />
-
-
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.8"
-                android:background="@color/white"
-                android:paddingTop="20dp"
-                android:src="@drawable/ic_receive_consignment" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="0.8"
-                android:background="@color/white"
-                android:gravity="top|center"
-                android:text="Receive Consignment"
-                android:textColor="@color/home_page_text_gray"
-                android:textSize="14sp" />
-
-            <!--    <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_2sdp"
-                    android:textColor="@color/home_page_text_gray"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:textSize="14sp" />-->
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/imageView_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 
 </FrameLayout>

@@ -49,9 +49,8 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final SelectOrderItem selectOrderItem = selectOrderItems.get(position);
+
         holder.listRowOrderItemInventory.setText(selectOrderItem.getInventory());
-
-
         holder.listRowOrderItemAvailableQuantity.setText(selectOrderItem.getAvailableQuantity());
         holder.textViewUnit.setText(selectOrderItem.getUnit());
         holder.listRowOrderItemName.setText(selectOrderItem.getInventoryName());
@@ -72,6 +71,7 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
         }else{
             holder.listRowOrderItemRemarks.setVisibility(View.GONE);
         }
+
         holder.listRowOrderItemEdtAllotQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -133,7 +133,6 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
 
         public MyViewHolder(View view) {
             super(view);
-
             listRowOrderItemPurchasedOn = (TextView) view.findViewById(R.id.list_row_order_item_purchased_on);
             listRowOrderItemVendor = (TextView) view.findViewById(R.id.list_row_order_item_vendor);
             listRowOrderItemInventory = (TextView) view.findViewById(R.id.list_row_order_item_inventory);
@@ -143,7 +142,6 @@ public  class SelectOrderItemAdapter extends RecyclerView.Adapter<SelectOrderIte
             orderItemExecute = (LinearLayout) view.findViewById(R.id.order_item_execute);
             textViewUnit = (TextView) view.findViewById(R.id.list_row_order_item_unit);
             listRowOrderItemName = (TextView)view.findViewById(R.id.list_row_order_item_item_name);
-
         }
     }
 

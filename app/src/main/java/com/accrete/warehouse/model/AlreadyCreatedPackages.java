@@ -56,6 +56,9 @@ public class AlreadyCreatedPackages implements Parcelable{
     @SerializedName("payment_status")
     @Expose
     private String paymentStatus;
+    @SerializedName("invoice_print_flag")
+    @Expose
+    private  Boolean printFlag;
 
     public AlreadyCreatedPackages(Parcel in) {
         packageId = in.readString();
@@ -70,6 +73,7 @@ public class AlreadyCreatedPackages implements Parcelable{
         toDate = in.readString();
         paymentStatus = in.readString();
         invid = in.readString();
+        printFlag = in.readInt() == 1;
     }
 
     public static final Creator<AlreadyCreatedPackages> CREATOR = new Creator<AlreadyCreatedPackages>() {
@@ -172,6 +176,14 @@ public class AlreadyCreatedPackages implements Parcelable{
         this.paymentStatus = paymentStatus;
     }
 
+    public Boolean getPrintFlag() {
+        return printFlag;
+    }
+
+    public void setPrintFlag(Boolean printFlag) {
+        this.printFlag = printFlag;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -191,5 +203,5 @@ public class AlreadyCreatedPackages implements Parcelable{
         dest.writeString(toDate);
         dest.writeString(paymentStatus);
         dest.writeString(invid);
-    }
+        dest.writeInt(printFlag ? 1 : 0);    }
 }

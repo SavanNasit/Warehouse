@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.CustomerDetailsActivity;
+import com.accrete.warehouse.EditPackageActivity;
 import com.accrete.warehouse.PackageHistoryActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
@@ -417,6 +418,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         LinearLayout linearLayout;
         LinearLayout actionsItemsInsidePackage;
         TextView itemsInsideTextView;
+        TextView editPackageTextView;
         LinearLayout actionsPackageStatus;
         TextView actionsPackageStatusText;
         LinearLayout actionsPackageHistory;
@@ -426,6 +428,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         LinearLayout actionsOtherDocuments;
         LinearLayout actionsPrintGatepass;
         LinearLayout actionsPrintLoadingSlip;
+        LinearLayout actionsEditPackage;
         TextView textViewActionPackageStatus;
         Button btnOk;
         ProgressBar dialogSelectActionsProgressBar;
@@ -433,6 +436,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         ImageView imageViewBack;
 
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
+        actionsEditPackage = (LinearLayout) dialogView.findViewById(R.id.actions_edit_package);
+        editPackageTextView = (TextView) dialogView.findViewById(R.id.edit_package_textView);
         actionsItemsInsidePackage = (LinearLayout) dialogView.findViewById(R.id.actions_items_inside_package);
         itemsInsideTextView = (TextView) dialogView.findViewById(R.id.items_inside_textView);
         actionsPackageStatus = (LinearLayout) dialogView.findViewById(R.id.actions_package_status);
@@ -455,7 +460,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         //Edit Package
         itemsInsideTextView.setText("Edit Package");
-        actionsItemsInsidePackage.setVisibility(View.GONE);
+       // actionsItemsInsidePackage.setVisibility(View.GONE);
 
         //Cancel Package
         actionsPackageStatusText.setText("Cancel Package");
@@ -482,6 +487,11 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         actionsItemsInsidePackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                     dialogSelectEvent.dismiss();
+                     Intent intentEditPackage = new Intent(getActivity(), EditPackageActivity.class);
+                     intentEditPackage.putExtra("packageId",packedList.get(position).getPackageId());
+                     intentEditPackage.putExtra("pacid",packedList.get(position).getPacid());
+                     startActivity(intentEditPackage);
 
             }
         });

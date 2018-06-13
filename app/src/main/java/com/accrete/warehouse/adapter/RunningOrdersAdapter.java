@@ -150,7 +150,7 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
                                 // for ActivityCompat#requestPermissions for more details.
                                 return;
                             }
-                            //   mContext.startActivity(intentCall);
+                             // context.startActivity(intentCall);
                         }
                     } else {
                         if (runningOrderMobile != null && !runningOrderMobile.isEmpty()) {

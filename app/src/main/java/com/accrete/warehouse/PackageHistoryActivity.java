@@ -39,7 +39,7 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
     TextView packageHistoryId;
     TextView packageHistoryName;
     TextView packageHistoryInoviceNum;
-    TextView packageHistoryDate;
+    TextView packageHistoryDate,packageEmptyView;
     RecyclerView packageHistoryRecyclerView;
     private PackageStatusAdapter packageStatusAdapter;
     private List<PackageStatusList> packageStatusList = new ArrayList<>();
@@ -58,6 +58,7 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
         packageHistoryInoviceNum = (TextView) findViewById(R.id.package_history_inovice_num);
         packageHistoryDate = (TextView) findViewById(R.id.package_history_date);
         packageHistoryRecyclerView = (RecyclerView) findViewById(R.id.package_history_recycler_view);
+        packageEmptyView = (TextView)findViewById(R.id.package_history_empty_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.package_history));
         toolbar.setTitleTextColor(Color.WHITE);
@@ -70,9 +71,10 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
             public void onClick(View view) {
                 //do something you want
                 finish();
-
             }
         });
+
+
         packageStatusAdapter = new PackageStatusAdapter(this, packageStatusList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         packageHistoryRecyclerView.setLayoutManager(mLayoutManager);
@@ -139,15 +141,21 @@ public class PackageHistoryActivity extends AppCompatActivity implements Package
                 try {
                     if (apiResponse.getSuccess()) {
                         packageHistoryRecyclerView.setVisibility(View.VISIBLE);
-                        for (PackageStatusList packageStatusLists : apiResponse.getData().getPackageData().getHistoryData()) {
-                            packageStatusList.add(packageStatusLists);
-                        }
-                        packageHistoryDate.setText(apiResponse.getData().getPackageData().getInvoiceDate());
-                        packageHistoryId.setText(apiResponse.getData().getPackageData().getPackageId());
-                        packageHistoryName.setText(apiResponse.getData().getPackageData().getCustomerName());
-                        packageHistoryInoviceNum.setText(apiResponse.getData().getPackageData().getInvoiceNo());
-                        packageStatusAdapter.notifyDataSetChanged();
+                        packageEmptyView.setVisibility(View.GONE);
 
+                        if(apiResponse.getData().getPackageData().getHistoryData()!=null && apiResponse.getData().getPackageData().getHistoryData().size()>0){
+                            for (PackageStatusList packageStatusLists : apiResponse.getData().getPackageData().getHistoryData()){
+                                packageStatusList.add(packageStatusLists);
+                            }
+                        }else {
+                            packageHistoryRecyclerView.setVisibility(View.GONE);
+                            packageEmptyView.setVisibility(View.VISIBLE);
+                        }
+                            packageHistoryDate.setText(apiResponse.getData().getPackageData().getInvoiceDate());
+                            packageHistoryId.setText(apiResponse.getData().getPackageData().getPackageId());
+                            packageHistoryName.setText(apiResponse.getData().getPackageData().getCustomerName());
+                            packageHistoryInoviceNum.setText(apiResponse.getData().getPackageData().getInvoiceNo());
+                            packageStatusAdapter.notifyDataSetChanged();
                     } else {
                         if (apiResponse.getSuccessCode().equals("10001")) {
                             Toast.makeText(PackageHistoryActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();

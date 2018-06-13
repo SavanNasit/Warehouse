@@ -646,10 +646,12 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
                                 }
                             }
                         }
-                    }else {
-                        outForDeliveryEmptyView.setVisibility(View.VISIBLE);
-                        pendingItemsRecyclerView.setVisibility(View.GONE);
-                        outForDeliveryEmptyView.setText("No data available");
+                    } else {
+                        if (outForDeliveryList != null && outForDeliveryList.size() == 0) {
+                            outForDeliveryEmptyView.setVisibility(View.VISIBLE);
+                            pendingItemsRecyclerView.setVisibility(View.GONE);
+                            outForDeliveryEmptyView.setText("No data available");
+                        }
                     }
 
                 } catch (Exception e) {

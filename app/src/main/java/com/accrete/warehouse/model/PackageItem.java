@@ -80,17 +80,12 @@ public class PackageItem {
     @SerializedName("packageId")
     @Expose
     private String packageId;
+    @SerializedName("gatePassId")
+    @Expose
+    private String gatePassId;
     @SerializedName("orderId")
     @Expose
     private String orderId;
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
 
     public String getCompanyId() {
         return companyId;
@@ -188,11 +183,11 @@ public class PackageItem {
         this.uid = uid;
     }
 
-    public String geteSugam() {
+    public String getESugam() {
         return eSugam;
     }
 
-    public void seteSugam(String eSugam) {
+    public void setESugam(String eSugam) {
         this.eSugam = eSugam;
     }
 
@@ -283,4 +278,21 @@ public class PackageItem {
     public void setPackageId(String packageId) {
         this.packageId = packageId;
     }
+
+    public String getGatePassId() {
+        return gatePassId;
+    }
+
+    public void setGatePassId(String gatePassId) {
+        this.gatePassId = gatePassId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
 }

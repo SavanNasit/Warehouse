@@ -827,7 +827,10 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
         DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
         DecimalFormat df2 = new DecimalFormat(".###");
         df2.setRoundingMode(RoundingMode.UP);
-        String value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
+        String value="";
+        if(consignmentItem!=null && consignmentItem.getReceiveQuantity()!=null && !consignmentItem.getReceiveQuantity().isEmpty()) {
+             value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
+        }
         try {
             final ArrayList<Measurement> measurementArrayList = new ArrayList<>();
             final LinearLayout linearLayout = (LinearLayout) productsDialog.findViewById(R.id.linearLayout);

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextAppearance="@style/Toolbar.TitleText"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_80sdp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/invoice_serial_no_textInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_package_tax_invoice_serial_no"
+                        style="@style/EditTextCustomHolo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/cursor_primary"
+                        android:textSize="@dimen/_10sdp"
+                        android:theme="@style/EditTextCustomHolo" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_package_invoice_date"
+                        style="@style/EditTextCustomHolo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="Invoice Date:"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/cursor_primary"
+                        android:textSize="@dimen/_10sdp"
+                        android:theme="@style/EditTextCustomHolo" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_12sdp"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_package_e_way_number"
+                        style="@style/EditTextCustomHolo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="E-Way/E-Sugam No::"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/cursor_primary"
+                        android:textSize="@dimen/_10sdp"
+                        android:theme="@style/EditTextCustomHolo" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/package_details_edit_package"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/text_black"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="Edit Package"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
+</RelativeLayout>

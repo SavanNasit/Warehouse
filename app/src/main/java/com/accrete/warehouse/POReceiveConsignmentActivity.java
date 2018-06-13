@@ -923,7 +923,11 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             final EditText editTextHSNCode = (EditText) productsDialog.findViewById(R.id.hsn_edittext);
             DecimalFormat df2 = new DecimalFormat(".###");
             df2.setRoundingMode(RoundingMode.UP);
-            String value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
+            String value="";
+            if(consignmentItem!=null && consignmentItem.getReceiveQuantity()!=null && !consignmentItem.getReceiveQuantity().isEmpty()) {
+                value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
+            }
+
             productNameEdittext.setText(consignmentItem.getName());
             skuCodeEdittext.setText(consignmentItem.getInternalCode());
             orderQuantityEdittext.setText(consignmentItem.getOrderQuantity());

@@ -38,6 +38,7 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java/activity', 'src/main/java/com.accrete.warehouse/activity', 'src/main/java/com.accrete.warehouse/fragment']
+            res.srcDirs = ['src/main/res', 'src/main/res/menu']
         }
     }
 }
@@ -80,4 +81,7 @@ dependencies {
         transitive = true;
     }
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+
+    compile 'com.koushikdutta.ion:ion:2.+'
+
 }

@@ -2,26 +2,35 @@ package com.accrete.warehouse.fragment.runningorders;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -38,12 +47,16 @@ import com.accrete.warehouse.CreatePackageActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.ScannerActivity;
 import com.accrete.warehouse.adapter.RunningOrderExecuteAdapter;
+import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesActivity;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.Charge;
+import com.accrete.warehouse.model.CustomerInfo;
 import com.accrete.warehouse.model.Measurement;
 import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.PackageDetailsList;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
+import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
@@ -76,13 +89,15 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
  * Created by poonam on 11/28/17.
  */
 
-public class RunningOrdersExecuteFragment extends Fragment implements RunningOrderExecuteAdapter.PendingItemsAdapterListener, View.OnClickListener {
+public class RunningOrdersExecuteActivity extends AppCompatActivity implements RunningOrderExecuteAdapter.PendingItemsAdapterListener, View.OnClickListener{
     PendingItems pendingItems = new PendingItems();
     List<SelectOrderItem> selectOrderItems = new ArrayList<>();
     List<PendingItems> selectedItemList = new ArrayList<>();
     HashMap<OrderData, Integer> packageData = new HashMap<OrderData, Integer>();
+    List<CustomerInfo> customerInfoList = new ArrayList<>();
     private PackageDetailsList packageDetails = new PackageDetailsList();
     private ArrayList<OrderData> packageDetailsList = new ArrayList<>();
+    private List<TransportMode> transportationDataArrayList = new ArrayList<>();
     private EditText pendingItemsEdtScan;
     private ImageView pendingItemsImgScan;
     private SwipeRefreshLayout pendingItemsSwipeRefreshLayout;
@@ -97,6 +112,16 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
     private ArrayList<String> measurementNameArrayList = new ArrayList<>();
     private ArrayList<Measurement> measurementsArrayList = new ArrayList<>();
     private double previousConversionRate;
+    private String flagToCallApi;
+    private FloatingActionButton floatingActionButtonAlreadyCreatedPackage;
+    private Toolbar toolbar;
+    private CardView cardView;
+    private LinearLayout runningExecuteOrdersCustomerDetailsLayout;
+    private TextView runningExecuteOrdersCustomerDetailsName;
+    private TextView runningExecuteOrdersCustomerDetailsEmail;
+    private TextView runningExecuteOrdersCustomerDetailsMobile;
+    private List<Charge> dynamicChargesList = new ArrayList<>();
+    private String orderId;
 
     public void getData(String str) {
         // Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
@@ -104,7 +129,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         for (int i = 0; i < orderDataList.size(); i++) {
             if (pendingItemsEdtScan.getText().toString().trim().equals(orderDataList.get(i).getIsid())) {
                 if (Integer.parseInt(orderDataList.get(i).getItemQuantity()) == 0) {
-                    Toast.makeText(getActivity(), "No item available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No item available", Toast.LENGTH_SHORT).show();
                 } else {
                     if (orderDataList.get(i).getMeaid() != null && !orderDataList.get(i).getMeaid().isEmpty()) {
                         bottomSheetAddItemQuantity(orderDataList.get(i), i);
@@ -122,33 +147,85 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
 
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_running_execute_orders, container, false);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            chkid = bundle.getString("chkid");
-            chkoid = bundle.getString("chkoid");
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_running_execute_orders);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        if (getIntent().getStringExtra("chkid") != null) {
+            chkid = getIntent().getStringExtra("chkid");
+            chkoid = getIntent().getStringExtra("chkoid");
+            orderId = getIntent().getStringExtra("orderId");
+            flagToCallApi = getIntent().getStringExtra("flag");
         }
 
-        findViews(rootView);
-        return rootView;
+
+        findViews();
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("notifyOrderInfo"));
     }
 
-    private void findViews(View rootView) {
-        pendingItemsEdtScan = (EditText) rootView.findViewById(R.id.pending_items_edt_scan);
-        pendingItemsImgScan = (ImageView) rootView.findViewById(R.id.pending_items_img_scan);
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(orderDataList.size()>0){
+                orderDataList.clear();
+            }
+
+            if(packageDetailsList.size()>0){
+                packageDetailsList.clear();
+            }
+
+            if(packageData.size()>0){
+                packageData.clear();
+            }
+            executeSelectedItems();
+        }
+    };
+
+    private void findViews() {
+        cardView = (CardView) findViewById(R.id.card_view);
+        runningExecuteOrdersCustomerDetailsLayout = (LinearLayout) findViewById(R.id.running_execute_orders_customer_details_layout);
+        runningExecuteOrdersCustomerDetailsName = (TextView) findViewById(R.id.running_execute_orders_customer_details_name);
+        runningExecuteOrdersCustomerDetailsEmail = (TextView) findViewById(R.id.running_execute_orders_customer_details_email);
+        runningExecuteOrdersCustomerDetailsMobile = (TextView) findViewById(R.id.running_execute_orders_customer_details_mobile);
+        pendingItemsEdtScan = (EditText) findViewById(R.id.pending_items_edt_scan);
+        pendingItemsImgScan = (ImageView) findViewById(R.id.pending_items_img_scan);
+        floatingActionButtonAlreadyCreatedPackage = (FloatingActionButton) findViewById(R.id.running_execute_ordres_fab);
         //pendingItemsSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.pending_items_swipe_refresh_layout);
-        pendingItemsRecyclerView = (RecyclerView) rootView.findViewById(R.id.pending_items_recycler_view);
-        pendingItemsEmptyView = (TextView) rootView.findViewById(R.id.pending_items_empty_view);
-        pendingItemsAdapter = new RunningOrderExecuteAdapter(getActivity(), orderDataList, this, 0, posToupdate, flagScan);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        pendingItemsRecyclerView = (RecyclerView) findViewById(R.id.pending_items_recycler_view);
+        pendingItemsEmptyView = (TextView) findViewById(R.id.pending_items_empty_view);
+        pendingItemsAdapter = new RunningOrderExecuteAdapter(this, orderDataList, this, 0, posToupdate, flagScan);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         pendingItemsRecyclerView.setLayoutManager(mLayoutManager);
         pendingItemsRecyclerView.setHasFixedSize(true);
         pendingItemsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         pendingItemsRecyclerView.setNestedScrollingEnabled(false);
         pendingItemsRecyclerView.setAdapter(pendingItemsAdapter);
+        floatingActionButtonAlreadyCreatedPackage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAlreadyCreatedPackages = new Intent(RunningOrdersExecuteActivity.this, AlreadyCreatedPackagesActivity.class);
+                intentAlreadyCreatedPackages.putExtra("chkoid", chkoid);
+                intentAlreadyCreatedPackages.putExtra("flag", flagToCallApi);
+                startActivity(intentAlreadyCreatedPackages);
+            }
+        });
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(""+orderId);
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         if (orderDataList.size() > 0) {
             pendingItemsRecyclerView.setVisibility(View.VISIBLE);
@@ -176,10 +253,10 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                 for (int i = 0; i < orderDataList.size(); i++) {
                     if (pendingItemsEdtScan.getText().toString().trim().equals(orderDataList.get(i).getIsid())) {
                         if (Integer.parseInt(orderDataList.get(i).getItemQuantity()) == 0) {
-                            Toast.makeText(getActivity(), "No item available", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RunningOrdersExecuteActivity.this, "No item available", Toast.LENGTH_SHORT).show();
                         } else {
                             if (Integer.parseInt(orderDataList.get(i).getUsedQuantity()) >= Integer.parseInt(orderDataList.get(i).getItemQuantity())) {
-                                Toast.makeText(getActivity(), "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RunningOrdersExecuteActivity.this, "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
                             } else {
 
 
@@ -201,23 +278,56 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         });
 
 
-        LinearLayout linearLayoutPackageDetails = (LinearLayout) rootView.findViewById(R.id.pending_items_package_details);
+        LinearLayout linearLayoutPackageDetails = (LinearLayout) findViewById(R.id.pending_items_package_details);
         linearLayoutPackageDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (packageDetailsList != null && packageDetailsList.size() > 0) {
-                    Intent intentCreatePackage = new Intent(getActivity(), CreatePackageActivity.class);
+                    Intent intentCreatePackage = new Intent(RunningOrdersExecuteActivity.this, CreatePackageActivity.class);
                     intentCreatePackage.putExtra("chkoid", chkoid);
+                    intentCreatePackage.putExtra("flag", flagToCallApi);
                     intentCreatePackage.putParcelableArrayListExtra("packageDetails", packageDetailsList);
-                    intentCreatePackage.putExtra("customerInfo", getActivity().getIntent().getParcelableExtra("customerInfo"));
+                    intentCreatePackage.putParcelableArrayListExtra("transportData",(ArrayList<? extends Parcelable>) transportationDataArrayList);
+                    intentCreatePackage.putExtra("customerName", getIntent().getStringExtra("customerName"));
+                    intentCreatePackage.putExtra("customerEmail", getIntent().getStringExtra("customerEmail"));
+                    intentCreatePackage.putExtra("customerMobile",getIntent().getStringExtra("customerMobile"));
+                    intentCreatePackage.putExtra("customerBillingAddress",getIntent().getStringExtra("customerBillingAddress"));
+                    intentCreatePackage.putExtra("customerDeliveryAddress",getIntent().getStringExtra("customerDeliveryAddress"));
+                    intentCreatePackage.putParcelableArrayListExtra("dynamicCharges",(ArrayList<? extends Parcelable>) dynamicChargesList);
                     startActivityForResult(intentCreatePackage, 100);
                 } else {
-                    Toast.makeText(getActivity(), "Please add one or more items to create package", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RunningOrdersExecuteActivity.this, "Please add one or more items to create package", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         executeSelectedItems();
+
+        if (flagToCallApi.equals("runningOrder")) {
+            runningExecuteOrdersCustomerDetailsLayout.setVisibility(View.VISIBLE);
+            cardView.setVisibility(View.VISIBLE);
+            if (getIntent().getStringExtra("customerName") != null && !getIntent().getStringExtra("customerName").isEmpty()) {
+                runningExecuteOrdersCustomerDetailsName.setText(getIntent().getStringExtra("customerName"));
+                runningExecuteOrdersCustomerDetailsName.setVisibility(View.VISIBLE);
+            } else {
+                runningExecuteOrdersCustomerDetailsName.setVisibility(View.GONE);
+            }
+            if (getIntent().getStringExtra("customerEmail") != null && !getIntent().getStringExtra("customerEmail").isEmpty()) {
+                runningExecuteOrdersCustomerDetailsEmail.setText(getIntent().getStringExtra("customerEmail"));
+                runningExecuteOrdersCustomerDetailsEmail.setVisibility(View.VISIBLE);
+            } else {
+                runningExecuteOrdersCustomerDetailsEmail.setVisibility(View.GONE);
+            }
+            if (getIntent().getStringExtra("customerMobile") != null && !getIntent().getStringExtra("customerMobile").isEmpty()) {
+                runningExecuteOrdersCustomerDetailsMobile.setText(getIntent().getStringExtra("customerMobile"));
+                runningExecuteOrdersCustomerDetailsMobile.setVisibility(View.VISIBLE);
+            } else {
+                runningExecuteOrdersCustomerDetailsMobile.setVisibility(View.GONE);
+            }
+        } else {
+            runningExecuteOrdersCustomerDetailsLayout.setVisibility(View.GONE);
+            cardView.setVisibility(View.GONE);
+        }
     }
 
 
@@ -234,7 +344,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
     }
 
     private void bottomSheetAddItemQuantity(final OrderData orderDataList, final int position) {
-        final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dialog.setContentView(R.layout.dialog_create_package_add_quantity);
         ImageView dialogCreatePackageImage;
@@ -254,7 +364,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
         listRowOrderItemAddQuantity = (TextView) dialog.findViewById(R.id.list_row_order_item_add_quantity);
         if (orderDataList.getImage() != null && !orderDataList.getImage().isEmpty()) {
             dialogCreatePackageImage.setVisibility(View.VISIBLE);
-            Glide.with(getActivity())
+            Glide.with(this)
                     .load(orderDataList.getImage())
                     .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -279,7 +389,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
             }
 
             final ArrayAdapter measurementArrayAdapter =
-                    new ArrayAdapter<String>(getActivity(), R.layout.simple_spinner_item, measurementNameArrayList);
+                    new ArrayAdapter<String>(this, R.layout.simple_spinner_item, measurementNameArrayList);
             measurementArrayAdapter.setDropDownViewResource(R.layout.spinner_common_item);
             dialogCreatePackageQuantityUnit.setAdapter(measurementArrayAdapter);
 
@@ -328,10 +438,9 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 // TODO Auto-generated method stub
-
                 if ((actionId == EditorInfo.IME_ACTION_DONE)) {
                     // hide virtual keyboard
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(dialogCreatePackageQuantityAllocated.getWindowToken(), 0);
                     return true;
                 }
@@ -339,6 +448,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
 
             }
         });
+
         listRowOrderItemAddQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -346,28 +456,28 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                 if (orderDataList.getMeaid() != null && !orderDataList.getMeaid().isEmpty()) {
                     if (dialogCreatePackageQuantityAllocated.getText().toString() != null && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty()
                             && Double.parseDouble(dialogCreatePackageQuantityAllocated.getText().toString()) == 0.00) {
-                        Toast.makeText(getActivity(), "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
                     } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty()
                             && Double.parseDouble(dialogCreatePackageQuantityAllocated.getText().toString()) != 0 && (Double.parseDouble(dialogCreatePackageQuantityAllocated.getText().toString()) > (Double.parseDouble(orderDataList.getExecuteItemData().getAllocatedQuantity())))) {
-                        Toast.makeText(getActivity(), "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
                     } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null
                             && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() && Double.parseDouble(dialogCreatePackageQuantityAllocated.getText().toString()) > 0) {
                         orderDataList.setUsedQuantity(dialogCreatePackageQuantityAllocated.getText().toString());
                         packageData.put(orderDataList, position);
-                        Toast.makeText(getActivity(), "Item added Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Item added Successfully", Toast.LENGTH_SHORT).show();
                         Set<OrderData> keyProductSet = packageData.keySet();
                         packageDetailsList = new ArrayList<OrderData>(keyProductSet);
                         pendingItemsAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     } else {
-                        Toast.makeText(getActivity(), "Please enter quantity", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (dialogCreatePackageQuantityAllocated.getText().toString() != null &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().equals("null")
                             && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) == 0) {
-                        Toast.makeText(getActivity(), "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
                     } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().equals("null")
@@ -376,20 +486,20 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                             && !orderDataList.getExecuteItemData().getAllocatedQuantity().isEmpty()
                             && Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) >
                             Integer.parseInt(orderDataList.getExecuteItemData().getAllocatedQuantity())) {
-                        Toast.makeText(getActivity(), "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Quantity is greater than ordered quantity", Toast.LENGTH_SHORT).show();
                     } else if (dialogCreatePackageQuantityAllocated.getText().toString() != null
                             && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty() &&
                             !dialogCreatePackageQuantityAllocated.getText().toString().equals("null") &&
                             Integer.parseInt(dialogCreatePackageQuantityAllocated.getText().toString()) > 0) {
                         orderDataList.setUsedQuantity(dialogCreatePackageQuantityAllocated.getText().toString());
                         packageData.put(orderDataList, position);
-                        Toast.makeText(getActivity(), "Item added Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Item added Successfully", Toast.LENGTH_SHORT).show();
                         Set<OrderData> keyProductSet = packageData.keySet();
                         packageDetailsList = new ArrayList<OrderData>(keyProductSet);
                         pendingItemsAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     } else {
-                        Toast.makeText(getActivity(), "Please enter quantity", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RunningOrdersExecuteActivity.this, "Please enter quantity", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -409,7 +519,7 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
     @Override
     public void onAddDirectToPackage(OrderData orderDataList, int position) {
         packageData.put(orderDataList, position);
-        Toast.makeText(getActivity(), "Item added Successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RunningOrdersExecuteActivity.this, "Item added Successfully", Toast.LENGTH_SHORT).show();
         Set<OrderData> keyProductSet = packageData.keySet();
         packageDetailsList = new ArrayList<OrderData>(keyProductSet);
     }
@@ -435,14 +545,20 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
 
     private void executeSelectedItems() {
         task = getString(R.string.execute_order_task);
-        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
-            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
-            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
-            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        if (AppPreferences.getIsLogin(RunningOrdersExecuteActivity.this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(RunningOrdersExecuteActivity.this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(RunningOrdersExecuteActivity.this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(RunningOrdersExecuteActivity.this, AppUtils.DOMAIN);
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.executeSelectedItem(version, key, task, userId, accessToken, chkid, chkoid);
+        Call<ApiResponse> call;
+        if (flagToCallApi.equals("runningOrder")) {
+            call = apiService.executeSelectedItem(version, key, task, userId, accessToken, chkid, chkoid);
+        } else {
+            call = apiService.executeRequestSelectedItem(version, key, task, userId, accessToken, chkid, chkoid);
+        }
+
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -454,9 +570,24 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
                 try {
 
                     if (apiResponse.getSuccess()) {
+
+                        if(transportationDataArrayList!=null && transportationDataArrayList.size()>0){
+                            transportationDataArrayList.clear();
+                        }
+
+                        if(dynamicChargesList!=null && dynamicChargesList.size()>0){
+                            dynamicChargesList.clear();
+                        }
+
+
                         pendingItemsAdapter.notifyDataSetChanged();
                         pendingItemsRecyclerView.setVisibility(View.VISIBLE);
                         pendingItemsEmptyView.setVisibility(View.GONE);
+
+                        transportationDataArrayList.addAll(apiResponse.getData().getTransprotModes());
+                        if(apiResponse.getData().getExecuteOrderTaxesEdit()) {
+                            dynamicChargesList.addAll(apiResponse.getData().getCharges());
+                        }
 
                         for (OrderData orderData : apiResponse.getData().getOrderData()) {
                             orderData.setUsedQuantity("0");
@@ -500,8 +631,8 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
     @Override
     public void onClick(View v) {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkPermissionWithRationale((Activity) getActivity(), new RunningOrdersExecuteFragment(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_FOR_CAMERA)) {
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (checkPermissionWithRationale((Activity) RunningOrdersExecuteActivity.this, new RunningOrdersFragment(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_FOR_CAMERA)) {
+                if (ActivityCompat.checkSelfPermission(RunningOrdersExecuteActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
             }
@@ -512,48 +643,85 @@ public class RunningOrdersExecuteFragment extends Fragment implements RunningOrd
 
     public void scanBarcode() {
         Log.d("PERMISSION", "Camera3");
-        Intent intentScan = new Intent(getActivity(), ScannerActivity.class);
+        Intent intentScan = new Intent(RunningOrdersExecuteActivity.this, ScannerActivity.class);
         startActivityForResult(intentScan, 1000);
     }
 
     public void getAllocatedQuantity(int allocatedQuantity, List<OrderData> orderData, int position) {
         posToupdate = position;
-        pendingItemsAdapter = new RunningOrderExecuteAdapter(getActivity(), orderDataList, this, allocatedQuantity, posToupdate, false);
+        pendingItemsAdapter = new RunningOrderExecuteAdapter(RunningOrdersExecuteActivity.this, orderDataList, this, allocatedQuantity, posToupdate, false);
         pendingItemsRecyclerView.setAdapter(pendingItemsAdapter);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
-    }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
-    }
-
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            // Set title
-            getActivity().setTitle(getString(R.string.running_orders_execute_fragment) + " " + AppPreferences.getCompanyCode(getActivity(), AppUtils.COMPANY_CODE) + chkoid);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("TAG_REQUEST", " " + requestCode + " " + resultCode);
+        if (resultCode == 1000) {
+            getData(data.getStringExtra("scanResult"));
         }
     }
 
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-       /* if (resultCode == Activity.RESULT_OK) {
-            Fragment f = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
-            getChildFragmentManager().beginTransaction().add(R.id.home_container, f).commitAllowingStateLoss();
-        }*/
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_FOR_CAMERA: {
+                Map<String, Integer> perms = new HashMap<>();
+                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < permissions.length; i++)
+                        perms.put(permissions[i], grantResults[i]);
+
+                    if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        Log.d("PERMISSION", "Camera");
+                        scanBarcode();
+                    } else {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                        } else {
+                            askUserToAllowPermissionFromSetting();
+                        }
+                    }
+                }
+            }
+            break;
+
+        }
     }
+
+    public void askUserToAllowPermissionFromSetting() {
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        // set title
+        alertDialogBuilder.setTitle(R.string.permission_required);
+        // set dialog messageTextView
+        alertDialogBuilder
+                .setMessage(getString(R.string.request_permission_from_settings))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity;
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
+
 }
