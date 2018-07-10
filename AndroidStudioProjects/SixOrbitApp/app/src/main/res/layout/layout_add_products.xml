@@ -1,0 +1,1012 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fdededed"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/MyMaterialTheme.AppBarOverlay">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/MyMaterialTheme.PopupOverlay"
+                app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+            <LinearLayout
+                android:id="@+id/add_item_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addItem_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Item"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp" />
+
+                <View
+                    android:id="@+id/addProducts_button"
+                    android:layout_width="@dimen/_2sdp"
+                    android:layout_height="@dimen/_26sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@color/gray"
+                    android:textSize="@dimen/_39sdp" />
+
+                <ImageView
+                    android:id="@+id/scan_imageView"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@drawable/qr_code"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/qr_code" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f7f7f7"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="fill_vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view_inner_customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_8sdp">
+
+                            <TextView
+                                android:id="@+id/customerName_title_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/email_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                android:id="@+id/mobile_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/blueTurquoise"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                android:id="@+id/changeAddCustomer_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/card_view_outer_customer"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:background="@color/green"
+                                android:gravity="center"
+                                android:longClickable="false"
+                                android:paddingBottom="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_8sdp"
+                                android:text="Edit Customer"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_8sdp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cardView_outlet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:visibility="gone"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_8sdp">
+
+                            <TextView
+                                android:id="@+id/outlet_title_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:gravity="center_vertical"
+                                android:text="Outlet"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <Spinner
+                                android:id="@+id/outlet_spinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@drawable/bg_spinner"></Spinner>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view_inner_quot_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/quot_options_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:longClickable="false"
+                                android:text="Quote Options"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="visible" />
+
+                            <CheckBox
+                                android:id="@+id/coverage_checkBox_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:buttonTint="@color/green"
+                                android:text="Coverage in SQFT"
+                                android:textSize="@dimen/_9sdp"
+                                android:visibility="gone" />
+
+                            <CheckBox
+                                android:id="@+id/product_imageShow_checkBox_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:buttonTint="@color/green"
+                                android:text="Show image in print"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <CheckBox
+                                android:id="@+id/product_taxInclude_checkBox_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:buttonTint="@color/green"
+                                android:text="Show tax inclusive prices in print"
+                                android:textSize="@dimen/_9sdp" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView_products"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible" />
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/card_view_inner_price_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp">
+
+                        <LinearLayout
+                            android:id="@+id/price_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_8sdp">
+
+                            <LinearLayout
+                                android:id="@+id/total_amount_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/total_amount_title_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:text="Total Amount:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/total_amount_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:textSize="@dimen/_10sdp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@color/gray"></View>
+
+                            <LinearLayout
+                                android:id="@+id/total_discount_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/total_discount_title_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:text="Total Discount:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/total_discount_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:textSize="@dimen/_10sdp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@color/gray"></View>
+
+                            <LinearLayout
+                                android:id="@+id/material_cost_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/material_cost_title_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:text="Material Cost:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/material_cost_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:textSize="@dimen/_10sdp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@color/gray"></View>
+
+                            <LinearLayout
+                                android:id="@+id/additional_discount_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/additional_discount_title_textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Additional Discount:"
+                                    android:textSize="@dimen/_11sdp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:orientation="horizontal">
+
+                                    <!--<android.support.design.widget.TextInputLayout
+                                        android:id="@+id/additional_textInputLayout"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:layout_weight="0.7"
+                                        android:clipToPadding="false"
+                                        android:gravity="left"
+                                        android:inputType="textCapSentences|textNoSuggestions"
+                                        android:lines="1"
+                                        android:longClickable="false"
+                                        android:visibility="visible"
+                                        app:hintTextAppearance="@style/CustomTextAppearance">
+        -->
+                                    <EditText
+                                        android:id="@+id/additional_edittext"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.7"
+                                        android:backgroundTint="@color/gray"
+                                        android:digits="1234567890."
+                                        android:fontFamily="sans-serif"
+                                        android:imeOptions="actionDone"
+                                        android:inputType="number|textNoSuggestions"
+                                        android:lines="1"
+                                        android:longClickable="false"
+                                        android:textColor="@color/black"
+                                        android:textColorHint="@color/darkGray"
+                                        android:textCursorDrawable="@drawable/green_cursor"
+                                        android:textSize="@dimen/_10sdp" />
+                                    <!-- </android.support.design.widget.TextInputLayout>-->
+
+                                    <RelativeLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginLeft="@dimen/_14sdp"
+                                        android:layout_marginRight="@dimen/_14sdp"
+                                        android:layout_weight="0.5">
+
+                                        <Spinner
+                                            android:id="@+id/additional_discount_type_spinner"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginTop="2sp"
+                                            android:background="@drawable/bg_spinner"
+                                            android:gravity="left"
+                                            android:popupBackground="#ffffff"
+                                            android:textSize="@dimen/_10sdp" />
+                                    </RelativeLayout>
+
+
+                                    <TextView
+                                        android:id="@+id/additional_discount_value_textView"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:gravity="right"
+                                        android:textSize="@dimen/_10sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@color/gray"></View>
+
+                            <TextView
+                                android:id="@+id/materialTax_title_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tax on Material Cost:"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <LinearLayout
+                                android:id="@+id/material_tax_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:id="@+id/materialTax_spinner_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/_37sdp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/_14sdp"
+                                    android:layout_weight="1.5"
+                                    android:gravity="left">
+
+                                    <Spinner
+                                        android:id="@+id/materialTax_charge_type_spinner"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="@dimen/_37sdp"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginTop="2sp"
+                                        android:background="@drawable/bg_spinner"
+                                        android:gravity="left"
+                                        android:popupBackground="#ffffff"
+                                        android:textSize="@dimen/_10sdp" />
+                                </RelativeLayout>
+
+
+                                <TextView
+                                    android:id="@+id/materialTax_charge_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/_4sdp"
+                                    android:textSize="@dimen/_10sdp" />
+                            </LinearLayout>
+
+                            <View
+                                android:id="@+id/materialTax_charge_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:background="@color/gray"></View>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/chargeList_recyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@color/gray"></View>
+
+                            <TextView
+                                android:id="@+id/tax_title_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tax:"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <LinearLayout
+                                android:id="@+id/tax_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:id="@+id/tax_spinner_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="@dimen/_37sdp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/_14sdp"
+                                    android:layout_weight="1"
+                                    android:gravity="left">
+
+                                    <Spinner
+                                        android:id="@+id/tax_charge_type_spinner"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="@dimen/_37sdp"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginTop="2sp"
+                                        android:background="@drawable/bg_spinner"
+                                        android:gravity="left"
+                                        android:popupBackground="#ffffff"
+                                        android:textSize="@dimen/_10sdp" />
+                                </RelativeLayout>
+
+
+                                <TextView
+                                    android:id="@+id/tax_charge_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/_4sdp"
+                                    android:textSize="@dimen/_10sdp" />
+                            </LinearLayout>
+
+                            <View
+                                android:id="@+id/tax_charge_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:background="@color/gray"></View>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/chargeList_two_recyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+                            <View
+                                android:id="@+id/view_chargesListTwo"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@color/gray"></View>
+
+                            <TextView
+                                android:id="@+id/charges_three_title_textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Charges:"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <LinearLayout
+                                android:id="@+id/charges_three_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:id="@+id/charges_three_spinner_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginRight="@dimen/_14sdp"
+                                    android:layout_weight="1"
+                                    android:gravity="left">
+
+                                    <Spinner
+                                        android:id="@+id/charge_type_three_spinner"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginTop="2sp"
+                                        android:background="@drawable/bg_spinner"
+                                        android:gravity="left"
+                                        android:popupBackground="@color/white"
+                                        android:textSize="@dimen/_10sdp" />
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:id="@+id/charge_three_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/_4sdp"
+                                    android:textSize="@dimen/_14sdp" />
+                            </LinearLayout>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/chargeList_three_recyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"></android.support.v7.widget.RecyclerView>
+
+                            <View
+                                android:id="@+id/view_charges_three"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:background="@color/gray"></View>
+
+                            <LinearLayout
+                                android:id="@+id/grand_total_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/grand_total_title_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:text="Grand Total:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/grand_total_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/_4sdp"
+                                    android:textSize="@dimen/_10sdp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:background="@color/gray"></View>
+
+                            <LinearLayout
+                                android:id="@+id/round_off_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/round_off_title_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:text="Round Off:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <EditText
+                                    android:id="@+id/round_off_edittext"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="right"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="number|textNoSuggestions"
+                                    android:lines="1"
+                                    android:longClickable="false"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/darkGray"
+                                    android:textCursorDrawable="@drawable/green_cursor"
+                                    android:textSize="@dimen/_10sdp" />
+                            </LinearLayout>
+                            <!--<LinearLayout
+                                android:id="@+id/round_off_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/round_off_title_textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Round Off:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <android.support.design.widget.TextInputLayout
+                                        android:id="@+id/round_off_textInputLayout"
+                                        android:layout_width="0dp"
+                                        android:layout_height="@dimen/_37sdp"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:layout_weight="1"
+                                        android:clipToPadding="false"
+                                        android:gravity="left|center"
+                                        android:inputType="textCapSentences|textNoSuggestions"
+                                        android:lines="1"
+                                        android:longClickable="false"
+                                        android:visibility="visible"
+                                        app:hintTextAppearance="@style/CustomTextAppearance">
+
+                                        <EditText
+                                            android:id="@+id/round_off_edittext"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_37sdp"
+                                            android:layout_margin="@dimen/_8sdp"
+                                            android:fontFamily="sans-serif"
+                                            android:imeOptions="actionDone"
+                                            android:inputType="number|textNoSuggestions"
+                                            android:lines="1"
+                                            android:longClickable="false"
+                                            android:textColor="@color/black"
+                                            android:textColorHint="@color/darkGray"
+                                            android:textCursorDrawable="@drawable/green_cursor"
+                                            android:textSize="@dimen/_10sdp" />
+                                    </android.support.design.widget.TextInputLayout>
+
+                                    <TextView
+                                        android:id="@+id/round_off_value_textView"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="1"
+                                        android:paddingLeft="@dimen/_4sdp"
+                                        android:textSize="@dimen/_10sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>-->
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_1sdp"
+                                android:background="@color/gray"></View>
+
+                            <LinearLayout
+                                android:id="@+id/payable_amount_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/payable_amount_title_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:text="Payable Amount:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:id="@+id/payable_amount_value_textView"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/_4sdp"
+                                    android:textSize="@dimen/_10sdp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:background="@color/gray"></View>
+
+                            <!-- <TextView
+                                 android:id="@+id/attendee_details_title_textView"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:text="Attendee Details:"
+                                 android:textSize="@dimen/_10sdp" />
+
+                             <RelativeLayout
+                                 android:id="@+id/attendee_spinner_layout"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="@dimen/_4sdp"
+                                 android:layout_weight="1">
+
+                                 <Spinner
+                                     android:id="@+id/attendee_spinner"
+                                     android:layout_width="fill_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_centerVertical="true"
+                                     android:layout_marginTop="2sp"
+                                     android:background="@drawable/spinner_bg"
+                                     android:gravity="left"
+                                     android:popupBackground="#ffffff"
+                                     android:textSize="@dimen/_10sdp" />
+                             </RelativeLayout>-->
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_36sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:clipToPadding="false"
+                                android:gravity="left|center"
+                                app:hintTextAppearance="@style/CustomTextAppearance">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/attendee_autoCompleteTextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_36sdp"
+                                    android:backgroundTint="@color/gray"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="left"
+                                    android:hint="Attendee"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/gray"
+                                    android:textCursorDrawable="@drawable/green_cursor"
+                                    android:textSize="@dimen/_10sdp" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:longClickable="false"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <CheckBox
+                                    android:id="@+id/sms_checkBox"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:buttonTint="@color/green"
+                                    android:checked="false"
+                                    android:text="Send SMS"
+                                    android:textSize="@dimen/_9sdp" />
+
+
+                                <Spinner
+                                    android:id="@+id/add_search_quotation_item_spinner_sms_template"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:background="@drawable/spinner_bg"></Spinner>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/add_search_quotation_item_show_sms_preview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/sms_show_preview"
+                                android:textAllCaps="false"
+                                android:textColor="@color/blueTurquoise"
+                                android:textSize="@dimen/_11sdp"
+                                android:textStyle="normal" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:longClickable="false"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <CheckBox
+                                    android:id="@+id/email_checkBox"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:buttonTint="@color/green"
+                                    android:checked="false"
+                                    android:text="Send Email"
+                                    android:textSize="@dimen/_9sdp" />
+
+                                <Spinner
+                                    android:id="@+id/add_search_quotation_item_spinner_email_template"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:background="@drawable/spinner_bg"></Spinner>
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/add_search_quotation_item_show_email_preview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/email_show_preview"
+                                android:textAllCaps="false"
+                                android:textColor="@color/blueTurquoise"
+                                android:textSize="@dimen/_11sdp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <ImageView
+                android:id="@+id/imageView_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/save_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/green"
+        android:gravity="center"
+        android:paddingBottom="@dimen/_9sdp"
+        android:paddingTop="@dimen/_11sdp"
+        android:text="Save"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_8sdp"
+        android:textStyle="bold" />
+</LinearLayout>

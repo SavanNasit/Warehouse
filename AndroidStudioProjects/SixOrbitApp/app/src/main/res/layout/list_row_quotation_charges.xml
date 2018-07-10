@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:textSize="@dimen/_10sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:orientation="horizontal">
+
+            <!-- <android.support.design.widget.TextInputLayout
+                 android:id="@+id/textInputLayout"
+                 android:layout_width="0dp"
+                 android:layout_height="@dimen/_37sdp"
+                 android:layout_gravity="center"
+                 android:layout_weight="0.7"
+                 android:clipToPadding="false"
+                 android:gravity="left"
+                 android:inputType="textCapSentences|textNoSuggestions"
+                 android:lines="1"
+                 android:longClickable="false"
+                 android:visibility="visible"
+                 app:hintTextAppearance="@style/CustomTextAppearance">-->
+
+            <EditText
+                android:id="@+id/edittext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_weight="0.7"
+                android:backgroundTint="@color/gray"
+                android:fontFamily="sans-serif"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:lines="1"
+                android:longClickable="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkGray"
+                android:textCursorDrawable="@drawable/green_cursor"
+                android:textSize="@dimen/_10sdp" />
+            <!--
+                        </android.support.design.widget.TextInputLayout>
+            -->
+
+            <RelativeLayout
+                android:id="@+id/spinner_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/_14sdp"
+                android:layout_weight="1.4">
+
+                <Spinner
+                    android:id="@+id/charge_type_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/spinner_bg"
+                    android:gravity="left"
+                    android:popupBackground="#ffffff"
+                    android:textSize="@dimen/_10sdp" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/charge_value_textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.8"
+                android:gravity="right"
+                android:paddingLeft="@dimen/_4sdp"
+                android:textSize="@dimen/_10sdp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

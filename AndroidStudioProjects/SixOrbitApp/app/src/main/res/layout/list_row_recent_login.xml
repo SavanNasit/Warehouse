@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/list_row_recent_login_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.34"
+        android:gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="TIME"
+        android:textSize="@dimen/_11sdp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.001"
+        android:background="@color/lytgray" />
+
+    <TextView
+        android:id="@+id/list_row_recent_login_ip_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.34"
+        android:gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="IP ADDRESS"
+        android:textSize="@dimen/_11sdp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.001"
+        android:background="@color/lytgray" />
+
+
+    <TextView
+        android:id="@+id/list_row_recent_login_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:gravity="center"
+        android:padding="@dimen/_8sdp"
+        android:text="STATUS"
+        android:textSize="@dimen/_11sdp" />
+
+</LinearLayout>

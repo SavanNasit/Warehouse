@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/edittext_gray_border"
+        android:weightSum="2">
+
+        <EditText
+            android:id="@+id/scan_editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8"
+            android:hint="@string/scan"
+            android:inputType="text"
+            android:paddingLeft="@dimen/_5sdp"
+            android:textColor="@color/primary"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:textSize="@dimen/_10sdp" />
+
+        <ImageView
+            android:id="@+id/scan_imageView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:background="@drawable/edittext_gray_border"
+            android:padding="@dimen/_7sdp"
+            android:src="@drawable/ic_barcode_scan" />
+    </LinearLayout>
+</LinearLayout>

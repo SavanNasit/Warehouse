@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:id="@+id/message_container"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padding_list_row"
+    android:paddingTop="@dimen/padding_list_row">
+
+
+    <RelativeLayout
+        android:id="@+id/icon_container"
+        android:layout_width="50dp"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+       >
+
+
+        <ImageView
+            android:id="@+id/icon_profile"
+            android:layout_width="@dimen/icon_width_height"
+            android:layout_height="@dimen/icon_width_height"
+            android:src="@drawable/bg_circle_black" />
+
+
+        <TextView
+            android:id="@+id/number_of_pings"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:text="12"
+            android:layout_marginBottom="0dp"
+            android:gravity="center"
+            android:background="@drawable/bg_circle_yellow"
+            android:layout_alignTop="@+id/icon_profile"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
