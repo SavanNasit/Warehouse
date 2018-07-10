@@ -69,10 +69,14 @@ public class RecyclerItemForReceiveAgainstPO extends ItemTouchHelper.SimpleCallb
         return super.convertToAbsoluteDirection(flags, layoutDirection);
     }
 
-    @Override
-    public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        return super.getSwipeDirs(recyclerView, viewHolder);
 
+    public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder instanceof PurchaseOrderAdapter.MyViewHolder
+                && ((PurchaseOrderAdapter.MyViewHolder) viewHolder).isSwipeToRecord) {
+            return super.getSwipeDirs(recyclerView, viewHolder);
+        } else {
+            return 0;
+        }
     }
 
     public interface RecyclerItemTouchHelperListener {

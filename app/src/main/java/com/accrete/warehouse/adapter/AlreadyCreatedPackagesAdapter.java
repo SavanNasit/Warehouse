@@ -2,12 +2,14 @@ package com.accrete.warehouse.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -40,31 +42,34 @@ public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyC
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_out_for_delivery, parent, false);
+                .inflate(R.layout.list_row_already_created_package, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final AlreadyCreatedPackages packed = packedList.get(position);
-        holder.outForDeliveryPackageId.setText(packed.getPackageId());
-        holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packed.getInvoiceNo());
-        holder.outForDeliveryCustomerName.setText(packed.getCustomerName());
+        holder.listRowPackedPackageId.setText(packed.getPackageId());
+       //holder.listRowPackedPackageId.setPaintFlags(holder.listRowPackedPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        holder.listRowPackedInvoiceNumber.setText("Invoice No : " + packed.getInvoiceNo());
+        holder.listRowRunningOrdersCustomer.setText(packed.getCustomerName());
 
-        //TODO NO GatePass ID in this process
-        holder.outForDeliveryGatepassId.setVisibility(View.GONE);
-
-        holder.outForDeliveryOrderId.setText("Order Id : " + packed.getOrderID());
+        holder.listRowPackedOrderId.setText("Order Id : " + packed.getOrderID());
         if (packed.getToDate() != null && !packed.getToDate().isEmpty()) {
-            holder.outForDeliveryExpDod.setText("Exp Dod : " + packed.getToDate());
+            holder.listRowPackedExpDod.setText("Exp Dod : " + packed.getToDate());
         } else {
-            holder.outForDeliveryExpDod.setText("Exp Dod : N/A ");
+            holder.listRowPackedExpDod.setText("Exp Dod : N/A ");
         }
 
-        holder.outForDeliveryUser.setText("Payment : " + packed.getPaymentStatus());
+        if (packed.getZipCode() != null && !packed.getZipCode().isEmpty()) {
+            holder.listRowPackedPincode.setText(packed.getZipCode());
+            holder.listRowPackedExpDod.setVisibility(View.VISIBLE);
+        } else {
+            holder.listRowPackedPincode.setVisibility(View.GONE);
+        }
 
-        holder.outForDeliveryContainer.setOnClickListener(new View.OnClickListener() {
+        holder.statusTextView.setText("Payment : " + packed.getPaymentStatus());
+        holder.outletCardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onMessageRowClicked(position);
@@ -72,12 +77,11 @@ public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyC
         });
 
 
-
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM, yyyy");
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date startDate = targetFormat.parse(packed.getInvoiceDate());
-            holder.outForDeliveryInvoiceDate.setText(formatter.format(startDate));
+            holder.listRowPackedInvoiceDate.setText(formatter.format(startDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -88,7 +92,7 @@ public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyC
         return packedList.size();
     }
 
-    private void applyClickEvents(PackedAdapter.MyViewHolder holder, final int position) {
+    private void applyClickEvents(MyViewHolder holder, final int position) {
         listener.onMessageRowClicked(position);
     }
 
@@ -98,29 +102,33 @@ public class AlreadyCreatedPackagesAdapter extends RecyclerView.Adapter<AlreadyC
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView outForDeliveryPackageId;
-        private TextView outForDeliveryInvoiceNo;
-        private TextView outForDeliveryInvoiceDate;
-        private TextView outForDeliveryCustomerName;
-        private TextView outForDeliveryGatepassId;
-        private TextView outForDeliveryOrderId;
-        private TextView outForDeliveryExpDod;
-        private TextView outForDeliveryUser;
-        private LinearLayout outForDeliveryContainer;
+        private CardView outletCardview;
+        private RelativeLayout relativelayoutContainer;
+        private TextView listRowPackedPackageId;
+        private TextView listRowPackedInvoiceDate;
+        private TextView listRowRunningOrdersCustomer;
+        private TextView listRowPackedPincode;
+        private TextView listRowPackedOrderId;
+        private TextView listRowPackedInvoiceNumber;
+        private TextView listRowPackedExpDod;
+        private TextView statusTextView;
 
         public MyViewHolder(View view) {
             super(view);
-            outForDeliveryPackageId = (TextView) view.findViewById(R.id.out_for_delivery_package_id);
-            outForDeliveryInvoiceNo = (TextView) view.findViewById(R.id.out_for_delivery_invoice_no);
-            outForDeliveryInvoiceDate = (TextView) view.findViewById(R.id.out_for_delivery_invoice_date);
-            outForDeliveryCustomerName = (TextView) view.findViewById(R.id.out_for_delivery_customer_name);
-            outForDeliveryGatepassId = (TextView) view.findViewById(R.id.out_for_delivery_gatepass_id);
-            outForDeliveryOrderId = (TextView) view.findViewById(R.id.out_for_delivery_order_id);
-            outForDeliveryExpDod = (TextView) view.findViewById(R.id.out_for_delivery_exp_dod);
-            outForDeliveryUser = (TextView) view.findViewById(R.id.out_for_delivery_user);
-            outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
+            listRowPackedPackageId = (TextView) view.findViewById(R.id.list_row_packed_package_id);
+            listRowPackedInvoiceNumber = (TextView) view.findViewById(R.id.list_row_packed_invoice_number);
+            listRowPackedInvoiceDate = (TextView) view.findViewById(R.id.list_row_packed_invoice_date);
+            listRowRunningOrdersCustomer = (TextView) view.findViewById(R.id.list_row_running_orders_customer);
+            listRowPackedOrderId = (TextView) view.findViewById(R.id.list_row_packed_order_id);
+            listRowPackedExpDod = (TextView) view.findViewById(R.id.list_row_packed_exp_dod);
+            outletCardview = (CardView)view.findViewById( R.id.outlet_cardview );
+            relativelayoutContainer = (RelativeLayout)view.findViewById( R.id.relativelayout_container );
+            listRowPackedInvoiceNumber = (TextView)view.findViewById( R.id.list_row_packed_invoice_number );
+            listRowPackedExpDod = (TextView)view.findViewById( R.id.list_row_packed_exp_dod );
+            statusTextView = (TextView)view.findViewById( R.id.status_textView );
+            listRowPackedPincode=(TextView)view.findViewById(R.id.list_row_packed_pincode);
         }
+
     }
 
 }

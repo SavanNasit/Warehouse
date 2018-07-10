@@ -44,13 +44,6 @@ public class ConsignmentItem {
     @Expose
     private String unitPrice;
 
-    public String getHsnCode() {
-        return hsnCode;
-    }
-
-    public void setHsnCode(String hsnCode) {
-        this.hsnCode = hsnCode;
-    }
 
     @SerializedName("hsn_code")
     @Expose
@@ -209,6 +202,13 @@ public class ConsignmentItem {
 
     public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
+    }
+    public String getHsnCode() {
+        return hsnCode;
+    }
+
+    public void setHsnCode(String hsnCode) {
+        this.hsnCode = hsnCode;
     }
 
 

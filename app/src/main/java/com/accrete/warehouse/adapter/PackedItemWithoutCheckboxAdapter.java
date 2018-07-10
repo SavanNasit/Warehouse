@@ -49,7 +49,7 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final PackedItem packed = packedList.get(position);
         holder.outForDeliveryPackageId.setText(packed.getPackageId());
-        holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+      //  holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.outForDeliveryInvoiceNo.setText("Invoice No: " + packed.getInvoiceNo());
         if (packed.getCustomerName() != null && !packed.getCustomerName().trim().isEmpty()) {
             holder.outForDeliveryCustomerName.setText(packed.getCustomerName().trim());
@@ -68,8 +68,8 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             holder.outForDeliveryExpDod.setVisibility(View.GONE);
         }
 
-        if (packed.getCustomerName() != null && !packed.getCustomerName().trim().isEmpty()) {
-            holder.outForDeliveryUser.setText("Delivery By: " + packed.getCustomerName().trim());
+        if (packed.getOrderPaymentTypeText() != null && !packed.getOrderPaymentTypeText().trim().isEmpty()) {
+            holder.outForDeliveryUser.setText("Payment Type: " + packed.getOrderPaymentTypeText().trim());
             holder.outForDeliveryUser.setVisibility(View.VISIBLE);
         } else {
             holder.outForDeliveryUser.setVisibility(View.GONE);
@@ -129,7 +129,6 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
 
     public interface PackedItemAdapterListener {
         void onMessageRowClicked(int position);
-
         void onExecute(ArrayList<String> packageIdList);
     }
 
@@ -152,14 +151,14 @@ public class PackedItemWithoutCheckboxAdapter extends RecyclerView.Adapter<Packe
             statusTextView = (TextView) view.findViewById(R.id.status_textView);
             outForDeliveryPackageId = (TextView) view.findViewById(R.id.out_for_delivery_package_id);
             outForDeliveryInvoiceNo = (TextView) view.findViewById(R.id.out_for_delivery_invoice_no);
-            outForDeliveryInvoiceDate = (TextView) view.findViewById(R.id.out_for_delivery_invoice_date);
+            outForDeliveryInvoiceDate = (TextView) view.findViewById(R.id.list_row_packed_invoice_date);
             outForDeliveryCustomerName = (TextView) view.findViewById(R.id.out_for_delivery_customer_name);
             outForDeliveryGatepassId = (TextView) view.findViewById(R.id.out_for_delivery_gatepass_id);
             outForDeliveryOrderId = (TextView) view.findViewById(R.id.out_for_delivery_order_id);
             outForDeliveryExpDod = (TextView) view.findViewById(R.id.out_for_delivery_exp_dod);
             outForDeliveryUser = (TextView) view.findViewById(R.id.out_for_delivery_user);
-            outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
-            mainLayout = (RelativeLayout) view.findViewById(R.id.main_layout);
+            //outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
+            mainLayout = (RelativeLayout) view.findViewById(R.id.relativelayout_container);
         }
     }
 

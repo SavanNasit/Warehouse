@@ -44,7 +44,7 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.MyVi
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         OutForDelivery outForDelivery = deliveredList.get(position);
         holder.outForDeliveryPackageId.setText(outForDelivery.getPackageId());
-        holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+       // holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         holder.outForDeliveryInvoiceNo.setText("Invoice No : "+outForDelivery.getInvoiceNumber());
         holder.outForDeliveryInvoiceDate.setText(outForDelivery.getInvoiceDate());
         holder.outForDeliveryCustomerName.setText(outForDelivery.getCustomerName());
@@ -102,7 +102,7 @@ public class DeliveredAdapter extends RecyclerView.Adapter<DeliveredAdapter.MyVi
             outForDeliveryOrderId = (TextView) view.findViewById(R.id.out_for_delivery_order_id);
             outForDeliveryExpDod = (TextView) view.findViewById(R.id.out_for_delivery_exp_dod);
             outForDeliveryUser = (TextView) view.findViewById(R.id.out_for_delivery_user);
-            outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
+          //outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
         }
     }
 

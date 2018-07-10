@@ -17,8 +17,6 @@ public class ApiResponse {
     @SerializedName("result_code")
     @Expose
     private String successCode;
-
-
     @SerializedName("message")
     @Expose
     private String message;

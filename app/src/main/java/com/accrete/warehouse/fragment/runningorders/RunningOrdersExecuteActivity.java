@@ -25,9 +25,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,9 +41,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.accrete.warehouse.CreatePackageActivity;
+import com.accrete.warehouse.fragment.createpackage.CreatePackageActivity;
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.ScannerActivity;
 import com.accrete.warehouse.adapter.RunningOrderExecuteAdapter;
 import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesActivity;
 import com.accrete.warehouse.model.ApiResponse;
@@ -61,9 +58,12 @@ import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.NetworkUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.GsonBuilder;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.builder.AnimateGifMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,7 +89,7 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
  * Created by poonam on 11/28/17.
  */
 
-public class RunningOrdersExecuteActivity extends AppCompatActivity implements RunningOrderExecuteAdapter.PendingItemsAdapterListener, View.OnClickListener{
+public class RunningOrdersExecuteActivity extends AppCompatActivity implements RunningOrderExecuteAdapter.PendingItemsAdapterListener, View.OnClickListener {
     PendingItems pendingItems = new PendingItems();
     List<SelectOrderItem> selectOrderItems = new ArrayList<>();
     List<PendingItems> selectedItemList = new ArrayList<>();
@@ -122,31 +122,206 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
     private TextView runningExecuteOrdersCustomerDetailsMobile;
     private List<Charge> dynamicChargesList = new ArrayList<>();
     private String orderId;
+    private TextView textViewAddAllItems;
+    private ImageView imageViewLoader;
+    private String flagInterstate,flagToShowToast;
 
-    public void getData(String str) {
-        // Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
-        pendingItemsEdtScan.setText(str);
-        for (int i = 0; i < orderDataList.size(); i++) {
-            if (pendingItemsEdtScan.getText().toString().trim().equals(orderDataList.get(i).getIsid())) {
-                if (Integer.parseInt(orderDataList.get(i).getItemQuantity()) == 0) {
-                    Toast.makeText(this, "No item available", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (orderDataList.get(i).getMeaid() != null && !orderDataList.get(i).getMeaid().isEmpty()) {
-                        bottomSheetAddItemQuantity(orderDataList.get(i), i);
-                    } else {
-                        orderDataList.get(i).setUsedQuantity(String.valueOf(Integer.valueOf(orderDataList.get(i).getUsedQuantity()) + 1));
-                        flagScan = true;
-                        posToupdate = i;
-                        pendingItemsAdapter.notifyDataSetChanged();
-                        getAllocatedQuantity(Integer.valueOf(orderDataList.get(i).getUsedQuantity()), orderDataList, posToupdate);
-                    }
-                }
-                pendingItemsEdtScan.setText("");
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (orderDataList.size() > 0) {
+                orderDataList.clear();
+            }
+
+            if (packageDetailsList.size() > 0) {
+                packageDetailsList.clear();
+            }
+
+            if (packageData.size() > 0) {
+                packageData.clear();
+            }
+
+            String status = NetworkUtil.getConnectivityStatusString(RunningOrdersExecuteActivity.this);
+            if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                showLoader();
+                executeSelectedItems();
             }
         }
+    };
+
+    private void fetchDataOfItemViaScan(String scanResult) {
+        task = getString(R.string.task_scan_item_info);
+        if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = apiService.getDataPerItemScan(version, key, task, userId, accessToken, scanResult);
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                //leadList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        if (orderDataList != null && orderDataList.size() > 0) {
+                            for (int i = 0; i < orderDataList.size(); i++) {
+                                if (apiResponse.getData().getItemInfo().getIid().equals(orderDataList.get(i).getIid().trim())) {
+                                    if (orderDataList.get(i).equals("0")) {
+                                        Toast.makeText(RunningOrdersExecuteActivity.this, "Item Already Executed", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        bottomSheetAddItemQuantity(orderDataList.get(i), i);
+                                        hideLoader();
+                                        return;
+                                    }
+
+                                } else {
+                                    //  Toast.makeText(this, "No item present in the list with "+orderDataList.get(i).getBatchNumber(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } else {
+                            Toast.makeText(RunningOrdersExecuteActivity.this, "No items present in the list", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (apiResponse.getSuccessCode().equals("10001")) {
+                            //redirectToDomain(apiResponse);
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10002")) {
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            //  redirectToDomain(apiResponse);
+                        } else if (apiResponse.getSuccessCode().equals("10003")) {
+                            // redirectToDomain(apiResponse);
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        } else if (apiResponse.getSuccessCode().equals("10004")) {
+                            // redirectToDomain(apiResponse);
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        } else if (apiResponse.getSuccessCode().equals("10005")) {
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10006")) {
+                            //redirectToDomain(apiResponse);
+
+                            if (NetworkUtil.getConnectivityStatusString(RunningOrdersExecuteActivity.this).equals("Not connected to Internet")) {
+                                Toast.makeText(RunningOrdersExecuteActivity.this, getString(R.string.not_connected_to_internet), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        } else if (apiResponse.getSuccessCode().equals("10007")) {
+                            //redirectToDomain(apiResponse);
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10008")) {
+                            // CustomisedToast.error(getActivity(), getString(R.string.error_login), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10009")) {
+                            // CustomisedToast.error(getActivity(), getString(R.string.error_login_mac), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10010")) {
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("100011")) {
+                            // redirectToDomain(apiResponse);
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10012")) {
+                            // redirectToDomain(apiResponse);
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (apiResponse.getSuccessCode().equals("10013")) {
+                            //  redirectToDomain(apiResponse);
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RunningOrdersExecuteActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    hideLoader();
+
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    hideLoader();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                // Toast.makeText(getActivity(), getString(R.string.connect_server_failed), Toast.LENGTH_SHORT).show();
+                hideLoader();
+            }
+        });
 
     }
 
+
+    public void getData(String scanResult) {
+
+        if (scanResult != null) {
+            //showLoader();
+            //fetchDataOfItemViaScan(scanResult);
+            if (orderDataList != null && orderDataList.size() > 0) {
+                for (int i = 0; i < orderDataList.size(); i++) {
+                    if (scanResult.equals(orderDataList.get(i).getBarcode().trim()) || scanResult.equals(orderDataList.get(i).getVariationNumber().trim())) {
+                        if (orderDataList.get(i).getItemQuantity().equals("0")||orderDataList.get(i).getExecuteItemData().equals(null) || orderDataList.get(i).getItemQuantity().isEmpty() || orderDataList.get(i).getItemQuantity().equals("0")) {
+                            Toast.makeText(RunningOrdersExecuteActivity.this, "Item Already Executed", Toast.LENGTH_SHORT).show();
+                        } else {
+                            bottomSheetAddItemQuantity(orderDataList.get(i), i);
+                            hideLoader();
+                            return;
+                        }
+                        flagToShowToast = "false";
+                    } else {
+                        //  Toast.makeText(this, "No item present in the list with "+orderDataList.get(i).getBatchNumber(), Toast.LENGTH_SHORT).show();
+                        flagToShowToast = "true";
+                    }
+                }
+                if(flagToShowToast.equals("true")){
+                    Toast.makeText(this, "Item doesn't exist in this order", Toast.LENGTH_SHORT).show();
+                    flagToShowToast="";
+                }
+            }
+        }else{
+            Toast.makeText(this, "No item present in the list", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void hideLoader() {
+            if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
+                imageViewLoader.setVisibility(View.GONE);
+            }
+            //Enable Touch Back
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+    }
+
+    private void showLoader() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                            if (imageViewLoader.getVisibility() == View.GONE) {
+                                imageViewLoader.setVisibility(View.VISIBLE);
+                            }
+                            //Disable Touch
+                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            Ion.with(imageViewLoader)
+                                    .animateGif(AnimateGifMode.ANIMATE)
+                                    .load("android.resource://" + getPackageName() + "/" + R.raw.loader)
+                                    .withBitmapInfo();
+
+
+                    }
+                });
+            }
+        });
+        thread.start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,37 +336,20 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
             flagToCallApi = getIntent().getStringExtra("flag");
         }
 
-
         findViews();
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("notifyOrderInfo"));
     }
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(orderDataList.size()>0){
-                orderDataList.clear();
-            }
-
-            if(packageDetailsList.size()>0){
-                packageDetailsList.clear();
-            }
-
-            if(packageData.size()>0){
-                packageData.clear();
-            }
-            executeSelectedItems();
-        }
-    };
-
     private void findViews() {
+        imageViewLoader = (ImageView) findViewById(R.id.imageView_loader);
         cardView = (CardView) findViewById(R.id.card_view);
         runningExecuteOrdersCustomerDetailsLayout = (LinearLayout) findViewById(R.id.running_execute_orders_customer_details_layout);
         runningExecuteOrdersCustomerDetailsName = (TextView) findViewById(R.id.running_execute_orders_customer_details_name);
         runningExecuteOrdersCustomerDetailsEmail = (TextView) findViewById(R.id.running_execute_orders_customer_details_email);
         runningExecuteOrdersCustomerDetailsMobile = (TextView) findViewById(R.id.running_execute_orders_customer_details_mobile);
-        pendingItemsEdtScan = (EditText) findViewById(R.id.pending_items_edt_scan);
+        // pendingItemsEdtScan = (EditText) findViewById(R.id.pending_items_edt_scan);
         pendingItemsImgScan = (ImageView) findViewById(R.id.pending_items_img_scan);
+        textViewAddAllItems = (TextView) findViewById(R.id.running_execute_orders_add_all_items);
         floatingActionButtonAlreadyCreatedPackage = (FloatingActionButton) findViewById(R.id.running_execute_ordres_fab);
         //pendingItemsSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.pending_items_swipe_refresh_layout);
         pendingItemsRecyclerView = (RecyclerView) findViewById(R.id.pending_items_recycler_view);
@@ -203,6 +361,7 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
         pendingItemsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         pendingItemsRecyclerView.setNestedScrollingEnabled(false);
         pendingItemsRecyclerView.setAdapter(pendingItemsAdapter);
+
         floatingActionButtonAlreadyCreatedPackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,7 +373,7 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
         });
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(""+orderId);
+        toolbar.setTitle("" + orderId);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -237,7 +396,9 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
         }
 
         pendingItemsImgScan.setOnClickListener(this);
-        pendingItemsEdtScan.addTextChangedListener(new TextWatcher() {
+        textViewAddAllItems.setOnClickListener(this);
+
+       /* pendingItemsEdtScan.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -275,7 +436,7 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
                     }
                 }
             }
-        });
+        });*/
 
 
         LinearLayout linearLayoutPackageDetails = (LinearLayout) findViewById(R.id.pending_items_package_details);
@@ -287,13 +448,14 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
                     intentCreatePackage.putExtra("chkoid", chkoid);
                     intentCreatePackage.putExtra("flag", flagToCallApi);
                     intentCreatePackage.putParcelableArrayListExtra("packageDetails", packageDetailsList);
-                    intentCreatePackage.putParcelableArrayListExtra("transportData",(ArrayList<? extends Parcelable>) transportationDataArrayList);
+                    intentCreatePackage.putParcelableArrayListExtra("transportData", (ArrayList<? extends Parcelable>) transportationDataArrayList);
                     intentCreatePackage.putExtra("customerName", getIntent().getStringExtra("customerName"));
                     intentCreatePackage.putExtra("customerEmail", getIntent().getStringExtra("customerEmail"));
-                    intentCreatePackage.putExtra("customerMobile",getIntent().getStringExtra("customerMobile"));
-                    intentCreatePackage.putExtra("customerBillingAddress",getIntent().getStringExtra("customerBillingAddress"));
-                    intentCreatePackage.putExtra("customerDeliveryAddress",getIntent().getStringExtra("customerDeliveryAddress"));
-                    intentCreatePackage.putParcelableArrayListExtra("dynamicCharges",(ArrayList<? extends Parcelable>) dynamicChargesList);
+                    intentCreatePackage.putExtra("customerMobile", getIntent().getStringExtra("customerMobile"));
+                    intentCreatePackage.putExtra("customerBillingAddress", getIntent().getStringExtra("customerBillingAddress"));
+                    intentCreatePackage.putExtra("customerDeliveryAddress", getIntent().getStringExtra("customerDeliveryAddress"));
+                    intentCreatePackage.putParcelableArrayListExtra("dynamicCharges", (ArrayList<? extends Parcelable>) dynamicChargesList);
+                    intentCreatePackage.putExtra("flagInterstate",flagInterstate);
                     startActivityForResult(intentCreatePackage, 100);
                 } else {
                     Toast.makeText(RunningOrdersExecuteActivity.this, "Please add one or more items to create package", Toast.LENGTH_SHORT).show();
@@ -301,7 +463,11 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
             }
         });
 
-        executeSelectedItems();
+        String status = NetworkUtil.getConnectivityStatusString(RunningOrdersExecuteActivity.this);
+        if (!status.equals(getString(R.string.not_connected_to_internet))) {
+            showLoader();
+            executeSelectedItems();
+        }
 
         if (flagToCallApi.equals("runningOrder")) {
             runningExecuteOrdersCustomerDetailsLayout.setVisibility(View.VISIBLE);
@@ -340,7 +506,11 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
     @Override
     public void onExecute(final OrderData orderDataList, final int position) {
         // executeSelectedItems(isid, oiid,maximumQuantity,position);
-        bottomSheetAddItemQuantity(orderDataList, position);
+        if (orderDataList.getItemQuantity().equals("0")) {
+            Toast.makeText(this, "Item Already Executed", Toast.LENGTH_SHORT).show();
+        } else {
+            bottomSheetAddItemQuantity(orderDataList, position);
+        }
     }
 
     private void bottomSheetAddItemQuantity(final OrderData orderDataList, final int position) {
@@ -374,8 +544,13 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
         }
 
         dialogCreatePackageInventory.setText(orderDataList.getExecuteItemData().getInventory());
-        dialogCreatePackageQuantityAvailable.setText(orderDataList.getExecuteItemData().getAvailableQuantity());
-        dialogCreatePackageQuantityAllocated.setText(orderDataList.getExecuteItemData().getAllocatedQuantity());
+        dialogCreatePackageQuantityAvailable.setText("Available stock : "+orderDataList.getExecuteItemData().getAvailableQuantity());
+        listRowOrderItemVendor.setText(orderDataList.getItemVariationName());
+        if(!orderDataList.getUsedQuantity().equals("0")) {
+            dialogCreatePackageQuantityAllocated.setText(orderDataList.getUsedQuantity());
+        }else{
+            dialogCreatePackageQuantityAllocated.setText(orderDataList.getExecuteItemData().getAllocatedQuantity());
+        }
         dialogCreatePackageQuantityUnit.setText(orderDataList.getExecuteItemData().getUnit());
 
         if (orderDataList.getMeaid() != null && !orderDataList.getMeaid().isEmpty()) {
@@ -452,7 +627,6 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
         listRowOrderItemAddQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (orderDataList.getMeaid() != null && !orderDataList.getMeaid().isEmpty()) {
                     if (dialogCreatePackageQuantityAllocated.getText().toString() != null && !dialogCreatePackageQuantityAllocated.getText().toString().isEmpty()
                             && Double.parseDouble(dialogCreatePackageQuantityAllocated.getText().toString()) == 0.00) {
@@ -571,11 +745,11 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
 
                     if (apiResponse.getSuccess()) {
 
-                        if(transportationDataArrayList!=null && transportationDataArrayList.size()>0){
+                        if (transportationDataArrayList != null && transportationDataArrayList.size() > 0) {
                             transportationDataArrayList.clear();
                         }
 
-                        if(dynamicChargesList!=null && dynamicChargesList.size()>0){
+                        if (dynamicChargesList != null && dynamicChargesList.size() > 0) {
                             dynamicChargesList.clear();
                         }
 
@@ -585,8 +759,12 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
                         pendingItemsEmptyView.setVisibility(View.GONE);
 
                         transportationDataArrayList.addAll(apiResponse.getData().getTransprotModes());
-                        if(apiResponse.getData().getExecuteOrderTaxesEdit()) {
+                        if (apiResponse.getData().getExecuteOrderTaxesEdit()) {
                             dynamicChargesList.addAll(apiResponse.getData().getCharges());
+                        }
+
+                        if (apiResponse.getData().getInterStateFlag()!=null) {
+                          flagInterstate = apiResponse.getData().getInterStateFlag();
                         }
 
                         for (OrderData orderData : apiResponse.getData().getOrderData()) {
@@ -615,8 +793,11 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
                             pendingItemsEmptyView.setVisibility(View.VISIBLE);
                         }
                     }
+
+                    hideLoader();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    hideLoader();
                 }
             }
 
@@ -624,28 +805,95 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.d("wh:RunningOrder Execute", t.getMessage());
+                hideLoader();
             }
         });
     }
 
     @Override
     public void onClick(View v) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkPermissionWithRationale((Activity) RunningOrdersExecuteActivity.this, new RunningOrdersFragment(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_FOR_CAMERA)) {
-                if (ActivityCompat.checkSelfPermission(RunningOrdersExecuteActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    return;
+        if (v == pendingItemsImgScan) {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (checkPermissionWithRationale((Activity) RunningOrdersExecuteActivity.this, new RunningOrdersFragment(), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_FOR_CAMERA)) {
+                    if (ActivityCompat.checkSelfPermission(RunningOrdersExecuteActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
                 }
+            } else {
+                scanBarcode();
             }
-        } else {
-            scanBarcode();
+
+        } else if (v == textViewAddAllItems) {
+            if (textViewAddAllItems.getText().toString().equals("Add All Items")) {
+
+                if (packageDetailsList.size() > 0) {
+                    packageDetailsList.clear();
+                }
+
+                if (orderDataList != null && orderDataList.size() > 0) {
+                    for (int i = 0; i < orderDataList.size(); i++) {
+                        orderDataList.get(i).setUsedQuantity(orderDataList.get(i).getItemQuantity());
+                    }
+
+                    packageDetailsList.addAll(orderDataList);
+
+
+                  /*  for (int i = 0; i < packageDetailsList.size(); i++) {
+                        if (packageDetailsList.get(i).getItemQuantity().trim().equals("0")) {
+                            packageDetailsList.remove(i);
+                        }
+                    }*/
+
+                    Iterator<OrderData> i = packageDetailsList.iterator();
+                    while (i.hasNext()) {
+                        OrderData o = i.next();
+                        //some condition
+                        if (o.getItemQuantity().equals("0")) {
+                            i.remove();
+                        }
+
+                    }
+
+                    if (packageDetailsList.size() > 0) {
+                        Toast.makeText(this, "All Items got added in the list", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "No item available to add", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                pendingItemsAdapter.notifyDataSetChanged();
+                textViewAddAllItems.setText("Remove All Items");
+
+            } else {
+                if (packageDetailsList.size() > 0) {
+                    packageDetailsList.clear();
+                }
+                if (orderDataList != null && orderDataList.size() > 0) {
+                    for (int i = 0; i < orderDataList.size(); i++) {
+                        orderDataList.get(i).setUsedQuantity("0");
+                    }
+                }
+                pendingItemsAdapter.notifyDataSetChanged();
+                Toast.makeText(this, "All Items got removed from the list", Toast.LENGTH_SHORT).show();
+
+                textViewAddAllItems.setText("Add All Items");
+            }
+
         }
     }
 
     public void scanBarcode() {
         Log.d("PERMISSION", "Camera3");
-        Intent intentScan = new Intent(RunningOrdersExecuteActivity.this, ScannerActivity.class);
-        startActivityForResult(intentScan, 1000);
+        String status = NetworkUtil.getConnectivityStatusString(this);
+        if (!status.equals(getString(R.string.not_connected_to_internet))) {
+            Intent intentScan = new Intent(this, ScannerActivity.class);
+            startActivityForResult(intentScan, 1000);
+        } else {
+            Toast.makeText(this, "Please connect to internet", Toast.LENGTH_SHORT).show();
+        }
+
     }
+
 
     public void getAllocatedQuantity(int allocatedQuantity, List<OrderData> orderData, int position) {
         posToupdate = position;
@@ -686,6 +934,7 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
                     }
                 }
             }
+
             break;
 
         }

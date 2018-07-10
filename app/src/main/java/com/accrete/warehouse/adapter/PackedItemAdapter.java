@@ -1,14 +1,15 @@
 package com.accrete.warehouse.adapter;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
@@ -28,14 +29,17 @@ import java.util.List;
 
 public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.MyViewHolder> {
     ArrayList<String> packageIdList = new ArrayList<>();
+    String flagForCheckbox;
     private Context context;
     private PackedItemAdapterListener listener;
     private List<PackedItem> packedList = new ArrayList<>();
+    private List<PackedItem> selectedPackageList = new ArrayList<>();
 
-    public PackedItemAdapter(Context context, List<PackedItem> packedList, PackedItemAdapterListener listener) {
+    public PackedItemAdapter(Context context, List<PackedItem> packedList, PackedItemAdapterListener listener, String confirmGatepass) {
         this.context = context;
         this.packedList = packedList;
         this.listener = listener;
+        this.flagForCheckbox = confirmGatepass;
     }
 
     @Override
@@ -49,7 +53,19 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final PackedItem packed = packedList.get(position);
         holder.listRowPackedPackageId.setText(packed.getPackageId());
-        holder.listRowPackedPackageId.setPaintFlags(holder.listRowPackedPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        if (flagForCheckbox.equals("confirmGatepass")) {
+            holder.listRowPackedCheckbox.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            params.setMargins(10, 0, 0, 0);
+            holder.listRowPackedPackageId.setLayoutParams(params);
+        } else {
+            holder.listRowPackedCheckbox.setVisibility(View.VISIBLE);
+        }
+
+
+
+        //  holder.listRowPackedPackageId.setPaintFlags(holder.listRowPackedPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         if (packed.getOrderID() != null && !packed.getOrderID().isEmpty()) {
             holder.listRowPackedOrderId.setText("Order ID: " + packed.getOrderID());
             holder.listRowPackedOrderId.setVisibility(View.VISIBLE);
@@ -99,10 +115,14 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
         } else {
             holder.listRowPackedExpDod.setVisibility(View.GONE);
         }
-
+        if (packed.getOrderPaymentTypeText() != null && !packed.getOrderPaymentTypeText().isEmpty()) {
+            holder.listRowPackedPaymentType.setText("Payment Type: "+packed.getOrderPaymentTypeText());
+            holder.listRowPackedPaymentType.setVisibility(View.VISIBLE);
+        } else {
+            holder.listRowPackedPaymentType.setVisibility(View.GONE);
+        }
 
         holder.listRowPackedCheckbox.setChecked(packedList.get(position).isSelected());
-
         holder.listRowPackedCheckbox.setTag(packedList.get(position));
 
 
@@ -110,13 +130,16 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    packedList.get(position).setSelected(isChecked);
+                    packedList.get(position).setSelected(true);
                     packageIdList.add(packedList.get(position).getPacid());
+                    selectedPackageList.add(packed);
                 } else {
+                    packedList.get(position).setSelected(false);
                     packageIdList.remove(packedList.get(position).getPacid());
+                    selectedPackageList.remove(packed);
                 }
 
-                applyClickEvents(holder, position, packageIdList);
+                applyClickEvents(holder, position, packageIdList, selectedPackageList);
             }
         });
 
@@ -152,9 +175,14 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
 
     }
 
-    private void applyClickEvents(MyViewHolder holder, final int position, ArrayList<String> packageIdList) {
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    private void applyClickEvents(MyViewHolder holder, final int position, ArrayList<String> packageIdList, List<PackedItem> packedList) {
         listener.onMessageRowClicked(position);
-        listener.onExecute(packageIdList);
+        listener.onExecute(packageIdList, packedList);
     }
 
     public void filterList(List<PackedItem> filteredData) {
@@ -164,8 +192,7 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
 
     public interface PackedItemAdapterListener {
         void onMessageRowClicked(int position);
-
-        void onExecute(ArrayList<String> packageIdList);
+        void onExecute(ArrayList<String> packageIdList, List<PackedItem> packedList);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -175,7 +202,7 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
         private TextView listRowPackedInvoiceDate;
         private TextView listRowPackedCustomerName;
         private TextView listRowPackedPincode;
-        private TextView listRowPackedExpDod;
+        private TextView listRowPackedExpDod,listRowPackedPaymentType;
         private CheckBox listRowPackedCheckbox;
         private TextView statusTextView;
 
@@ -186,10 +213,11 @@ public class PackedItemAdapter extends RecyclerView.Adapter<PackedItemAdapter.My
             listRowPackedOrderId = (TextView) view.findViewById(R.id.list_row_packed_order_id);
             listRowPackedInvoiceNumber = (TextView) view.findViewById(R.id.list_row_packed_invoice_number);
             listRowPackedInvoiceDate = (TextView) view.findViewById(R.id.list_row_packed_invoice_date);
-            listRowPackedCustomerName = (TextView) view.findViewById(R.id.list_row_packed_customer_name);
+            listRowPackedCustomerName = (TextView) view.findViewById(R.id.list_row_running_orders_customer);
             listRowPackedPincode = (TextView) view.findViewById(R.id.list_row_packed_pincode);
             listRowPackedExpDod = (TextView) view.findViewById(R.id.list_row_packed_exp_dod);
             listRowPackedCheckbox = (CheckBox) view.findViewById(R.id.list_row_package_checkbox);
+            listRowPackedPaymentType = (TextView) view.findViewById(R.id.list_row_packed_payment_type);
         }
     }
 

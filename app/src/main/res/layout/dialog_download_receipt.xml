@@ -80,7 +80,8 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_alignEnd="@+id/btn_ok"
                     android:layout_alignParentTop="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:indeterminateTint="@color/white"
                     android:visibility="gone" />
 

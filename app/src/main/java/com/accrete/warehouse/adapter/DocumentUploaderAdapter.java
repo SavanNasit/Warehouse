@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.PackageFile;
 import com.accrete.warehouse.model.UploadDocument;
 
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.List;
 
 public class DocumentUploaderAdapter extends RecyclerView.Adapter<DocumentUploaderAdapter.MyViewHolder> {
     private Context context;
-    private List<UploadDocument> documentList;
+    private List<PackageFile> documentList;
     private DocAdapterListener listener;
 
-    public DocumentUploaderAdapter(Context context, List<UploadDocument> documentList, DocAdapterListener listener) {
+    public DocumentUploaderAdapter(Context context, List<PackageFile> documentList, DocAdapterListener listener) {
         this.context = context;
         this.documentList = documentList;
         this.listener = listener;
@@ -38,7 +39,8 @@ public class DocumentUploaderAdapter extends RecyclerView.Adapter<DocumentUpload
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.docNameTextView.setText("" + documentList.get(position).getFileName());
+        PackageFile packageFile = documentList.get(position);
+        holder.docNameTextView.setText("" + packageFile.getName());
         applyClickEvents(holder, position);
     }
 

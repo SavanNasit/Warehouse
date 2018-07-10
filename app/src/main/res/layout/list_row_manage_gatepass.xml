@@ -42,14 +42,14 @@
                     android:paddingTop="@dimen/_4sdp">
 
                     <TextView
-                        android:id="@+id/list_row_manage_gatepass_shipping_company_name"
+                        android:id="@+id/list_row_manage_gatepass_gatepass_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:paddingLeft="@dimen/_10sdp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textColor="@color/blueTurquoise"
+                        android:textSize="@dimen/_10sdp" />
 
                     <TextView
                         android:id="@+id/list_row_manage_gatepass_generate_on"
@@ -72,11 +72,10 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_2sdp"
                     android:paddingTop="@dimen/_4sdp">
 
                     <TextView
-                        android:id="@+id/list_row_manage_gatepass_gatepass_id"
+                        android:id="@+id/list_row_manage_gatepass_shipping_company_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -100,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/_3sdp"
-                    android:paddingTop="@dimen/_2sdp">
+                  >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -115,7 +114,7 @@
                             android:id="@+id/list_row_manage_gatepass_delivery_user"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/blueTurquoise"
+                            android:textColor="#4c4c4c"
                             android:textSize="@dimen/_9sdp" />
 
                         <TextView

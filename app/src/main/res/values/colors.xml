@@ -64,5 +64,10 @@
 
     <color name="gray_custom">#ECEDEF</color>
     <color name="tabColor">#222D3A</color>
+    <color name="orange_to_be_approved">#f0ad4e</color>
+    <color name="assigned_green">#3D9970</color>
+    <color name="processed_green">#18a689</color>
+
+
 
 </resources>

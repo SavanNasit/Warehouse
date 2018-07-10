@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.ShippingType;
 import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.utils.NonSwipeableViewPager;
@@ -36,6 +37,7 @@ public class CreatePassMainTabFragment extends Fragment {
     private String strPacid, strPacdelgatpactid, strPacshtid, strShippingCompanyId, strVechileNumber;
     private String chkid;
     private String strTransporter;
+    List<PackedItem> selectedPackedLists = new ArrayList<>();
 
     public static CreatePassMainTabFragment newInstance() {
         return new CreatePassMainTabFragment();
@@ -48,11 +50,12 @@ public class CreatePassMainTabFragment extends Fragment {
         iscId = bundle.getString(getString(R.string.iscid));*/
     }
 
-    public void getResult(ArrayList<String> packageIdListToAdd, List<ShippingType> shippingTypes, List<TransportMode> shippingBy,String chkid) {
+    public void getResult(ArrayList<String> packageIdListToAdd, List<ShippingType> shippingTypes, List<TransportMode> shippingBy, String chkid, List<PackedItem> selectedPackedList) {
         packageIdList = packageIdListToAdd;
         shippingTypesList = shippingTypes;
         shippingByList = shippingBy;
         chkid = chkid;
+        selectedPackedLists = selectedPackedList;
     }
 
     @Override
@@ -103,7 +106,7 @@ public class CreatePassMainTabFragment extends Fragment {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ((ConfirmGatepassFragment) mFragment).getData(strPacid, strPacdelgatpactid, strPacshtid, strShippingCompanyId, strVechileNumber,strTransporter);
+                                ((ConfirmGatepassFragment) mFragment).getData(strPacid, strPacdelgatpactid, strPacshtid, strShippingCompanyId, strVechileNumber,strTransporter,selectedPackedLists);
                             }
                         }, 200);
                     }
@@ -158,6 +161,17 @@ public class CreatePassMainTabFragment extends Fragment {
         strShippingCompanyId = shippingCompanyId;
         strVechileNumber = vehicleNumber;
         strTransporter = transporterId;
+    }
+
+    public void onBackPressed() {
+        final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(createGatepassViewpager.getCurrentItem());
+        if (mFragment instanceof CreatePassMainTabFragment) {
+            ((PackageSelectionFragment) mFragment).onBackPressed();
+        }else if(mFragment instanceof GatepassFragment) {
+            ((GatepassFragment) mFragment).onBackPressed();
+        }else if(mFragment instanceof ConfirmGatepassFragment) {
+            ((ConfirmGatepassFragment) mFragment).onBackPressed();
+        }
     }
 
     public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {

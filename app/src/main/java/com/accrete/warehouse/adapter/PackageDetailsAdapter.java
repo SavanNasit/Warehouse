@@ -45,7 +45,7 @@ public class PackageDetailsAdapter extends RecyclerView.Adapter<PackageDetailsAd
         }
 
         holder.listRowPackageDetailsUnit.setText(packageDetailsList.getItemUnit());
-        holder.listRowPackageDetailsBatchNumber.setText(packageDetailsList.getIid());
+        holder.listRowPackageDetailsBatchNumber.setText(packageDetailsList.getBatchNumber());
         holder.listRowPackageDetailsQuantity.setText(packageDetailsList.getUsedQuantity());
         holder.listRowPackageDetailsRemove.setOnClickListener(new View.OnClickListener() {
             @Override

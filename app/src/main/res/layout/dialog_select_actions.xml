@@ -122,30 +122,12 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/actions_print_invoice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/home_page_gray"
-            android:orientation="horizontal"
-            android:padding="@dimen/_10sdp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Download Invoice"
-                android:textColor="#8D8D8D"
-                android:textSize="14sp" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/actions_print_delivery_challan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/home_page_gray"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp">
 
@@ -165,7 +147,7 @@
             android:id="@+id/actions_other_documents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/home_page_gray"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp">
 
@@ -184,7 +166,7 @@
             android:id="@+id/actions_print_gatepass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/home_page_gray"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp">
 
@@ -204,7 +186,7 @@
             android:id="@+id/actions_print_loading_slip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/home_page_gray"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp">
 
@@ -240,6 +222,27 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/actions_print_invoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/home_page_gray"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Download Invoice"
+                android:textColor="#8D8D8D"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
 
 
         <ImageView

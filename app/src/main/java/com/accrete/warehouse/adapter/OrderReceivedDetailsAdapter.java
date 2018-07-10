@@ -51,6 +51,8 @@ public class OrderReceivedDetailsAdapter extends RecyclerView.Adapter<OrderRecei
         //Received Quantity
         if (receivedDetail.getReceivedQuantity() != null && !receivedDetail.getReceivedQuantity().isEmpty()) {
             holder.receiveQuantityTextView.setText(receivedDetail.getReceivedQuantity().toString().trim());
+        }else{
+            holder.receiveQuantityTextView.setText("0");
         }
 
 

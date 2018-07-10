@@ -610,6 +610,7 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                         navigateToHome();
 
                     } else {
+                        Toast.makeText(PasswordActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.accrete.warehouse.POReceiveConsignmentActivity"
+    tools:context="com.accrete.warehouse.fragment.receiveConsignment.POReceiveConsignmentActivity"
     tools:showIn="@layout/activity_poreceive_consignment">
 
     <android.support.v4.widget.NestedScrollView

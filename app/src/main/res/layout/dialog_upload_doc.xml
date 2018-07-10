@@ -8,18 +8,20 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginBottom="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingBottom="@dimen/_8sdp"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.10"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/_17sdp"
             android:layout_marginTop="@dimen/_17sdp"
@@ -30,80 +32,114 @@
             android:textSize="@dimen/_15sdp"
             android:textStyle="normal" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/dialog_upload_doc_recycler_view"
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
-            android:scrollbars="none" />
+            android:layout_height="0dp"
+            android:layout_weight="0.65"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dialog_upload_doc_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_5sdp"
+                android:scrollbars="none" />
+
+            <TextView
+                android:id="@+id/dialog_upload_doc_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/no_data_available"
+                android:textSize="@dimen/_13sdp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/select_file_textView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.10"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="+ Select a File"
+            android:textColor="@color/blueTurquoise"
+            android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.15"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="1">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.2"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/add_imageView"
-                    android:layout_width="@dimen/_24sdp"
-                    android:layout_height="@dimen/_24sdp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:src="@drawable/ic_add_file" />
-            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4">
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_weight="0.5">
 
-                <Button
+                <TextView
                     android:id="@+id/btn_upload"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:background="@drawable/rounded_view_green_color"
-                    android:elevation="@dimen/_8sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:background="@color/green"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/_6sdp"
+                    android:paddingTop="@dimen/_6sdp"
                     android:text="Upload"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <ProgressBar
                     android:id="@+id/dialog_upload_progress_bar"
                     style="?android:attr/progressBarStyle"
                     android:layout_width="@dimen/_16sdp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:indeterminateTint="@color/white"
-                    android:visibility="visible" />
+                    android:visibility="invisible" />
 
             </RelativeLayout>
 
-
-            <Button
+            <TextView
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_weight="0.4"
-                android:background="@drawable/rounded_view_gray_color"
-                android:elevation="@dimen/_8sdp"
-                android:text="@string/cancel"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_weight="0.5"
+                android:background="@color/gray"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:text="@string/no_cancel"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_12sdp" />
         </LinearLayout>
+
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 </RelativeLayout>

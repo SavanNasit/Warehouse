@@ -56,7 +56,7 @@ public class ManageGatepassAdapter extends RecyclerView.Adapter<ManageGatepassAd
             }
         }
 
-        holder.listRowManageGatepassGatepassId.setText("(" + manageGatepass.getGatePassId() + ")");
+        holder.listRowManageGatepassGatepassId.setText(manageGatepass.getGatePassId());
         holder.listRowManageGatepassShippingCompanyName.setText(manageGatepass.getShippingCompanyName());
         holder.listRowManageGatepassPackages.setText("Pkg: " + manageGatepass.getPackages());
         holder.listRowManageGatepassDeliveryUser.setText(manageGatepass.getUserName());

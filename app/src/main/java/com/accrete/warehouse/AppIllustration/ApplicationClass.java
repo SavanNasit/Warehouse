@@ -21,8 +21,8 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
-
 import io.fabric.sdk.android.Fabric;
+
 
 /**
  * Created by agt on 12/9/17.
@@ -61,7 +61,7 @@ public class ApplicationClass extends MultiDexApplication implements Application
             registerActivityLifecycleCallbacks(this);
         }
 
-   /*     final Fabric fabric = new Fabric.Builder(this)
+   /*final Fabric fabric = new Fabric.Builder(this)
                 .kits(new Crashlytics())
                 .debuggable(true)
                 .build();
@@ -93,7 +93,7 @@ public class ApplicationClass extends MultiDexApplication implements Application
                 //we use the default one for
                 //DrawerImageLoader.Tags.PROFILE_DRAWER_ITEM.name()
 
-                return super.placeholder(ctx, tag);
+                return placeholder(ctx, tag);
             }
         });
 

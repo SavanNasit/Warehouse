@@ -3,6 +3,7 @@ package com.accrete.warehouse;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,7 @@ public class CustomerDetailsActivity extends AppCompatActivity {
     private TextView customerDetailsMobile;
     private TextView customerDetailsShippingAddress;
     private TextView customerDetailsBillingAddress;
+    private CardView cardViewBillingAddress, cardViewCurrentAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,8 @@ public class CustomerDetailsActivity extends AppCompatActivity {
         customerDetailsMobile = (TextView) findViewById(R.id.customer_details_mobile);
         customerDetailsShippingAddress = (TextView) findViewById(R.id.customer_details_shipping_address);
         customerDetailsBillingAddress = (TextView) findViewById(R.id.customer_details_billing_address);
+        cardViewBillingAddress = (CardView) findViewById(R.id.card_view_billing_address);
+        cardViewCurrentAddress = (CardView) findViewById(R.id.card_view_inner_quot_options);
     }
 
     private void getCustomerInfo(String pacId) {
@@ -129,16 +133,26 @@ public class CustomerDetailsActivity extends AppCompatActivity {
     public void setDataIntoView(CustomerInfo customerInfo) {
         if (customerInfo.getName() != null && !customerInfo.getName().isEmpty()) {
             customerDetailsName.setText(customerInfo.getName());
+            customerDetailsName.setVisibility(View.VISIBLE);
+        } else {
+            customerDetailsName.setVisibility(View.GONE);
         }
         if (customerInfo.getMobile() != null && !customerInfo.getMobile().isEmpty()) {
             customerDetailsMobile.setText(customerInfo.getMobile());
+            customerDetailsMobile.setVisibility(View.VISIBLE);
+        } else {
+            customerDetailsMobile.setVisibility(View.GONE);
+
         }
         if (customerInfo.getEmail() != null && !customerInfo.getEmail().isEmpty()) {
             customerDetailsEmail.setText(customerInfo.getEmail());
+            customerDetailsEmail.setVisibility(View.VISIBLE);
+        } else {
+            customerDetailsEmail.setVisibility(View.GONE);
         }
 
         //Shipping Address
-        if ((customerInfo.getShippingAddrSitename()!= null && !customerInfo.getShippingAddrSitename().isEmpty())
+        if ((customerInfo.getShippingAddrSitename() != null && !customerInfo.getShippingAddrSitename().isEmpty())
                 || (customerInfo.getShippingAddrLine() != null && !customerInfo.getShippingAddrLine().isEmpty())
                 || (customerInfo.getShippingAddrCity() != null && !customerInfo.getShippingAddrCity().isEmpty())
                 || (customerInfo.getShippingAddrPincode() != null && !customerInfo.getShippingAddrPincode().isEmpty())
@@ -187,11 +201,17 @@ public class CustomerDetailsActivity extends AppCompatActivity {
                 currentAddress = currentAddress + customerInfo.getShippingAddrCountryName() + " ";
             }
 
-            customerDetailsShippingAddress.setText(currentAddress + "");
+            customerDetailsShippingAddress.setText(currentAddress.trim() + "");
+
+            if (currentAddress.equals("")) {
+                cardViewCurrentAddress.setVisibility(View.GONE);
+            } else {
+                cardViewCurrentAddress.setVisibility(View.VISIBLE);
+            }
         }
 
         //Billing Address
-        if ((customerInfo.getBillingAddSitename()!= null && !customerInfo.getBillingAddSitename().isEmpty())
+        if ((customerInfo.getBillingAddSitename() != null && !customerInfo.getBillingAddSitename().isEmpty())
                 || (customerInfo.getBillingAddrLine() != null && !customerInfo.getBillingAddrLine().isEmpty())
                 || (customerInfo.getBillingAddrCity() != null && !customerInfo.getBillingAddrCity().isEmpty())
                 || (customerInfo.getBillingAddrPincode() != null && !customerInfo.getBillingAddrPincode().isEmpty())
@@ -239,8 +259,13 @@ public class CustomerDetailsActivity extends AppCompatActivity {
                     !customerInfo.getBillingAddrCountryName().isEmpty()) {
                 currentAddress = currentAddress + customerInfo.getBillingAddrCountryName() + " ";
             }
-
             customerDetailsBillingAddress.setText(currentAddress + "");
+
+            if (currentAddress.equals("")) {
+                cardViewBillingAddress.setVisibility(View.GONE);
+            } else {
+                cardViewBillingAddress.setVisibility(View.VISIBLE);
+            }
         }
       /* *//* customerDetailsShippingAddress.setText(customerInfo.getShippingAddrSitename() + ",\n" + customerInfo.getShippingAddrLine() + ",\n" +
                 customerInfo.getShippingAddrCity() + ",\n" + customerInfo.getShippingAddrStateName() + ",\n" + customerInfo.getShippingAddrCountryName() + ",\n"

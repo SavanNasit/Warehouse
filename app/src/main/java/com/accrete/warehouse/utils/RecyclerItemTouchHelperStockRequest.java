@@ -5,10 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.accrete.warehouse.RecyclerItemTouchHelper;
-import com.accrete.warehouse.adapter.RunningOrdersAdapter;
 import com.accrete.warehouse.adapter.RunningStockRequestAdapter;
-import com.accrete.warehouse.fragment.RunningStockRequestFragment;
 
 /**
  * Created by poonam on 6/5/18.

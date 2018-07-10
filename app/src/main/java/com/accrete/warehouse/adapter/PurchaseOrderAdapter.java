@@ -130,41 +130,55 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
             holder.statusTextView.setText("Created");
             holder.textViewReceive.setEnabled(true);
             holder.textViewReceive.setVisibility(View.VISIBLE);
+            holder.isSwipeToRecord = true;
         } else if (purchaseOrder.getPurorsid().equals("2")) {
             drawable.setColor(activity.getResources().getColor(R.color.blue_purchase_order));
             holder.statusTextView.setText("Partial Received");
             holder.textViewReceive.setEnabled(true);
             holder.textViewReceive.setVisibility(View.VISIBLE);
+            holder.isSwipeToRecord = true;
         } else if (purchaseOrder.getPurorsid().equals("3")) {
             drawable.setColor(activity.getResources().getColor(R.color.blue_purchase_order));
             holder.statusTextView.setText("Received");
             holder.textViewReceive.setEnabled(false);
             holder.textViewReceive.setVisibility(View.GONE);
+            holder.viewBackground.setVisibility(View.GONE);
+            holder.isSwipeToRecord = false;
+
         } else if (purchaseOrder.getPurorsid().equals("4")) {
             drawable.setColor(activity.getResources().getColor(R.color.red_purchase_order));
             holder.statusTextView.setText("Cancelled");
             holder.textViewReceive.setEnabled(false);
             holder.textViewReceive.setVisibility(View.GONE);
+            holder.isSwipeToRecord = true;
         } else if (purchaseOrder.getPurorsid().equals("5")) {
             drawable.setColor(activity.getResources().getColor(R.color.red_purchase_order));
             holder.statusTextView.setText("Closed");
             holder.textViewReceive.setEnabled(false);
             holder.textViewReceive.setVisibility(View.GONE);
+            holder.isSwipeToRecord = true;
+
         } else if (purchaseOrder.getPurorsid().equals("6")) {
             drawable.setColor(activity.getResources().getColor(R.color.orange_purchase_order));
             holder.statusTextView.setText("Pending");
             holder.textViewReceive.setEnabled(false);
             holder.textViewReceive.setVisibility(View.GONE);
+            holder.isSwipeToRecord = true;
+
         } else if (purchaseOrder.getPurorsid().equals("7")) {
             drawable.setColor(activity.getResources().getColor(R.color.gray_order));
             holder.statusTextView.setText("Expected Delivery");
             holder.textViewReceive.setEnabled(true);
             holder.textViewReceive.setVisibility(View.VISIBLE);
+            holder.isSwipeToRecord = true;
+
         } else if (purchaseOrder.getPurorsid().equals("8")) {
             drawable.setColor(activity.getResources().getColor(R.color.gray_order));
             holder.statusTextView.setText("Pending Transportation");
             holder.textViewReceive.setEnabled(false);
             holder.textViewReceive.setVisibility(View.GONE);
+            holder.isSwipeToRecord = true;
+
         }
 
         //Receive
@@ -211,6 +225,7 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
         private TextView payableAmountTextView;
         //private TextView amountTextView, taxTextView,amountTaxTextView;
         private TextView createdByTextView, textViewReceive;
+        public boolean isSwipeToRecord;
 
         public MyViewHolder(View view) {
             super(view);

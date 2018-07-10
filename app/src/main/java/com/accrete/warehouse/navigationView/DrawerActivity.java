@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +15,7 @@ import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -30,15 +32,16 @@ import android.widget.Toast;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
-import com.accrete.warehouse.fragment.HomeFragment;
-import com.accrete.warehouse.fragment.RunningOrdersTabFragment;
+import com.accrete.warehouse.fragment.manageConsignment.ChooseEventsForManageConsignmentFragment;
 import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveAgainstPurchaseOrderFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveDirectlyFragment;
+import com.accrete.warehouse.fragment.receiveConsignment.StockRequestListFragment;
 import com.accrete.warehouse.fragment.runningorders.RunningOrdersFragment;
+import com.accrete.warehouse.fragment.runningorders.RunningOrdersTabFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.WarehouseList;
 import com.accrete.warehouse.rest.ApiClient;
@@ -115,7 +118,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         AppPreferences.setIsUserFirstTime(DrawerActivity.this, AppUtils.USER_FIRST_TIME, true);
         setContentView(R.layout.activity_drawer);
 
-
         // Handle Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -138,8 +140,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 .withSavedInstance(savedInstanceState)
                 .build();
 
-
-   /*     drawerItemList.add("Warehouse 1");
+        /*drawerItemList.add("Warehouse 1");
         drawerItemList.add("Warehouse 2");
         drawerItemList.add("Warehouse 3");
         drawerItemList.add("Warehouse 4");
@@ -152,6 +153,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 && getIntent().getStringExtra("flagToManage").equals("true")) {
             Fragment managePackagesFragment = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, managePackagesFragment).commitAllowingStateLoss();
+        }
+
+        if (getIntent().getStringExtra("flagToManageGatepass") != null
+                && !getIntent().getStringExtra("flagToManageGatepass").isEmpty()
+                && getIntent().getStringExtra("flagToManageGatepass").equals("true")) {
+            Fragment manageGatePassFragment = ManageGatePassFragment.newInstance(getString(R.string.manage_gatepass_fragment));
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, manageGatePassFragment).commitAllowingStateLoss();
         }
 
 
@@ -191,7 +199,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                             if (drawerItem.getIdentifier() == 0) {
                                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
-
                             } else if (drawerItem.getIdentifier() == 1) {
                                 flagToOpenDialog = true;
                                 getWarehouseList();
@@ -248,7 +255,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             drawerInterfaceToSend.sendDrawer(drawer);
         }
         //getWarehouseList();
-
         //Enable Touch Back
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
@@ -258,9 +264,9 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         View dialogView = View.inflate(getApplicationContext(), R.layout.dialog_select_warehouse, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
-                .setCancelable(true);
+                .setCancelable(false);
         dialogSelectWarehouse = builder.create();
-        dialogSelectWarehouse.setCanceledOnTouchOutside(true);
+        dialogSelectWarehouse.setCanceledOnTouchOutside(false);
         TextView textViewOk = (TextView) dialogView.findViewById(R.id.btn_ok);
         TextView textViewCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
         progressBarSelectWarehouse = (ProgressBar) dialogView.findViewById(R.id.dialog_select_warehouse_progress_bar);
@@ -294,10 +300,14 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         warehouseArrayList.get(selectedWareHousePosition).getConsignmentCount());
                 AppPreferences.setWarehouseReceiveConsignmentCount(DrawerActivity.this, AppUtils.WAREHOUSE_RECEIVE_CONSIGNMENT,
                         warehouseArrayList.get(selectedWareHousePosition).getReceiveConsignmentCount());
+
                 dialogSelectWarehouse.dismiss();
+
                 Fragment f = HomeFragment.newInstance(getString(R.string.home_fragment));
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
+
                 drawer.setSelection(0);
+
                 hideSoftKeyboard(DrawerActivity.this);
             }
         });
@@ -330,6 +340,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 }
             }
         });
+
+
         mAdapter = new SelectWarehouseAdapter(getApplicationContext(), warehouseArrayList, this,
                 selectedPosition, AppPreferences.getWarehouseDefaultCheckId(getApplicationContext(), AppUtils.WAREHOUSE_CHK_ID));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -427,12 +439,15 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     @Override
     public void onBackPressed() {
         //handle the back press, close the drawer first and if the drawer is closed close the activity
+
         if (drawer != null && drawer.isDrawerOpen()) {
             drawer.closeDrawer();
         } else {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
             Fragment currentReceiveFragment = getSupportFragmentManager().findFragmentById(R.id.receive_consignment_container);
             Fragment currentRunningOrder = getSupportFragmentManager().findFragmentById(R.id.running_orders_container);
+            Fragment currentManageFragment = getSupportFragmentManager().findFragmentById(R.id.manage_consignment_container);
+
             if (currentFragment instanceof ManagePackagesFragment) {
                 // add your code here
                 getSupportFragmentManager().popBackStack();
@@ -443,11 +458,23 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(4);
                 drawer.setSelection(0);
-            } else if (currentFragment instanceof ManageConsignmentFragment) {
-                // add your code here
+            } /*else if (currentFragment instanceof ManageConsignmentFragment) {
+              *//*  toolbar.setTitle(R.string.manage_consignment_fragment);
+                super.onBackPressed();
+                return;*//*
                 getSupportFragmentManager().popBackStack();
-                drawer.deselect(5);
-                drawer.setSelection(0);
+
+            }*/ else if (currentFragment instanceof ManageConsignmentFragment) {
+                if (currentManageFragment instanceof ChooseEventsForManageConsignmentFragment) {
+                    toolbar.setTitle(R.string.manage_consignment_fragment);
+                    super.onBackPressed();
+                    return;
+                } else {
+                    getSupportFragmentManager().popBackStack();
+                    drawer.deselect(5);
+                    drawer.setSelection(0);
+                }
+
             } else if (currentReceiveFragment instanceof ReceiveDirectlyFragment) {
                 toolbar.setTitle(R.string.receive_consignment_fragment);
                 super.onBackPressed();
@@ -457,13 +484,17 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 toolbar.setTitle(R.string.receive_consignment_fragment);
                 super.onBackPressed();
                 return;
+            } else if (currentReceiveFragment instanceof StockRequestListFragment) {
+                toolbar.setTitle(R.string.stock_request_list);
+                super.onBackPressed();
+                return;
             } else if (currentFragment instanceof ReceiveConsignmentFragment) {
-
                 getSupportFragmentManager().popBackStack();
                 drawer.deselect(6);
                 drawer.setSelection(0);
-
-
+                Intent intent = new Intent("notifyCount");
+                // You can also include some extra data.
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
             } else if (currentFragment instanceof RunningOrdersFragment) {
                 toolbar.setTitle(R.string.running_orders_fragment);
                 super.onBackPressed();
@@ -473,13 +504,11 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 drawer.deselect(2);
                 drawer.setSelection(0);
             } else {
-
                 if (doubleBackToExitPressedOnce) {
                     this.doubleBackToExitPressedOnce = false;
                     super.onBackPressed();
                     return;
                 } else {
-
                     Toast.makeText(this, getString(R.string.click_back_to_exit), Toast.LENGTH_SHORT).show();
                     doubleBackToExitPressedOnce = true;
                     new Handler().postDelayed(new Runnable() {
@@ -490,6 +519,14 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                     }, 3 * 1000);
                 }
             }
+
+
+            if(currentFragment instanceof HomeFragment) {
+                Intent intent = new Intent("notifyCount");
+                // You can also include some extra data.
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+            }
+
         }
 
     }
@@ -548,6 +585,9 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                         data.getIntExtra("qty", 0), data.getIntExtra("pos", 0));*//*
             }*/
 
+        } else if (resultCode == 1004) {
+            //   Toast.makeText(this, "Hi Poonam", Toast.LENGTH_SHORT).show();
+
         } else if (resultCode == 456) {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
             if (currentFragment instanceof ManagePackagesFragment) {
@@ -562,7 +602,6 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
             } else*/
             if (requestCode == PICK_FILE_RESULT_CODE) {
-
                 // Get the Uri of the selected file
                 Uri uri = data.getData();
                 String uriString = uri.toString();
@@ -737,13 +776,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
     @Override
     protected void onRestart() {
         super.onRestart();
-
+        //Enable Touch Back
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
         if (currentFragment instanceof HomeFragment) {
             drawer.setSelection(0);
             hideSoftKeyboard(DrawerActivity.this);
-            //Enable Touch Back
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
         }
     }
 

@@ -101,29 +101,23 @@ public class RunningStockRequestAdapter  extends RecyclerView.Adapter<RunningSto
         public RelativeLayout viewBackground;
         public ImageView recordFollowupIcon;
         public RelativeLayout relativelayoutContainer;
-        public LinearLayout mainContainer;
         public TextView listRowRunningStockRequestsCreatedBy;
         public TextView listRowRunningStockRequestsId;
         public TextView listRowRunningStockRequestsDueDate;
         public TextView listRowRunningStockRequestsCreatedTime;
         public View viewAttendee;
         public TextView listRowRunningOrdersAttendee;
-        public LinearLayout runningOrdersExecute;
 
         public MyViewHolder(View view) {
             super(view);
-
                 viewBackground = (RelativeLayout)view.findViewById( R.id.view_background );
                 recordFollowupIcon = (ImageView)view.findViewById( R.id.record_followup_icon );
                 relativelayoutContainer = (RelativeLayout)view.findViewById( R.id.relativelayout_container );
-                mainContainer = (LinearLayout)view.findViewById( R.id.mainContainer );
                 listRowRunningStockRequestsCreatedBy = (TextView)view.findViewById( R.id.list_row_running_stock_requests_created_by );
                 listRowRunningStockRequestsId = (TextView)view.findViewById( R.id.list_row_running_stock_requests_id );
                 listRowRunningStockRequestsDueDate = (TextView)view.findViewById( R.id.list_row_running_stock_requests_due_date );
                 listRowRunningStockRequestsCreatedTime = (TextView)view.findViewById( R.id.list_row_running_stock_requests_created_time );
-                viewAttendee = (View)view.findViewById( R.id.view_attendee );
                 listRowRunningOrdersAttendee = (TextView)view.findViewById( R.id.list_row_running_orders_attendee );
-                runningOrdersExecute = (LinearLayout)view.findViewById( R.id.running_orders_execute );
             }
 
 

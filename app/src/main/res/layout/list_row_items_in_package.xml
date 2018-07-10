@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:background="@color/white"
     android:paddingBottom="@dimen/_10sdp"
     android:paddingTop="@dimen/_10sdp"
     android:weightSum="1">
@@ -13,14 +14,15 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.34"
         android:gravity="center"
-        android:text="Item Name"
+        android:padding="@dimen/_5sdp"
+        android:textSize="@dimen/_10sdp"
         android:textColor="@color/home_page_text_gray" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.001"
-        android:background="@color/lytgray" />
+        android:background="@color/home_page_text_gray" />
 
     <TextView
         android:id="@+id/item_quantity"
@@ -28,14 +30,15 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.34"
         android:gravity="center"
-        android:text="QUANTITY"
+        android:padding="@dimen/_5sdp"
+        android:textSize="@dimen/_10sdp"
         android:textColor="@color/home_page_text_gray" />
 
     <View
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.001"
-        android:background="@color/lytgray" />
+        android:background="@color/home_page_text_gray" />
 
 
     <TextView
@@ -43,8 +46,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
+        android:padding="@dimen/_5sdp"
         android:gravity="center"
-        android:text="DESCRIPTION"
+        android:textSize="@dimen/_10sdp"
         android:textColor="@color/home_page_text_gray" />
 
 </LinearLayout>

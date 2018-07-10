@@ -1,7 +1,7 @@
 package com.accrete.warehouse.adapter;
 
 import android.content.Context;
-import android.graphics.Paint;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,10 +42,10 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         PackageItem packageItem = outForDeliveryList.get(position);
         holder.outForDeliveryPackageId.setText(packageItem.getPackageId());
-        holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        // holder.outForDeliveryPackageId.setPaintFlags(holder.outForDeliveryPackageId.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.outForDeliveryInvoiceNo.setText("Invoice No : " + packageItem.getInvoiceNo());
         holder.outForDeliveryCustomerName.setText(packageItem.getCustomerName());
         holder.outForDeliveryGatepassId.setText("Gatepass Id : " + packageItem.getGatePassId());
@@ -59,14 +59,21 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
         if (packageItem.getName() != null && !packageItem.getName().isEmpty()) {
             holder.outForDeliveryUser.setText("Delivery User : " + packageItem.getName());
             holder.outForDeliveryUser.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.outForDeliveryUser.setVisibility(View.GONE);
         }
 
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.mainLayout.setEnabled(false);
                 listener.onMessageRowClicked(position);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.mainLayout.setEnabled(true);
+                    }
+                }, 1000);
             }
         });
 
@@ -112,16 +119,16 @@ public class OutForDeliveryAdapter extends RecyclerView.Adapter<OutForDeliveryAd
 
         public MyViewHolder(View view) {
             super(view);
-            mainLayout = (RelativeLayout) view.findViewById(R.id.main_layout);
+            mainLayout = (RelativeLayout) view.findViewById(R.id.relativelayout_container);
             outForDeliveryPackageId = (TextView) view.findViewById(R.id.out_for_delivery_package_id);
             outForDeliveryInvoiceNo = (TextView) view.findViewById(R.id.out_for_delivery_invoice_no);
-            outForDeliveryInvoiceDate = (TextView) view.findViewById(R.id.out_for_delivery_invoice_date);
+            outForDeliveryInvoiceDate = (TextView) view.findViewById(R.id.list_row_packed_invoice_date);
             outForDeliveryCustomerName = (TextView) view.findViewById(R.id.out_for_delivery_customer_name);
             outForDeliveryGatepassId = (TextView) view.findViewById(R.id.out_for_delivery_gatepass_id);
             outForDeliveryOrderId = (TextView) view.findViewById(R.id.out_for_delivery_order_id);
             outForDeliveryExpDod = (TextView) view.findViewById(R.id.out_for_delivery_exp_dod);
             outForDeliveryUser = (TextView) view.findViewById(R.id.out_for_delivery_user);
-            outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
+            // outForDeliveryContainer = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
         }
     }
 

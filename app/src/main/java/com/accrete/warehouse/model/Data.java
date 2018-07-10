@@ -9,7 +9,30 @@ import java.util.List;
  * Modified by poonam on 22/9/17.
  */
 public class Data {
-
+    @SerializedName("package_files")
+    @Expose
+    private List<PackageFile> packageFiles = null;
+    @SerializedName("stock_requests")
+    @Expose
+    private List<StockRequestList> stockRequestList = null;
+    @SerializedName("consumption_consignment")
+    @Expose
+    private List<ConsumptionConsignment> consumptionConsignment = null;
+    @SerializedName("allocate_consignment")
+    @Expose
+    private List<AllocateConsignment> allocateConsignment = null;
+    @SerializedName("is_invoice_enabled")
+    @Expose
+    private String isInvoiceNumberEnabled;
+    @SerializedName("interstate_flag")
+    @Expose
+    private String interStateFlag;
+    @SerializedName("package_upload_data")
+    @Expose
+    private List<ImagesUpload> packageUploadData = null;
+    @SerializedName("item_info")
+    @Expose
+    private OrderData itemInfo = null;
     @SerializedName("edit_package_formdata")
     @Expose
     private EditPackageFormdata editPackageFormdata;
@@ -607,4 +630,69 @@ public class Data {
         this.editPackageFormdata = editPackageFormdata;
     }
 
+
+    public OrderData getItemInfo() {
+        return itemInfo;
+    }
+    public void setItemInfo(OrderData itemInfo) {
+        this.itemInfo = itemInfo;
+    }
+
+    public List<ImagesUpload> getPackageUploadData() {
+        return packageUploadData;
+    }
+
+    public void setPackageUploadData(List<ImagesUpload> packageUploadData) {
+        this.packageUploadData = packageUploadData;
+    }
+
+    public String getInterStateFlag() {
+        return interStateFlag;
+    }
+
+    public void setInterStateFlag(String interStateFlag) {
+        this.interStateFlag = interStateFlag;
+    }
+
+    public String getIsInvoiceNumberEnabled() {
+        return isInvoiceNumberEnabled;
+    }
+
+    public void setIsInvoiceNumberEnabled(String isInvoiceNumberEnabled) {
+        this.isInvoiceNumberEnabled = isInvoiceNumberEnabled;
+    }
+
+
+    public List<AllocateConsignment> getAllocateConsignment() {
+        return allocateConsignment;
+    }
+
+    public void setAllocateConsignment(List<AllocateConsignment> allocateConsignment) {
+        this.allocateConsignment = allocateConsignment;
+    }
+
+    public List<ConsumptionConsignment> getConsumptionConsignment() {
+        return consumptionConsignment;
+    }
+
+    public void setConsumptionConsignment(List<ConsumptionConsignment> consumptionConsignment) {
+        this.consumptionConsignment = consumptionConsignment;
+    }
+
+
+    public List<StockRequestList> getStockRequestList() {
+        return stockRequestList;
+    }
+
+    public void setStockRequestList(List<StockRequestList> stockRequestData) {
+        this.stockRequestList = stockRequestData;
+    }
+
+    public List<PackageFile> getPackageFiles() {
+        return packageFiles;
+    }
+
+    public void setPackageFiles(List<PackageFile> packageFiles) {
+        this.packageFiles = packageFiles;
+    }
 }

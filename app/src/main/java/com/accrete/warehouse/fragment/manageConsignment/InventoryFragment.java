@@ -260,15 +260,24 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Inve
     public void onRefresh() {
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            if (inventoryList != null && inventoryList.size() > 0) {
+         /*   if (inventoryList != null && inventoryList.size() > 0) {
+                inventoryList.clear();
                 getInventoryList(inventoryList.get(0).getCreatedTs(), "1");
+
             } else {
-                getInventoryList(getString(R.string.last_updated_date), "1");
+
             }
             inventoryRecyclerView.setVisibility(View.VISIBLE);
             inventoryEmptyView.setVisibility(View.GONE);
             inventorySwipeRefreshLayout.setRefreshing(true);
-            //  customerOrderFabAdd.setVisibility(View.VISIBLE);
+            //  customerOrderFabAdd.setVisibility(View.VISIBLE);*/
+
+            if (inventoryList!= null && inventoryList.size() > 0) {
+                inventoryList.clear();
+                inventoryAdapter.notifyDataSetChanged();
+            }
+            inventorySwipeRefreshLayout.setRefreshing(true);
+            getInventoryList(getString(R.string.last_updated_date), "1");
 
         } else {
             inventoryRecyclerView.setVisibility(View.GONE);

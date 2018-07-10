@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:background="#fdededed"
     android:orientation="vertical">
 
 
@@ -14,166 +16,134 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_12sdp"
-        android:orientation="horizontal"
-        android:padding="@dimen/_5sdp"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.18"
-            android:gravity="left|center"
-            android:text="Name:"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/customer_details_name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.72"
-            android:gravity="left"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_5sdp"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.18"
-            android:gravity="left|center"
-            android:text="Email:"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/customer_details_email"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.72"
-            android:gravity="left"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_5sdp"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.18"
-            android:gravity="left|center"
-            android:text="Mobile"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/customer_details_mobile"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.72"
-            android:gravity="left"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_5sdp"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="left|center"
-            android:text="Shipping Address"
-            android:textColor="@color/green"
-            android:textSize="14sp" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:background="@color/green" />
-
-    <TextView
-        android:id="@+id/customer_details_shipping_address"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_inner_customer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:gravity="left|center"
-        android:lines="5"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_5sdp"
-        android:weightSum="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_8sdp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="left|center"
-            android:text="Billing Address"
-            android:textColor="@color/green"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/customer_details_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/customer_details_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:background="@color/green" />
+            <TextView
+                android:id="@+id/customer_details_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:gravity="center_vertical"
+                android:textColor="@color/blueTurquoise"
+                android:textSize="@dimen/_10sdp" />
 
-    <TextView
-        android:id="@+id/customer_details_billing_address"
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_inner_quot_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:gravity="left|center"
-        android:lines="5"
-        android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_8sdp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:longClickable="false"
+                android:text="Shipping Address"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/customer_details_shipping_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lines="5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_billing_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"
+        card_view:cardBackgroundColor="@color/white"
+        android:visibility="gone"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:longClickable="false"
+                android:text="Billing Address"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/customer_details_billing_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lines="5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

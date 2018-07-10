@@ -1,5 +1,6 @@
 package com.accrete.warehouse.fragment.creategatepass;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,14 +23,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.accrete.warehouse.CreatePackageActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.ReferredByTransporterNameAdapter;
 import com.accrete.warehouse.model.ApiResponse;
@@ -46,6 +45,7 @@ import com.accrete.warehouse.utils.CustomisedEdiTextListener;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +85,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
     private String pacid;
     private ArrayList<TransportMode> transportTypeList = new ArrayList<>();
     private ArrayList<String> transportMode = new ArrayList<>();
-    private Spinner  dialogCreateGatepassTransportMode, dialogCreateGatepassTransportType;
+    private Spinner dialogCreateGatepassTransportMode, dialogCreateGatepassTransportType;
     private ArrayAdapter arrayAdapterTransportMode;
     private String strMode;
     private EditText dialogCreateGatepassTransporterName;
@@ -93,7 +93,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
     private List<TransporterNameSearchDatum> transporterNameList = new ArrayList<>();
     private CustomisedEdiText transporterNameSearchEditText;
     private ReferredByTransporterNameAdapter referredByTransporterNameAdapter;
-    private String strTransportId,sChkid;
+    private String strTransportId, sChkid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,7 +109,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
         packageIdAddList = packageIdList;
         shippingTypesList = shippingTypes;
         shippingByList = shippingBy;
-        sChkid =chkid;
+        sChkid = chkid;
         Log.d("hello ppp", packageIdAddList.size() + " " + shippingTypesList.size() + " " + shippingByList.size());
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
@@ -122,9 +122,9 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
         dialogCreateGatepassShippingCompany = (Spinner) rootView.findViewById(R.id.dialog_create_gatepass_shipping_company);
         dialogCreateGatepassBack = (TextView) rootView.findViewById(R.id.dialog_create_gatepass_back);
         dialogCreateGatepass = (TextView) rootView.findViewById(R.id.dialog_create_gatepass);
-        dialogCreateGatepassTransportType = (Spinner)rootView.findViewById(R.id.dialog_create_gatepass_transport_type);
-        dialogCreateGatepassTransportMode = (Spinner)rootView.findViewById(R.id.dialog_create_gatepass_transport_mode);
-        dialogCreateGatepassTransporterName = (EditText)rootView.findViewById(R.id.dialog_create_gatepass_transporter);
+        dialogCreateGatepassTransportType = (Spinner) rootView.findViewById(R.id.dialog_create_gatepass_transport_type);
+        dialogCreateGatepassTransportMode = (Spinner) rootView.findViewById(R.id.dialog_create_gatepass_transport_mode);
+        dialogCreateGatepassTransporterName = (EditText) rootView.findViewById(R.id.dialog_create_gatepass_transporter);
         dialogCreateGatepassShippingCompany.setVisibility(View.GONE);
         dialogCreateGatepassTransporterName.setOnClickListener(this);
 
@@ -135,6 +135,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
                 if (hasFocus) {
                     if (dialogCreateGatepassTransporterName.getText().toString().trim().length() == 0) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            hideSoftKeyboard(getActivity());
                             openTransporterNameSearchDialog();
                         }
                     }
@@ -167,12 +168,29 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
         dialogCreateGatepass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CreatePassMainTabFragment) getParentFragment())
-                        .sendData(pacid,strMode,
-                                shippingTypesList.get(dialogCreateGatepassShippingType.getSelectedItemPosition()).getPacshtid(),
-                                arrayListShippingCompanyID.get(dialogCreateGatepassShippingCompany.getSelectedItemPosition()),
-                                dialogCreateGatepassVehicleNumber.getText().toString(),strTransportId);
-                CreatePassMainTabFragment.createGatepassViewpager.setCurrentItem(2);
+
+                try {
+                    dialogCreateGatepass.setEnabled(false);
+
+                    ((CreatePassMainTabFragment) getParentFragment())
+                            .sendData(pacid, strMode,
+                                    shippingTypesList.get(dialogCreateGatepassShippingType.getSelectedItemPosition()).getPacshtid(),
+                                    arrayListShippingCompanyID.get(dialogCreateGatepassShippingCompany.getSelectedItemPosition()),
+                                    dialogCreateGatepassVehicleNumber.getText().toString(), strTransportId);
+                    CreatePassMainTabFragment.createGatepassViewpager.setCurrentItem(2);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogCreateGatepass.setEnabled(true);
+                        }
+                    }, 1000);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "Please select shipping company", Toast.LENGTH_SHORT).show();
+                    dialogCreateGatepass.setEnabled(true);
+                }
             }
         });
 
@@ -219,6 +237,8 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
+              //  hideSpinnerDropDown(dialogCreateGatepassShippingType);
+               // dialogCreateGatepassShippingCompany.setVisibility(View.VISIBLE);
                 getCompany(shippingTypesList.get(dialogCreateGatepassShippingType.getSelectedItemPosition()).getPacshtid());
             }
 
@@ -243,15 +263,17 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
 
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void openTransporterNameSearchDialog() {
 
         dialog = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_transporter_name_search);
+      //  getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
-
         transporterNameSearchEditText = (CustomisedEdiText) dialog.findViewById(R.id.customer_search_autoCompleteTextView);
         RecyclerView customerRecyclerView = (RecyclerView) dialog.findViewById(R.id.recyclerView);
 
@@ -281,7 +303,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
                 } else {
                     String status = NetworkUtil.getConnectivityStatusString(getActivity());
                     if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                        searchTransporter(s.toString().trim(),sChkid);
+                        searchTransporter(s.toString().trim(), sChkid);
                     } else {
                         //Toast.makeText(getActivity(), getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
                         if (transporterNameSearchEditText.getText().toString() != null && !transporterNameSearchEditText.getText().toString().isEmpty()) {
@@ -320,7 +342,8 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
 
 
     }
-    private void searchTransporter(String s,String chkid) {
+
+    private void searchTransporter(String s, String chkid) {
         task = getString(R.string.task_transporter_name_search);
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
@@ -329,7 +352,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getTransporterName(version, key, task, userId, accessToken, chkid,s,"26");
+        Call<ApiResponse> call = apiService.getTransporterName(version, key, task, userId, accessToken, chkid, s, "26");
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
             @Override
@@ -406,6 +429,8 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    hideSoftKeyboard(getActivity());
+
                 }
             }
 
@@ -414,6 +439,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
                 if (getActivity() != null) {
                     //Toast.makeText(getActivity(), getString(R.string.connect_server_failed), Toast.LENGTH_SHORT).show();
                     // Log.d("error message",getString(R.string.connect_server_failed));
+                    hideSoftKeyboard(getActivity());
                 }
             }
         });
@@ -456,24 +482,27 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
         });
 
 
-
     }
 
     private void transportModeAdapter(int position) {
-        transportMode = new ArrayList<>();
-        if (dialogCreateGatepassTransportType.getSelectedItem().toString().equals(transportTypeList.get(position).getType())) {
-            for (int y = 0; y < transportTypeList.get(position).getModes().size(); y++) {
-                transportMode.add(transportTypeList.get(position).getModes().get(y).getName());
-            }
+        try {
+            transportMode = new ArrayList<>();
+            if (dialogCreateGatepassTransportType.getSelectedItem().toString().equals(transportTypeList.get(position).getType())) {
+                for (int y = 0; y < transportTypeList.get(position).getModes().size(); y++) {
+                    transportMode.add(transportTypeList.get(position).getModes().get(y).getName());
+                }
 
-            if (transportTypeList != null && transportTypeList.size() > 0 && transportTypeList.get(position).getModes().get(0).getName() != null) {
-                dialogCreateGatepassTransportMode.setSelection(0);
-                strMode = transportTypeList.get(position).getModes().get(0).getPacdelgatpactid();
+                if (transportTypeList != null && transportTypeList.size() > 0 && transportTypeList.get(position).getModes().get(0).getName() != null) {
+                    dialogCreateGatepassTransportMode.setSelection(0);
+                    strMode = transportTypeList.get(position).getModes().get(0).getPacdelgatpactid();
+                }
             }
+            arrayAdapterTransportMode = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, transportMode);
+            arrayAdapterTransportMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dialogCreateGatepassTransportMode.setAdapter(arrayAdapterTransportMode);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        arrayAdapterTransportMode = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, transportMode);
-        arrayAdapterTransportMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dialogCreateGatepassTransportMode.setAdapter(arrayAdapterTransportMode);
     }
 
 
@@ -523,6 +552,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
                     }
                     if (apiResponse.getSuccess()) {
                         dialogCreateGatepassShippingCompany.setVisibility(View.VISIBLE);
+                        hideSpinnerDropDown(dialogCreateGatepassShippingCompany);
                         for (ShippingCompany shippingCompany : apiResponse.getData().getShippingCompany()) {
                             arrayListShippingCompany.add(shippingCompany.getName());
                             arrayListShippingCompanyID.add(shippingCompany.getScompid());
@@ -531,6 +561,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
                         arrayAdapterShippingCompany = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, arrayListShippingCompany);
                         arrayAdapterShippingCompany.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         dialogCreateGatepassShippingCompany.setAdapter(arrayAdapterShippingCompany);
+
                     } else {
                     /*    if (apiResponse.getSuccessCode().equals("10001")) {
 
@@ -542,6 +573,7 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
                         arrayAdapterShippingCompany = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, arrayListShippingCompany);
                         arrayAdapterShippingCompany.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         dialogCreateGatepassShippingCompany.setAdapter(arrayAdapterShippingCompany);
+                        hideSpinnerDropDown(dialogCreateGatepassShippingCompany);
                     }
 
                 } catch (Exception e) {
@@ -556,6 +588,20 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
             }
         });
     }
+
+    /**
+     * Hides a spinner's drop down.
+     */
+    public static void hideSpinnerDropDown(Spinner spinner) {
+        try {
+            Method method = Spinner.class.getDeclaredMethod("onDetachedFromWindow");
+            method.setAccessible(true);
+            method.invoke(spinner);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onCustomerClick(int position) {
         TransporterNameSearchDatum selected = transporterNameList.get(position);
@@ -594,4 +640,11 @@ public class GatepassFragment extends Fragment implements ReferredByTransporterN
         }, 4000);
     }
 
+    private void hideSoftKeyboard(Activity activity) {
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    public void onBackPressed() {
+        getChildFragmentManager().popBackStack();
+    }
 }

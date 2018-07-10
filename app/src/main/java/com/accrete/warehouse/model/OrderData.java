@@ -80,6 +80,16 @@ public class OrderData implements Parcelable {
     @SerializedName("invoice_number_label")
     @Expose
     private String invoiceNumberLabel;
+    @SerializedName("isid_number")
+    @Expose
+    private String batchNumber;
+    @SerializedName("variation_number")
+    @Expose
+    private String variationNumber;
+    @SerializedName("barcode")
+    @Expose
+    private String barcode;
+
 
     protected OrderData(Parcel in) {
         itemVariationName = in.readString();
@@ -101,6 +111,9 @@ public class OrderData implements Parcelable {
         previousUnit = in.readString();
         invoiceNumber = in.readString();
         invoiceNumberLabel = in.readString();
+        batchNumber = in.readString();
+        variationNumber = in.readString();
+        barcode = in.readString();
     }
 
     public String getInvoiceNumber() {
@@ -263,6 +276,15 @@ public class OrderData implements Parcelable {
         this.currentConversionRate = currentConversionRate;
     }
 
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
     public String getPreviousUnit() {
         return previousUnit;
     }
@@ -270,6 +292,23 @@ public class OrderData implements Parcelable {
     public void setPreviousUnit(String previousUnit) {
         this.previousUnit = previousUnit;
     }
+
+    public String getVariationNumber() {
+        return variationNumber;
+    }
+
+    public void setVariationNumber(String variationNumber) {
+        this.variationNumber = variationNumber;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
 
     @Override
     public int describeContents() {
@@ -297,6 +336,9 @@ public class OrderData implements Parcelable {
         dest.writeString(previousUnit);
         dest.writeString(invoiceNumber);
         dest.writeString(invoiceNumberLabel);
+        dest.writeString(batchNumber);
+        dest.writeString(variationNumber);
+        dest.writeString(barcode);
     }
 
 

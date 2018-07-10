@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:orientation="vertical"
+ >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,37 +15,171 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextAppearance="@style/Toolbar.TitleText"/>
 
-    <FrameLayout
-        android:id="@+id/container"
+
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"></FrameLayout>
+        tools:context=".MainActivity">
 
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"></FrameLayout>
+
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/manage_consignment_goods_receipt_print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_gravity="bottom|end"
+            app:backgroundTint="@color/white"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_goods_print" />
+<!--
     <LinearLayout
-        android:id="@+id/layout_btn"
+        android:id="@+id/activity_view_consignment_consumption_fab_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginBottom="230dp"
         android:layout_marginRight="@dimen/fab_margin"
         android:clipToPadding="false"
         android:gravity="center_vertical"
         android:padding="@dimen/standard_12"
         android:visibility="gone">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_fab_label"
+            android:elevation="2dp"
+            android:fontFamily="sans-serif"
+            android:paddingBottom="05dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="05dp"
+            android:text="Consumption"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:typeface="normal" />
+
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/manage_consignment_goods_receipt_print"
+            android:id="@+id/activity_view_consignment_consumption_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:backgroundTint="@color/white"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_round_add" />
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_activity_view_consignment_allocation_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:layout_marginBottom="160dp"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:clipToPadding="false"
             android:gravity="center_vertical"
-            android:visibility="visible"
-            app:backgroundTint="@color/white"
-            app:elevation="6dp"
-            app:fabSize="normal"
-            app:srcCompat="@drawable/ic_good_print" />
-    </LinearLayout>
+            android:padding="@dimen/standard_12"
+            android:visibility="gone">
 
-</RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_fab_label"
+                android:elevation="2dp"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="05dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="05dp"
+                android:text="Allocation"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:typeface="normal" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/activity_view_consignment_allocation_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:backgroundTint="@color/white"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_receive_directly" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_activity_view_consignment_edit_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="90dp"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:clipToPadding="false"
+            android:gravity="center_vertical"
+            android:padding="@dimen/standard_12"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_fab_label"
+                android:elevation="2dp"
+                android:fontFamily="sans-serif"
+                android:paddingBottom="05dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="05dp"
+                android:text="Edit"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:typeface="normal" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/activity_view_consignment_edit_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:backgroundTint="@color/white"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_edit_item" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_activity_view_consignment_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:clipToPadding="false"
+            android:gravity="center_vertical"
+            android:padding="@dimen/standard_12">
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/activity_view_consignment_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:gravity="center_vertical"
+                app:backgroundTint="@color/white"
+                app:elevation="@dimen/_5sdp"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_tick_green" />
+        </LinearLayout>-->
+
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

@@ -24,6 +24,7 @@ public class ReceiveConsignmentFragment extends Fragment {
     private TabLayout tabLayoutReceive;
     private LinearLayout fragmentReceiveConsignmentReceiveDirectly;
     private LinearLayout fragmentReceiveConsignmentReceivePo;
+    private LinearLayout fragmentReceiveConsignmentStockRequestList;
 
     public static ReceiveConsignmentFragment newInstance(String title) {
         ReceiveConsignmentFragment f = new ReceiveConsignmentFragment();
@@ -74,6 +75,7 @@ public class ReceiveConsignmentFragment extends Fragment {
     private void findViews(View rootView) {
             fragmentReceiveConsignmentReceiveDirectly = (LinearLayout)rootView.findViewById( R.id.fragment_receive_consignment_receive_directly );
             fragmentReceiveConsignmentReceivePo = (LinearLayout)rootView.findViewById( R.id.fragment_receive_consignment_receive_po );
+            fragmentReceiveConsignmentStockRequestList = (LinearLayout)rootView.findViewById( R.id.fragment_receive_consignment_stock_request_list );
 
         fragmentReceiveConsignmentReceiveDirectly.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,9 +94,8 @@ public class ReceiveConsignmentFragment extends Fragment {
                 public void onClick(View v) {
                    // Fragment receiveAgainstPurchaseOrderFragment = ReceiveAgainstPurchaseOrderFragment.newInstance(getString(R.string.receive_po));
                    // getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveAgainstPurchaseOrderFragment).commitAllowingStateLoss();
-
                     ReceiveAgainstPurchaseOrderFragment receiveAgainstPurchaseOrderFragment = new ReceiveAgainstPurchaseOrderFragment();
-                    //  getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveDirectlyFragment).commitAllowingStateLoss();
+                    //getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveDirectlyFragment).commitAllowingStateLoss();
                     FragmentManager fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .replace(R.id.receive_consignment_container, receiveAgainstPurchaseOrderFragment).addToBackStack(null).commit();
@@ -104,71 +105,23 @@ public class ReceiveConsignmentFragment extends Fragment {
                 }
             });
 
-    }
-
-
-  /*  private void findViews(View rootView) {
-        viewPagerReceive = (ViewPager)rootView.findViewById(R.id.view_pager_receive_consignment);
-        setupViewPagerExecute(viewPagerReceive);
-        viewPagerReceive.setOffscreenPageLimit(2);
-        tabLayoutReceive = (TabLayout)rootView.findViewById(R.id.tabs_receive_consignment);
-        tabLayoutReceive.setupWithViewPager(viewPagerReceive);
-
-        tabLayoutReceive.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        fragmentReceiveConsignmentStockRequestList.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPagerReceive.setCurrentItem(tab.getPosition());
-            }
+            public void onClick(View v) {
+                // Fragment receiveAgainstPurchaseOrderFragment = ReceiveAgainstPurchaseOrderFragment.newInstance(getString(R.string.receive_po));
+                // getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveAgainstPurchaseOrderFragment).commitAllowingStateLoss();
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
+                StockRequestListFragment stockRequestListFragment = new StockRequestListFragment();
+                //  getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveDirectlyFragment).commitAllowingStateLoss();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.receive_consignment_container, stockRequestListFragment).addToBackStack(null).commit();
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+
+
             }
         });
+
     }
-
-
-    private void setupViewPagerExecute(ViewPager viewPagerExecute) {
-        ReceiveDirectlyFragment receiveDirectlyFragment = new ReceiveDirectlyFragment();
-        ReceiveAgainstPurchaseOrderFragment receiveAgainstPurchaseOrderFragment = new ReceiveAgainstPurchaseOrderFragment();
-
-        viewPagerExecuteAdapter adapter = new viewPagerExecuteAdapter(getChildFragmentManager());
-        adapter.addFragment(receiveDirectlyFragment, "Receive Directly");
-        adapter.addFragment(receiveAgainstPurchaseOrderFragment, "Receive PO");
-        viewPagerExecute.setAdapter(adapter);
-    }
-
-    class viewPagerExecuteAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public viewPagerExecuteAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }*/
-
 
 }

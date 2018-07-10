@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,12 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.CustomerDetailsActivity;
-import com.accrete.warehouse.ItemsInsidePackageActivity;
-import com.accrete.warehouse.PackageHistoryActivity;
+import com.accrete.warehouse.fragment.creategatepass.ItemsInsidePackageActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.PackedAgainstStockAdapter;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.PackageFile;
 import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
@@ -42,6 +45,8 @@ import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.builder.AnimateGifMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,12 +82,17 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
     private String status, dataChanged;
     private int visibleThreshold = 2, lastVisibleItem, totalItemCount;
     private boolean loading;
-    private List<UploadDocument> uploadDocumentList = new ArrayList<>();
+    private List<PackageFile> uploadDocumentList = new ArrayList<>();
+    private List<PackageFile> fileUploadList = new ArrayList<>();
     private LinearLayout linearLayout;
     private RecyclerView dialogUploadDocRecyclerView;
-    private ImageView addImageView;
-    private Button btnUpload;
+    private TextView btnAddImageView;
+    private TextView btnUpload;
     private ProgressBar dialogUploadProgressBar;
+    private String typeForPrint;
+    private int postionForPrint;
+    private ImageView imageViewLoader;
+    private String stringSearchText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,7 +105,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         packedAgainstRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.attempt_failed_refresh_layout);
         packedAgainstRecyclerView = (RecyclerView) rootView.findViewById(R.id.attempt_failed_recycler_view);
         packedAgainstEmptyView = (TextView) rootView.findViewById(R.id.attempt_failed_empty_view);
-
+        imageViewLoader = (ImageView) rootView.findViewById(R.id.imageView_loader);
         packedAgainstStockAdapter = new PackedAgainstStockAdapter(getActivity(), packedAgainstList, this);
         mLayoutManager = new LinearLayoutManager(getActivity());
         packedAgainstRecyclerView.setLayoutManager(mLayoutManager);
@@ -105,7 +115,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         packedAgainstRecyclerView.setAdapter(packedAgainstStockAdapter);
 
 
-        //  doRefresh();
+          doRefresh();
 
         //Scroll Listener
         packedAgainstRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -121,12 +131,17 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
                     loading = true;
                     //calling API
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        getShippedPackageList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2");
+                        if (getActivity() != null && isAdded()) {
+                            showLoader();
+                            //getShippedPackageList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2");
+                            getShippedPackageList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2", stringSearchText, "", "");
+                        }
                     } else {
                         if (packedAgainstRefreshLayout.isRefreshing()) {
                             packedAgainstRefreshLayout.setRefreshing(false);
                         }
                         Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
@@ -147,12 +162,14 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
     }
 
     public void clearListAndRefresh() {
+        stringSearchText ="";
         if (packedAgainstList != null && packedAgainstList.size() > 0) {
             packedAgainstList.clear();
         }
         packedAgainstRecyclerView.removeAllViewsInLayout();
         packedAgainstStockAdapter.notifyDataSetChanged();
         doRefresh();
+
     }
 
     @Override
@@ -200,6 +217,12 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
         textViewActionPackageStatus.setText("Revert Package Delivery");
 
+      /*  if(packedAgainstList.get(position).getInvid().equals("0")){
+            actionsPrintInvoice.setVisibility(View.GONE);
+        }else {
+            actionsPrintInvoice.setBackgroundColor(Color.WHITE);
+        }
+*/
 
         actionsPackageStatus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,41 +281,77 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         }
     }
 
+
     //Opening Dialog to Upload Documents
     private void openDialogUploadDoc(final Activity activity, final String pacId) {
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
-                .setCancelable(true);
+                .setCancelable(false);
         dialogUploadDoc = builder.create();
-        dialogUploadDoc.setCanceledOnTouchOutside(true);
+        dialogUploadDoc.setCanceledOnTouchOutside(false);
 
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
         dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);
-        addImageView = (ImageView) dialogView.findViewById(R.id.add_imageView);
-        btnUpload = (Button) dialogView.findViewById(R.id.btn_upload);
+        btnAddImageView = (TextView) dialogView.findViewById(R.id.select_file_textView);
+        btnUpload = (TextView) dialogView.findViewById(R.id.btn_upload);
         dialogUploadProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_upload_progress_bar);
-        Button btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
-
+        final TextView btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
+        textViewEmpty = (TextView) dialogView.findViewById(R.id.dialog_upload_doc_empty_view);
+        final ImageView imageView = (ImageView) dialogView.findViewById(R.id.imageView_loader);
         documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), uploadDocumentList, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
         dialogUploadDocRecyclerView.setLayoutManager(mLayoutManager);
         dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
-
-        if (uploadDocumentList.size() > 0) {
-            uploadDocumentList.clear();
+        if(uploadDocumentList.size()>0){
+            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+            textViewEmpty.setVisibility(View.GONE);
+        }else {
+            dialogUploadDocRecyclerView.setVisibility(View.GONE);
+            textViewEmpty.setVisibility(View.VISIBLE);
+            textViewEmpty.setText("No file selected");
         }
+
+        btnCancel.setEnabled(true);
 
         //Upload files and dismiss dialog
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnUpload.setEnabled(false);
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
+                        if (dialogUploadDoc != null) {
+
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (imageView.getVisibility() == View.GONE) {
+                                                imageView.setVisibility(View.VISIBLE);
+                                            }
+                                            //Disable Touch
+                                            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                            btnCancel.setEnabled(false);
+                                            Ion.with(imageView)
+                                                    .animateGif(AnimateGifMode.ANIMATE)
+                                                    .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
+                                                    .withBitmapInfo();
+                                        }
+                                    });
+                                }
+                            });
+
+                            thread.start();
+                        }
+
+                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, fileUploadList, pacId, dialogUploadDoc, imageView,btnCancel,uploadDocumentList);
                         filesUploadingAsyncTask.execute();
+
+
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
@@ -309,12 +368,20 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
                 if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
                     uploadDocumentList.clear();
                 }
+                if (getActivity() != null) {
+                    if (imageView != null && imageView.getVisibility() == View.VISIBLE) {
+                        imageView.setVisibility(View.GONE);
+                    }
+
+                    //Enable Touch Back
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                }
                 dialogUploadDoc.dismiss();
             }
         });
 
         //Call Intent to select file and add into List
-        addImageView.setOnClickListener(new View.OnClickListener() {
+        btnAddImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectFile();
@@ -372,7 +439,7 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
 
     }
 
-    //Opening Dialog to Upload Documents
+/*    //Opening Dialog to Upload Documents
     private void dialogUploadDoc(Activity activity) {
         View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -433,18 +500,28 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         if (!dialogUploadDoc.isShowing()) {
             dialogUploadDoc.show();
         }
-    }
+    }*/
+private TextView textViewEmpty;
 
     //Intent to select file
     private void selectFile() {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             askStoragePermission(0, getString(R.string.add_file));
+            typeForPrint = getString(R.string.add_file);
         } else {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*");
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
         }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+                textViewEmpty.setVisibility(View.GONE);
+            }
+        }, 1000);
     }
 
     public void askStoragePermission(int position, String type) {
@@ -485,8 +562,12 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        packedAgainstEmptyView.setText(getString(R.string.no_data_available));
-                        getShippedPackageList(getString(R.string.last_updated_date), "1");
+                        if (getActivity() != null && isAdded()) {
+                            showLoader();
+
+                            packedAgainstEmptyView.setText(getString(R.string.no_data_available));
+                            getShippedPackageList(getString(R.string.last_updated_date), "1", stringSearchText, "", "");
+                        }
                     }
                 }, 200);
             } else {
@@ -496,7 +577,8 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         }
     }
 
-    private void getShippedPackageList(final String time, final String traversalValue) {
+    private void getShippedPackageList(final String time, final String traversalValue,
+                                       String searchValue, String startDate, String endDate) {
         String task = getString(R.string.fetch_shipped_packages);
 
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
@@ -506,9 +588,9 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getShippedPackages(version, key, task, userId, accessToken,
+        Call<ApiResponse> call = apiService.getConsignmentLists(version, key, task, userId, accessToken,
                 AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID),
-                time, traversalValue);
+                time, traversalValue,searchValue,startDate,endDate);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -584,19 +666,29 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
                             }
                         }
                     }
+                    if (getActivity() != null && isAdded()) {
+                        hideLoader();
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (packedAgainstRefreshLayout != null && packedAgainstRefreshLayout.isRefreshing()) {
                         packedAgainstRefreshLayout.setRefreshing(false);
                     }
+                    if (getActivity() != null && isAdded()) {
+                        hideLoader();
+                    }
                 }
+
 
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                if (getActivity() != null && isAdded()) {
+                    hideLoader();
+                }
             }
         });
     }
@@ -606,10 +698,21 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
             if (packedAgainstList != null && packedAgainstList.size() > 0) {
-                getShippedPackageList(packedAgainstList.get(0).getCreatedTs(), "1");
-            } else {
-                getShippedPackageList(getString(R.string.last_updated_date), "1");
+                packedAgainstList.clear();
             }
+            packedAgainstRefreshLayout.setEnabled(true);
+            getShippedPackageList(getString(R.string.last_updated_date), "1", stringSearchText, "", "");
+        /*        if (getActivity() != null && isAdded()) {
+                    showLoader();
+
+                    getShippedPackageList(packedAgainstList.get(0).getCreatedTs(), "1");
+                }
+            } else {
+                if (getActivity() != null && isAdded()) {
+                    showLoader();
+                    getShippedPackageList(getString(R.string.last_updated_date), "1");
+                }
+            }*/
             packedAgainstEmptyView.setVisibility(View.GONE);
             packedAgainstRefreshLayout.setRefreshing(true);
         } else {
@@ -624,15 +727,133 @@ public class ShippedPackageFragment extends Fragment implements PackedAgainstSto
         if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
             uploadDocumentList.remove(position);
             documentUploaderAdapter.notifyDataSetChanged();
+            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+            textViewEmpty.setVisibility(View.GONE);
+            if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
+                dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+                textViewEmpty.setVisibility(View.GONE);
+            } else {
+                dialogUploadDocRecyclerView.setVisibility(View.GONE);
+                textViewEmpty.setVisibility(View.VISIBLE);
+                textViewEmpty.setText("No file selected");
+            }
+        }else {
+            dialogUploadDocRecyclerView.setVisibility(View.GONE);
+            textViewEmpty.setVisibility(View.VISIBLE);
+            textViewEmpty.setText("No file selected");
         }
     }
 
     public void addDocument(String selectedFilePath, String fileName) {
-        UploadDocument uploadDocument = new UploadDocument();
-        uploadDocument.setFileName(fileName);
-        uploadDocument.setFilePath(selectedFilePath);
-        uploadDocument.setFileType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
-        uploadDocumentList.add(uploadDocument);
+        PackageFile uploadDocument = new PackageFile();
+        uploadDocument.setActualName(fileName);
+        uploadDocument.setFileUrl(selectedFilePath);
+        uploadDocument.setType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
+        fileUploadList.add(uploadDocument);
         documentUploaderAdapter.notifyDataSetChanged();
+
+        if(uploadDocumentList.size()>0){
+            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+            textViewEmpty.setVisibility(View.GONE);
+        }else {
+            dialogUploadDocRecyclerView.setVisibility(View.GONE);
+            textViewEmpty.setVisibility(View.VISIBLE);
+            textViewEmpty.setText("No file selected");
+        }
     }
+
+    public void downloadPDF() {
+        Toast.makeText(getActivity(), "download completed", Toast.LENGTH_SHORT).show();
+        if (typeForPrint.equals(getString(R.string.add_file))) {
+            if (dialogUploadDoc != null && dialogUploadDoc.isShowing()) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+            }
+        }
+    }
+
+    private void hideLoader() {
+        if (getActivity() != null) {
+            if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
+                imageViewLoader.setVisibility(View.GONE);
+            }
+            //Enable Touch Back
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+    }
+
+    private void showLoader() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getActivity() != null) {
+                            if (packedAgainstList != null && packedAgainstList.size() == 0) {
+                                if (imageViewLoader.getVisibility() == View.GONE) {
+                                    imageViewLoader.setVisibility(View.VISIBLE);
+                                }
+                                //Disable Touch
+                                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                Ion.with(imageViewLoader)
+                                        .animateGif(AnimateGifMode.ANIMATE)
+                                        .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
+                                        .withBitmapInfo();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        thread.start();
+    }
+
+
+    public void searchAPI(final String searchText) {
+
+        stringSearchText = searchText;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (getActivity() != null && isAdded()) {
+
+                    if (packedAgainstList != null) {
+                        if (packedAgainstList.size() > 0) {
+                            packedAgainstList.clear();
+                            getActivity().runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    // Stuff that updates the UI
+                                    packedAgainstStockAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                        status = NetworkUtil.getConnectivityStatusString(getActivity());
+                        if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                            //  loading = true;
+                            showLoader();
+                            getShippedPackageList(getString(R.string.last_updated_date), "1", searchText, "", "");
+                        } else {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+        thread.start();
+
+    }
+
 }

@@ -13,9 +13,27 @@ public class ApiClient {
     //public static String BASE_URL = "";
     public static String BASE_URL = "";
     public static OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .readTimeout(60, TimeUnit.MINUTES)
-            .connectTimeout(60, TimeUnit.MINUTES)
+            .readTimeout(80, TimeUnit.SECONDS)
+            .connectTimeout(80, TimeUnit.SECONDS)
             .build();
+
+    public static OkHttpClient okHttpClientImages = new OkHttpClient.Builder()
+            .readTimeout(200, TimeUnit.SECONDS)
+            .connectTimeout(200, TimeUnit.SECONDS)
+            .build();
+
+    public static Retrofit getClientImages() {
+        if (retrofit == null) {
+
+            retrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .baseUrl(BASE_URL)
+                    .client(okHttpClientImages)
+                    .build();
+        }
+        return retrofit;
+    }
+
     static Gson gson = new GsonBuilder()
             .setLenient()
             .create();

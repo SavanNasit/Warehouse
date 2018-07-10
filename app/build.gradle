@@ -77,11 +77,11 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'me.dm7.barcodescanner:zxing:1.9.8'
-    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    compile 'com.koushikdutta.ion:ion:2.+'
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
     }
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
-
-    compile 'com.koushikdutta.ion:ion:2.+'
 
 }

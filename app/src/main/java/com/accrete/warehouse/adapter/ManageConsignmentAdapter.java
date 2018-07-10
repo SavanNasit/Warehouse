@@ -80,6 +80,9 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
             }else{
                 holder.listRowManageConsignmentVendor.setText(capitalize(manageConsignment.getVendor()));
             }
+            holder.listRowManageConsignmentVendor.setVisibility(View.VISIBLE);
+        }else{
+            holder.listRowManageConsignmentVendor.setVisibility(View.INVISIBLE);
         }
         // holder.listRowManageConsignmentWarehouse.setText(manageConsignment.getWarehouse());
 
@@ -109,6 +112,9 @@ public class ManageConsignmentAdapter extends RecyclerView.Adapter<ManageConsign
             } else if (manageConsignment.getIscsid().equals("5")) {
                 drawable.setColor(context.getResources().getColor(R.color.blue_purchase_order));
                 holder.listRowManageConsignmentStatus.setText("Payment Approved");
+            } else if (manageConsignment.getIscsid().equals("6")) {
+                drawable.setColor(context.getResources().getColor(R.color.orange_to_be_approved));
+                holder.listRowManageConsignmentStatus.setText("To be Approved");
             }
         }
         holder.layout.setOnClickListener(new View.OnClickListener() {

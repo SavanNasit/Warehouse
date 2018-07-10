@@ -1,24 +1,35 @@
 package com.accrete.warehouse.fragment.manageConsignment;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.ViewConsignmentActivity;
 import com.accrete.warehouse.adapter.ManageConsignmentAdapter;
+import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
+import com.accrete.warehouse.fragment.receiveConsignment.ReceiveDirectlyFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Consignment;
 import com.accrete.warehouse.rest.ApiClient;
@@ -28,8 +39,11 @@ import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,17 +60,110 @@ import static com.accrete.warehouse.utils.Constants.version;
 
 public class ManageConsignmentFragment extends Fragment implements ManageConsignmentAdapter.ManageConsignmentAdapterListener,
         SwipeRefreshLayout.OnRefreshListener {
+
     private static final String KEY_TITLE = "ManageConsignment";
     private SwipeRefreshLayout manageConsignmentSwipeRefreshLayout;
     private RecyclerView manageConsignmentRecyclerView;
     private TextView manageConsignmentEmptyView;
     private ManageConsignmentAdapter manageConsignmentAdapter;
     private List<Consignment> consignmentList = new ArrayList<>();
-    private FloatingActionButton floatingActionButtonPrint;
     private String status, chkId, dataChanged;
     private boolean loading;
     private LinearLayoutManager mLayoutManager;
     private int visibleThreshold = 2, lastVisibleItem, totalItemCount;
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
+    private Timer timer;
+    private String stringSearchText;
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        try {
+            menu.clear();
+            inflater.inflate(R.menu.search_view, menu);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            searchItem.setVisible(true);
+            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+            if (searchItem != null) {
+                searchView = (SearchView) searchItem.getActionView();
+            }
+            AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+            if (searchTextView != null) {
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+                try {
+                    Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+                    mCursorDrawableRes.setAccessible(true);
+                    mCursorDrawableRes.set(searchTextView, R.drawable.cursor_white); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    //  Log.e("OnTextChange", query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(final String searchText) {
+                    //Log.e("OnTextChangeSubmit", newText);
+                    if (timer != null) {
+                        timer.cancel();
+                    }
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            // do your actual work here
+                            if (getActivity() != null && isAdded()) {
+
+                                if (consignmentList != null && consignmentList.size() > 0) {
+                                    consignmentList.clear();
+                                }
+                                stringSearchText = searchText;
+                                getConsignmentsList(chkId, getString(R.string.last_updated_date), "1", searchText, "", "");
+
+                                //   searchInFragment(newText);
+                            }
+                        }
+                    }, 600); // 600ms delay before the timer executes the „run“ method from TimerTask
+
+                    return false;
+                }
+
+            };
+
+            searchView.setOnQueryTextListener(queryTextListener);
+            super.onCreateOptionsMenu(menu, inflater);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                return false;
+            default:
+                break;
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
+    }
 
     public static ManageConsignmentFragment newInstance(String title) {
         ManageConsignmentFragment f = new ManageConsignmentFragment();
@@ -77,11 +184,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
         manageConsignmentSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.manage_consignment_swipe_refresh_layout);
         manageConsignmentRecyclerView = (RecyclerView) rootView.findViewById(R.id.manage_consignment_recycler_view);
         manageConsignmentEmptyView = (TextView) rootView.findViewById(R.id.manage_consignment_empty_view);
-        floatingActionButtonPrint = (FloatingActionButton) rootView.findViewById(R.id.manage_consignment_goods_receipt_print);
 
-        //Disable  FloatingActionButton
-        floatingActionButtonPrint.setEnabled(false);
-        floatingActionButtonPrint.setVisibility(View.GONE);
 
         manageConsignmentAdapter = new ManageConsignmentAdapter(getActivity(), consignmentList, this);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -92,12 +195,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
         manageConsignmentRecyclerView.setAdapter(manageConsignmentAdapter);
 
         chkId = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
-        floatingActionButtonPrint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         //Scroll Listener
         manageConsignmentRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -113,7 +211,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
                     loading = true;
                     //calling API
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        getConsignmentsList(chkId, consignmentList.get(totalItemCount - 1).getCreatedTs(), "2");
+                        getConsignmentsList(chkId, consignmentList.get(totalItemCount - 1).getCreatedTs(), "2", stringSearchText, "", "");
                     } else {
                         if (manageConsignmentSwipeRefreshLayout.isRefreshing()) {
                             manageConsignmentSwipeRefreshLayout.setRefreshing(false);
@@ -155,7 +253,8 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
                     @Override
                     public void run() {
                         manageConsignmentEmptyView.setText(getString(R.string.no_data_available));
-                        getConsignmentsList(chkId, getString(R.string.last_updated_date), "1");
+                        getConsignmentsList(chkId, getString(R.string.last_updated_date), "1", "", "", "");
+
                     }
                 }, 200);
             } else {
@@ -165,6 +264,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
             }
         }
     }
+
 
 
    /* private void downloadPdf(final AlertDialog alertDialog, final String cuId, final String avid, final String date,
@@ -292,16 +392,26 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
 
     @Override
     public void onMessageRowClicked(int position) {
-        Intent intentView = new Intent(getActivity(), ViewConsignmentActivity.class);
+    /*    Intent intentView = new Intent(getActivity(), ViewConsignmentActivity.class);
         intentView.putExtra("iscid", consignmentList.get(position).getIscid());
-        startActivity(intentView);
+        startActivity(intentView);*/
+        ChooseEventsForManageConsignmentFragment chooseEventsForManageConsignmentFragment = new ChooseEventsForManageConsignmentFragment();
+        //  getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveDirectlyFragment).commitAllowingStateLoss();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.manage_consignment_container, chooseEventsForManageConsignmentFragment).addToBackStack(null).commit();
+
+        Bundle bundle=new Bundle();
+        bundle.putString("iscid", consignmentList.get(position).getIscid());
+        bundle.putString("iscsid", consignmentList.get(position).getIscsid());
+        chooseEventsForManageConsignmentFragment.setArguments(bundle);
     }
 
     @Override
     public void onExecute() {
     }
 
-    private void getConsignmentsList(String chkId, final String time, final String traversalValue) {
+    private void getConsignmentsList(String chkId, final String time, final String traversalValue, String searchValue, String startDate, String endDate) {
         String task = getString(R.string.fetch_consignments);
 
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
@@ -312,7 +422,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ApiResponse> call = apiService.getConsignmentLists(version, key, task, userId, accessToken, chkId,
-                time, traversalValue);
+                time, traversalValue, searchValue, startDate, endDate);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -331,17 +441,17 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
                                     }
                                     dataChanged = "yes";
                                 } else if (traversalValue.equals("1")) {
-                                    if (manageConsignmentSwipeRefreshLayout != null &&
-                                            manageConsignmentSwipeRefreshLayout.isRefreshing()) {
-                                        // To remove duplicacy of a new item
-                                        if (!time.equals(consignment.getCreatedTs())) {
-                                            consignmentList.add(0, consignment);
-                                        }
-                                    } else {
-                                        if (!time.equals(consignment.getCreatedTs())) {
-                                            consignmentList.add(consignment);
-                                        }
-                                    }
+                                    //  if (manageConsignmentSwipeRefreshLayout != null &&
+                                    // manageConsignmentSwipeRefreshLayout.isRefreshing()) {
+                                    // To remove duplicacy of a new item
+                                    // if (!time.equals(consignment.getCreatedTs())) {
+                                    //  consignmentList.add(0, consignment);
+                                    //  }
+                                    //  } else {
+                                    //  if (!time.equals(consignment.getCreatedTs())) {
+                                    consignmentList.add(consignment);
+                                    //  }
+                                    //   }
                                     dataChanged = "yes";
                                 }
                             }
@@ -388,7 +498,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
                         if (traversalValue.equals("2")) {
                             manageConsignmentAdapter.notifyDataSetChanged();
                             if (dataChanged != null && dataChanged.equals("yes")) {
-                             //  manageConsignmentRecyclerView.smoothScrollToPosition(manageConsignmentAdapter.getItemCount() + 1);
+                                //  manageConsignmentRecyclerView.smoothScrollToPosition(manageConsignmentAdapter.getItemCount() + 1);
                             }
                         } else if (traversalValue.equals("1")) {
                             if (dataChanged != null && dataChanged.equals("yes")) {
@@ -410,7 +520,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d("SO :cancelled quotation", t.getMessage());
+                Log.d("MC :manage consignment", t.getMessage());
             }
         });
     }
@@ -419,15 +529,21 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
     public void onRefresh() {
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
+            //  if (consignmentList != null && consignmentList.size() > 0) {
+            //  getConsignmentsList(chkId, consignmentList.get(0).getCreatedTs(), "1","");
+            //   } else {
             if (consignmentList != null && consignmentList.size() > 0) {
-                getConsignmentsList(chkId, consignmentList.get(0).getCreatedTs(), "1");
-            } else {
-                getConsignmentsList(chkId, getString(R.string.last_updated_date), "1");
+                consignmentList.clear();
+                manageConsignmentAdapter.notifyDataSetChanged();
             }
-            manageConsignmentRecyclerView.setVisibility(View.VISIBLE);
-            manageConsignmentEmptyView.setVisibility(View.GONE);
             manageConsignmentSwipeRefreshLayout.setRefreshing(true);
+            getConsignmentsList(chkId, getString(R.string.last_updated_date), "1",stringSearchText,"","");
+            //  }
+            // manageConsignmentRecyclerView.setVisibility(View.VISIBLE);
+            //  manageConsignmentEmptyView.setVisibility(View.GONE);
+            //  manageConsignmentSwipeRefreshLayout.setRefreshing(true);
             //  customerOrderFabAdd.setVisibility(View.VISIBLE);
+
 
         } else {
             manageConsignmentRecyclerView.setVisibility(View.GONE);

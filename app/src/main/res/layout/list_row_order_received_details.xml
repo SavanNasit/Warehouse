@@ -31,8 +31,8 @@
             android:id="@+id/items_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.2"
-            android:gravity="center"
+            android:layout_weight="1.4"
+            android:gravity="left"
             android:paddingLeft="@dimen/_3sdp"
             android:paddingRight="@dimen/_3sdp"
             android:textColor="@color/gray_order"
@@ -42,7 +42,7 @@
             android:id="@+id/purchaseOrderQuantity_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.3"
+            android:layout_weight="1.1"
             android:gravity="center"
             android:paddingLeft="@dimen/_3sdp"
             android:paddingRight="@dimen/_3sdp"
@@ -60,5 +60,4 @@
             android:textColor="@color/gray_order"
             android:textSize="@dimen/_10sdp" />
     </LinearLayout>
-
 </LinearLayout>

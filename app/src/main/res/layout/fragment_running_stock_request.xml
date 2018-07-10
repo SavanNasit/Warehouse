@@ -4,7 +4,9 @@
     android:id="@+id/running_stock_request_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#fdededed"
+
+    >
 
     <ProgressBar
         android:id="@+id/running_orders_progress_bar"

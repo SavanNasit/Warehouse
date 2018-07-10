@@ -41,7 +41,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_25sdp"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -52,9 +52,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="left|center"
-                android:text="Out for Delivery"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="@dimen/_9sdp" />
 
 
         </LinearLayout>
@@ -72,9 +71,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="left|center"
-                android:text="November 28, 2017, 6:13 pm"
                 android:textColor="#8D8D8D"
-                android:textSize="14sp" />
+                android:textSize="@dimen/_9sdp" />
 
 
         </LinearLayout>
@@ -92,9 +90,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="left|center"
-                android:text="charger got damaged "
                 android:textColor="#8D8D8D"
-                android:textSize="14sp" />
+                android:textSize="@dimen/_9sdp" />
 
 
         </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,7 +13,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextAppearance="@style/Toolbar.TitleText"/>
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
 
     <ProgressBar
@@ -37,12 +38,14 @@
             android:layout_weight="0.34"
             android:gravity="center"
             android:text="Item Name"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.001"
+            android:visibility="gone"
             android:background="@color/lytgray" />
 
         <TextView
@@ -50,13 +53,15 @@
             android:layout_height="match_parent"
             android:layout_weight="0.34"
             android:gravity="center"
-            android:text="QUANTITY"
-            android:textColor="@color/black" />
+            android:text="Quantity"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.001"
+            android:visibility="gone"
             android:background="@color/lytgray" />
 
 
@@ -65,17 +70,30 @@
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:gravity="center"
-            android:text="DESCRIPTION"
-            android:textColor="@color/black" />
+            android:text="Description"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/items_inside_package_recycler_view"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_inner_customer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="0.9"
-        android:scrollbars="none" />
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/items_inside_package_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

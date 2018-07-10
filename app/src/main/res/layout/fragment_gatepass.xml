@@ -1,15 +1,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="#fdededed"
     android:orientation="vertical"
     android:weightSum="3">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_inner_customer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_weight="0.6"
+        android:layout_gravity="center"
+        android:layout_weight="0.85"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="3">
 
@@ -113,20 +122,73 @@
         </LinearLayout>
 
     </LinearLayout>
+    </android.support.v7.widget.CardView>
 
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.95"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        card_view:cardElevation="@dimen/_2sdp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.2"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/dialog_create_gatepass_transporter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+
+            android:background="@drawable/border_edittext_gray"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Transporter:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="4"
+            android:padding="@dimen/_7sdp"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <EditText
+            android:id="@+id/dialog_create_gatepass_vehicle_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/border_edittext_gray"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Vehicle Number:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:padding="@dimen/_7sdp"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
 
         <Spinner
             android:id="@+id/dialog_create_gatepass_transport_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             android:background="@drawable/spinner_bg"
             android:visibility="visible" />
 
@@ -149,47 +211,7 @@
             android:background="@drawable/spinner_bg"
             android:visibility="gone" />
 
-        <EditText
-            android:id="@+id/dialog_create_gatepass_transporter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:background="@drawable/border_edittext_gray"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:fontFamily="sans-serif"
-            android:gravity="left"
-            android:hint="Transporter:"
-            android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:maxLines="1"
-            android:padding="@dimen/_7sdp"
-            android:textColor="@color/darkGray"
-            android:textColorHint="@color/gray"
-            android:textSize="@dimen/_10sdp" />
 
-
-        <EditText
-            android:id="@+id/dialog_create_gatepass_vehicle_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:background="@drawable/border_edittext_gray"
-            android:fontFamily="sans-serif"
-            android:gravity="left"
-            android:hint="Vehicle Number:"
-            android:imeOptions="actionNext"
-            android:inputType="textCapSentences"
-            android:maxLines="1"
-            android:padding="@dimen/_7sdp"
-            android:textColor="@color/darkGray"
-            android:textColorHint="@color/gray"
-            android:textSize="@dimen/_10sdp" />
 
 
         <Spinner
@@ -213,10 +235,9 @@
             android:textSize="@dimen/_10sdp"
             android:visibility="gone" />
 
-
-
-
     </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,15 +33,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.CustomerDetailsActivity;
-import com.accrete.warehouse.EditPackageActivity;
-import com.accrete.warehouse.PackageHistoryActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.PackedItemWithoutCheckboxAdapter;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.PackageFile;
 import com.accrete.warehouse.model.Packages;
 import com.accrete.warehouse.model.PackedItem;
-import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.rest.FilesUploadingAsyncTask;
@@ -47,6 +47,8 @@ import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.builder.AnimateGifMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +73,6 @@ import static com.accrete.warehouse.utils.PersmissionConstant.checkPermissionWit
 
 public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
         DocumentUploaderAdapter.DocAdapterListener, PackedItemWithoutCheckboxAdapter.PackedItemAdapterListener {
-
     String status = "";
     private SwipeRefreshLayout packedSwipeRefreshLayout;
     private RecyclerView packedRecyclerView;
@@ -85,63 +86,10 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private String dataChanged;
     private AlertDialog dialogSelectEvent;
     private AlertDialog dialogUploadDoc;
-    /*   private void dialogAddPackages() {
-           View dialogView = View.inflate(getActivity(), R.layout.dialog_add_packages, null);
-           AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-           builder.setView(dialogView)
-                   .setCancelable(true);
-           final AlertDialog dialogDeliver = builder.create();
-           dialogDeliver.setCanceledOnTouchOutside(true);
-           AddedItemsAdapter addedItemsAdapter;
-           TextView addPackagesCancel;
-           AutoCompleteTextView addPackagesSearchWithPackageId;
-           RecyclerView dialogAddPackagesRecyclerView;
-           TextView dialogAddPackagesSelectShippingCompany;
-           List<AlreadyAddedItem> alreadyAddedItemList = new ArrayList<>();
-           AlreadyAddedItem alreadyAddedItem = new AlreadyAddedItem();
-
-           addPackagesCancel = (TextView) dialogView.findViewById(R.id.add_packages_cancel);
-           addPackagesSearchWithPackageId = (AutoCompleteTextView) dialogView.findViewById(R.id.add_packages_search_with_package_id);
-           dialogAddPackagesRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_add_packages_recycler_view);
-           dialogAddPackagesSelectShippingCompany = (TextView) dialogView.findViewById(R.id.dialog_add_packages_select_shipping_company);
-           addedItemsAdapter = new AddedItemsAdapter(getActivity(), alreadyAddedItemList, this);
-           LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-           dialogAddPackagesRecyclerView.setLayoutManager(mLayoutManager);
-           dialogAddPackagesRecyclerView.setHasFixedSize(true);
-           dialogAddPackagesRecyclerView.setItemAnimator(new DefaultItemAnimator());
-           dialogAddPackagesRecyclerView.setNestedScrollingEnabled(false);
-           dialogAddPackagesRecyclerView.setAdapter(addedItemsAdapter);
-
-           dialogAddPackagesSelectShippingCompany.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   dialogCreateGatepass();
-               }
-           });
-
-           addPackagesCancel.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   dialogDeliver.dismiss();
-               }
-           });
-
-
-           alreadyAddedItem.setPackageID("PAK1002890001");
-           alreadyAddedItemList.add(alreadyAddedItem);
-           alreadyAddedItemList.add(alreadyAddedItem);
-           alreadyAddedItemList.add(alreadyAddedItem);
-           alreadyAddedItemList.add(alreadyAddedItem);
-           alreadyAddedItemList.add(alreadyAddedItem);
-           alreadyAddedItemList.add(alreadyAddedItem);
-
-           dialogDeliver.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-           if (!dialogDeliver.isShowing()) {
-               dialogDeliver.show();
-           }
-       }*/
     private DocumentUploaderAdapter documentUploaderAdapter;
-    private List<UploadDocument> uploadDocumentList = new ArrayList<>();
+    private List<PackageFile> uploadDocumentList = new ArrayList<>();
+    private List<PackageFile> viewUploadDocuments = new ArrayList<>();
+    private List<PackageFile> fileUploadList = new ArrayList<>();
     private TextView downloadConfirmMessage, titleDownloadTextView;
     private TextView btnYes;
     private TextView btnCancel;
@@ -150,16 +98,35 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private ProgressBar progressBar;
     private LinearLayout linearLayout;
     private RecyclerView dialogUploadDocRecyclerView;
-    private ImageView addImageView;
-    private Button btnUpload;
+    private TextView btnAddImageView;
+    private TextView btnUpload;
     private ProgressBar dialogUploadProgressBar;
+    private String typeForPrint;
+    private int postionForPrint;
+    private TextView textViewEmpty;
+    private ImageView imageViewLoader;
+    private String stringSearchText;
 
     //Remove file/document from list
     @Override
     public void onClickedDeleteBtn(int position) {
-        if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
-            uploadDocumentList.remove(position);
+        if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+            viewUploadDocuments.remove(position);
             documentUploaderAdapter.notifyDataSetChanged();
+            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+            textViewEmpty.setVisibility(View.GONE);
+            if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+                textViewEmpty.setVisibility(View.GONE);
+            } else {
+                dialogUploadDocRecyclerView.setVisibility(View.GONE);
+                textViewEmpty.setVisibility(View.VISIBLE);
+                textViewEmpty.setText("No file selected");
+            }
+        } else {
+            dialogUploadDocRecyclerView.setVisibility(View.GONE);
+            textViewEmpty.setVisibility(View.VISIBLE);
+            textViewEmpty.setText("No file selected");
         }
     }
 
@@ -174,8 +141,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         packedSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.packed_swipe_refresh_layout);
         packedRecyclerView = (RecyclerView) rootView.findViewById(R.id.packed_recycler_view);
         packedEmptyView = (TextView) rootView.findViewById(R.id.packed_empty_view);
-     /*   packedAdd = (TextView) rootView.findViewById(R.id.packed_text_add);
-        packedDeliver = (TextView) rootView.findViewById(R.id.packed_text_deliver);*/
+        imageViewLoader = (ImageView) rootView.findViewById(R.id.imageView_loader);
 
         packedItemAdapter = new PackedItemWithoutCheckboxAdapter(getActivity(), packedList, this);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -185,21 +151,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         packedRecyclerView.setNestedScrollingEnabled(false);
         packedRecyclerView.setAdapter(packedItemAdapter);
 
-       /* packedAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                packedAdd.setBackgroundColor(getResources().getColor(R.color.add_dark_blue));
-               //dialogAddPackages();
-            }
-        });
-        packedDeliver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                packedDeliver.setBackgroundColor(getResources().getColor(R.color.add_dark_red));
-                dialogDeliverPackages();
-            }
-        });
-*/
         doRefresh();
 
         //Scroll Listener
@@ -207,7 +158,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 totalItemCount = mLayoutManager.getItemCount();
                 lastVisibleItem = mLayoutManager.findLastCompletelyVisibleItemPosition();
                 if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold) && packedList.size() > 0) {
@@ -216,7 +166,10 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     loading = true;
                     //calling API
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        getPackageDetailsList(packedList.get(totalItemCount - 1).getCreatedTs(), "2");
+                        if (getActivity() != null && isAdded()) {
+                            // getPackageDetailsList(packedList.get(totalItemCount - 1).getCreatedTs(), "2");
+                            getPackageDetailsList(packedList.get(totalItemCount - 1).getCreatedTs(), "2", stringSearchText, "", "");
+                        }
                     } else {
                         if (packedSwipeRefreshLayout.isRefreshing()) {
                             packedSwipeRefreshLayout.setRefreshing(false);
@@ -250,9 +203,10 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (isAdded()) {
+                        if (getActivity() != null && isAdded()) {
+                            showLoader();
                             packedEmptyView.setText(getString(R.string.no_data_available));
-                            getPackageDetailsList(getString(R.string.last_updated_date), "1");
+                            getPackageDetailsList(getString(R.string.last_updated_date), "1", stringSearchText, "", "");
                         }
                     }
                 }, 200);
@@ -358,6 +312,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             packedList.clear();
         }
         packedItemAdapter.notifyDataSetChanged();
+        stringSearchText = "";
         doRefresh();
     }
 
@@ -458,9 +413,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         // actionsItemsInsidePackage.setVisibility(View.GONE);
         // actionsPackageStatus.setVisibility(View.GONE);
 
+        if (packedList.get(position).getInvid().equals("0")) {
+            actionsPrintInvoice.setVisibility(View.GONE);
+        }
+
         //Edit Package
         itemsInsideTextView.setText("Edit Package");
-       // actionsItemsInsidePackage.setVisibility(View.GONE);
+        // actionsItemsInsidePackage.setVisibility(View.GONE);
 
         //Cancel Package
         actionsPackageStatusText.setText("Cancel Package");
@@ -487,11 +446,11 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         actionsItemsInsidePackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     dialogSelectEvent.dismiss();
-                     Intent intentEditPackage = new Intent(getActivity(), EditPackageActivity.class);
-                     intentEditPackage.putExtra("packageId",packedList.get(position).getPackageId());
-                     intentEditPackage.putExtra("pacid",packedList.get(position).getPacid());
-                     startActivity(intentEditPackage);
+                dialogSelectEvent.dismiss();
+                Intent intentEditPackage = new Intent(getActivity(), EditPackageActivity.class);
+                intentEditPackage.putExtra("packageId", packedList.get(position).getPackageId());
+                intentEditPackage.putExtra("pacid", packedList.get(position).getPacid());
+                startActivity(intentEditPackage);
 
             }
         });
@@ -510,7 +469,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
-                openDialogUploadDoc(getActivity(), packedList.get(position).getPacid().toString());
+                openDialogUploadDoc(getActivity(), packedList.get(position).getPacid().toString(), position);
             }
         });
 
@@ -539,6 +498,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 dialogSelectEvent.dismiss();
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     askStoragePermission(position, getString(R.string.invoice));
+                    typeForPrint = getString(R.string.invoice);
+                    postionForPrint = position;
                 } else {
                     downloadDialog(packedList.get(position).getPackageId(), getString(R.string.invoice),
                             packedList.get(position).getCuid(), packedList.get(position).getInvid());
@@ -553,6 +514,9 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 dialogSelectEvent.dismiss();
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     askStoragePermission(position, getString(R.string.challan));
+                    typeForPrint = getString(R.string.challan);
+                    postionForPrint = position;
+
                 } else {
                     downloadDialog(packedList.get(position).getPackageId(), getString(R.string.challan),
                             packedList.get(position).getPacid(), "");
@@ -567,85 +531,93 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     public void askStoragePermission(int position, String type) {
-        if (checkPermissionWithRationale(getActivity(), new PackedAgainstStockFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
+        if (checkPermissionWithRationale(getActivity(), new PackedFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 return;
-            } else {
-                if (type.equals(getString(R.string.challan))) {
-                    downloadDialog(packedList.get(position).getPackageId(), getString(R.string.challan),
-                            packedList.get(position).getPacid(), "");
-                } else if (type.equals(getString(R.string.invoice))) {
-                    downloadDialog(packedList.get(position).getPackageId(), getString(R.string.invoice),
-                            packedList.get(position).getCuid(), packedList.get(position).getInvid());
-                } else if (type.equals(getString(R.string.add_file))) {
-                    if (dialogUploadDoc != null && dialogUploadDoc.isShowing()) {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
-                        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                        getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
-                    }
-                }
-
             }
         }
+
     }
 
 
     //Opening Dialog to Upload Documents
-    private void openDialogUploadDoc(final Activity activity, final String pacId) {
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
+    private void openDialogUploadDoc(final Activity activity, final String pacId, int position) {
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
-                .setCancelable(true);
+                .setCancelable(false);
         dialogUploadDoc = builder.create();
-        dialogUploadDoc.setCanceledOnTouchOutside(true);
+        dialogUploadDoc.setCanceledOnTouchOutside(false);
 
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
         dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);
-        addImageView = (ImageView) dialogView.findViewById(R.id.add_imageView);
-        btnUpload = (Button) dialogView.findViewById(R.id.btn_upload);
+        btnAddImageView = (TextView) dialogView.findViewById(R.id.select_file_textView);
+        btnUpload = (TextView) dialogView.findViewById(R.id.btn_upload);
         dialogUploadProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_upload_progress_bar);
-        Button btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
-
-        documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), uploadDocumentList, this);
+        final TextView btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
+        textViewEmpty = (TextView) dialogView.findViewById(R.id.dialog_upload_doc_empty_view);
+        final ImageView imageView = (ImageView) dialogView.findViewById(R.id.imageView_loader);
+        documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), viewUploadDocuments, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
         dialogUploadDocRecyclerView.setLayoutManager(mLayoutManager);
         dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
 
-        if (uploadDocumentList.size() > 0) {
+        if (viewUploadDocuments.size() > 0) {
+            viewUploadDocuments.clear();
+        }else if (uploadDocumentList.size()>0){
             uploadDocumentList.clear();
+        }else if (fileUploadList.size()>0){
+            fileUploadList.clear();
         }
+
+        downloadUploadedDocs(pacId, position);
+
+
+        btnCancel.setEnabled(true);
 
         //Upload files and dismiss dialog
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnUpload.setEnabled(false);
-                if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
+                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, uploadDocumentList, pacId, dialogUploadDoc);
+                        if (dialogUploadDoc != null) {
+
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (imageView.getVisibility() == View.GONE) {
+                                                imageView.setVisibility(View.VISIBLE);
+                                            }
+                                            //Disable Touch
+                                            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                            btnCancel.setEnabled(false);
+                                            Ion.with(imageView)
+                                                    .animateGif(AnimateGifMode.ANIMATE)
+                                                    .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
+                                                    .withBitmapInfo();
+                                        }
+                                    });
+                                }
+                            });
+
+                            thread.start();
+                        }
+
+                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, fileUploadList, pacId, dialogUploadDoc, imageView, btnCancel, uploadDocumentList);
                         filesUploadingAsyncTask.execute();
+
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
                 }
-                //Enable Again
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnUpload.setEnabled(true);
-                    }
-                }, 4000);
             }
         });
 
@@ -653,21 +625,28 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (uploadDocumentList != null && uploadDocumentList.size() > 0) {
-                    uploadDocumentList.clear();
+                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                    viewUploadDocuments.clear();
+                }
+                if (getActivity() != null) {
+                    if (imageView != null && imageView.getVisibility() == View.VISIBLE) {
+                        imageView.setVisibility(View.GONE);
+                    }
+
+                    //Enable Touch Back
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 }
                 dialogUploadDoc.dismiss();
             }
         });
 
         //Call Intent to select file and add into List
-        addImageView.setOnClickListener(new View.OnClickListener() {
+        btnAddImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectFile();
             }
         });
-
         dialogUploadDoc.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         if (!dialogUploadDoc.isShowing()) {
             dialogUploadDoc.show();
@@ -678,6 +657,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private void selectFile() {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             askStoragePermission(0, getString(R.string.add_file));
+            typeForPrint = getString(R.string.add_file);
+            //postionForPrint = position;
         } else {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*");
@@ -690,7 +671,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onExecute(ArrayList<String> packageIdList) {
     }
 
-    private void getPackageDetailsList(final String updatedDate, final String traversalValue) {
+    private void getPackageDetailsList(final String time, final String traversalValue,
+                                       String searchValue, String startDate, String endDate) {
         task = getString(R.string.packed_packages_list_task);
         String chkid = null;
 
@@ -702,8 +684,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getPackageDetails(version, key, task, userId, accessToken, chkid, "1", updatedDate,
-                traversalValue);
+        Call<ApiResponse> call = apiService.getPackageLists(version, key, task, userId, accessToken, chkid,
+                time, traversalValue, searchValue, startDate, endDate, "1");
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -717,22 +699,23 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         for (final PackedItem packedItem : apiResponse.getData().getPackedItems()) {
                             if (packedItem != null) {
                                 if (traversalValue.equals("2")) {
-                                    if (!updatedDate.equals(packedItem.getCreatedTs())) {
+                                    if (!time.equals(packedItem.getCreatedTs())) {
                                         packedList.add(packedItem);
                                     }
                                     dataChanged = "yes";
                                 } else if (traversalValue.equals("1")) {
-                                    if (packedSwipeRefreshLayout != null &&
+                                  /*  if (packedSwipeRefreshLayout != null &&
                                             packedSwipeRefreshLayout.isRefreshing()) {
                                         // To remove duplicacy of a new item
-                                        if (!updatedDate.equals(packedItem.getCreatedTs())) {
+                                        if (!time.equals(packedItem.getCreatedTs())) {
                                             packedList.add(0, packedItem);
                                         }
                                     } else {
-                                        if (!updatedDate.equals(packedItem.getCreatedTs())) {
+                                        if (!time.equals(packedItem.getCreatedTs())) {
                                             packedList.add(packedItem);
                                         }
-                                    }
+                                    }*/
+                                    packedList.add(packedItem);
                                     dataChanged = "yes";
                                 }
                             }
@@ -789,18 +772,27 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         }
                     }
 
+                    if (getActivity() != null && isAdded()) {
+                        hideLoader();
+                    }
                     if (packedSwipeRefreshLayout != null && packedSwipeRefreshLayout.isRefreshing()) {
                         packedSwipeRefreshLayout.setRefreshing(false);
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    if (getActivity() != null && isAdded()) {
+                        hideLoader();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                if (getActivity() != null && isAdded()) {
+                    hideLoader();
+                }
             }
         });
     }
@@ -809,15 +801,24 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onRefresh() {
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            if (packedList != null && packedList.size() > 0) {
-                getPackageDetailsList(packedList.get(0).getCreatedTs(), "1");
-            } else {
-                getPackageDetailsList(getString(R.string.last_updated_date), "1");
+          /*  if (packedList != null && packedList.size() > 0) {
+                if (getActivity() != null && isAdded()) {
+                    showLoader();
+                    getPackageDetailsList(packedList.get(0).getCreatedTs(), "1");
+                }
+            } else {*/
+            if (getActivity() != null && isAdded()) {
+                if (packedList != null && packedList.size() > 0) {
+                    packedList.clear();
+                }
+                showLoader();
+                getPackageDetailsList(getString(R.string.last_updated_date), "1", stringSearchText, "", "");
+                //}
             }
-            packedRecyclerView.setVisibility(View.VISIBLE);
+          /*  packedRecyclerView.setVisibility(View.VISIBLE);
             packedEmptyView.setVisibility(View.GONE);
             packedSwipeRefreshLayout.setVisibility(View.VISIBLE);
-            packedSwipeRefreshLayout.setRefreshing(true);
+            packedSwipeRefreshLayout.setRefreshing(true);*/
             //  customerOrderFabAdd.setVisibility(View.VISIBLE);
 
         } else {
@@ -914,7 +915,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     if (apiResponse.getSuccess()) {
                         if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                             alertDialog.dismiss();
-
                             //Download a file and display in phone's download folder
                             Environment
                                     .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -964,12 +964,22 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     //Add Document into List
     public void addDocument(String selectedFilePath, String fileName) {
-        UploadDocument uploadDocument = new UploadDocument();
-        uploadDocument.setFileName(fileName);
-        uploadDocument.setFilePath(selectedFilePath);
-        uploadDocument.setFileType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
-        uploadDocumentList.add(uploadDocument);
+        PackageFile uploadDocument = new PackageFile();
+        uploadDocument.setName(fileName);
+        uploadDocument.setFileUrl(selectedFilePath);
+        uploadDocument.setType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
+        fileUploadList.add(uploadDocument);
+        viewUploadDocuments.addAll(fileUploadList);
         documentUploaderAdapter.notifyDataSetChanged();
+
+        if (viewUploadDocuments.size() > 0) {
+            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+            textViewEmpty.setVisibility(View.GONE);
+        } else {
+            dialogUploadDocRecyclerView.setVisibility(View.GONE);
+            textViewEmpty.setVisibility(View.VISIBLE);
+            textViewEmpty.setText("No file selected");
+        }
     }
 
     //Cancel Package
@@ -998,10 +1008,8 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         //Refresh List
                         packedList.clear();
                         doRefresh();
-
                     } else {
                         Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
                     }
 
                 } catch (Exception e) {
@@ -1016,4 +1024,183 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
         });
     }
+
+    public void downloadPDF() {
+        try {
+            // Toast.makeText(getActivity(), "download completed", Toast.LENGTH_SHORT).show();
+            if (typeForPrint.equals(getString(R.string.challan))) {
+                downloadDialog(packedList.get(postionForPrint).getPackageId(), getString(R.string.challan),
+                        packedList.get(postionForPrint).getPacid(), "");
+            } else if (typeForPrint.equals(getString(R.string.invoice))) {
+                downloadDialog(packedList.get(postionForPrint).getPackageId(), getString(R.string.invoice),
+                        packedList.get(postionForPrint).getCuid(), packedList.get(postionForPrint).getInvid());
+            } else if (typeForPrint.equals(getString(R.string.add_file))) {
+                if (dialogUploadDoc != null && dialogUploadDoc.isShowing()) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("*/*");
+                    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                    getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void hideLoader() {
+        if (getActivity() != null) {
+            if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
+                imageViewLoader.setVisibility(View.GONE);
+            }
+            //Enable Touch Back
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+    }
+
+    private void showLoader() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getActivity() != null) {
+                            if (imageViewLoader.getVisibility() == View.GONE) {
+                                imageViewLoader.setVisibility(View.VISIBLE);
+                            }
+                            //Disable Touch
+                            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            Ion.with(imageViewLoader)
+                                    .animateGif(AnimateGifMode.ANIMATE)
+                                    .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
+                                    .withBitmapInfo();
+                        }
+
+                    }
+                });
+            }
+        });
+
+        thread.start();
+    }
+
+    public void searchAPI(final String searchText) {
+
+        stringSearchText = searchText;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (getActivity() != null && isAdded()) {
+
+                    if (packedList != null) {
+                        if (packedList.size() > 0) {
+                            packedList.clear();
+                            getActivity().runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    // Stuff that updates the UI
+                                    packedItemAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                        status = NetworkUtil.getConnectivityStatusString(getActivity());
+                        if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                            //  loading = true;
+                            showLoader();
+                            getPackageDetailsList(getString(R.string.last_updated_date), "1", searchText, "", "");
+                        } else {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+        thread.start();
+
+    }
+
+
+    private void downloadUploadedDocs(String pacid, final int postionForDownload) {
+        if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(getActivity(), AppUtils.DOMAIN);
+        }
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ApiResponse> call = null;
+        task = getString(R.string.task_uploaded_docs);
+        call = apiService.getCustomerInfoByPacId(version, key, task, userId, accessToken,
+                pacid);
+
+        Log.d("Request", String.valueOf(call));
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                            // dialogUploadDoc.dismiss();
+                            uploadDocumentList.addAll(apiResponse.getData().getPackageFiles());
+                            viewUploadDocuments.addAll(uploadDocumentList);
+                            documentUploaderAdapter.notifyDataSetChanged();
+                            //Download a file and display in phone's download folder
+                        /*    Environment
+                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                                    .mkdirs();
+                            downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                            String url = apiResponse.getData().getFilename();
+                            Uri uri = Uri.parse(url);
+                            DownloadManager.Request request = null;
+                            request = new DownloadManager.Request(uri)
+                                        .setTitle(apiResponse.getData().getPackageFiles().get(postionForDownload).getActualName() + "" + "")
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                                                apiResponse.getData().getPackageFiles().get(postionForDownload).getActualName()  + "" + "")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+                            downloadManager.enqueue(request);*/
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (apiResponse.getSuccessCode().equals("10001")) {
+                        alertDialog.dismiss();
+                        Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (progressBar != null && progressBar.getVisibility() == View.VISIBLE) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    if (viewUploadDocuments.size() > 0) {
+                        dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+                        textViewEmpty.setVisibility(View.GONE);
+                    } else {
+                        dialogUploadDocRecyclerView.setVisibility(View.GONE);
+                        textViewEmpty.setVisibility(View.VISIBLE);
+                        textViewEmpty.setText("No file selected");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                alertDialog.dismiss();
+            }
+        });
+    }
+
 }

@@ -150,6 +150,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
     private ItemsVariationAdapter itemsVariationAdapter;
     private AuthorizedByUserAdapter authorizedByUserAdapter;
     private TextView weightTitleTextView;
+    private String flagForInvoiceNumber;
 
     public static ReceiveDirectlyFragment newInstance(String title) {
         ReceiveDirectlyFragment f = new ReceiveDirectlyFragment();
@@ -216,7 +217,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
         spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.RED), 0,
                 end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         receiveDateTitleTextView.setText(TextUtils.concat(getString(R.string.receive_date_title), spannableStringBuilder));
-        // invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
+        invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
         //  invoiceDateTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_date_title), spannableStringBuilder));
         vendorTitleTextView.setText(TextUtils.concat(getString(R.string.vendor_title), spannableStringBuilder));
         transporterTitleTextView.setText(TextUtils.concat(getString(R.string.transporter_title), spannableStringBuilder));
@@ -241,7 +242,6 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
         datePickerFragment.setListener(this);
 
         //Receive Date
-
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -334,9 +334,19 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                 if (getPostData()) {
                     status = NetworkUtil.getConnectivityStatusString(getActivity());
                     if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                        ReceiveItemsAsyncTask receiveItemsAsyncTask =
-                                new ReceiveItemsAsyncTask(getActivity());
-                        receiveItemsAsyncTask.execute();
+                        if (vendorValueEditText.getText().toString() == null
+                                || vendorValueEditText.getText().toString().isEmpty()) {
+                            Toast.makeText(getActivity(), "Please add vendor", Toast.LENGTH_SHORT).show();
+                        } else if (invoiceNumberValueTextView.getText().toString() == null
+                                || invoiceNumberValueTextView.getText().toString().isEmpty() && flagForInvoiceNumber != null && flagForInvoiceNumber.equals("1")) {
+                            Toast.makeText(getActivity(), "Please enter invoice number", Toast.LENGTH_SHORT).show();
+                        } else if (consignmentItemList != null && consignmentItemList.size() > 0) {
+                            ReceiveItemsAsyncTask receiveItemsAsyncTask =
+                                    new ReceiveItemsAsyncTask(getActivity());
+                            receiveItemsAsyncTask.execute();
+                        } else {
+                            Toast.makeText(getActivity(), "Please add at least one item", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
                     }
@@ -348,7 +358,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                     public void run() {
                         saveTextView.setEnabled(true);
                     }
-                }, 3000);
+                }, 1000);
                 break;
         }
     }
@@ -590,6 +600,18 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                                 vendorArrayList.add(vendor);
                             }
                         }
+
+                        flagForInvoiceNumber = apiResponse.getData().getIsInvoiceNumberEnabled();
+                        //Mandatory Fields
+                        String colored = " *";
+                        final Spannable spannableStringBuilder = new SpannableString(colored);
+                        int end = spannableStringBuilder.length();
+                        spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.RED), 0,
+                                end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        if (flagForInvoiceNumber != null && flagForInvoiceNumber.equals("1")) {
+                            invoiceNumberTitleTextView.setText(TextUtils.concat(getString(R.string.invoice_number_title), spannableStringBuilder));
+                        }
+
                         refreshVendorRecyclerView(userType);
 
                     }
@@ -827,9 +849,9 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
         DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
         DecimalFormat df2 = new DecimalFormat(".###");
         df2.setRoundingMode(RoundingMode.UP);
-        String value="";
-        if(consignmentItem!=null && consignmentItem.getReceiveQuantity()!=null && !consignmentItem.getReceiveQuantity().isEmpty()) {
-             value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
+        String value = "";
+        if (consignmentItem != null && consignmentItem.getReceiveQuantity() != null && !consignmentItem.getReceiveQuantity().isEmpty()) {
+            value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
         }
         try {
             final ArrayList<Measurement> measurementArrayList = new ArrayList<>();
@@ -862,7 +884,8 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                 receiveQuantityEdittext.setText(value);
                 commentEdittext.setText(consignmentItem.getComment());
                 reasonRejectionEdittext.setText(consignmentItem.getReasonRejection());
-                expiryDateTitleTextView.setText(consignmentItem.getExpiryDate());
+                expiryDateValueTextView.setText(consignmentItem.getExpiryDate());
+                rejectedQuantityEdittext.setText(consignmentItem.getRejectedQuantity());
                 // unitsTypeSpinner.setSelection(consignmentItem.getUnit());
             }
 
@@ -928,7 +951,6 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             });
 
 
-
             rejectedQuantityEdittext.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -937,7 +959,6 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
 
 
                 }

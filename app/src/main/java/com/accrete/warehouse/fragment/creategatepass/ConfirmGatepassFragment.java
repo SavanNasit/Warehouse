@@ -1,33 +1,42 @@
 package com.accrete.warehouse.fragment.creategatepass;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.accrete.warehouse.CreatePackageActivity;
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
+import com.accrete.warehouse.adapter.PackedItemAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.DeliveryUserList;
+import com.accrete.warehouse.model.PackedItem;
+import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.builder.AnimateGifMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +56,11 @@ import static com.accrete.warehouse.utils.Constants.version;
  * Created by poonam on 12/21/17.
  */
 
-public class ConfirmGatepassFragment extends Fragment {
+public class ConfirmGatepassFragment extends Fragment implements PackedItemAdapter.PackedItemAdapterListener {
     List<DeliveryUserList> deliveryUserLists = new ArrayList<>();
     List<String> usernameList = new ArrayList<>();
     String uid, pacid, pacshtid, chkid, scompid, vehicle;
+    List<PackedItem> selectedPackedList = new ArrayList<>();
     private AutoCompleteTextView dialogGatepassAuthenticationDeliveryUser;
     private TextView dialogGatepassBack;
     private TextView dialogGatepassConfirm;
@@ -58,16 +68,33 @@ public class ConfirmGatepassFragment extends Fragment {
     private ArrayAdapter arrayAdapterDeliveryUser;
     private String shippingBy;
     private String transporterId;
+    private TextView textViewEmptyView;
+    private RecyclerView packageSelectionRecyclerView;
+    private PackedItemAdapter packedItemAdapter;
+    private ImageView imageViewLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_confirm_gatepass, container,
                 false);
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         dialogGatepassAuthenticationDeliveryUser = (AutoCompleteTextView) rootView.findViewById(R.id.dialog_gatepass_authentication_delivery_user);
         dialogGatepassBack = (TextView) rootView.findViewById(R.id.dialog_gatepass_back);
         dialogGatepassConfirm = (TextView) rootView.findViewById(R.id.dialog_gatepass_confirm);
+
+        packageSelectionRecyclerView = (RecyclerView) rootView.findViewById(R.id.package_selection_recycler_view);
+        textViewEmptyView = (TextView) rootView.findViewById(R.id.package_selection_empty_view);
+        imageViewLoader = (ImageView) rootView.findViewById(R.id.imageView_loader);
+
+        packedItemAdapter = new PackedItemAdapter(getActivity(), selectedPackedList, this, "confirmGatepass");
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        packageSelectionRecyclerView.setLayoutManager(mLayoutManager);
+        packageSelectionRecyclerView.setHasFixedSize(true);
+        packageSelectionRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        packageSelectionRecyclerView.setNestedScrollingEnabled(false);
+        packageSelectionRecyclerView.setAdapter(packedItemAdapter);
+
 
         arrayAdapterDeliveryUser = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, usernameList);
         arrayAdapterDeliveryUser.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -104,12 +131,22 @@ public class ConfirmGatepassFragment extends Fragment {
         dialogGatepassConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dialogGatepassConfirm.setEnabled(false);
                 if (uid != null && !uid.isEmpty()) {
-                    createGatePass(uid, pacid, pacshtid, scompid, vehicle, shippingBy);
+                    if(getActivity()!=null && isAdded()) {
+                        showLoader();
+                        createGatePass(uid, pacid, pacshtid, scompid, vehicle, shippingBy);
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Please Select the delivery user", Toast.LENGTH_SHORT).show();
                 }
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogGatepassConfirm.setEnabled(true);
+                    }
+                }, 1000);
             }
         });
 
@@ -150,7 +187,9 @@ public class ConfirmGatepassFragment extends Fragment {
     }
 
     private void createGatePass(String uid, String pacid, String pacshtid, String scompid, String vehicle, String shippingBy) {
-        task = getString(R.string.create_gatepass_task);
+        try {
+            task = getString(R.string.create_gatepass_task);
+
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
             accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
@@ -160,7 +199,7 @@ public class ConfirmGatepassFragment extends Fragment {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ApiResponse> call = apiService.createGatePass(version, key, task, userId, accessToken, uid,
-                pacid, pacshtid, scompid, chkid, "0", "0", shippingBy, vehicle,transporterId);
+                pacid, pacshtid, scompid, chkid, "0", "0", shippingBy, vehicle, transporterId);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -171,22 +210,33 @@ public class ConfirmGatepassFragment extends Fragment {
                 try {
                     if (apiResponse.getSuccess()) {
                         Toast.makeText(getActivity(), "Gatepass created successfully", Toast.LENGTH_SHORT).show();
-                        Fragment manageGatePassFragment = ManageGatePassFragment.newInstance(getString(R.string.manage_gatepass_fragment));
+                      /*  Fragment manageGatePassFragment = ManageGatePassFragment.newInstance(getString(R.string.manage_gatepass_fragment));
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction()
-                                .replace(R.id.confirm_gatepass_container, manageGatePassFragment).addToBackStack(null).commit();
+                                .replace(R.id.confirm_gatepass_container, manageGatePassFragment).addToBackStack(null).commit();*/
 
-                        ((CreatePackageActivity)getActivity()).getSupportActionBar().setTitle("Manage GatePass");
+                   //     ((CreatePackageActivity) getActivity()).getSupportActionBar().setTitle("Manage GatePass");
 
+                        Intent intentDrawerActivity = new Intent(getActivity(), DrawerActivity.class);
+                        intentDrawerActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intentDrawerActivity.putExtra("flagToManageGatepass", "true");
+                        startActivity(intentDrawerActivity);
+                        getActivity().finish();
 
-                       // Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
+                    if(getActivity()!=null && isAdded()) {
+                        hideLoader();
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    if(getActivity()!=null && isAdded()) {
+                        hideLoader();
+                    }
                 }
             }
 
@@ -194,16 +244,20 @@ public class ConfirmGatepassFragment extends Fragment {
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 if (getActivity() != null && isAdded()) {
                     Toast.makeText(getActivity(), "Oops, Something went wrong", Toast.LENGTH_SHORT).show();
+                    hideLoader();
                 }
             }
         });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hideLoader();
+        }
     }
 
 
     private void getDeliveryUser(String searchText) {
         task = getString(R.string.task_delivery_user);
-
-
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
             accessToken = AppPreferences.getAccessToken(getActivity(), AppUtils.ACCESS_TOKEN);
@@ -266,17 +320,76 @@ public class ConfirmGatepassFragment extends Fragment {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Log.d("error", t.getMessage());
-
             }
         });
     }
 
-    public void getData(String strPacid, String strPacdelgatpactid, String strPacshtid, String strShippingCompanyId, String sirVehicleNumber,String tarnsporterId) {
+    public void getData(String strPacid, String strPacdelgatpactid, String strPacshtid, String strShippingCompanyId, String sirVehicleNumber, String tarnsporterId, List<PackedItem> selectedPackedLists) {
         pacid = strPacid;
         shippingBy = strPacdelgatpactid;
         pacshtid = strPacshtid;
         scompid = strShippingCompanyId;
         vehicle = sirVehicleNumber;
         transporterId = tarnsporterId;
+        selectedPackedList = selectedPackedLists;
+        if (getActivity() != null) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+        }
+
+    }
+
+    @Override
+    public void onMessageRowClicked(int position) {
+
+    }
+
+    @Override
+    public void onExecute(ArrayList<String> packageIdList, List<PackedItem> packedList) {
+
+    }
+
+
+    private void hideLoader() {
+        if (getActivity() != null) {
+            if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
+                imageViewLoader.setVisibility(View.GONE);
+            }
+            //Enable Touch Back
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        }
+    }
+
+    private void showLoader() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getActivity() != null) {
+                                if (imageViewLoader.getVisibility() == View.GONE) {
+                                    imageViewLoader.setVisibility(View.VISIBLE);
+                                }
+                                //Disable Touch
+                                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                Ion.with(imageViewLoader)
+                                        .animateGif(AnimateGifMode.ANIMATE)
+                                        .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
+                                        .withBitmapInfo();
+                            }
+
+                    }
+                });
+            }
+        });
+
+        thread.start();
+    }
+
+
+    public void onBackPressed() {
+        getChildFragmentManager().popBackStack();
     }
 }

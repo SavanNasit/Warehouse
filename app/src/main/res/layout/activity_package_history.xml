@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.accrete.warehouse.PackageHistoryActivity">
+    android:background="#fdededed"
+    tools:context="com.accrete.warehouse.fragment.managePackages.PackageHistoryActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,147 +15,185 @@
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextAppearance="@style/Toolbar.TitleText"/>
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_inner_customer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_12sdp"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_5sdp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.3"
-            android:gravity="left|center"
-            android:text="Package ID :"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/package_history_id"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.7"
-            android:gravity="left"
-            android:text="PAK20171128001687 "
-            android:textColor="@color/colorAccent"
-            android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center"
+                    android:text="Package ID :"
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_9sdp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:orientation="horizontal"
-        android:weightSum="1">
+                <TextView
+                    android:id="@+id/package_history_id"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:gravity="left"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_9sdp" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.3"
-            android:gravity="left|center"
-            android:text="Name :"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/package_history_poonam"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.7"
-            android:gravity="left"
-            android:text="Poonam Kukreti"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center"
+                    android:text="Name :"
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_9sdp" />
 
+                <TextView
+                    android:id="@+id/package_history_poonam"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:weightSum="1">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.3"
-            android:gravity="left|center"
-            android:text="Invoice No :"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/package_history_inovice_num"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.7"
-            android:gravity="left"
-            android:text="99"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-    </LinearLayout>
+            </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.3"
-            android:gravity="left|center"
-            android:text="Date :"
-            android:textColor="#8D8D8D"
-            android:textSize="14sp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center"
+                    android:text="Invoice No :"
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_9sdp" />
 
-        <TextView
-            android:id="@+id/package_history_date"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.7"
-            android:gravity="left"
-            android:text="28 Nov 2017"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/package_history_inovice_num"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp" />
 
-    </LinearLayout>
+            </LinearLayout>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/package_history_recycler_view"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center"
+                    android:text="Date :"
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_9sdp" />
+
+                <TextView
+                    android:id="@+id/package_history_date"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:visibility="visible"
-        android:scrollbars="none" />
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
 
-    <TextView
-        android:id="@+id/package_history_empty_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:gravity="center"
-        android:text="No Logs found for this package"
-        android:textSize="@dimen/_13sdp"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/package_history_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:scrollbars="none"
+                android:visibility="visible" />
+
+
+            <TextView
+                android:id="@+id/package_history_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:gravity="center"
+                android:text="No Logs found for this package"
+                android:textSize="@dimen/_13sdp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

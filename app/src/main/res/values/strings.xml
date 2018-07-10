@@ -202,7 +202,7 @@
     <string name="email_link_success">We have sent an email.</string>
 
 
-    <string name="manage_packages_file_upload_task">warehouse/package_file_upload</string>
+    <string name="manage_packages_file_upload_task">warehouse/package_file_upload_submit</string>
     <string name="create_package">Create Package</string>
     <string name="continue_text">Continue</string>
     <string name="allot_qty">Allot Quantity</string>
@@ -217,5 +217,18 @@
     <string name="task_transporter_name_search">chkorder/account_ledger_search</string>
     <string name="fetch_info_for_edit_packages_task">warehouse/edit_package_formData</string>
     <string name="edit_packages_task">warehouse/edit_package_submit</string>
+    <string name="task_scan_item_info">pos/fetch_barcode_data</string>
+    <string name="create_package_upload_doc_api">warehouse/upload_document_package_submit</string>
+    <string name="task_create_packe_upload_doc_new">warehouse/package_file_upload</string>
+    <string name="allocation">Allocation</string>
+    <string name="task_allocation">warehouse/fetch_consignment_allocations</string>
+    <string name="choose_events_for_manage_consignment_fragment">ChooseEventsForManageConsignmentFragment</string>
+    <string name="task_consumption">warehouse/fetch_consignment_consumption</string>
+    <string name="consumption">Consumption</string>
+    <string name="stock_request_list">Stock Request List</string>
+    <string name="task_stock_request_list">warehouse/fetch_stock_requests</string>
+    <string name="edit_consignment">Edit Consignment</string>
+    <string name="approve_consignment">Approve Consignment</string>
+    <string name="task_uploaded_docs">warehouse/fetch_package_files</string>
 
 </resources>

@@ -3,6 +3,8 @@ package com.accrete.warehouse.fragment.managegatepass;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,10 +21,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.R;
-import com.accrete.warehouse.ViewPackageGatePassActivity;
 import com.accrete.warehouse.adapter.ManageGatepassAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.GatepassList;
@@ -42,8 +49,11 @@ import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -84,6 +94,100 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     private LinearLayoutManager mLayoutManager;
     private int visibleThreshold = 2, lastVisibleItem, totalItemCount;
     private String dataChanged;
+    private String strGatepassId;
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
+    private Timer timer;
+    private String stringSearchText;
+    private String chkId;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        try {
+            menu.clear();
+            inflater.inflate(R.menu.search_view, menu);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            searchItem.setVisible(true);
+            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+            if (searchItem != null) {
+                searchView = (SearchView) searchItem.getActionView();
+            }
+
+            AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
+            if (searchTextView != null) {
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+                try {
+                    Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+                    mCursorDrawableRes.setAccessible(true);
+                    mCursorDrawableRes.set(searchTextView, R.drawable.cursor_white); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    //  Log.e("OnTextChange", query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(final String searchText) {
+                    //Log.e("OnTextChangeSubmit", newText);
+                    if (timer != null) {
+                        timer.cancel();
+                    }
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            // do your actual work here
+                            if (getActivity() != null && isAdded()) {
+
+                                if (gatepassList != null && gatepassList.size() > 0) {
+                                    gatepassList.clear();
+                                }
+                                stringSearchText = searchText;
+                                getManageGatepassList(chkId, getString(R.string.last_updated_date), "1", searchText, "", "");
+                                //searchInFragment(newText);
+                            }
+                        }
+                    }, 600); // 600ms delay before the timer executes the „run“ method from TimerTask
+
+                    return false;
+                }
+
+            };
+
+            searchView.setOnQueryTextListener(queryTextListener);
+            super.onCreateOptionsMenu(menu, inflater);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                return false;
+            default:
+                break;
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
+    }
 
     public static ManageGatePassFragment newInstance(String title) {
         ManageGatePassFragment f = new ManageGatePassFragment();
@@ -96,8 +200,10 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_manage_gatepass, container, false);
+        chkId = AppPreferences.getWarehouseDefaultCheckId(getActivity(), AppUtils.WAREHOUSE_CHK_ID);
         findViews(rootView);
         getActivity().setTitle(R.string.manage_gatepass_fragment);
+
         return rootView;
     }
 
@@ -128,7 +234,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                     loading = true;
                     //calling API
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        getManageGatepassList(gatepassList.get(totalItemCount - 1).getCreatedTs(), "2");
+                        getManageGatepassList(chkId,gatepassList.get(totalItemCount - 1).getCreatedTs(), "2",stringSearchText,"","");
                     } else {
                         if (manageGatepassSwipeRefreshLayout.isRefreshing()) {
                             manageGatepassSwipeRefreshLayout.setRefreshing(false);
@@ -195,7 +301,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
 
 
     private void dialogItemEvents(final int position, String status) {
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions_gatepass, null);
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_select_actions_gatepass, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
                 .setCancelable(true);
@@ -221,6 +327,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         actionsViewPackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 Intent intentViewPackage = new Intent(getActivity(), ViewPackageGatePassActivity.class);
                 intentViewPackage.putExtra("id", gatepassList.get(position).getPacdelgatid());
                 startActivity(intentViewPackage);
@@ -230,13 +337,15 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         actionsPrintPackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadPdfDialog(gatepassList.get(position).getPacdelgatid());
+                dialogSelectEvent.dismiss();
+                downloadPdfDialog(gatepassList.get(position).getPacdelgatid(), gatepassList.get(position).getGatePassId());
             }
         });
 
         actionsCancelGatepass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 dialogCancelGatepass(position, dialogSelectEvent);
             }
         });
@@ -294,7 +403,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
 
     }
 
-    private void getManageGatepassList(final String createdTs, final String traversal) {
+    private void getManageGatepassList(String chkId, final String time, final String traversal, String searchValue, String startDate, String endDate) {
         task = getString(R.string.task_manage_gatepass);
         String chkid = null;
       /*  if (gatepassList != null && gatepassList.size() > 0) {
@@ -309,7 +418,8 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.getGatepassList(version, key, task, userId, accessToken, chkid, createdTs, traversal);
+        Call<ApiResponse> call = apiService.getConsignmentLists(version, key, task, userId, accessToken, chkId,
+                time, traversal, searchValue, startDate, endDate);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -326,22 +436,22 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                         for (GatepassList gatepassLists : apiResponse.getData().getGatepassList()) {
                             if (gatepassLists != null) {
                                 if (traversal.equals("2")) {
-                                    if (!createdTs.equals(gatepassLists.getCreatedTs())) {
+                                    if (!time.equals(gatepassLists.getCreatedTs())) {
                                         gatepassList.add(gatepassLists);
                                     }
                                     dataChanged = "yes";
                                 } else if (traversal.equals("1")) {
-                                    if (manageGatepassSwipeRefreshLayout != null &&
-                                            manageGatepassSwipeRefreshLayout.isRefreshing()) {
+                                   // if (manageGatepassSwipeRefreshLayout != null &&
+                                         //   manageGatepassSwipeRefreshLayout.isRefreshing()) {
                                         // To remove duplicacy of a new item
-                                        if (!createdTs.equals(gatepassLists.getCreatedTs())) {
-                                            gatepassList.add(0, gatepassLists);
-                                        }
-                                    } else {
-                                        if (!createdTs.equals(gatepassLists.getCreatedTs())) {
+                                     //   if (!time.equals(gatepassLists.getCreatedTs())) {
+                                          //  gatepassList.add(0, gatepassLists);
+                                       // }
+                                  //  } else {
+                                       // if (!time.equals(gatepassLists.getCreatedTs())) {
                                             gatepassList.add(gatepassLists);
-                                        }
-                                    }
+                                      //  }
+                                   // }
                                     dataChanged = "yes";
                                 }
                             }
@@ -462,8 +572,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                         dialogSelectEvent.dismiss();
                         status = NetworkUtil.getConnectivityStatusString(getActivity());
                         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                            gatepassList.remove(position);
-                            manageGatePassAdapter.notifyDataSetChanged();
+                            doRefresh();
                            // getManageGatepassList(gatepassList.get(0).getCreatedTs(), "1");
                         } else {
                             manageGatepassRecyclerView.setVisibility(View.GONE);
@@ -491,7 +600,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         });
     }
 
-    public void downloadPdfDialog(final String pacdelgatid) {
+    public void downloadPdfDialog(final String pacdelgatid, final String gatepassId) {
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_download_receipt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(dialogView)
@@ -499,6 +608,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(true);
         strPacdelgatid = pacdelgatid;
+        strGatepassId=gatepassId;
 
         TextView textViewTitle = (TextView) dialogView.findViewById(R.id.title_textView);
         downloadConfirmMessage = (TextView) dialogView.findViewById(R.id.download_confirm_message);
@@ -529,7 +639,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                             }
                         }
                     } else {
-                        downloadPdf(pacdelgatid);
+                        downloadPdf(pacdelgatid,gatepassId);
                     }
 
                 } else {
@@ -548,7 +658,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
         alertDialog.show();
     }
 
-    private void downloadPdf(final String pacdelgatid) {
+    private void downloadPdf(final String pacdelgatid, final String gatepassId) {
         task = getString(R.string.download_gatepass);
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
@@ -578,9 +688,9 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                             String url = apiResponse.getData().getFilename();
                             Uri uri = Uri.parse(url);
                             DownloadManager.Request request = new DownloadManager.Request(uri)
-                                    .setTitle(pacdelgatid + "_gatepass" + ".pdf")
+                                    .setTitle(gatepassId + "_gatepass" + ".pdf")
                                     .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                                            pacdelgatid + "_gatepass" + ".pdf")
+                                            gatepassId + "_gatepass" + ".pdf")
                                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                             downloadManager.enqueue(request);
                         } else {
@@ -621,7 +731,7 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                         @Override
                         public void run() {
                             manageGatepassEmptyView.setText(getString(R.string.no_data_available));
-                            getManageGatepassList(getString(R.string.last_updated_date), "1");
+                            getManageGatepassList(chkId, getString(R.string.last_updated_date), "1", "", "", "");
                         }
                     }, 200);
                // }
@@ -639,15 +749,22 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     public void onRefresh() {
         status = NetworkUtil.getConnectivityStatusString(getActivity());
         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-            if (gatepassList != null && gatepassList.size() > 0) {
+         /*   if (gatepassList != null && gatepassList.size() > 0) {
                 getManageGatepassList(gatepassList.get(0).getCreatedTs(), "1");
             } else {
                 getManageGatepassList(getString(R.string.last_updated_date), "1");
             }
             manageGatepassRecyclerView.setVisibility(View.VISIBLE);
             manageGatepassEmptyView.setVisibility(View.GONE);
-            manageGatepassSwipeRefreshLayout.setRefreshing(true);
+            manageGatepassSwipeRefreshLayout.setRefreshing(true);*/
             //  customerOrderFabAdd.setVisibility(View.VISIBLE);
+
+            if (gatepassList != null && gatepassList.size() > 0) {
+                gatepassList.clear();
+                manageGatePassAdapter.notifyDataSetChanged();
+            }
+            manageGatepassSwipeRefreshLayout.setRefreshing(true);
+            getManageGatepassList(chkId, getString(R.string.last_updated_date), "1",stringSearchText,"","");
 
         } else {
             manageGatepassRecyclerView.setVisibility(View.GONE);
@@ -659,6 +776,6 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
     }
 
     public void downloadPdfCall() {
-        downloadPdf(strPacdelgatid);
+        downloadPdf(strPacdelgatid,strGatepassId);
     }
 }

@@ -73,17 +73,17 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
         if (runningOrder.getAssignedUserName() != null && !runningOrder.getAssignedUserName().isEmpty()) {
             holder.listRowRunningOrdersAttendee.setText("Attendee: " + runningOrder.getAssignedUserName());
             holder.listRowRunningOrdersAttendee.setVisibility(View.VISIBLE);
-            holder.viewAttendee.setVisibility(View.VISIBLE);
+//            holder.viewAttendee.setVisibility(View.VISIBLE);
         } else {
             holder.listRowRunningOrdersAttendee.setVisibility(View.GONE);
-            holder.viewAttendee.setVisibility(View.GONE);
+           // holder.viewAttendee.setVisibility(View.GONE);
         }
-        holder.listRowRunningOrdersExecute.setOnClickListener(new View.OnClickListener() {
+       /* holder.listRowRunningOrdersExecute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //listener.onExecute(runningOrder.getPackages(), runningOrder.getSelectOrderItems(), runningOrder.getChkid(), runningOrder.getChkoid(),position);
             }
-        });
+        });*/
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -227,13 +227,13 @@ public class RunningOrdersAdapter extends RecyclerView.Adapter<RunningOrdersAdap
 
         public MyViewHolder(View view) {
             super(view);
-            viewAttendee = (View) view.findViewById(R.id.view_attendee);
+          //  viewAttendee = (View) view.findViewById(R.id.view_attendee);
             listRowRunningOrdersOrderId = (TextView) view.findViewById(R.id.list_row_running_orders_order_id);
             listRowRunningOrdersCustomer = (TextView) view.findViewById(R.id.list_row_running_orders_customer);
             listRowRunningOrdersDate = (TextView) view.findViewById(R.id.list_row_running_orders_date);
             frameLayoutRunningOrders = (FrameLayout) view.findViewById(R.id.frame_container_running_orders);
             listRowRunningOrdersMobile = (TextView) view.findViewById(R.id.list_row_running_orders_customer_mobile);
-            listRowRunningOrdersExecute = (LinearLayout) view.findViewById(R.id.running_orders_execute);
+         //   listRowRunningOrdersExecute = (LinearLayout) view.findViewById(R.id.running_orders_execute);
             listRowRunningOrdersAttendee = (TextView) view.findViewById(R.id.list_row_running_orders_attendee);
             imageViewCustomerInfo = (TextView) view.findViewById(R.id.running_orders_info);
             imageViewMobile = (TextView) view.findViewById(R.id.running_orders_call);

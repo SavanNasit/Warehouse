@@ -25,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,7 +35,7 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.AlreadyCreatedPackagesAdapter;
-import com.accrete.warehouse.fragment.RunningOrdersTabFragment;
+import com.accrete.warehouse.fragment.runningorders.RunningOrdersTabFragment;
 import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.rest.ApiClient;
@@ -43,6 +44,8 @@ import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.google.gson.GsonBuilder;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.builder.AnimateGifMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,6 +85,7 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
     private ProgressBar progressBar;
     private String chkoid;
     private String flagToCallApi;
+    private ImageView imageViewLoader;
 
     private void findViews() {
 
@@ -103,6 +107,7 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
         alreadyCreatedPackagesSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.already_created_packages_swipe_refresh_layout);
         alreadyCreatedPackagesRecyclerView = (RecyclerView) findViewById(R.id.already_created_packages_recycler_view);
         alreadyCreatedPackagesEmptyView = (TextView) findViewById(R.id.already_created_packages_empty_view);
+        imageViewLoader = (ImageView) findViewById(R.id.imageView_loader);
 
 
         if (getIntent().getStringExtra("chkoid") != null) {
@@ -121,6 +126,7 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
         alreadyCreatedPackagesSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
+                showLoader();
                 getAlreadyCreatedPackages();
             }
         });
@@ -168,13 +174,13 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
         imageBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewCancelTitle.setText("Cancel Package");
 
-        if(flagToCallApi.equals("runningOrders")){
+        if (flagToCallApi.equals("runningOrders")) {
             actionsPrintPackage.setVisibility(View.VISIBLE);
-        }else{
-            if(alreadyCreatedPackagesList.get(position).getPrintFlag()) {
+        } else {
+            if (alreadyCreatedPackagesList.get(position).getPrintFlag()) {
                 actionsPrintPackage.setVisibility(View.VISIBLE);
 
-            }else {
+            } else {
                 actionsPrintPackage.setVisibility(View.GONE);
 
             }
@@ -184,7 +190,9 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
         actionsPrintPackage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 downloadPdfDialog(alreadyCreatedPackagesList.get(position).getInvid(), alreadyCreatedPackagesList.get(position).getCuid());
+                strPacid = alreadyCreatedPackagesList.get(position).getPackageId();
             }
         });
 
@@ -285,7 +293,8 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
 
                         status = NetworkUtil.getConnectivityStatusString(getApplicationContext());
                         if (!status.equals(getString(R.string.not_connected_to_internet))) {
-                             getAlreadyCreatedPackages();
+                            showLoader();
+                            getAlreadyCreatedPackages();
                         } else {
                             alreadyCreatedPackagesRecyclerView.setVisibility(View.GONE);
                             alreadyCreatedPackagesEmptyView.setVisibility(View.VISIBLE);
@@ -523,8 +532,10 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
                     if (alreadyCreatedPackagesSwipeRefreshLayout != null && alreadyCreatedPackagesSwipeRefreshLayout.isRefreshing()) {
                         alreadyCreatedPackagesSwipeRefreshLayout.setRefreshing(false);
                     }
+                    hideLoader();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    hideLoader();
                 }
             }
 
@@ -533,6 +544,7 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
                 // Toast.makeText(ApiCallService.this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 alreadyCreatedPackagesSwipeRefreshLayout.setRefreshing(false);
                 Log.d("warehouse:runningOrders", t.getMessage());
+                hideLoader();
             }
         });
     }
@@ -545,6 +557,7 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
 
     @Override
     public void onRefresh() {
+        showLoader();
         getAlreadyCreatedPackages();
     }
 
@@ -572,7 +585,7 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
                         perms.put(permissions[i], grantResults[i]);
                     if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         Log.d("PERMISSION", "Storage permission granted");
-                               checkFragmentAndDownloadPDF();
+                        checkFragmentAndDownloadPDF();
                     } else {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         } else {
@@ -617,6 +630,44 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         // show it
         alertDialog.show();
+    }
+
+
+    private void hideLoader() {
+        if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
+            imageViewLoader.setVisibility(View.GONE);
+        }
+        //Enable Touch Back
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+    }
+
+    private void showLoader() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (alreadyCreatedPackagesList != null && alreadyCreatedPackagesList.size() == 0) {
+                            if (imageViewLoader.getVisibility() == View.GONE) {
+                                imageViewLoader.setVisibility(View.VISIBLE);
+                            }
+                            //Disable Touch
+                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                            Ion.with(imageViewLoader)
+                                    .animateGif(AnimateGifMode.ANIMATE)
+                                    .load("android.resource://" + getPackageName() + "/" + R.raw.loader)
+                                    .withBitmapInfo();
+                        }
+
+                    }
+                });
+            }
+        });
+
+        thread.start();
     }
 }
 

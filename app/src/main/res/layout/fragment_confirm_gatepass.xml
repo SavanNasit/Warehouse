@@ -1,184 +1,251 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/confirm_gatepass_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:weightSum="3">
+    android:background="#fdededed">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_weight="0.6"
-        android:orientation="horizontal"
-        android:weightSum="3">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.8"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_weight="0.5"
-                android:src="@drawable/ic_package_selection_filled" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_weight="0.5"
-                android:gravity="center|top"
-                android:text="@string/package_selection"
-                android:textSize="@dimen/_12sdp" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.2"
-            android:background="@color/home_page_text_gray" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.8"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_weight="0.5"
-                android:src="@drawable/ic_create_gatepass_filled" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_weight="0.5"
-                android:gravity="center|top"
-                android:text="@string/create_gatepass"
-                android:textSize="@dimen/_12sdp" />
-
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_gravity="center"
-            android:layout_weight="0.2"
-            android:background="@color/home_page_text_gray" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.8"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_weight="0.5"
-                android:src="@drawable/ic_confirm_gatepass_filled" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_weight="0.5"
-                android:gravity="center|top"
-                android:text="@string/confirm_gatepass_fragment"
-                android:textSize="@dimen/_12sdp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.2"
-        android:orientation="vertical">
-
-        <AutoCompleteTextView
-            android:id="@+id/dialog_gatepass_authentication_delivery_user"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fdededed"
+            android:orientation="vertical"
+            android:weightSum="3">
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_inner_customer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.85"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/_2sdp"
+                card_view:cardElevation="@dimen/_2sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.8"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_package_selection_filled" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="0.5"
+                            android:gravity="center|top"
+                            android:text="@string/package_selection"
+                            android:textSize="@dimen/_12sdp" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0.5dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.2"
+                        android:background="@color/home_page_text_gray" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.8"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_create_gatepass_filled" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="0.5"
+                            android:gravity="center|top"
+                            android:text="@string/create_gatepass"
+                            android:textSize="@dimen/_12sdp" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0.5dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.2"
+                        android:background="@color/home_page_text_gray" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.8"
+                        android:orientation="vertical"
+                        android:weightSum="1">
+
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_weight="0.5"
+                            android:src="@drawable/ic_confirm_gatepass_filled" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="0.5"
+                            android:gravity="center|top"
+                            android:text="@string/confirm_gatepass_fragment"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_weight="0.35"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/_2sdp"
+                card_view:cardElevation="@dimen/_2sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/dialog_gatepass_authentication_delivery_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/border_edittext_gray"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left|center"
+                        android:hint="Delivery User:"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColor="@color/darkGray"
+                        android:textCursorDrawable="@drawable/cursor_primary"
+                        android:textColorHint="@color/gray"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_weight="1.60"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/_2sdp"
+                card_view:cardElevation="@dimen/_2sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#fdededed">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/package_selection_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none" />
+
+                    <TextView
+                        android:id="@+id/package_selection_empty_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/no_data_available"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.21"
+                android:background="@color/text_black"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:id="@+id/dialog_gatepass_back"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@color/blueTurquoise"
+                    android:gravity="center|center_vertical"
+                    android:text="Back"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_8sdp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/dialog_gatepass_confirm"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="0.5"
+                    android:gravity="center|center_vertical"
+                    android:text="@string/confirm"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_8sdp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView_loader"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/border_edittext_gray"
-            android:fontFamily="sans-serif"
-            android:gravity="left"
-            android:hint="Delivery User:"
-            android:padding="@dimen/_10sdp"
-            android:textColor="@color/darkGray"
-            android:textColorHint="@color/gray"
-            android:textSize="@dimen/_10sdp" />
-
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.21"
-        android:background="@color/text_black"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-
-        <TextView
-            android:id="@+id/dialog_gatepass_back"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="match_parent"
-            android:gravity="center|center_vertical"
-            android:background="@color/blueTurquoise"
-            android:text="Back"
-            android:textColor="@color/white"
-            android:textAllCaps="true"
-            android:textSize="@dimen/_8sdp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:id="@+id/dialog_gatepass_confirm"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:gravity="center|center_vertical"
-            android:text="@string/confirm"
-            android:textColor="@color/white"
-            android:textAllCaps="true"
-            android:textSize="@dimen/_8sdp"
-            android:textStyle="bold"  />
-    </LinearLayout>
-</LinearLayout>
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </FrameLayout>

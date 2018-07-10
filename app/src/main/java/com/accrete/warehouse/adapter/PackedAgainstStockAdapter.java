@@ -45,7 +45,7 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         PackedItem packedItem = packedItemList.get(position);
         holder.packageIdTextView.setText(packedItem.getPackageId());
-        holder.packageIdTextView.setPaintFlags(holder.packageIdTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+       // holder.packageIdTextView.setPaintFlags(holder.packageIdTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.invoiceNoTextView.setText("Invoice No : " + packedItem.getInvoiceNo());
 
         if (packedItem.getCustomerName() != null && !packedItem.getCustomerName().isEmpty()
@@ -56,7 +56,7 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
             holder.customerNameTextView.setVisibility(View.GONE);
         }
 
-        holder.mainlayout.setOnClickListener(new View.OnClickListener() {
+        holder.containerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onMessageRowClicked(position);
@@ -100,12 +100,12 @@ public class PackedAgainstStockAdapter extends RecyclerView.Adapter<PackedAgains
 
         public MyViewHolder(View view) {
             super(view);
-            mainlayout = (RelativeLayout) view.findViewById(R.id.main_layout);
-            containerLayout = (LinearLayout) view.findViewById(R.id.out_for_delivery_container);
-            packageIdTextView = (TextView) view.findViewById(R.id.package_id_textView);
-            invoiceDateTextView = (TextView) view.findViewById(R.id.invoice_date_textView);
-            customerNameTextView = (TextView) view.findViewById(R.id.customer_name_textView);
-            invoiceNoTextView = (TextView) view.findViewById(R.id.invoice_no_textView);
+          //  mainlayout = (RelativeLayout) view.findViewById(R.id.main_layout);
+            containerLayout = (LinearLayout) view.findViewById(R.id.main_layout);
+            packageIdTextView = (TextView) view.findViewById(R.id.list_row_packed_package_id);
+            invoiceDateTextView = (TextView) view.findViewById(R.id.list_row_packed_invoice_date);
+            customerNameTextView = (TextView) view.findViewById(R.id.list_row_running_orders_customer);
+            invoiceNoTextView = (TextView) view.findViewById(R.id.list_row_packed_invoice_number);
         }
     }
 

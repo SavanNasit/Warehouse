@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +18,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
-
-import static com.accrete.warehouse.utils.AppPreferences.roundTwoDecimals;
 
 /**
  * Created by poonam on 11/28/17.
@@ -52,7 +51,25 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final OrderData orderDataList = orderData.get(position);
-        holder.listRowPendingItemsBatchNumber.setText(orderDataList.getIsid());
+        if (orderDataList.getUsedQuantity().equals("0")) {
+            holder.listRowOrderItemAddQuantity.setText("Add Quantity");
+            holder.listRowOrderItemAddAll.setText("Add All");
+            holder.imageViewAddIcon.setImageResource(R.drawable.ic_add_all_item);
+            holder.linearLayoutQuantity.setBackgroundColor(context.getResources().getColor(R.color.red));
+        } else if (orderDataList.getUsedQuantity().equals(orderDataList.getItemQuantity())) {
+            holder.listRowOrderItemAddQuantity.setText("Edit Quantity");
+            holder.listRowOrderItemAddAll.setText("Remove All");
+            holder.imageViewAddIcon.setImageResource(R.drawable.ic_remove);
+            holder.linearLayoutQuantity.setBackgroundColor(context.getResources().getColor(R.color.green));
+        } else {
+            holder.listRowOrderItemAddQuantity.setText("Edit Quantity");
+            holder.listRowOrderItemAddAll.setText("Remove All");
+            holder.imageViewAddIcon.setImageResource(R.drawable.ic_remove);
+            holder.linearLayoutQuantity.setBackgroundColor(context.getResources().getColor(R.color.md_yellow_800));
+        }
+
+
+        holder.listRowPendingItemsBatchNumber.setText("Batch Number :"+orderDataList.getBatchNumber());
         holder.listRowPendingItemsItem.setText(orderDataList.getItemVariationName());
         if (orderDataList.getMeaid() != null && !orderDataList.getMeaid().isEmpty()) {
             holder.listRowPendingItemsQuantity.setText(orderDataList.getItemQuantity());
@@ -82,14 +99,14 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
         //  holder.listRowPendingItemsStatus.setText(pendingItem.getItemStatus());
         holder.listRowPendingItemsQuantityUnit.setText(orderDataList.getItemUnit());
 
-      /*  if (holder.listRowPendingItemsSkuCode!=null && orderDataList.getItemSkuCode()!= null && !orderDataList.getItemSkuCode().isEmpty()) {
+      if (holder.listRowPendingItemsSkuCode!=null && orderDataList.getItemSkuCode()!= null && !orderDataList.getItemSkuCode().isEmpty()) {
             holder.listRowPendingItemsSkuCode.setText(orderDataList.getItemSkuCode());
             holder.listRowOrderItemViewOne.setVisibility(View.VISIBLE);
         } else {
             holder.listRowPendingItemsSkuCode.setVisibility(View.GONE);
             holder.listRowOrderItemViewOne.setVisibility(View.GONE);
         }
-*/
+
 
 
   /*      if (pendingItem.getItemStatus().equals("Executed")) {
@@ -99,9 +116,20 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
         }*/
 
 
-        holder.listRowOrderItemAddQuantity.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayoutAddQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (orderDataList.getUsedQuantity().equals("0")) {
+                    holder.listRowOrderItemAddQuantity.setText("Add Quantity");
+                    holder.listRowOrderItemAddAll.setText("Add All");
+                    holder.imageViewAddIcon.setImageResource(R.drawable.ic_add_all_item);
+
+                } else {
+                    holder.listRowOrderItemAddQuantity.setText("Edit Quantity");
+                    holder.listRowOrderItemAddAll.setText("Remove All");
+                    holder.imageViewAddIcon.setImageResource(R.drawable.ic_remove);
+                }
+
                 if (orderDataList.getItemStatus().equals("Executed")) {
                     Toast.makeText(context, "Item already executed", Toast.LENGTH_SHORT).show();
                 } else {
@@ -116,22 +144,30 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
         });
 
 
-        holder.listRowOrderItemAddAll.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayoutRemoveQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (orderDataList.getItemStatus().equals("Executed")) {
-                    Toast.makeText(context, "Item already executed", Toast.LENGTH_SHORT).show();
-                } else if (holder.listRowOrderItemAddAll.getText().toString().equals("Remove All")) {
-                    //Toast.makeText(context, "Item already added", Toast.LENGTH_SHORT).show();
-                    orderDataList.setUsedQuantity("0");
-                    holder.listRowOrderItemAddAll.setText("Add All");
-                    listener.onRemoveDirectFromPackage(orderDataList, position);
-                    notifyDataSetChanged();
+                if (!orderDataList.getItemQuantity().equals("0")) {
+                    if (orderDataList.getItemStatus().equals("Executed")) {
+                        Toast.makeText(context, "Item already executed", Toast.LENGTH_SHORT).show();
+                    } else if (holder.listRowOrderItemAddAll.getText().toString().equals("Remove All")) {
+                        //Toast.makeText(context, "Item already added", Toast.LENGTH_SHORT).show();
+                        orderDataList.setUsedQuantity("0");
+                        holder.listRowOrderItemAddAll.setText("Add All");
+                        holder.imageViewAddIcon.setImageResource(R.drawable.ic_add_all_item);
+                        listener.onRemoveDirectFromPackage(orderDataList, position);
+                        notifyDataSetChanged();
+                    } else {
+                        orderDataList.setUsedQuantity(orderDataList.getItemQuantity());
+                        holder.listRowOrderItemAddAll.setText("Remove All");
+                        listener.onAddDirectToPackage(orderDataList, position);
+                        holder.imageViewAddIcon.setImageResource(R.drawable.ic_remove);
+                        notifyDataSetChanged();
+                    }
+
                 } else {
-                    orderDataList.setUsedQuantity(orderDataList.getItemQuantity());
-                    holder.listRowOrderItemAddAll.setText("Remove All");
-                    listener.onAddDirectToPackage(orderDataList, position);
-                    notifyDataSetChanged();
+                    holder.listRowOrderItemAddAll.setText("Add All");
+                    Toast.makeText(context, "Item already executed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -162,7 +198,7 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
         private CardView cardView;
         private TextView listRowPendingItemsItem;
         private TextView listRowOrderItemVendor;
-       // private TextView listRowPendingItemsSkuCode;
+        // private TextView listRowPendingItemsSkuCode;
         private View listRowPendingItemsView;
         private TextView listRowPendingItemsBatchNumber;
         private TextView listRowOrderItemAvailableQuantity;
@@ -177,6 +213,12 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
         private View listRowOrderItemView;
         private TextView listRowOrderItemAddQuantity, listRowOrderItemAddAll;
         private ImageView listRowOrderItemImage;
+        private LinearLayout linearLayoutQuantity;
+        private LinearLayout linearLayoutAddQuantity;
+        private LinearLayout linearLayoutRemoveQuantity;
+        private  TextView  listRowPendingItemsSkuCode;
+        private ImageView imageViewAddIcon;
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -184,7 +226,7 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
             cardView = (CardView) view.findViewById(R.id.card_view);
             listRowPendingItemsItem = (TextView) view.findViewById(R.id.list_row_pending_items_item);
             listRowOrderItemVendor = (TextView) view.findViewById(R.id.list_row_order_item_vendor);
-          //  listRowPendingItemsSkuCode = (TextView) view.findViewById(R.id.list_row_pending_items_sku_code);
+            //  listRowPendingItemsSkuCode = (TextView) view.findViewById(R.id.list_row_pending_items_sku_code);
             listRowPendingItemsView = (View) view.findViewById(R.id.list_row_pending_items_view);
             listRowPendingItemsBatchNumber = (TextView) view.findViewById(R.id.list_row_pending_items_batch_number);
             listRowOrderItemAvailableQuantity = (TextView) view.findViewById(R.id.list_row_order_item_available_quantity);
@@ -200,7 +242,12 @@ public class RunningOrderExecuteAdapter extends RecyclerView.Adapter<RunningOrde
             listRowOrderItemAddQuantity = (TextView) view.findViewById(R.id.list_row_order_item_add_quantity);
             listRowOrderItemImage = (ImageView) view.findViewById(R.id.list_row_pending_items_image);
             listRowOrderItemAddAll = (TextView) view.findViewById(R.id.list_row_order_item_add_all);
+            linearLayoutQuantity = (LinearLayout) view.findViewById(R.id.list_row_pending_items_quantity_layout);
+            listRowPendingItemsSkuCode = (TextView)view.findViewById(R.id.list_row_order_sku_code);
+            linearLayoutAddQuantity = (LinearLayout) view.findViewById(R.id.add_quantity_layout);
+            linearLayoutRemoveQuantity = (LinearLayout) view.findViewById(R.id.remove_quantity_layout);
+            imageViewAddIcon = (ImageView)view.findViewById(R.id.list_row_order_add_icon);
         }
     }
 
-}
+    }

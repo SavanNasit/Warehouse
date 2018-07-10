@@ -89,7 +89,7 @@ public class PackedAdapter extends RecyclerView.Adapter<PackedAdapter.MyViewHold
             listRowPackedOrderId = (TextView) view.findViewById(R.id.list_row_packed_order_id);
             listRowPackedInvoiceNumber = (TextView) view.findViewById(R.id.list_row_packed_invoice_number);
             listRowPackedInvoiceDate = (TextView) view.findViewById(R.id.list_row_packed_invoice_date);
-            listRowPackedCustomerName = (TextView) view.findViewById(R.id.list_row_packed_customer_name);
+            listRowPackedCustomerName = (TextView) view.findViewById(R.id.list_row_running_orders_customer);
             listRowPackedPincode = (TextView) view.findViewById(R.id.list_row_packed_pincode);
             listRowPackedExpDod = (TextView) view.findViewById(R.id.list_row_packed_exp_dod);
             listRowPackedCheckbox = (CheckBox) view.findViewById(R.id.list_row_package_checkbox);

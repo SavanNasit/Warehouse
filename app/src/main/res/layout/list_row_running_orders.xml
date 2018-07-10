@@ -1,200 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#fdededed"
+    android:layout_marginTop="@dimen/_5sdp"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/view_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/green">
-
-        <ImageView
-            android:id="@+id/record_followup_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:src="@drawable/ic_execute_white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="13dp"
-            android:layout_toStartOf="@+id/record_followup_icon"
-            android:text="Execute"
-            android:textColor="#fff"
-            android:textSize="13dp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativelayout_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
-
-        <LinearLayout
-            android:id="@+id/mainContainer"
+      <android.support.v7.widget.CardView
+            android:id="@+id/outlet_cardview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            card_view:cardElevation="0dp">
 
+            <RelativeLayout
+                android:id="@+id/view_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/green">
+
+                <ImageView
+                    android:id="@+id/record_followup_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:src="@drawable/ic_execute_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="13dp"
+                    android:layout_toStartOf="@+id/record_followup_icon"
+                    android:text="Execute"
+                    android:textColor="#fff"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_2sdp">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.6"
-                    android:orientation="vertical">
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:paddingTop="@dimen/_4sdp">
+
+                    <TextView
+                        android:id="@+id/list_row_running_orders_order_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColor="@color/blueTurquoise"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/list_row_running_orders_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColor="#999"
+                        android:textSize="@dimen/_8sdp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginLeft="@dimen/_6sdp"
+                    android:layout_marginRight="@dimen/_6sdp"
+                    android:background="@color/black"></View>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:paddingTop="@dimen/_4sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_18sdp"
-                        android:layout_marginRight="@dimen/_18sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_3sdp"
-                        android:weightSum="1">
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_75sdp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/list_row_running_orders_customer"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:lines="1"
-                            android:textColor="@color/text_black"
-                            android:textSize="@dimen/_9sdp"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_18sdp"
-                        android:layout_marginRight="@dimen/_18sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:id="@+id/list_row_running_orders_order_id"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/home_page_text_gray"
-                            android:textSize="@dimen/_10sdp" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:background="@color/gray" />
-
-                        <TextView
-                            android:id="@+id/list_row_running_orders_date"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
-                            android:gravity="center_vertical"
-                            android:lines="1"
-                            android:textColor="@color/home_page_text_gray"
+                            android:paddingTop="@dimen/_1sdp"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp" />
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:layout_marginLeft="@dimen/_18sdp"
-                        android:layout_marginRight="@dimen/_18sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
 
                         <TextView
                             android:id="@+id/list_row_running_orders_customer_mobile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textColor="@color/home_page_text_gray"
-                            android:textSize="@dimen/_10sdp" />
-
-
-                        <View
-                            android:id="@+id/view_attendee"
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:background="@color/gray" />
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4c4c4c"
+                            android:textSize="@dimen/_8sdp" />
 
                         <TextView
                             android:id="@+id/list_row_running_orders_attendee"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
-                            android:gravity="center_vertical"
-                            android:lines="1"
-                            android:textColor="@color/home_page_text_gray"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textColor="#7f7f7f"
+                            android:textSize="@dimen/_8sdp" />
 
 
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/running_orders_execute"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.4"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_10sdp"
-                        android:src="@drawable/ic_execute" />
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/amount_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:gravity="right"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="bold" />
 
+                        <TextView
+                            android:id="@+id/status_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|right"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:gravity="bottom"
+                            android:maxLines="1"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_8sdp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/frame_container_running_orders"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            </RelativeLayout>
 
-                <include
-                    android:id="@+id/layout"
-                    layout="@layout/list_row_running_orders_events" />
-            </FrameLayout>
+        </android.support.v7.widget.CardView>
 
-            <!--  <View
-                  android:layout_width="match_parent"
-                  android:layout_height="1dp"
-                  android:layout_marginLeft="@dimen/_18sdp"
-                  android:layout_marginRight="@dimen/_18sdp"
-                  android:layout_marginTop="@dimen/_5sdp"
-                  android:background="@color/primary" />-->
-        </LinearLayout>
+    <FrameLayout
+        android:id="@+id/frame_container_running_orders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    </RelativeLayout>
+        <include
+            android:id="@+id/layout"
+            layout="@layout/list_row_running_orders_events" />
+    </FrameLayout>
 
-
-</FrameLayout>
+</LinearLayout>
