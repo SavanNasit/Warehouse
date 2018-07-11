@@ -14,7 +14,6 @@ import com.accrete.sixorbit.R;
 import com.accrete.sixorbit.model.EnquiryProduct;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,16 +59,27 @@ public class EnquiryProductsAdapter extends RecyclerView.Adapter<EnquiryProducts
                         Log.e("KEY", key);
                         if (map.get(str) instanceof String) {
                             String value = map.get(str);
+                            if (holder.quantityTextView.getText().toString().length() == 0) {
+                                holder.quantityTextView.setText(key.trim() + " : " + value.trim());
+                            } else {
+                                holder.quantityTextView.append("\n" + key.trim() + " : " + value.trim());
+                            }
                             Log.e("VALUE", value);
-                        }else  {
-                            ArrayList<String> value =new ArrayList<String>();
+                        } else {
+                            ArrayList<String> value = new ArrayList<String>();
                             value.add(map.get(str));
                             Log.e("VALUE", value.toString());
                         }
                     }
+                if (holder.quantityTextView.getText().toString().length() != 0) {
+                    holder.quantityTextView.setVisibility(View.VISIBLE);
+                }
+            } else {
+                holder.quantityTextView.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            holder.quantityTextView.setVisibility(View.GONE);
         }
 
         if (position == 0) {
@@ -82,10 +92,14 @@ public class EnquiryProductsAdapter extends RecyclerView.Adapter<EnquiryProducts
     }
 
     public void setMargins(View v, int l, int t, int r, int b) {
-        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(l, t, r, b);
-            v.requestLayout();
+        try {
+            if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+                p.setMargins(l, t, r, b);
+                v.requestLayout();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -107,6 +121,7 @@ public class EnquiryProductsAdapter extends RecyclerView.Adapter<EnquiryProducts
             quantityTextView = (TextView) view.findViewById(R.id.quantity_textView);
             expandViewLayout = (LinearLayout) view.findViewById(R.id.expand_viewLayout);
             expandViewLayout.setVisibility(View.GONE);
+            quantityTextView.setVisibility(View.GONE);
         }
     }
 }

@@ -142,6 +142,139 @@ public class OrderDetails {
     @SerializedName("updatedby")
     @Expose
     private String updatedBy;
+    //TODO Added on 10th July
+    @SerializedName("current_address_line1")
+    @Expose
+    private String currentAddressLine1;
+    @SerializedName("current_address_line2")
+    @Expose
+    private String currentAddressLine2;
+    @SerializedName("current_address_city")
+    @Expose
+    private String currentAddressCity;
+    @SerializedName("current_address_zipcode")
+    @Expose
+    private String currentAddressZipcode;
+    @SerializedName("current_address_state")
+    @Expose
+    private String currentAddressState;
+    @SerializedName("current_address_country")
+    @Expose
+    private String currentAddressCountry;
+    @SerializedName("site_address_line1")
+    @Expose
+    private String siteAddressLine1;
+    @SerializedName("site_address_line2")
+    @Expose
+    private String siteAddressLine2;
+    @SerializedName("site_address_city")
+    @Expose
+    private String siteAddressCity;
+    @SerializedName("site_address_zipcode")
+    @Expose
+    private String siteAddressZipcode;
+    @SerializedName("site_address_state")
+    @Expose
+    private String siteAddressState;
+    @SerializedName("site_address_country")
+    @Expose
+    private String siteAddressCountry;
+
+    public String getCurrentAddressLine1() {
+        return currentAddressLine1;
+    }
+
+    public void setCurrentAddressLine1(String currentAddressLine1) {
+        this.currentAddressLine1 = currentAddressLine1;
+    }
+
+    public String getCurrentAddressLine2() {
+        return currentAddressLine2;
+    }
+
+    public void setCurrentAddressLine2(String currentAddressLine2) {
+        this.currentAddressLine2 = currentAddressLine2;
+    }
+
+    public String getCurrentAddressCity() {
+        return currentAddressCity;
+    }
+
+    public void setCurrentAddressCity(String currentAddressCity) {
+        this.currentAddressCity = currentAddressCity;
+    }
+
+    public String getCurrentAddressZipcode() {
+        return currentAddressZipcode;
+    }
+
+    public void setCurrentAddressZipcode(String currentAddressZipcode) {
+        this.currentAddressZipcode = currentAddressZipcode;
+    }
+
+    public String getCurrentAddressState() {
+        return currentAddressState;
+    }
+
+    public void setCurrentAddressState(String currentAddressState) {
+        this.currentAddressState = currentAddressState;
+    }
+
+    public String getCurrentAddressCountry() {
+        return currentAddressCountry;
+    }
+
+    public void setCurrentAddressCountry(String currentAddressCountry) {
+        this.currentAddressCountry = currentAddressCountry;
+    }
+
+    public String getSiteAddressLine1() {
+        return siteAddressLine1;
+    }
+
+    public void setSiteAddressLine1(String siteAddressLine1) {
+        this.siteAddressLine1 = siteAddressLine1;
+    }
+
+    public String getSiteAddressLine2() {
+        return siteAddressLine2;
+    }
+
+    public void setSiteAddressLine2(String siteAddressLine2) {
+        this.siteAddressLine2 = siteAddressLine2;
+    }
+
+    public String getSiteAddressCity() {
+        return siteAddressCity;
+    }
+
+    public void setSiteAddressCity(String siteAddressCity) {
+        this.siteAddressCity = siteAddressCity;
+    }
+
+    public String getSiteAddressZipcode() {
+        return siteAddressZipcode;
+    }
+
+    public void setSiteAddressZipcode(String siteAddressZipcode) {
+        this.siteAddressZipcode = siteAddressZipcode;
+    }
+
+    public String getSiteAddressState() {
+        return siteAddressState;
+    }
+
+    public void setSiteAddressState(String siteAddressState) {
+        this.siteAddressState = siteAddressState;
+    }
+
+    public String getSiteAddressCountry() {
+        return siteAddressCountry;
+    }
+
+    public void setSiteAddressCountry(String siteAddressCountry) {
+        this.siteAddressCountry = siteAddressCountry;
+    }
 
     public String getUpdatedBy() {
         return updatedBy;

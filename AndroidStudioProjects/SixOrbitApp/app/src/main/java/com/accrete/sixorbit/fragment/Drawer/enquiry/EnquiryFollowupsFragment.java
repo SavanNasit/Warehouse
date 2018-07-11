@@ -84,17 +84,23 @@ public class EnquiryFollowupsFragment extends android.support.v4.app.Fragment im
     }
 
     public void updateList() {
-        if (followUpArrayList != null && followUpArrayList.size() > 0) {
-            followUpArrayList.clear();
-        }
-        followUpArrayList.addAll(databaseHandler.getEnquiryFollowUps(enId));
-        mAdapter.notifyDataSetChanged();
-        if (followUpArrayList != null && followUpArrayList.size() > 0) {
-            textViewEmpty.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-        } else {
-            textViewEmpty.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
+        try {
+            if (getActivity() != null && isAdded()) {
+                if (followUpArrayList != null && followUpArrayList.size() > 0) {
+                    followUpArrayList.clear();
+                }
+                followUpArrayList.addAll(databaseHandler.getEnquiryFollowUps(enId));
+                mAdapter.notifyDataSetChanged();
+                if (followUpArrayList != null && followUpArrayList.size() > 0) {
+                    textViewEmpty.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

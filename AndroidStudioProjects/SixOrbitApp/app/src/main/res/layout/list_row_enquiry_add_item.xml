@@ -27,6 +27,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_6sdp"
+                android:paddingBottom="@dimen/_3sdp"
                 android:textColor="@color/notifications_name_color"
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
@@ -38,6 +39,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_1sdp"
+                android:paddingBottom="@dimen/_4sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp" />
 

@@ -125,7 +125,7 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
             strFollowUpAssignee, strToTime, strContactPerson, strScheduleDate, strAlertTime,
             strAlertModeChecked, strComMode, cuId;
     private String sharingTexts;
-    private AutoCompleteTextView addLeadContactPerson, addLeadCommunicationModeAutoComplete,
+    private AutoCompleteTextView contactPersonAutocomplete, addLeadCommunicationModeAutoComplete,
             addLeadAssignFollowup;
     private AlertDialog alertDialog;
     private EditText addLeadScheduledTime, addLeadAlertTime;
@@ -548,7 +548,7 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
             addLeadTitle = (LinearLayout) dialogView.findViewById(R.id.add_follow_up_title);
             addLeadFollowUpDetails = (LinearLayout) dialogView.findViewById(R.id.add_follow_up_details);
 
-            addLeadContactPerson = (AutoCompleteTextView) dialogView.findViewById(R.id.add_follow_up_contact_person);
+            contactPersonAutocomplete = (AutoCompleteTextView) dialogView.findViewById(R.id.add_follow_up_contact_person);
             addLeadCommunicationModeAutoComplete = (AutoCompleteTextView) dialogView.findViewById(R.id.add_follow_up_communication_mode);
             addLeadAssignFollowup = (AutoCompleteTextView) dialogView.findViewById(R.id.add_follow_up_assign_followup);
 
@@ -562,7 +562,7 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
 
             addLeadCommunicationModeAutoComplete.setThreshold(1);
 
-            addLeadContactPerson.setFocusable(false);
+            contactPersonAutocomplete.setFocusable(false);
             addLeadCommunicationModeAutoComplete.setFocusable(false);
 
             getDataFromDB();
@@ -570,10 +570,17 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
             followupAssigneeAdapter();
             communicationModeAdapter();
 
-            addLeadContactPerson.setOnClickListener(new View.OnClickListener() {
+            contactPersonAutocomplete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addLeadContactPerson.showDropDown();
+                    contactPersonAutocomplete.showDropDown();
+                }
+            });
+
+            contactPersonAutocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    strContactPerson = leadContactsPersonList.get(i).getCodeid();
                 }
             });
 
@@ -761,13 +768,13 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
         contacts.setName(getString(R.string.nothing_selected));
         leadContactsPersonList.add(0, contacts);
 
-        for (int i = 0; i < leadList.size(); i++) {
-            leadContactsPersonList.addAll(leadList.get(i).getContacts());
+        if (cuId != null) {
+            leadContactsPersonList.addAll(databaseHandler.getCustomersContactPersonsList(cuId));
         }
         ArrayAdapter arrayAdapterContactPerson = new ArrayAdapter(this,
                 R.layout.simple_spinner_item, leadContactsPersonList);
         arrayAdapterContactPerson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        addLeadContactPerson.setAdapter(arrayAdapterContactPerson);
+        contactPersonAutocomplete.setAdapter(arrayAdapterContactPerson);
     }
 
     private void followupAssigneeAdapter() {
@@ -878,8 +885,8 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
             strFollowUpAssignee = hashMapFollowUpAssigneecontacts.get(strFollowUpAssignee);
         }
 
-        strContactPerson = addLeadContactPerson.getText().toString();
-        if (strContactPerson.equals(getString(R.string.nothing_selected))) {
+        //strContactPerson = contactPersonAutocomplete.getText().toString();
+        if (contactPersonAutocomplete.getText().toString().equals(getString(R.string.nothing_selected))) {
             strContactPerson = "";
         }
 
@@ -958,10 +965,10 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
     private void sendData() {
         long time_nano = System.nanoTime();
         long micro_seconds = time_nano / 1000;
-        if (addLeadContactPerson.getText().toString().equals("Nothing Selected")) {
+        if (contactPersonAutocomplete.getText().toString().equals("Nothing Selected")) {
             //  singleFollowUp.setContactPerson(name);
         } else {
-            singleFollowUp.setContactPerson(addLeadContactPerson.getText().toString());
+            singleFollowUp.setContactPerson(contactPersonAutocomplete.getText().toString());
         }
         singleFollowUp.setCommid(strCommunicatedModeId);
         singleFollowUp.setFollowupCommunicationMode(strComMode);
@@ -1161,7 +1168,7 @@ public class EnquiryDetailActivity extends AppCompatActivity implements View.OnC
     private void updateFollowUps() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
         if (currentFragment instanceof EnquiryDetailsMainTabFragment) {
-            // ((EnquiryDetailsMainTabFragment) currentFragment).updateOrderFollowUps();
+            ((EnquiryDetailsMainTabFragment) currentFragment).updateEnquiryFollowUps();
         }
     }
 

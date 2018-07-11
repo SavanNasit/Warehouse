@@ -102,20 +102,30 @@ public class EnquiryDetailsMainTabFragment extends Fragment {
     }
 
     public void updateEnquiryFollowUps() {
-        if (viewPager.getCurrentItem() == 2) {
-            EnquiryFollowupsFragment enquiryFollowupsFragment = (EnquiryFollowupsFragment)
-                    viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
-            enquiryFollowupsFragment.updateList();
+        try {
+            if (getActivity() != null && isAdded()) {
+                if (viewPager.getCurrentItem() == 2) {
+                    EnquiryFollowupsFragment enquiryFollowupsFragment = (EnquiryFollowupsFragment)
+                            viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    enquiryFollowupsFragment.updateList();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void hideLoader() {
-        if (getActivity() != null) {
-            if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
-                imageViewLoader.setVisibility(View.GONE);
+        try {
+            if (getActivity() != null && isAdded()) {
+                if (imageViewLoader != null && imageViewLoader.getVisibility() == View.VISIBLE) {
+                    imageViewLoader.setVisibility(View.GONE);
+                }
+                //Enable Touch Back
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
-            //Enable Touch Back
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -368,7 +378,7 @@ public class EnquiryDetailsMainTabFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                           ((EnquiryBasicInfoFragment) mFragment).getBasicInfo(customerData, basicInfo);
+                        ((EnquiryBasicInfoFragment) mFragment).getBasicInfo(customerData, basicInfo);
                     }
                 }, 200);
             }

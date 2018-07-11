@@ -2,6 +2,7 @@ package com.accrete.sixorbit.fragment.Drawer.enquiry;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,9 +52,17 @@ public class EnquiryProductsFragment extends Fragment {
     private EnquiryProductsAdapter mAdapter;
     private ImageView imageView;
     private List<EnquiryProduct> enquiryProductList = new ArrayList<>();
+    private String enId;
 
     public EnquiryProductsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        enId = bundle.getString(getString(R.string.en_id));
     }
 
     @Override
@@ -113,7 +122,7 @@ public class EnquiryProductsFragment extends Fragment {
             }
             showLoader();
             getProductsList();
-        }else {
+        } else {
             Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -129,7 +138,8 @@ public class EnquiryProductsFragment extends Fragment {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ApiResponse> call = apiService.getEnquiryProductsList(version, key, task, userId, accessToken,
-                "3900103");
+                enId);
+
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {

@@ -335,17 +335,20 @@ public class ConvertedEnquiryFragment extends Fragment implements SwipeRefreshLa
         }
     }
 
-    private void navigateDetailScreen(String enquiryId, String enquiryText) {
+    private void navigateDetailScreen(String enquiryId, String enquiryText,
+                                      String cuId) {
         Intent intent = new Intent(getActivity(), EnquiryDetailActivity.class);
         intent.putExtra(getString(R.string.en_id), enquiryId);
         intent.putExtra(getString(R.string.enquiry_id_text), enquiryText);
+        intent.putExtra(getString(R.string.cuid), cuId);
         startActivity(intent);
     }
 
     @Override
     public void onMessageRowClicked(int position) {
         navigateDetailScreen(allEnquiryList.get(position).getEnid(),
-                allEnquiryList.get(position).getEnquiryID());
+                allEnquiryList.get(position).getEnquiryID(),
+                allEnquiryList.get(position).getCuid());
     }
 
     @Override

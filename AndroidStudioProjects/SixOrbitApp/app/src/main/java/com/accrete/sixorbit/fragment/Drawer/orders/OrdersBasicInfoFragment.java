@@ -334,7 +334,7 @@ public class OrdersBasicInfoFragment extends Fragment {
             deliveryAddressLayout.setVisibility(View.GONE);
             billingAddressLayout.setVisibility(View.GONE);
 
-            //Current Address
+            //Shipping Address
             if ((orderDetailsInfo.getShippingAddressLine1() != null && !orderDetailsInfo.getShippingAddressLine1().isEmpty())
                     || (orderDetailsInfo.getShippingAddressLine2() != null && !orderDetailsInfo.getShippingAddressLine2().isEmpty())
                     || (orderDetailsInfo.getShippingAddressCity() != null && !orderDetailsInfo.getShippingAddressCity().isEmpty())
@@ -387,11 +387,70 @@ public class OrdersBasicInfoFragment extends Fragment {
                 }
 
                 currentAddressValueTextView.setText(currentAddress + "");
+
             } else {
                 currentAddressLayout.setVisibility(View.GONE);
             }
 
-            //Site Address
+            //Current Address
+            if ((orderDetailsInfo.getCurrentAddressLine1() != null && !orderDetailsInfo.getCurrentAddressLine1().isEmpty())
+                    || (orderDetailsInfo.getCurrentAddressLine2() != null && !orderDetailsInfo.getCurrentAddressLine2().isEmpty())
+                    || (orderDetailsInfo.getCurrentAddressCity() != null && !orderDetailsInfo.getCurrentAddressCity().isEmpty())
+                    || (orderDetailsInfo.getCurrentAddressZipcode() != null && !orderDetailsInfo.getCurrentAddressZipcode().isEmpty())
+                    || (orderDetailsInfo.getCurrentAddressCountry() != null && !orderDetailsInfo.getCurrentAddressCountry().isEmpty())) {
+                currentAddressLayout.setVisibility(View.VISIBLE);
+                layoutOrderInfo.setVisibility(View.VISIBLE);
+
+                String currentAddress = "";
+
+                //Address Line 1
+                if (orderDetailsInfo.getCurrentAddressLine1() != null && !orderDetailsInfo.getCurrentAddressLine1().isEmpty()) {
+                    currentAddress = currentAddress + orderDetailsInfo.getCurrentAddressLine1() + ", ";
+                }
+
+                //Address Line 2
+                if (orderDetailsInfo.getCurrentAddressLine2() != null && !orderDetailsInfo.getCurrentAddressLine2().isEmpty()) {
+                    currentAddress = currentAddress + orderDetailsInfo.getCurrentAddressLine2() + ", ";
+                }
+
+                //City & Zip Code
+                if (orderDetailsInfo.getCurrentAddressCity() != null &&
+                        !orderDetailsInfo.getCurrentAddressCity().toString().trim().isEmpty() &&
+                        orderDetailsInfo.getCurrentAddressZipcode() != null &&
+                        !orderDetailsInfo.getCurrentAddressZipcode().toString().trim().isEmpty()) {
+                    currentAddress = currentAddress +
+                            orderDetailsInfo.getCurrentAddressCity().toString().trim() + " - " +
+                            orderDetailsInfo.getCurrentAddressZipcode()
+                                    .toString().trim() + "," + "\n";
+                } else if (orderDetailsInfo.getCurrentAddressCity() != null &&
+                        !orderDetailsInfo.getCurrentAddressCity().toString().trim().isEmpty()) {
+                    currentAddress = currentAddress +
+                            orderDetailsInfo.getCurrentAddressCity().toString().trim() + ", ";
+                } else if (orderDetailsInfo.getCurrentAddressZipcode() != null &&
+                        !orderDetailsInfo.getCurrentAddressZipcode().toString().trim().isEmpty()) {
+                    currentAddress = currentAddress +
+                            orderDetailsInfo.getCurrentAddressZipcode()
+                                    .toString().trim() + ", ";
+                }
+                //State
+                if (orderDetailsInfo.getCurrentAddressState() != null &&
+                        !orderDetailsInfo.getCurrentAddressState().isEmpty()) {
+                    currentAddress = currentAddress + orderDetailsInfo.getCurrentAddressState() + ", ";
+                }
+
+                //Country
+                if (orderDetailsInfo.getCurrentAddressCountry() != null &&
+                        !orderDetailsInfo.getCurrentAddressCountry().isEmpty()) {
+                    currentAddress = currentAddress + orderDetailsInfo.getCurrentAddressCountry() + " ";
+                }
+
+                currentAddressValueTextView.setText(currentAddress + "");
+                currentAddressTextView.setText("Current Address :");
+            } else {
+                currentAddressLayout.setVisibility(View.GONE);
+            }
+
+            //Billing Address
             if ((orderDetailsInfo.getBillingAddressLine1() != null && !orderDetailsInfo.getBillingAddressLine1().isEmpty())
                     || (orderDetailsInfo.getBillingAddressLine2() != null && !orderDetailsInfo.getBillingAddressLine2().isEmpty())
                     || (orderDetailsInfo.getBillingAddressCity() != null && !orderDetailsInfo.getBillingAddressCity().isEmpty())
@@ -452,59 +511,60 @@ public class OrdersBasicInfoFragment extends Fragment {
             }
 
             //Site Address
-            if ((orderDetailsInfo.getBillingAddressLine1() != null && !orderDetailsInfo.getBillingAddressLine1().isEmpty())
-                    || (orderDetailsInfo.getBillingAddressLine2() != null && !orderDetailsInfo.getBillingAddressLine2().isEmpty())
-                    || (orderDetailsInfo.getBillingAddressCity() != null && !orderDetailsInfo.getBillingAddressCity().isEmpty())
-                    || (orderDetailsInfo.getBillingAddressZipcode() != null && !orderDetailsInfo.getBillingAddressZipcode().isEmpty())
-                    || (orderDetailsInfo.getBillingAddressCountry() != null && !orderDetailsInfo.getBillingAddressCountry().isEmpty())) {
+            if ((orderDetailsInfo.getSiteAddressLine1() != null && !orderDetailsInfo.getSiteAddressLine1().isEmpty())
+                    || (orderDetailsInfo.getSiteAddressLine2() != null && !orderDetailsInfo.getSiteAddressLine2().isEmpty())
+                    || (orderDetailsInfo.getSiteAddressCity() != null && !orderDetailsInfo.getSiteAddressCity().isEmpty())
+                    || (orderDetailsInfo.getSiteAddressZipcode() != null && !orderDetailsInfo.getSiteAddressZipcode().isEmpty())
+                    || (orderDetailsInfo.getSiteAddressCountry() != null && !orderDetailsInfo.getSiteAddressCountry().isEmpty())) {
                 siteAddressLayout.setVisibility(View.VISIBLE);
                 layoutOrderInfo.setVisibility(View.VISIBLE);
 
                 String siteAddress = "";
 
                 //Address Line 1
-                if (orderDetailsInfo.getBillingAddressLine1() != null && !orderDetailsInfo.getBillingAddressLine1().isEmpty()) {
-                    siteAddress = siteAddress + orderDetailsInfo.getBillingAddressLine1() + ", ";
+                if (orderDetailsInfo.getSiteAddressLine1() != null && !orderDetailsInfo.getSiteAddressLine1().isEmpty()) {
+                    siteAddress = siteAddress + orderDetailsInfo.getSiteAddressLine1() + ", ";
                 }
 
                 //Address Line 2
-                if (orderDetailsInfo.getBillingAddressLine2() != null && !orderDetailsInfo.getBillingAddressLine2().isEmpty()) {
-                    siteAddress = siteAddress + orderDetailsInfo.getBillingAddressLine2() + ", ";
+                if (orderDetailsInfo.getSiteAddressLine2() != null && !orderDetailsInfo.getSiteAddressLine2().isEmpty()) {
+                    siteAddress = siteAddress + orderDetailsInfo.getSiteAddressLine2() + ", ";
                 }
 
                 //City & Zip Code
-                if (orderDetailsInfo.getBillingAddressCity() != null &&
-                        !orderDetailsInfo.getBillingAddressCity().toString().trim().isEmpty() &&
-                        orderDetailsInfo.getBillingAddressZipcode() != null &&
-                        !orderDetailsInfo.getBillingAddressZipcode().toString().trim().isEmpty()) {
+                if (orderDetailsInfo.getSiteAddressCity() != null &&
+                        !orderDetailsInfo.getSiteAddressCity().toString().trim().isEmpty() &&
+                        orderDetailsInfo.getSiteAddressZipcode() != null &&
+                        !orderDetailsInfo.getSiteAddressZipcode().toString().trim().isEmpty()) {
                     siteAddress = siteAddress +
-                            orderDetailsInfo.getBillingAddressCity().toString().trim() + " - " +
-                            orderDetailsInfo.getBillingAddressZipcode()
+                            orderDetailsInfo.getSiteAddressCity().toString().trim() + " - " +
+                            orderDetailsInfo.getSiteAddressZipcode()
                                     .toString().trim() + "," + "\n";
-                } else if (orderDetailsInfo.getBillingAddressCity() != null &&
-                        !orderDetailsInfo.getBillingAddressCity().toString().trim().isEmpty()) {
+                } else if (orderDetailsInfo.getSiteAddressCity() != null &&
+                        !orderDetailsInfo.getSiteAddressCity().toString().trim().isEmpty()) {
                     siteAddress = siteAddress +
-                            orderDetailsInfo.getBillingAddressCity().toString().trim() + ", ";
-                } else if (orderDetailsInfo.getBillingAddressZipcode() != null &&
-                        !orderDetailsInfo.getBillingAddressZipcode().toString().trim().isEmpty()) {
+                            orderDetailsInfo.getSiteAddressCity().toString().trim() + ", ";
+                } else if (orderDetailsInfo.getSiteAddressZipcode() != null &&
+                        !orderDetailsInfo.getSiteAddressZipcode().toString().trim().isEmpty()) {
                     siteAddress = siteAddress +
-                            orderDetailsInfo.getBillingAddressZipcode()
+                            orderDetailsInfo.getSiteAddressZipcode()
                                     .toString().trim() + ", ";
                 }
 
                 //State
-                if (orderDetailsInfo.getBillingAddressState() != null &&
-                        !orderDetailsInfo.getBillingAddressState().isEmpty()) {
-                    siteAddress = siteAddress + orderDetailsInfo.getBillingAddressState() + ", ";
+                if (orderDetailsInfo.getSiteAddressState() != null &&
+                        !orderDetailsInfo.getSiteAddressState().isEmpty()) {
+                    siteAddress = siteAddress + orderDetailsInfo.getSiteAddressState() + ", ";
                 }
 
                 //Country
-                if (orderDetailsInfo.getBillingAddressCountry() != null &&
-                        !orderDetailsInfo.getBillingAddressCountry().isEmpty()) {
-                    siteAddress = siteAddress + orderDetailsInfo.getBillingAddressCountry() + " ";
+                if (orderDetailsInfo.getSiteAddressCountry() != null &&
+                        !orderDetailsInfo.getSiteAddressCountry().isEmpty()) {
+                    siteAddress = siteAddress + orderDetailsInfo.getSiteAddressCountry() + " ";
                 }
 
                 siteAddressValueTextView.setText(siteAddress + "");
+                siteAddressTextView.setText("Site Address :");
 
             } else {
                 siteAddressLayout.setVisibility(View.GONE);
