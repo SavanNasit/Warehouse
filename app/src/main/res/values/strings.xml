@@ -111,6 +111,8 @@
     <string name="download_receipt_confirm_msg">Are you sure to download?</string>
     <string name="yes">Yes</string>
     <string name="no_cancel">No, cancel</string>
+    <string name="task_to_be_approved_consignments">warehouse/fetch_consignments</string>
+    <string name="permission_consignment_approve_str">USER_PERMISSION_CONSIGNMENT_APPROVE</string>
 
     <!-- Manage Packages -->
     <string name="fetch_packages">warehouse/fetch_packages</string>
