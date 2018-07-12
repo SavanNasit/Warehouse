@@ -427,7 +427,9 @@ public class CustomerWiseCollectionsFragment extends Fragment
                                                     outstandingCollectionArrayList.add(0, collectionData);
                                                 }
                                             } else {
-                                                outstandingCollectionArrayList.add(collectionData);
+                                                if (!time.equals(collectionData.getCreatedTs())) {
+                                                    outstandingCollectionArrayList.add(collectionData);
+                                                }
                                             }
                                             dataChanged = "yes";
                                         }
