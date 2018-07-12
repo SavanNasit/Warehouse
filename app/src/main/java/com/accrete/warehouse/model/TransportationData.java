@@ -8,9 +8,13 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class TransportationData {
-    @SerializedName("vendor_name")
+
+    @SerializedName("purotransdid")
     @Expose
-    private String vendorName;
+    private String purotransdid;
+    @SerializedName("weight")
+    @Expose
+    private String weight;
     @SerializedName("lrNumber")
     @Expose
     private String lrNumber;
@@ -20,19 +24,27 @@ public class TransportationData {
     @SerializedName("expectedDate")
     @Expose
     private String expectedDate;
-    @SerializedName("weight")
+    @SerializedName("vendor_name")
     @Expose
-    private String weight;
+    private String vendorName;
     @SerializedName("vendor_id")
     @Expose
     private String vendorId;
 
-    public String getVendorName() {
-        return vendorName;
+    public String getPurotransdid() {
+        return purotransdid;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
+    public void setPurotransdid(String purotransdid) {
+        this.purotransdid = purotransdid;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 
     public String getLrNumber() {
@@ -59,12 +71,12 @@ public class TransportationData {
         this.expectedDate = expectedDate;
     }
 
-    public String getWeight() {
-        return weight;
+    public String getVendorName() {
+        return vendorName;
     }
 
-    public void setWeight(String weight) {
-        this.weight = weight;
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 
     public String getVendorId() {
@@ -74,4 +86,5 @@ public class TransportationData {
     public void setVendorId(String vendorId) {
         this.vendorId = vendorId;
     }
+
 }

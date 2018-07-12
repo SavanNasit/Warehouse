@@ -44,7 +44,7 @@ import com.accrete.warehouse.adapter.VendorsAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.ConsignmentItem;
 import com.accrete.warehouse.model.ItemList;
-import com.accrete.warehouse.model.Measurement;
+import com.accrete.warehouse.model.Measurements;
 import com.accrete.warehouse.model.PurchaseData;
 import com.accrete.warehouse.model.PurchaseDetails;
 import com.accrete.warehouse.model.PurchaseOrderData;
@@ -237,13 +237,13 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         vendorNameTextView = (TextView) findViewById(R.id.vendor_name_textView);
 
         //Items RecyclerView
-        if (flagToShow.equals("stockRequest")) {
+        /*if (flagToShow.equals("stockRequest")) {
             receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
-                    this, "stockRequest");
-        } else {
+                    this, "stockRequest");*/
+      //  } else {
             receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
                     this, "PurchaseOrder");
-        }
+       // }
 
         mLayoutManager = new LinearLayoutManager(this);
         itemsRecyclerView.setLayoutManager(mLayoutManager);
@@ -423,6 +423,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             accessToken = AppPreferences.getAccessToken(activity, AppUtils.ACCESS_TOKEN);
             ApiClient.BASE_URL = AppPreferences.getLastDomain(activity, AppUtils.DOMAIN);
         }
+
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ApiResponse> call = apiService.viewOrderDetails(version, key, task, userId, accessToken,
@@ -492,10 +493,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        setData(apiResponse.getData().getPurchaseOrderData(),
-                                apiResponse.getData().getPurchaseDetails(),
-                                apiResponse.getData().getTransportationData(),
-                                apiResponse.getData().getIsExistTransportationDetails());
+                        setDataForStock(apiResponse.getData().getPurchaseData());
 
                         for (final ConsignmentItem consignmentItem : apiResponse.getData().getConsignmentItems()) {
                             if (consignmentItem != null) {
@@ -546,7 +544,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         }
 
         //PO Date
-        if (purchaseOrderData.getPoDate() != null && !purchaseOrderData.getPoDate().isEmpty()) {
+      /*  if (purchaseOrderData.() != null && !purchaseOrderData.getPoDate().isEmpty()) {
             poIdDateLayout.setVisibility(View.VISIBLE);
             try {
                 poIdDateTextView.setText(formatter.format(targetFormat.parse(purchaseOrderData.getPoDate())));
@@ -556,7 +554,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         } else {
             poIdDateLayout.setVisibility(View.GONE);
         }
-
+*/
         //Vendor
         if (purchaseOrderData.getVendorName() != null && !purchaseOrderData.getVendorName().isEmpty()) {
             vendorNameLayout.setVisibility(View.VISIBLE);
@@ -1167,7 +1165,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         Window window = productsDialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         try {
-            final ArrayList<Measurement> measurementArrayList = new ArrayList<>();
+            final ArrayList<Measurements> measurementArrayList = new ArrayList<>();
             final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
             final TextView titleTextView = (TextView) productsDialog.findViewById(R.id.title_textView);
             final EditText productNameEdittext = (EditText) productsDialog.findViewById(R.id.product_name_edittext);
@@ -1214,14 +1212,14 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 }
                 measurementArrayList.addAll(consignmentItem.getMeasurements());
             } else {
-                Measurement measurement = new Measurement();
+                Measurements measurement = new Measurements();
                 measurement.setName(consignmentItem.getMeasurementUnit());
                 measurement.setId("");
                 measurementArrayList.add(measurement);
             }
 
-            ArrayAdapter<Measurement> measurementArrayAdapter =
-                    new ArrayAdapter<Measurement>(activity, R.layout.simple_spinner_item, measurementArrayList);
+            ArrayAdapter<Measurements> measurementArrayAdapter =
+                    new ArrayAdapter<Measurements>(activity, R.layout.simple_spinner_item, measurementArrayList);
             measurementArrayAdapter.setDropDownViewResource(R.layout.spinner_common_item);
             unitsTypeSpinner.setAdapter(measurementArrayAdapter);
 

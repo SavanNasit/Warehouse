@@ -42,7 +42,9 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_row_receive_consignment_item, parent, false);
+        return new MyViewHolder(itemView);
     }
 
     @Override

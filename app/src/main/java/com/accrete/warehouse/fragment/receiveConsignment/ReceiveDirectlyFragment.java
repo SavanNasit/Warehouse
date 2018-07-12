@@ -44,7 +44,7 @@ import com.accrete.warehouse.adapter.VendorsAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.ConsignmentItem;
 import com.accrete.warehouse.model.ItemList;
-import com.accrete.warehouse.model.Measurement;
+import com.accrete.warehouse.model.Measurements;
 import com.accrete.warehouse.model.User;
 import com.accrete.warehouse.model.Vendor;
 import com.accrete.warehouse.rest.ApiClient;
@@ -854,7 +854,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
         }
         try {
-            final ArrayList<Measurement> measurementArrayList = new ArrayList<>();
+            final ArrayList<Measurements> measurementArrayList = new ArrayList<>();
             final LinearLayout linearLayout = (LinearLayout) productsDialog.findViewById(R.id.linearLayout);
             final TextView titleTextView = (TextView) productsDialog.findViewById(R.id.title_textView);
             final EditText productNameEdittext = (EditText) productsDialog.findViewById(R.id.product_name_edittext);
@@ -899,15 +899,15 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                 }
                 measurementArrayList.addAll(consignmentItem.getMeasurements());
             } else {
-                Measurement measurement = new Measurement();
+                Measurements measurement = new Measurements();
                 measurement.setName(consignmentItem.getMeasurementUnit());
                 measurement.setId("");
                 measurementArrayList.add(measurement);
             }
 
 
-            ArrayAdapter<Measurement> measurementArrayAdapter =
-                    new ArrayAdapter<Measurement>(activity, R.layout.simple_spinner_item, measurementArrayList);
+            ArrayAdapter<Measurements> measurementArrayAdapter =
+                    new ArrayAdapter<Measurements>(activity, R.layout.simple_spinner_item, measurementArrayList);
             measurementArrayAdapter.setDropDownViewResource(R.layout.spinner_common_item);
             unitsTypeSpinner.setAdapter(measurementArrayAdapter);
 

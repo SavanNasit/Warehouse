@@ -14,6 +14,9 @@ public class ConsignmentItem {
     @SerializedName("isvid")
     @Expose
     private String isvid;
+    @SerializedName("unit_price")
+    @Expose
+    private String unitPrice;
     @SerializedName("name")
     @Expose
     private String name;
@@ -23,24 +26,21 @@ public class ConsignmentItem {
     @SerializedName("type")
     @Expose
     private String type;
-    @SerializedName("hsn_code")
-    @Expose
-    private String hsnCode;
     @SerializedName("internal_code")
     @Expose
     private String internalCode;
+    @SerializedName("hsn_code")
+    @Expose
+    private String hsnCode;
     @SerializedName("order_quantity")
     @Expose
     private String orderQuantity;
     @SerializedName("receive_quantity")
     @Expose
     private String receiveQuantity;
-    @SerializedName("box_qty_str")
-    @Expose
-    private String boxQtyStr;
     @SerializedName("box_quantity")
     @Expose
-    private Integer boxQuantity;
+    private String boxQuantity;
     @SerializedName("measurement_unit")
     @Expose
     private String measurementUnit;
@@ -49,70 +49,10 @@ public class ConsignmentItem {
     private String convertsionRate;
     @SerializedName("measurements")
     @Expose
-    private List<Measurement> measurements = null;
-    @SerializedName("unit_price")
-    @Expose
-    private String unitPrice;
+    private List<Measurements> measurements = null;
     @SerializedName("barcode_mandatory")
     @Expose
     private String barcodeMandatory;
-
-    private String price;
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(String unitId) {
-        this.unitId = unitId;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public String getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(String expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public String getRejectedQuantity() {
-        return rejectedQuantity;
-    }
-
-    public void setRejectedQuantity(String rejectedQuantity) {
-        this.rejectedQuantity = rejectedQuantity;
-    }
-
-    public String getReasonRejection() {
-        return reasonRejection;
-    }
-
-    public void setReasonRejection(String reasonRejection) {
-        this.reasonRejection = reasonRejection;
-    }
-
-    private String unitId;
-    private String comment;
-    private String expiryDate;
-    private String rejectedQuantity;
-    private String reasonRejection;
-
 
     public String getIsvid() {
         return isvid;
@@ -120,6 +60,14 @@ public class ConsignmentItem {
 
     public void setIsvid(String isvid) {
         this.isvid = isvid;
+    }
+
+    public String getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public String getName() {
@@ -146,20 +94,20 @@ public class ConsignmentItem {
         this.type = type;
     }
 
-    public String getHsnCode() {
-        return hsnCode;
-    }
-
-    public void setHsnCode(String hsnCode) {
-        this.hsnCode = hsnCode;
-    }
-
     public String getInternalCode() {
         return internalCode;
     }
 
     public void setInternalCode(String internalCode) {
         this.internalCode = internalCode;
+    }
+
+    public String getHsnCode() {
+        return hsnCode;
+    }
+
+    public void setHsnCode(String hsnCode) {
+        this.hsnCode = hsnCode;
     }
 
     public String getOrderQuantity() {
@@ -178,19 +126,11 @@ public class ConsignmentItem {
         this.receiveQuantity = receiveQuantity;
     }
 
-    public String getBoxQtyStr() {
-        return boxQtyStr;
-    }
-
-    public void setBoxQtyStr(String boxQtyStr) {
-        this.boxQtyStr = boxQtyStr;
-    }
-
-    public Integer getBoxQuantity() {
+    public String getBoxQuantity() {
         return boxQuantity;
     }
 
-    public void setBoxQuantity(Integer boxQuantity) {
+    public void setBoxQuantity(String boxQuantity) {
         this.boxQuantity = boxQuantity;
     }
 
@@ -210,20 +150,12 @@ public class ConsignmentItem {
         this.convertsionRate = convertsionRate;
     }
 
-    public List<Measurement> getMeasurements() {
+    public List<Measurements> getMeasurements() {
         return measurements;
     }
 
-    public void setMeasurements(List<Measurement> measurements) {
+    public void setMeasurements(List<Measurements> measurements) {
         this.measurements = measurements;
-    }
-
-    public String getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(String unitPrice) {
-        this.unitPrice = unitPrice;
     }
 
     public String getBarcodeMandatory() {
@@ -233,5 +165,65 @@ public class ConsignmentItem {
     public void setBarcodeMandatory(String barcodeMandatory) {
         this.barcodeMandatory = barcodeMandatory;
     }
+
+    private String unitId;
+    private String comment;
+
+    public String getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(String unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getRejectedQuantity() {
+        return rejectedQuantity;
+    }
+
+    public void setRejectedQuantity(String rejectedQuantity) {
+        this.rejectedQuantity = rejectedQuantity;
+    }
+
+    public String getReasonRejection() {
+        return reasonRejection;
+    }
+
+    public void setReasonRejection(String reasonRejection) {
+        this.reasonRejection = reasonRejection;
+    }
+
+    private String expiryDate;
+    private String rejectedQuantity;
+    private String reasonRejection;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    private String price;
+
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+
 
 }
