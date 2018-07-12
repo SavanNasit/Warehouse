@@ -1,0 +1,1364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_15sdp">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_outer_outlet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_5sdp"
+                card_view:cardBackgroundColor="#f7f7f7"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardElevation="@dimen/_3sdp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_view_inner_outlet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    card_view:cardBackgroundColor="@color/white"
+                    card_view:cardCornerRadius="@dimen/_2sdp"
+                    card_view:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_8sdp">
+
+                        <TextView
+                            android:id="@+id/outlet_title_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:gravity="center_vertical"
+                            android:text="Outlet"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <Spinner
+                            android:id="@+id/outlet_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@drawable/spinner_bg"></Spinner>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_outer_customer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                card_view:cardBackgroundColor="#f7f7f7"
+                card_view:cardCornerRadius="0dp"
+                card_view:cardElevation="@dimen/_3sdp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_view_inner_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    card_view:cardBackgroundColor="@color/white"
+                    card_view:cardCornerRadius="@dimen/_2sdp"
+                    card_view:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_8sdp">
+
+                        <TextView
+                            android:id="@+id/customer_info_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:longClickable="false"
+                            android:text="Select Customer"
+                            android:textColor="@color/blue"
+                            android:textSize="@dimen/_14sdp"
+                            android:visibility="visible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:id="@+id/customer_name_title_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/customer_name_title"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/customer_name_value_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:longClickable="false"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:theme="@style/Autocomplete" />
+
+                                <ImageButton
+                                    android:id="@+id/clear_customerInfo_imageButton"
+                                    android:layout_width="@dimen/_10sdp"
+                                    android:layout_height="@dimen/_10sdp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentTop="true"
+                                    android:background="@drawable/ic_dialog_close_light" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:orientation="horizontal"
+                            android:visibility="visible">
+
+                            <LinearLayout
+                                android:id="@+id/mobile_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/mobile_textView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:longClickable="false"
+                                    android:text="Mobile"
+                                    android:textSize="@dimen/_12sdp" />
+
+                                <EditText
+                                    android:id="@+id/mobile_value_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:longClickable="false"
+                                    android:text="Mobile"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:theme="@style/Autocomplete" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/email_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/email_textView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:longClickable="false"
+                                    android:text="Email"
+                                    android:textSize="@dimen/_12sdp" />
+
+                                <EditText
+                                    android:id="@+id/email_value_editText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:longClickable="false"
+                                    android:text="Email"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:theme="@style/Autocomplete" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:orientation="horizontal"
+                            android:visibility="visible"
+                            android:weightSum="1">
+
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/add_search_quotation_item_contact_person_text_input"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_weight="1"
+                                android:clipToPadding="false"
+                                android:gravity="left|center"
+                                android:visibility="gone"
+                                app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/add_search_quotation_item_contact_person"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="left|center"
+                                    android:hint="Contact Person"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="text|textNoSuggestions"
+                                    android:lines="1"
+                                    android:longClickable="false"
+                                    android:maxLines="1"
+                                    android:minHeight="@dimen/_32sdp"
+                                    android:textColor="@color/black"
+                                    android:textColorHint="@color/gray"
+                                    android:textSize="@dimen/_11sdp"
+                                    android:theme="@style/Autocomplete"
+                                    android:visibility="gone" />
+                            </android.support.design.widget.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/current_address_add_contact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginTop="0dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            android:weightSum="1">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:fontFamily="sans-serif"
+                                android:gravity="center"
+                                android:text="@string/add_contact_title"
+                                android:textColor="@color/blueTurquoise"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/address_main_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <LinearLayout
+                                android:id="@+id/current_address_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_currentAddress"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Current Address:"
+                                    android:textSize="@dimen/_12sdp" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/currentAddress_checkBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:layout_weight="1"
+                                android:buttonTint="@color/green"
+                                android:checked="false"
+                                android:text="No current address"
+                                android:textSize="@dimen/_11sdp"
+                                android:textStyle="italic" />
+
+                            <TextView
+                                android:id="@+id/currentAddress_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@drawable/spinner_bg"
+                                android:padding="@dimen/_5sdp"
+                                android:spinnerMode="dialog"></TextView>
+
+                            <LinearLayout
+                                android:id="@+id/current_address_add_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginTop="0dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center"
+                                    android:text="@string/add_address"
+                                    android:textColor="@color/blueTurquoise"
+                                    android:textSize="@dimen/_12sdp"
+                                    android:textStyle="normal" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/site_address_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_siteAddress"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Site Address:"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/sameSiteAddress_checkBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:buttonTint="@color/green"
+                                android:checked="false"
+                                android:text="Site address is same as current address"
+                                android:textSize="@dimen/_11sdp"
+                                android:textStyle="italic" />
+
+                            <CheckBox
+                                android:id="@+id/noSiteAddress_checkBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/green"
+                                android:checked="false"
+                                android:text="No site address"
+                                android:textSize="@dimen/_11sdp"
+                                android:textStyle="italic" />
+
+                            <TextView
+                                android:id="@+id/siteAddress_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@drawable/spinner_bg"
+                                android:padding="@dimen/_5sdp"
+                                android:paddingBottom="@dimen/_4sdp"
+                                android:spinnerMode="dialog"></TextView>
+
+                            <LinearLayout
+                                android:id="@+id/site_address_add_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginTop="0dp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center"
+                                    android:text="@string/add_address"
+                                    android:textColor="@color/blueTurquoise"
+                                    android:textSize="@dimen/_12sdp"
+                                    android:textStyle="normal" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/addCustomer_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/green"
+                            android:gravity="center"
+                            android:longClickable="false"
+                            android:paddingBottom="@dimen/_6sdp"
+                            android:paddingLeft="@dimen/_25sdp"
+                            android:paddingRight="@dimen/_25sdp"
+                            android:paddingTop="@dimen/_8sdp"
+                            android:visibility="gone"
+                            android:text="Edit Customer"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/basic_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/basic_info_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:longClickable="false"
+                    android:text="Basic Information"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_18sdp"
+                    android:visibility="visible" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:minHeight="@dimen/_28sdp"
+                    android:visibility="visible"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/reference_textInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="Reference"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:longClickable="false"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/_28sdp"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/dark_primary_green_cursor"
+                        android:textSize="@dimen/_11sdp"
+                        android:theme="@style/Autocomplete" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:weightSum="1">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_weight="0.5"
+                        android:clipToPadding="false"
+                        android:gravity="left|center"
+                        android:longClickable="false"
+                        android:minHeight="@dimen/_28sdp"
+                        app:hintTextAppearance="@style/CustomTextAppearance">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/delivery_time_textInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:hint="Delivery Time"
+                            android:imeOptions="actionNext"
+                            android:inputType="none|textNoSuggestions"
+                            android:longClickable="false"
+                            android:maxLines="1"
+                            android:minHeight="@dimen/_28sdp"
+                            android:textColor="@color/darkGray"
+                            android:textColorHint="@color/gray"
+                            android:textCursorDrawable="@drawable/dark_primary_green_cursor"
+                            android:textSize="@dimen/_11sdp"
+                            android:theme="@style/Autocomplete" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_weight="0.5"
+                        android:clipToPadding="false"
+                        android:gravity="left|center"
+                        android:longClickable="false"
+                        android:minHeight="@dimen/_28sdp"
+                        android:visibility="visible"
+                        app:hintTextAppearance="@style/CustomTextAppearance">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/paymentMode_textInputEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif"
+                            android:gravity="left"
+                            android:hint="Payment Mode"
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapSentences|textNoSuggestions"
+                            android:longClickable="false"
+                            android:maxLines="1"
+                            android:minHeight="@dimen/_28sdp"
+                            android:textColor="@color/darkGray"
+                            android:textColorHint="@color/gray"
+                            android:textCursorDrawable="@drawable/dark_primary_green_cursor"
+                            android:textSize="@dimen/_11sdp"
+                            android:theme="@style/Autocomplete" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:longClickable="false"
+                    android:minHeight="@dimen/_28sdp"
+                    android:visibility="visible"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/unloading_details_textInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="Unloading Details"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences|textMultiLine|textNoSuggestions"
+                        android:longClickable="false"
+                        android:maxLines="3"
+                        android:minHeight="@dimen/_28sdp"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/dark_primary_green_cursor"
+                        android:textSize="@dimen/_11sdp"
+                        android:theme="@style/Autocomplete" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:longClickable="false"
+                    android:minHeight="@dimen/_28sdp"
+                    android:visibility="visible"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/remarks_textInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="Remarks"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences|textMultiLine|textNoSuggestions"
+                        android:longClickable="false"
+                        android:maxLines="3"
+                        android:minHeight="@dimen/_28sdp"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/dark_primary_green_cursor"
+                        android:textSize="@dimen/_11sdp"
+                        android:theme="@style/Autocomplete" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:longClickable="false"
+                    android:minHeight="@dimen/_28sdp"
+                    android:visibility="visible"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/drawing_no_textInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:hint="Drawing No."
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:longClickable="false"
+                        android:maxLines="1"
+                        android:minHeight="@dimen/_28sdp"
+                        android:textColor="@color/darkGray"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/dark_primary_green_cursor"
+                        android:textSize="@dimen/_11sdp"
+                        android:theme="@style/Autocomplete" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/gray"
+                android:visibility="visible"></View>
+
+            <TextView
+                android:id="@+id/quot_options_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:longClickable="false"
+                android:text="Quot Options"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_14sdp"
+                android:visibility="visible" />
+
+            <CheckBox
+                android:id="@+id/coverage_checkBox_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:buttonTint="@color/green"
+                android:text="Coverage in SQFT"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="visible" />
+
+            <CheckBox
+                android:id="@+id/product_imageShow_checkBox_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:buttonTint="@color/green"
+                android:text="Show image in print"
+                android:textSize="@dimen/_11sdp" />
+
+            <CheckBox
+                android:id="@+id/product_taxInclude_checkBox_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:buttonTint="@color/green"
+                android:text="Show tax inclusive prices in print"
+                android:textSize="@dimen/_11sdp" />
+
+            <TextView
+                android:id="@+id/products_info_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:longClickable="false"
+                android:text="Select Products"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_14sdp"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:longClickable="false"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="2">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/product_search_textInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_weight="1.8"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:longClickable="false"
+                    android:minHeight="@dimen/_32sdp"
+                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/product_search_autoCompleteTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left|center"
+                        android:hint="Search for products"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:minHeight="@dimen/_32sdp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray"
+                        android:textSize="@dimen/_11sdp"
+                        android:theme="@style/Autocomplete" />
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.2"
+                    android:gravity="bottom"    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:longClickable="false"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/scan_imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/border_for_edittext"
+                        android:gravity="bottom"
+                        android:minHeight="@dimen/_30sdp"
+                        android:paddingLeft="@dimen/_7sdp"
+                        android:paddingRight="@dimen/_7sdp"
+                        android:src="@drawable/ic_barcode_scan" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_4sdp"
+                android:visibility="visible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/gray"
+                android:visibility="gone"></View>
+
+            <LinearLayout
+                android:id="@+id/total_amount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/total_amount_title_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total Amount:"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:id="@+id/total_amount_value_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/_11sdp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/gray"></View>
+
+            <LinearLayout
+                android:id="@+id/total_discount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/total_discount_title_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total Discount:"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:id="@+id/total_discount_value_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/_11sdp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/gray"></View>
+
+            <LinearLayout
+                android:id="@+id/material_cost_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/material_cost_title_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Material Cost:"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:id="@+id/material_cost_value_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/_11sdp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/gray"></View>
+
+            <LinearLayout
+                android:id="@+id/additional_discount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Additional Discount:"
+                    android:textSize="@dimen/_12sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/additional_textInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_37sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_weight="0.7"
+                        android:clipToPadding="false"
+                        android:gravity="left|center"
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:visibility="visible"
+                        app:hintTextAppearance="@style/CustomTextAppearance">
+
+                        <EditText
+                            android:id="@+id/additional_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_37sdp"
+                            android:digits="1234567890."
+                            android:fontFamily="sans-serif"
+                            android:hint="Discount"
+                            android:imeOptions="actionDone"
+                            android:inputType="number|textNoSuggestions"
+                            android:lines="1"
+                            android:longClickable="false"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/darkGray"
+                            android:textCursorDrawable="@drawable/green_cursor"
+                            android:textSize="@dimen/_11sdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_14sdp"
+                        android:layout_marginRight="@dimen/_14sdp"
+                        android:layout_weight="0.4">
+
+                        <Spinner
+                            android:id="@+id/additional_discount_type_spinner"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="2sp"
+                            android:background="@drawable/spinner_bg"
+                            android:gravity="left"
+                            android:popupBackground="#ffffff"
+                            android:textSize="@dimen/_11sdp" />
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:id="@+id/additional_discount_value_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/_11sdp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/gray"></View>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/chargeList_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:background="@color/gray"></View>
+
+            <TextView
+                android:id="@+id/tax_title_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tax:"
+                android:textSize="@dimen/_12sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/tax_spinner_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_37sdp"
+                    android:layout_marginRight="@dimen/_14sdp"
+                    android:layout_weight="1">
+
+                    <Spinner
+                        android:id="@+id/tax_charge_type_spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/_37sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="2sp"
+                        android:background="@drawable/spinner_bg"
+                        android:gravity="left"
+                        android:popupBackground="#ffffff"
+                        android:textSize="@dimen/_11sdp" />
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/tax_charge_value_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:textSize="@dimen/_11sdp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/gray"></View>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/chargeList_two_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/gray"></View>
+
+            <TextView
+                android:id="@+id/charges_three_title_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Charges:"
+                android:textSize="@dimen/_11sdp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/charges_three_spinner_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_14sdp"
+                    android:layout_weight="1">
+
+                    <Spinner
+                        android:id="@+id/charge_type_three_spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="2sp"
+                        android:background="@drawable/spinner_bg"
+                        android:gravity="left"
+                        android:popupBackground="@color/white"
+                        android:textSize="@dimen/_10sdp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/charge_three_value_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:textSize="@dimen/_14sdp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/gray"></View>
+
+            <LinearLayout
+                android:id="@+id/grand_total_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/grand_total_title_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Grand Total:"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:id="@+id/grand_total_value_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:textSize="@dimen/_11sdp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/gray"></View>
+
+            <LinearLayout
+                android:id="@+id/round_off_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/round_off_title_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Round Off:"
+                    android:textSize="@dimen/_11sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/round_off_textInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_37sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_weight="1"
+                        android:clipToPadding="false"
+                        android:gravity="left|center"
+                        android:inputType="textCapSentences|textNoSuggestions"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:visibility="visible"
+                        app:hintTextAppearance="@style/CustomTextAppearance">
+
+                        <EditText
+                            android:id="@+id/round_off_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_37sdp"
+                            android:layout_margin="@dimen/_8sdp"
+                            android:fontFamily="sans-serif"
+                            android:imeOptions="actionDone"
+                            android:inputType="number|textNoSuggestions"
+                            android:lines="1"
+                            android:longClickable="false"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/darkGray"
+                            android:textCursorDrawable="@drawable/green_cursor"
+                            android:textSize="@dimen/_11sdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/round_off_value_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/_4sdp"
+                        android:textSize="@dimen/_11sdp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/gray"></View>
+
+            <LinearLayout
+                android:id="@+id/payable_amount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/payable_amount_title_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Payable Amount:"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:id="@+id/payable_amount_value_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:textSize="@dimen/_11sdp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/gray"></View>
+
+            <TextView
+                android:id="@+id/attendee_details_title_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Attendee Details:"
+                android:textSize="@dimen/_12sdp" />
+
+            <RelativeLayout
+                android:id="@+id/attendee_spinner_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_37sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_weight="1">
+
+                <Spinner
+                    android:id="@+id/attendee_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/_37sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="2sp"
+                    android:background="@drawable/spinner_bg"
+                    android:gravity="left"
+                    android:popupBackground="#ffffff"
+                    android:textSize="@dimen/_11sdp" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:longClickable="false"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <CheckBox
+                    android:id="@+id/sms_checkBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="Send SMS"
+                    android:textSize="@dimen/_11sdp" />
+
+
+                <Spinner
+                    android:id="@+id/add_search_quotation_item_spinner_sms_template"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/spinner_bg"></Spinner>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/add_search_quotation_item_show_sms_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="0dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/sms_show_preview"
+                android:textAllCaps="false"
+                android:textColor="@color/blueTurquoise"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:longClickable="false"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <CheckBox
+                    android:id="@+id/email_checkBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="Send Email"
+                    android:textSize="@dimen/_11sdp" />
+
+                <Spinner
+                    android:id="@+id/add_search_quotation_item_spinner_email_template"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/spinner_bg"></Spinner>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/add_search_quotation_item_show_email_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="0dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/email_show_preview"
+                android:textAllCaps="false"
+                android:textColor="@color/blueTurquoise"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/save_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_25sdp"
+                android:background="@color/green"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_8sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:text="Save"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:background="@android:color/transparent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:theme="@style/AppTheme"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:background="@color/lightOrange"
+                android:orientation="vertical"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayouvt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="0.5"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:theme="@style/AppTheme">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="50dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:text="We've sent you an  OTP,  please enter that below"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blueTurquoise"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <EditText
+                        android:id="@+id/edit_text_otp"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:fontFamily="sans-serif"
+                        android:hint="Enter OTP"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/green_cursor"
+                        android:textSize="14sp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="200dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/green"
+                        android:elevation="10dp"
+                        android:text="Verify"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/text_view_problem_receiving_otp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="0.6"
+                        android:fontFamily="sans-serif"
+                        android:gravity="end"
+                        android:text="Problem receiving OTP ?"
+                        android:textAllCaps="false"
+                        android:textColor="@color/blueTurquoise"
+                        android:textSize="12sp"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/text_view_resend"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="sans-serif"
+                        android:text="    Resend OTP"
+                        android:textAllCaps="false"
+                        android:textColor="@color/blueTurquoise"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_view_signin_another_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:text="Sign in using another account"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blueTurquoise"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/profile_image_comment_new"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="0dp" />
+    </FrameLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        android:paddingLeft="@dimen/_2sdp"
+        android:textSize="@dimen/_11sdp"></TextView>
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/textInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:fontFamily="sans-serif"
+        android:gravity="left"
+        android:inputType="text"
+        android:digits="0,1,2,3,4,5,6,7,8,9, qwertzuiopasdfghjklyxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        android:textColor="@color/darkGray"
+        android:textColorHint="@color/gray"
+        android:textCursorDrawable="@drawable/dark_primary_green_cursor"
+        android:textSize="@dimen/_11sdp"
+        android:theme="@style/Autocomplete" />
+
+</LinearLayout>

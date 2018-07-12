@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_filter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_8sdp">
+
+    <ImageView
+        android:id="@+id/dialog_clear_all"
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_36sdp"
+        android:layout_gravity="right"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/ic_uncheck_all" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        android:fontFamily="sans-serif"
+        android:text="Filter"
+        android:textAllCaps="false"
+        android:textColor="@color/blueTurquoise"
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="normal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:gravity="center|left"
+            android:paddingLeft="@dimen/_10sdp"
+            android:text="Sort By"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp">
+
+            <RadioGroup
+                android:id="@+id/filter_sort_radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButtonAmount"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="Amount"
+                    android:textSize="@dimen/_11sdp" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="Name"
+                    android:textSize="@dimen/_11sdp" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/childLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/order_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:text="Order :"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <RadioGroup
+                android:id="@+id/sort_amountRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RadioButton
+                    android:id="@+id/radioBtnAmtAsc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="Ascending"
+                    android:textSize="@dimen/_11sdp" />
+
+                <RadioButton
+                    android:id="@+id/radioBtnAmtDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="Descending"
+                    android:textSize="@dimen/_11sdp" />
+
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/sort_nameRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RadioButton
+                    android:id="@+id/radioBtnNameAsc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="A-Z"
+                    android:textSize="@dimen/_11sdp" />
+
+                <RadioButton
+                    android:id="@+id/radioBtnNameDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/green"
+                    android:checked="false"
+                    android:text="Z-A"
+                    android:textSize="@dimen/_11sdp" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/_8sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/dialog_filter_apply"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:layout_weight="0.5"
+            android:background="@color/green"
+            android:elevation="@dimen/_5sdp"
+            android:text="Apply"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <Button
+            android:id="@+id/dialog_filter_cancel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_weight="0.5"
+            android:background="@color/gray"
+            android:elevation="@dimen/_5sdp"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
+
+</LinearLayout>

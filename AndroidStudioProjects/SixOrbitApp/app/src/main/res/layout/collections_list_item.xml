@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/left_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/transactionId_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:textColor="@color/blueTurquoise"
+            android:textSize="@dimen/_11sdp" />
+
+        <TextView
+            android:id="@+id/referenceId_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingTop="@dimen/_1sdp"
+            android:textAllCaps="true"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingTop="@dimen/_1sdp">
+
+            <TextView
+                android:id="@+id/amount_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:lines="1"
+                android:textColor="@color/Gray"
+                android:textSize="@dimen/_9sdp" />
+
+            <TextView
+                android:id="@+id/date_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:textColor="@color/Gray"
+                android:textSize="@dimen/_9sdp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/transaction_mode_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/_3sdp"
+            android:paddingTop="@dimen/_3sdp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/left_layout"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/transaction_type_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:gravity="right"
+            android:maxLines="1"
+            android:paddingRight="@dimen/_5sdp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/approved_user_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:gravity="right"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/_3sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingTop="@dimen/_1sdp"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_9sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/status_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:gravity="right"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/left_layout"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:background="@color/Gray_DarkGray1" />
+
+</RelativeLayout>

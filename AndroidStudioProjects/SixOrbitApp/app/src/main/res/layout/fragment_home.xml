@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:paddingLeft="@dimen/_16sdp"
+            android:paddingRight="@dimen/_16sdp"
+            android:scrollbarStyle="outsideOverlay">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/bg_gray"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/home_followups"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/accent"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_16sdp"
+                        android:paddingRight="@dimen/_16sdp"
+                        android:paddingTop="@dimen/_5sdp">
+
+                        <TextView
+                            android:id="@+id/textview_followups_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/_16sdp"
+                            android:text="712"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_27sdp" />
+
+                        <TextView
+                            android:id="@+id/text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/textview_followups_count"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_toRightOf="@+id/textview_followups_count"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:text="Pending Follow-Ups"
+                            android:textAllCaps="true"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/home_leads"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_17sdp"
+                        android:background="@color/orange"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_16sdp"
+                        android:paddingRight="@dimen/_16sdp"
+                        android:paddingTop="@dimen/_5sdp">
+
+                        <TextView
+                            android:id="@+id/textview_leads_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/_16sdp"
+                            android:text="712"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_27sdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/textview_leads_count"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_toRightOf="@+id/textview_leads_count"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:text="New Leads"
+                            android:textAllCaps="true"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_weight="0.025"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/home_textview_recent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="Today's Follow-Ups"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/home_recent_followup"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_140sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:clickable="true"
+                    android:orientation="horizontal">
+
+                    <com.accrete.sixorbit.utils.NonSwipeableViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:id="@+id/img_previous"
+                        android:layout_width="@dimen/_36sdp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_marginLeft="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_28sdp"
+                        android:padding="@dimen/_8sdp"
+                        android:src="@drawable/ic_home_viewpager_previous_white"
+                        android:visibility="visible" />
+
+
+                    <ImageView
+                        android:id="@+id/img_next"
+                        android:layout_width="@dimen/_36sdp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_28sdp"
+                        android:padding="@dimen/_8sdp"
+                        android:src="@drawable/ic_home_viewpager_next_white"
+                        android:visibility="visible" />
+                </FrameLayout>
+            </LinearLayout>
+        </ScrollView>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</FrameLayout>

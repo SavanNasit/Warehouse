@@ -2,11 +2,9 @@ package com.accrete.warehouse.fragment.manageConsignment;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,11 +23,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.ManageConsignmentAdapter;
-import com.accrete.warehouse.fragment.receiveConsignment.ReceiveConsignmentFragment;
-import com.accrete.warehouse.fragment.receiveConsignment.ReceiveDirectlyFragment;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Consignment;
 import com.accrete.warehouse.rest.ApiClient;
@@ -76,7 +71,13 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
     private Timer timer;
     private String stringSearchText;
 
-
+    public static ManageConsignmentFragment newInstance(String title) {
+        ManageConsignmentFragment f = new ManageConsignmentFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_TITLE, title);
+        f.setArguments(args);
+        return (f);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,7 +153,6 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -163,14 +163,6 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
-    }
-
-    public static ManageConsignmentFragment newInstance(String title) {
-        ManageConsignmentFragment f = new ManageConsignmentFragment();
-        Bundle args = new Bundle();
-        args.putString(KEY_TITLE, title);
-        f.setArguments(args);
-        return (f);
     }
 
     @Override
@@ -362,35 +354,6 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
 */
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().setTitle(R.string.manage_consignment_fragment);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getActivity()
-                .setTitle(getString(R.string.manage_consignment_fragment));
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getActivity()
-                .setTitle(getString(R.string.manage_consignment_fragment));
-    }
-
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            // Set title
-            getActivity()
-                    .setTitle(getString(R.string.manage_consignment_fragment));
-        }
-    }
-
-    @Override
     public void onMessageRowClicked(int position) {
     /*    Intent intentView = new Intent(getActivity(), ViewConsignmentActivity.class);
         intentView.putExtra("iscid", consignmentList.get(position).getIscid());
@@ -401,7 +364,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
         fragmentManager.beginTransaction()
                 .replace(R.id.manage_consignment_container, chooseEventsForManageConsignmentFragment).addToBackStack(null).commit();
 
-        Bundle bundle=new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString("iscid", consignmentList.get(position).getIscid());
         bundle.putString("iscsid", consignmentList.get(position).getIscsid());
         chooseEventsForManageConsignmentFragment.setArguments(bundle);
@@ -537,7 +500,7 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
                 manageConsignmentAdapter.notifyDataSetChanged();
             }
             manageConsignmentSwipeRefreshLayout.setRefreshing(true);
-            getConsignmentsList(chkId, getString(R.string.last_updated_date), "1",stringSearchText,"","");
+            getConsignmentsList(chkId, getString(R.string.last_updated_date), "1", stringSearchText, "", "");
             //  }
             // manageConsignmentRecyclerView.setVisibility(View.VISIBLE);
             //  manageConsignmentEmptyView.setVisibility(View.GONE);

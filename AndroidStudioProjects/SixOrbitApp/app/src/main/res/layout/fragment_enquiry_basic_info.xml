@@ -1,0 +1,405 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.accrete.sixorbit.fragment.Drawer.quotation.QuotationBasicInfoFragment">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!--layout for contacts-->
+        <LinearLayout
+            android:id="@+id/container_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants"
+            android:longClickable="false"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/layout_customer_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:longClickable="false"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView_customer_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_32sdp"
+                    android:background="@color/gray_custom"
+                    android:gravity="center_vertical"
+                    android:longClickable="false"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:text="@string/customer_information_title"
+                    android:textColor="@color/lightGray"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:longClickable="false"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView_customer_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_32sdp"
+                        android:background="@color/gray_custom"
+                        android:gravity="center_vertical"
+                        android:longClickable="false"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:text="@string/customer_information_title"
+                        android:textColor="@color/lightGray"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:id="@+id/customer_name_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:longClickable="false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/customer_name_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:longClickable="false"
+                            android:text="@string/customer"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:id="@+id/customer_name_value_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/Gray_LightSlateGray"
+                            android:textSize="@dimen/_11sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/company_name_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:longClickable="false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/company_name_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:longClickable="false"
+                            android:text="@string/company"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:id="@+id/company_name_value_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/Gray_LightSlateGray"
+                            android:textSize="@dimen/_11sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/customer_email_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:longClickable="false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/customer_email_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:longClickable="false"
+                            android:text="@string/customer_email"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:id="@+id/customer_email_value_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/Gray_LightSlateGray"
+                            android:textSize="@dimen/_11sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/customer_mobile_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:longClickable="false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/customer_mobile_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:longClickable="false"
+                            android:text="@string/customer_mobile"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:id="@+id/customer_mobile_value_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/Gray_LightSlateGray"
+                            android:textSize="@dimen/_11sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/department_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:longClickable="false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/department_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:longClickable="false"
+                            android:text="@string/department"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:id="@+id/department_value_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/Gray_LightSlateGray"
+                            android:textSize="@dimen/_11sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/shipping_address_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:longClickable="false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/shipping_address_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:longClickable="false"
+                            android:text="@string/shipping_address_heading"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:id="@+id/shipping_address_value_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/Gray_LightSlateGray"
+                            android:textSize="@dimen/_11sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/billing_address_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:longClickable="false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/billing_address_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:longClickable="false"
+                            android:text="@string/billing_address_title"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:id="@+id/billing_address_value_textView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.3"
+                            android:longClickable="false"
+                            android:text=""
+                            android:textColor="@color/Gray_LightSlateGray"
+                            android:textSize="@dimen/_11sdp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView_basic_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:background="@color/gray_custom"
+                        android:gravity="center_vertical"
+                        android:longClickable="false"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:text="@string/basic_details_title"
+                        android:textColor="@color/lightGray"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/remarks_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:longClickable="false"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/remarks_textView"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:longClickable="false"
+                                android:text="@string/remarks_title"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <TextView
+                                android:id="@+id/remarks_value_textView"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.3"
+                                android:longClickable="false"
+                                android:text=""
+                                android:textColor="@color/Gray_LightSlateGray"
+                                android:textSize="@dimen/_11sdp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/reason_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:longClickable="false"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/reason_textView"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:longClickable="false"
+                                android:text="@string/reason_title"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <TextView
+                                android:id="@+id/reason_value_textView"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.3"
+                                android:longClickable="false"
+                                android:text=""
+                                android:textColor="@color/Gray_LightSlateGray"
+                                android:textSize="@dimen/_11sdp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/status_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:longClickable="false"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/status_textView"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:longClickable="false"
+                                android:text="@string/status_title"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|center"
+                                android:layout_weight="1.3"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/status_value_textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_8sdp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

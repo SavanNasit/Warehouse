@@ -1,0 +1,174 @@
+{
+  "project_info": {
+    "project_number": "515247782961",
+    "firebase_url": "https://api-project-515247782961.firebaseio.com",
+    "project_id": "api-project-515247782961",
+    "storage_bucket": "api-project-515247782961.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515247782961:android:d573499e84dd01e2",
+        "android_client_info": {
+          "package_name": "com.app.moshimoshiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515247782961-7igb426obnge0h50kmah53eo4rnoaqjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjETnxVgwevGOqq2dXjoyXbMH5L7O6RrM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515247782961:android:682a87e4051d3e30",
+        "android_client_info": {
+          "package_name": "com.laundrokart.laundrokartapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515247782961-iqnfr9glt8ea5h5oohdg4c21g4glc25l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.laundrokart.laundrokartapp",
+            "certificate_hash": "5f61599acd04a683808413a397e446e6df9b0d42"
+          }
+        },
+        {
+          "client_id": "515247782961-7igb426obnge0h50kmah53eo4rnoaqjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjETnxVgwevGOqq2dXjoyXbMH5L7O6RrM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515247782961-7igb426obnge0h50kmah53eo4rnoaqjf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515247782961:android:fe0e9284eb1265d6",
+        "android_client_info": {
+          "package_name": "com.laundrokart.laundrokartsellerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515247782961-pfhatkvs158l4vl6obm6psh7ioe7kepe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.laundrokart.laundrokartsellerapp",
+            "certificate_hash": "5f61599acd04a683808413a397e446e6df9b0d42"
+          }
+        },
+        {
+          "client_id": "515247782961-7igb426obnge0h50kmah53eo4rnoaqjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjETnxVgwevGOqq2dXjoyXbMH5L7O6RrM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515247782961-7igb426obnge0h50kmah53eo4rnoaqjf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515247782961:android:6dd575c62de75b53",
+        "android_client_info": {
+          "package_name": "com.accrete.sixorbit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515247782961-uhjemtsvmrn0us9rrr9b2nsm3t0jbp2q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.accrete.sixorbit",
+            "certificate_hash": "5f61599acd04a683808413a397e446e6df9b0d42"
+          }
+        },
+        {
+          "client_id": "515247782961-7igb426obnge0h50kmah53eo4rnoaqjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjETnxVgwevGOqq2dXjoyXbMH5L7O6RrM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515247782961-7igb426obnge0h50kmah53eo4rnoaqjf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
