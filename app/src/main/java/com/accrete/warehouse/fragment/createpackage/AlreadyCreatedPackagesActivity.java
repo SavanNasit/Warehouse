@@ -199,6 +199,7 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
         actionsCancelGatepass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialogSelectEvent.dismiss();
                 dialogCancel(position, dialogSelectEvent);
             }
         });
@@ -233,7 +234,10 @@ public class AlreadyCreatedPackagesActivity extends AppCompatActivity implements
         btnOk = (Button) dialogView.findViewById(R.id.btn_ok);
         cancelGatepassProgressBar = (ProgressBar) dialogView.findViewById(R.id.cancel_gatepass_progress_bar);
         btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
-
+        TextView textViewMessage = (TextView) dialogView.findViewById(R.id.cancel_gatepass_message);
+        TextView textViewTitle = (TextView) dialogView.findViewById(R.id.cancel_gatepass_title);
+        textViewMessage.setText("Are you sure to cancel package?");
+        textViewTitle.setText("Cancel Package");
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

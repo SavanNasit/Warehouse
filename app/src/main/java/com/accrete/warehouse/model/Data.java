@@ -9,6 +9,16 @@ import java.util.List;
  * Modified by poonam on 22/9/17.
  */
 public class Data {
+
+    @SerializedName("purchase_data")
+    @Expose
+    private PurchaseData purchaseData;
+    @SerializedName("item_labels")
+    @Expose
+    private ItemLabels itemLabels;
+    @SerializedName("is_vendor_transportation_show")
+    @Expose
+    private String isVendorTransportationShow;
     @SerializedName("package_files")
     @Expose
     private List<PackageFile> packageFiles = null;
@@ -695,4 +705,29 @@ public class Data {
     public void setPackageFiles(List<PackageFile> packageFiles) {
         this.packageFiles = packageFiles;
     }
+
+    public PurchaseData getPurchaseData() {
+        return purchaseData;
+    }
+
+    public void setPurchaseData(PurchaseData purchaseData) {
+        this.purchaseData = purchaseData;
+    }
+
+    public ItemLabels getItemLabels() {
+        return itemLabels;
+    }
+
+    public void setItemLabels(ItemLabels itemLabels) {
+        this.itemLabels = itemLabels;
+    }
+
+    public String getIsVendorTransportationShow() {
+        return isVendorTransportationShow;
+    }
+
+    public void setIsVendorTransportationShow(String isVendorTransportationShow) {
+        this.isVendorTransportationShow = isVendorTransportationShow;
+    }
+
 }

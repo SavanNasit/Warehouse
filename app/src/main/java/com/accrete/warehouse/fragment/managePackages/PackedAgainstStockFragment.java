@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,17 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.CustomerDetailsActivity;
-
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.PackedAgainstStockAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.PackageFile;
 import com.accrete.warehouse.model.PackedItem;
-import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
-import com.accrete.warehouse.rest.FilesUploadingAsyncTask;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.NetworkUtil;
@@ -113,10 +111,10 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         uploadDocumentList.add(uploadDocument);
         documentUploaderAdapter.notifyDataSetChanged();
 
-        if(uploadDocumentList.size()>0){
+        if (uploadDocumentList.size() > 0) {
             dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
             textViewEmpty.setVisibility(View.GONE);
-        }else {
+        } else {
             dialogUploadDocRecyclerView.setVisibility(View.GONE);
             textViewEmpty.setVisibility(View.VISIBLE);
             textViewEmpty.setText("No file selected");
@@ -144,7 +142,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         packedAgainstRecyclerView.setAdapter(packedAgainstStockAdapter);
 
 
-          doRefresh();
+        doRefresh();
 
         //Scroll Listener
         packedAgainstRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -162,7 +160,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                     if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                         if (getActivity() != null && isAdded()) {
                             showLoader();
-                          //  getPackedAgainstStockList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2");
+                            //  getPackedAgainstStockList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2");
                             getPackedAgainstStockList(packedAgainstList.get(totalItemCount - 1).getCreatedTs(), "2", stringSearchText, "", "");
                         }
                     } else {
@@ -182,7 +180,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             @Override
             public void onClick(View v) {
                 if (packedAgainstEmptyView.getText().toString().trim().equals(getString(R.string.no_internet_try_later))) {
-                    Log.d("fool3","0");
+                    Log.d("fool3", "0");
                     doRefresh();
                 }
             }
@@ -237,16 +235,18 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
         textViewActionPackageStatus = (TextView) dialogView.findViewById(R.id.actions_package_status_text);
         textViewActionPackageStatus.setText("Revert Package Delivery");
-//Edit Package
+        //Edit Package
         itemsInsideTextView.setText("Edit Package");
         // actionsItemsInsidePackage.setVisibility(View.GONE);
 
         //Cancel Package
         textCancel.setText("Cancel Package");
 
-        if(packedAgainstList.get(position).getInvid().equals("0")){
+        if (packedAgainstList.get(position).getInvid().equals("0")) {
             actionsPrintInvoice.setVisibility(View.GONE);
         }
+
+        actionsPrintInvoice.setBackgroundColor(Color.WHITE);
 
         //Hidden Items
         actionsItemsInsidePackage.setVisibility(View.VISIBLE);
@@ -264,7 +264,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 intentEditPackage.putExtra("packageId", packedAgainstList.get(position).getPackageId());
                 intentEditPackage.putExtra("pacid", packedAgainstList.get(position).getPacid());
                 startActivity(intentEditPackage);
-
             }
         });
 
@@ -274,7 +273,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
             public void onClick(View v) {
                 if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                     if (packedAgainstList != null && packedAgainstList.size() > 0) {
-                        cancelPackedPackage(packedAgainstList.get(position).getPacid());
+                        cancelPackedPackage(packedAgainstList.get(position).getPacid(), position);
                     }
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
@@ -282,7 +281,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 if (dialogSelectEvent != null && dialogSelectEvent.isShowing()) {
                     dialogSelectEvent.dismiss();
                 }
-
             }
         });
 
@@ -395,10 +393,10 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         dialogUploadDocRecyclerView.setLayoutManager(mLayoutManager);
         dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
-        if(uploadDocumentList.size()>0){
+        if (uploadDocumentList.size() > 0) {
             dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
             textViewEmpty.setVisibility(View.GONE);
-        }else {
+        } else {
             dialogUploadDocRecyclerView.setVisibility(View.GONE);
             textViewEmpty.setVisibility(View.VISIBLE);
             textViewEmpty.setText("No file selected");
@@ -486,8 +484,8 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
     }
 
     //Cancel Package
-    private void  cancelPackedPackage(String pacid) {
-        task = getString(R.string.task_cancel_package);
+    private void cancelPackedPackage(String pacid, final int position) {
+        task = getString(R.string.task_cancel_stock_package);
         String chkid = null;
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(getActivity(), AppUtils.USER_ID);
@@ -498,7 +496,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ApiResponse> call = apiService.cancelPackage(version, key, task, userId, accessToken, chkid, pacid);
+        Call<ApiResponse> call = apiService.cancelPackageStock(version, key, task, userId, accessToken, pacid);
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -507,9 +505,13 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
-                    if (apiResponse.getSuccess()) {
+                    if (apiResponse.getSuccess()){
                         //Refresh List
+                      /*  packedAgainstList.remove(position);
+                        packedAgainstStockAdapter.notifyDataSetChanged();*/
+                      Log.d("cancel", String.valueOf(packedAgainstList.size()));
                         packedAgainstList.clear();
+                        Log.d("cancel", String.valueOf(packedAgainstList.size()));
                         doRefresh();
                     } else {
                         Toast.makeText(getActivity(), apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -541,51 +543,6 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 return;
             }
         }
-    }
-
-    private void dialogRevertPackageDelivery() {
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_cancel_gatepass, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(dialogView)
-                .setCancelable(true);
-        final AlertDialog dialogCancelGatepass = builder.create();
-        dialogCancelGatepass.setCanceledOnTouchOutside(true);
-        LinearLayout linearLayout;
-        Button btnOk;
-        ProgressBar cancelGatepassProgressBar;
-        Button btnCancel;
-
-        linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
-        btnOk = (Button) dialogView.findViewById(R.id.btn_ok);
-        cancelGatepassProgressBar = (ProgressBar) dialogView.findViewById(R.id.cancel_gatepass_progress_bar);
-        btnCancel = (Button) dialogView.findViewById(R.id.btn_cancel);
-        TextView textViewMessage = (TextView) dialogView.findViewById(R.id.cancel_gatepass_message);
-        TextView textViewTitle = (TextView) dialogView.findViewById(R.id.cancel_gatepass_title);
-        textViewMessage.setText("Are you sure to revert delivery of package?");
-        textViewTitle.setText("Revert Package Delivery");
-
-
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogCancelGatepass.dismiss();
-            }
-        });
-
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogCancelGatepass.dismiss();
-            }
-        });
-
-
-        dialogCancelGatepass.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        if (!dialogCancelGatepass.isShowing()) {
-            dialogCancelGatepass.show();
-        }
-
     }
 
     //Intent to select file
@@ -624,11 +581,16 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                 textViewEmpty.setVisibility(View.VISIBLE);
                 textViewEmpty.setText("No file selected");
             }
-        }else {
+        } else {
             dialogUploadDocRecyclerView.setVisibility(View.GONE);
             textViewEmpty.setVisibility(View.VISIBLE);
             textViewEmpty.setText("No file selected");
         }
+    }
+
+    @Override
+    public void onClickUrlToDownload(int position) {
+
     }
 
     @Override
@@ -637,19 +599,21 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
     }
 
     public void clearListAndRefresh() {
-        Log.d("fool2","0");
-        stringSearchText ="";
+        Log.d("fool2", "0");
+        stringSearchText = "";
         if (packedAgainstList != null && packedAgainstList.size() > 0) {
             packedAgainstList.clear();
         }
         packedAgainstRecyclerView.removeAllViewsInLayout();
         packedAgainstStockAdapter.notifyDataSetChanged();
-        stringSearchText ="";
+        stringSearchText = "";
         doRefresh();
     }
 
     public void doRefresh() {
+        Log.d("cancel1", String.valueOf(packedAgainstList.size()));
         if (packedAgainstList != null && packedAgainstList.size() == 0) {
+            Log.d("cancel2", String.valueOf(packedAgainstList.size()));
             status = NetworkUtil.getConnectivityStatusString(getActivity());
             if (!status.equals(getString(R.string.not_connected_to_internet))) {
                 loading = true;
@@ -671,7 +635,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
     }
 
     private void getPackedAgainstStockList(final String time, final String traversalValue,
-    String searchValue, String startDate, String endDate){
+                                           String searchValue, String startDate, String endDate) {
         String task = getString(R.string.packed_packages);
 
         if (AppPreferences.getIsLogin(getActivity(), AppUtils.ISLOGIN)) {
@@ -683,7 +647,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ApiResponse> call = apiService.getPackageLists(version, key, task, userId, accessToken, chkid,
-                time, traversalValue, searchValue, startDate, endDate,"2");
+                time, traversalValue, searchValue, startDate, endDate, "2");
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {
@@ -702,7 +666,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                                     }
                                     dataChanged = "yes";
                                 } else if (traversalValue.equals("1")) {
-                                    if (packedAgainstRefreshLayout != null &&
+                                 /*   if (packedAgainstRefreshLayout != null &&
                                             packedAgainstRefreshLayout.isRefreshing()) {
                                         // To remove duplicacy of a new item
                                         if (!time.equals(packedItem.getCreatedTs())) {
@@ -712,7 +676,8 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                                         if (!time.equals(packedItem.getCreatedTs())) {
                                             packedAgainstList.add(packedItem);
                                         }
-                                    }
+                                    }*/
+                                    packedAgainstList.add(packedItem);
                                     dataChanged = "yes";
                                 }
                             }
@@ -812,12 +777,12 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
                     showLoader();
                     getPackedAgainstStockList(getString(R.string.last_updated_date), "1");
                 }*/
-              packedAgainstList.clear();
+                packedAgainstList.clear();
             }
             packedAgainstRefreshLayout.setRefreshing(true);
             getPackedAgainstStockList(getString(R.string.last_updated_date), "1", stringSearchText, "", "");
-          //  packedAgainstEmptyView.setVisibility(View.GONE);
-         //   packedAgainstRefreshLayout.setRefreshing(true);
+            //  packedAgainstEmptyView.setVisibility(View.GONE);
+            //   packedAgainstRefreshLayout.setRefreshing(true);
         } else {
             packedAgainstEmptyView.setVisibility(View.VISIBLE);
             packedAgainstEmptyView.setText(getString(R.string.no_internet_try_later));
@@ -1015,7 +980,7 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
 
 
     public void searchAPI(final String searchText) {
-           Log.d("fool1","0");
+        Log.d("fool1", "0");
         stringSearchText = searchText;
 
         Thread thread = new Thread(new Runnable() {

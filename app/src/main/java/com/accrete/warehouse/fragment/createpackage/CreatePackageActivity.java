@@ -457,6 +457,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                 Intent intentDrawerActivity = new Intent(CreatePackageActivity.this, DrawerActivity.class);
                 intentDrawerActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intentDrawerActivity.putExtra("flagToManage", "true");
+                intentDrawerActivity.putExtra("flagToRedirect", flagToCallApi);
                 startActivity(intentDrawerActivity);
                 finish();
             }
@@ -1144,7 +1145,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
                     Log.d("Package Details", "requestUploadSurvey: survey image " + index + "  " + uploadDocumentList.get(index).getFileUrl());
                     // File file = new File(uploadDocumentList.get(index).getFilePath());
                     File file = new File(decodeFile(uploadDocumentList.get(index).getFileUrl(), 400, 400));
-                    RequestBody surveyBody = RequestBody.create(MediaType.parse("*/*"), file);
+                    RequestBody surveyBody = RequestBody.create(MediaType.parse("png"), file);
                     surveyImagesParts[index] = MultipartBody.Part.createFormData("files[]", file.getPath(), surveyBody);
                 }
             }
@@ -1284,6 +1285,11 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
             textViewEmpty.setVisibility(View.VISIBLE);
             textViewEmpty.setText("No file selected");
         }
+    }
+
+    @Override
+    public void onClickUrlToDownload(int position) {
+
     }
 
     private String calculateQuantity(double allocatedQuantity, double selectedConversionRate, double previousConversionRate) {
