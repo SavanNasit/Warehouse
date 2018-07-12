@@ -9,13 +9,27 @@ import java.util.List;
  * Modified by poonam on 22/9/17.
  */
 public class Data {
-
-    @SerializedName("purchase_data")
+    @SerializedName("is_manufacturing_date_enabled")
     @Expose
-    private PurchaseData purchaseData;
+    private String isManufacturingDateEnabled;
+    @SerializedName("is_expiry_date_enabled")
+    @Expose
+    private String isExpiryDateEnabled;
+    @SerializedName("is_rejection_enabled")
+    @Expose
+    private String isRejectionEnabled;
+    @SerializedName("is_barcode_enabled")
+    @Expose
+    private String isBarcodeEnabled;
+    @SerializedName("barcode_title")
+    @Expose
+    private String barcodeTitle;
     @SerializedName("item_labels")
     @Expose
     private ItemLabels itemLabels;
+    @SerializedName("purchase_data")
+    @Expose
+    private PurchaseData purchaseData;
     @SerializedName("is_vendor_transportation_show")
     @Expose
     private String isVendorTransportationShow;
@@ -728,6 +742,47 @@ public class Data {
 
     public void setIsVendorTransportationShow(String isVendorTransportationShow) {
         this.isVendorTransportationShow = isVendorTransportationShow;
+    }
+
+
+    public String getIsManufacturingDateEnabled() {
+        return isManufacturingDateEnabled;
+    }
+
+    public void setIsManufacturingDateEnabled(String isManufacturingDateEnabled) {
+        this.isManufacturingDateEnabled = isManufacturingDateEnabled;
+    }
+
+    public String getIsExpiryDateEnabled() {
+        return isExpiryDateEnabled;
+    }
+
+    public void setIsExpiryDateEnabled(String isExpiryDateEnabled) {
+        this.isExpiryDateEnabled = isExpiryDateEnabled;
+    }
+
+    public String getIsRejectionEnabled() {
+        return isRejectionEnabled;
+    }
+
+    public void setIsRejectionEnabled(String isRejectionEnabled) {
+        this.isRejectionEnabled = isRejectionEnabled;
+    }
+
+    public String getIsBarcodeEnabled() {
+        return isBarcodeEnabled;
+    }
+
+    public void setIsBarcodeEnabled(String isBarcodeEnabled) {
+        this.isBarcodeEnabled = isBarcodeEnabled;
+    }
+
+    public String getBarcodeTitle() {
+        return barcodeTitle;
+    }
+
+    public void setBarcodeTitle(String barcodeTitle) {
+        this.barcodeTitle = barcodeTitle;
     }
 
 }

@@ -33,50 +33,9 @@ public class PurchaseOrderData {
     @SerializedName("status")
     @Expose
     private String status;
-
-    public String getPoDate() {
-        return poDate;
-    }
-
-    public void setPoDate(String poDate) {
-        this.poDate = poDate;
-    }
-
     @SerializedName("created_ts")
     @Expose
-    private String poDate;
-
-    public String getPurorid() {
-        return purorid;
-    }
-
-    public void setPurorid(String purorid) {
-        this.purorid = purorid;
-    }
-
-    public String getAuthorizedById() {
-        return authorizedById;
-    }
-
-    public void setAuthorizedById(String authorizedById) {
-        this.authorizedById = authorizedById;
-    }
-
-    public String getPurorsid() {
-        return purorsid;
-    }
-
-    public void setPurorsid(String purorsid) {
-        this.purorsid = purorsid;
-    }
-
-    public String getVendorId() {
-        return vendorId;
-    }
-
-    public void setVendorId(String vendorId) {
-        this.vendorId = vendorId;
-    }
+    private String createdTs;
 
     public String getPoid() {
         return poid;
@@ -84,6 +43,14 @@ public class PurchaseOrderData {
 
     public void setPoid(String poid) {
         this.poid = poid;
+    }
+
+    public String getPurorid() {
+        return purorid;
+    }
+
+    public void setPurorid(String purorid) {
+        this.purorid = purorid;
     }
 
     public String getAuthorizedBy() {
@@ -94,6 +61,14 @@ public class PurchaseOrderData {
         this.authorizedBy = authorizedBy;
     }
 
+    public String getAuthorizedById() {
+        return authorizedById;
+    }
+
+    public void setAuthorizedById(String authorizedById) {
+        this.authorizedById = authorizedById;
+    }
+
     public String getVendorName() {
         return vendorName;
     }
@@ -102,11 +77,35 @@ public class PurchaseOrderData {
         this.vendorName = vendorName;
     }
 
+    public String getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(String vendorId) {
+        this.vendorId = vendorId;
+    }
+
+    public String getPurorsid() {
+        return purorsid;
+    }
+
+    public void setPurorsid(String purorsid) {
+        this.purorsid = purorsid;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCreatedTs() {
+        return createdTs;
+    }
+
+    public void setCreatedTs(String createdTs) {
+        this.createdTs = createdTs;
     }
 }
