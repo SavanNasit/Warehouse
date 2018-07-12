@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blueTurquoise">
+
+
+    <ProgressBar
+        android:id="@+id/domain_progress_bar"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="60dp"
+        android:text="Your 6Orbit web address"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/domain_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginEnd="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="11dp"
+        android:editable="true"
+        android:gravity="left|center"
+        android:hint="admin.yourcompany.com"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:textColor="@color/lightBlue"
+        android:textColorHint="@color/blueTurquoiseLight"
+        android:textCursorDrawable="@drawable/white_cursor" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/domain_editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:gravity="top"
+        android:text="This is the address that you use to access your 6Orbit web app."
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/domain_txt_next"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/nextBackground"
+            android:gravity="center"
+            android:text="Next"
+            android:textAllCaps="true"
+            android:textColor="@color/blueTurquoise"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+     <!--   <ProgressBar
+            android:id="@+id/domain_progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:indeterminateTint="@color/colorPrimaryDark"
+            android:visibility="gone" />-->
+
+    </RelativeLayout>
+
+</RelativeLayout>

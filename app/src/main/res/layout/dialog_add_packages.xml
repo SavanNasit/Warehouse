@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/add_packages_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:gravity="right"
+        android:layout_gravity="right"
+        android:textSize="@dimen/_18sdp"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:textColor="@color/primary"
+        android:layout_marginTop="@dimen/_5sdp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already Added packages"
+        android:gravity="center"
+        android:textSize="@dimen/_16sdp"
+        android:textColor="@color/blueTurquoise"
+        android:layout_marginTop="@dimen/_10sdp"/>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <AutoCompleteTextView
+            android:id="@+id/add_packages_search_with_package_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Search with package id "
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dialog_add_packages_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+       />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        >
+        <TextView
+            android:id="@+id/dialog_add_packages_select_shipping_company"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/text_black"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/select_shipping_company"
+            android:textSize="@dimen/_10sdp"/>
+    </LinearLayout>
+
+</LinearLayout>
+
+

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/running_stock_request_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fdededed"
+
+    >
+
+    <ProgressBar
+        android:id="@+id/running_orders_progress_bar"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/running_orders_text_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/running_orders_text_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:context=".MainActivity">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/running_orders_swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/running_orders_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <TextView
+                android:id="@+id/running_orders_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/no_data_available"
+                android:textSize="@dimen/_13sdp"
+                android:visibility="gone" />
+
+            <!--     <LinearLayout
+                     android:id="@+id/running_orders_execute_layout"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="bottom|end"
+                     android:layout_marginBottom="160dp"
+                     android:layout_marginRight="@dimen/fab_margin"
+                     android:clipToPadding="false"
+                     android:gravity="center_vertical"
+                     android:padding="@dimen/standard_12"
+                     android:visibility="gone">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="5dp"
+                         android:background="@drawable/shape_fab_label"
+                         android:elevation="2dp"
+                         android:fontFamily="sans-serif"
+                         android:paddingBottom="05dp"
+                         android:paddingLeft="10dp"
+                         android:paddingRight="10dp"
+                         android:paddingTop="05dp"
+                         android:text="Execute"
+                         android:textColor="@android:color/white"
+                         android:textStyle="bold"
+                         android:typeface="normal" />
+
+                     <android.support.design.widget.FloatingActionButton
+                         android:id="@+id/running_orders_execute"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         app:backgroundTint="@color/white"
+                         app:fabSize="normal"
+                         app:srcCompat="@drawable/ic_execute" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/running_orders_info_layout"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="bottom|end"
+                     android:layout_marginBottom="90dp"
+                     android:layout_marginRight="@dimen/fab_margin"
+                     android:clipToPadding="false"
+                     android:gravity="center_vertical"
+                     android:padding="@dimen/standard_12"
+                     android:visibility="gone">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="5dp"
+                         android:background="@drawable/shape_fab_label"
+                         android:elevation="2dp"
+                         android:fontFamily="sans-serif"
+                         android:paddingBottom="05dp"
+                         android:paddingLeft="10dp"
+                         android:paddingRight="10dp"
+                         android:paddingTop="05dp"
+                         android:text="Customer info"
+                         android:textColor="@android:color/white"
+                         android:textStyle="bold"
+                         android:typeface="normal" />
+
+                     <android.support.design.widget.FloatingActionButton
+                         android:id="@+id/running_orders_info"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="10dp"
+                         app:backgroundTint="@color/white"
+                         app:fabSize="normal"
+                         app:srcCompat="@drawable/ic_customer_info" />
+                 </LinearLayout>
+
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="bottom|end"
+                     android:layout_marginBottom="@dimen/fab_margin"
+                     android:layout_marginRight="@dimen/fab_margin"
+                     android:clipToPadding="false"
+                     android:gravity="center_vertical"
+                     android:padding="@dimen/standard_12">
+
+
+                     <android.support.design.widget.FloatingActionButton
+                         android:id="@+id/running_orders_fab"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="bottom|end"
+                         android:gravity="center_vertical"
+                         app:backgroundTint="@color/white"
+                         app:elevation="6dp"
+                         app:fabSize="normal"
+                         app:srcCompat="@drawable/ic_add" />
+                 </LinearLayout>-->
+
+
+        </android.support.design.widget.CoordinatorLayout>
+
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/login_edittext_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="60dp"
+        android:gravity="left|center"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:lines="1"
+        android:maxLines="1"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/lightGreen"
+        android:textCursorDrawable="@drawable/white_cursor" />
+
+    <!-- <EditText
+         android:id="@+id/login_edittext_password"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textColor="@color/white"
+         android:textColorHint="#66BB6A"
+         android:layout_gravity="center"
+         android:textCursorDrawable="@null"
+         android:hint="PasswordActivity"
+         android:lines="1"
+         android:inputType="textPassword"
+         android:gravity="left|center"
+         android:layout_marginTop="13dp"
+         android:layout_below="@+id/login_edittext_email"
+         android:layout_alignLeft="@+id/login_edittext_email"
+         android:layout_alignStart="@+id/login_edittext_email" />-->
+
+
+    <TextView
+        android:id="@+id/login_txt_next"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/nextBackground"
+        android:gravity="center"
+        android:text="Next"
+        android:textAllCaps="true"
+        android:textColor="@color/green"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

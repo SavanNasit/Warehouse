@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_10sdp"
+    android:background="@color/home_page_gray"
+    android:weightSum="2">
+
+    <TextView
+        android:id="@+id/select_warehouse_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1.7"
+        android:gravity="left|center"
+        android:text="Running Orders"
+        android:textColor="#8D8D8D"
+        android:textSize="14sp" />
+
+    <CheckBox
+        android:id="@+id/select_warehouse_checkbox"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:gravity="top|center"
+        android:backgroundTint="@color/primary"
+        android:checked="false"
+       />
+</LinearLayout>

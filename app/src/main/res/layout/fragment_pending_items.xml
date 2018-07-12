@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/border_edittext_gray"
+        android:weightSum="2">
+
+        <EditText
+            android:id="@+id/pending_items_edt_scan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8"
+            android:hint="@string/scan"
+            android:inputType="text"
+            android:paddingLeft="@dimen/_5sdp"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_10sdp" />
+
+        <ImageView
+            android:id="@+id/pending_items_img_scan"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:background="@drawable/border_edittext_gray"
+            android:padding="@dimen/_7sdp"
+            android:src="@drawable/ic_barcode_scan" />
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/pending_items_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/pending_items_package_details"
+        android:layout_below="@id/top_layout">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pending_items_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/pending_items_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:layout_weight="0.6"
+        android:text="@string/no_data_available"
+        android:textSize="@dimen/_13sdp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/pending_items_package_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/text_black">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_10sdp"
+            android:paddingTop="@dimen/_10sdp"
+            android:text="Package Details"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

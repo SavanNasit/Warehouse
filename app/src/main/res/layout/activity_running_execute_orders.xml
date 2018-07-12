@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:background="@color/home_page_gray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/MyMaterialTheme.PopupOverlay"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        <LinearLayout
+            android:id="@+id/add_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/running_execute_orders_add_all_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add All Items"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+
+            <View
+                android:id="@+id/addProducts_button"
+                android:layout_width="@dimen/_2sdp"
+                android:layout_height="@dimen/_26sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@color/gray"
+                android:textSize="@dimen/_39sdp" />
+
+            <ImageView
+                android:id="@+id/pending_items_img_scan"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:background="@drawable/qr_code"
+                android:scaleType="fitXY"
+                android:src="@drawable/qr_code" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
+
+        <LinearLayout
+            android:id="@+id/running_execute_orders_customer_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_8sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:longClickable="false"
+                android:text="Customer Details :"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/running_execute_orders_customer_details_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/running_execute_orders_customer_details_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/running_execute_orders_customer_details_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:gravity="center_vertical"
+                android:textColor="@color/blueTurquoise"
+                android:textSize="@dimen/_10sdp" />
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <!--    <LinearLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/_15sdp"
+            android:background="@drawable/border_edittext_gray"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/pending_items_edt_scan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:hint="@string/scan"
+                android:inputType="text"
+                android:paddingLeft="@dimen/_5sdp"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/_10sdp" />
+
+            <ImageView
+                android:id="@+id/pending_items_img_scan"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:background="@drawable/border_edittext_gray"
+                android:padding="@dimen/_7sdp"
+                android:src="@drawable/ic_barcode_scan" />
+        </LinearLayout>-->
+
+        <!-- <android.support.v4.widget.SwipeRefreshLayout
+             android:id="@+id/pending_items_swipe_refresh_layout"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_above="@id/pending_items_package_details"
+             android:layout_below="@id/top_layout">
+     -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pending_items_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/pending_items_package_details"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:scrollbars="none" />
+
+        <!--
+            </android.support.v4.widget.SwipeRefreshLayout>
+        -->
+
+        <TextView
+            android:id="@+id/pending_items_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"
+            android:layout_weight="0.6"
+            android:text="@string/no_data_available"
+            android:textSize="@dimen/_13sdp"
+            android:visibility="gone" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/running_execute_ordres_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/_22sdp"
+            android:gravity="center_vertical"
+            app:backgroundTint="@color/white"
+            app:elevation="@dimen/_5sdp"
+            app:fabSize="normal"
+            app:srcCompat="@drawable/ic_manage_package" />
+
+        <LinearLayout
+            android:id="@+id/pending_items_package_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/text_black">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:text="@string/continue_text"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

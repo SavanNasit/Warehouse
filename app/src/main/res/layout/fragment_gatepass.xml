@@ -1,0 +1,277 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="#fdededed"
+    android:orientation="vertical"
+    android:weightSum="3">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_inner_customer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.85"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        card_view:cardElevation="@dimen/_2sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:src="@drawable/ic_package_selection_filled" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.5"
+                android:gravity="center|top"
+                android:text="@string/package_selection"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:background="@color/home_page_text_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:src="@drawable/ic_create_gatepass_filled" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.5"
+                android:gravity="center|top"
+                android:text="@string/create_gatepass"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:background="@color/home_page_text_gray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:src="@drawable/ic_confirm_gatepass_unfilled" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="0.5"
+                android:gravity="center|top"
+                android:text="@string/confirm_gatepass_fragment"
+                android:textSize="@dimen/_12sdp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.95"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        card_view:cardElevation="@dimen/_2sdp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/dialog_create_gatepass_transporter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+
+            android:background="@drawable/border_edittext_gray"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Transporter:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="4"
+            android:padding="@dimen/_7sdp"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <EditText
+            android:id="@+id/dialog_create_gatepass_vehicle_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/border_edittext_gray"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:hint="Vehicle Number:"
+            android:imeOptions="actionNext"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:padding="@dimen/_7sdp"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/_10sdp" />
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_transport_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_transport_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:visibility="visible" />
+
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_shipping_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:visibility="gone" />
+
+
+
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_shipping_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg" />
+
+
+        <Spinner
+            android:id="@+id/dialog_create_gatepass_shipping_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/spinner_bg"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.22"
+        android:background="@color/text_black"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+
+        <TextView
+            android:id="@+id/dialog_create_gatepass_back"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:gravity="center|center_vertical"
+            android:background="@color/blueTurquoise"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="bold"  />
+
+
+        <TextView
+            android:id="@+id/dialog_create_gatepass"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:gravity="center|center_vertical"
+            android:text="@string/create"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="bold"  />
+    </LinearLayout>
+</LinearLayout>

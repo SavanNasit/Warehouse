@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:descendantFocusability="beforeDescendants"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/_17sdp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_35sdp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical"
+            android:theme="@style/AppTheme">
+
+            <TextView
+                android:id="@+id/title_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="sans-serif"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:lines="1"
+                android:longClickable="false"
+                android:text="Add Item"
+                android:textAllCaps="false"
+                android:textColor="@color/blueTurquoise"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="normal" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:clipToPadding="false"
+                android:gravity="left|center"
+                app:hintTextAppearance="@style/CustomTextAppearance">
+
+                <EditText
+                    android:id="@+id/product_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:fontFamily="sans-serif"
+                    android:hint="Product"
+                    android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
+                    android:longClickable="false"
+                    android:maxLines="4"
+                    android:minLines="2"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkGray"
+                    android:textCursorDrawable="@drawable/green_cursor"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:lines="1"
+                    android:longClickable="false"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <EditText
+                        android:id="@+id/skuCode_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="sans-serif"
+                        android:hint="SKU Code"
+                        android:imeOptions="actionNext"
+                        android:inputType="number|textNoSuggestions"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/darkGray"
+                        android:textCursorDrawable="@drawable/green_cursor"
+                        android:textSize="@dimen/_10sdp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.8"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:lines="1"
+                    android:longClickable="false"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <EditText
+                        android:id="@+id/hsn_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:fontFamily="sans-serif"
+                        android:hint="HSN Code"
+                        android:imeOptions="actionNext"
+                        android:inputType="number|textNoSuggestions"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/darkGray"
+                        android:textCursorDrawable="@drawable/green_cursor"
+                        android:textSize="@dimen/_10sdp" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+                <TextView
+                    android:id="@+id/orderQuantity_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="sans-serif"
+                    android:imeOptions="actionNext"
+                    android:inputType="number|textNoSuggestions"
+                    android:lines="1"
+                    android:visibility="gone"
+                    android:longClickable="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkGray"
+                    android:textCursorDrawable="@drawable/green_cursor"
+                    android:textSize="@dimen/_11sdp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_weight="1.5"
+                    android:clipToPadding="false"
+                    android:gravity="left|center"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:lines="1"
+                    android:longClickable="false"
+                    app:hintTextAppearance="@style/CustomTextAppearance">
+
+                    <EditText
+                        android:id="@+id/receiveQuantity_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_8sdp"
+                        android:fontFamily="sans-serif"
+                        android:hint="Receiving Quantity"
+                        android:imeOptions="actionNext"
+                        android:inputType="number|textNoSuggestions"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/darkGray"
+                        android:textCursorDrawable="@drawable/green_cursor"
+                        android:textSize="@dimen/_10sdp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:layout_marginLeft="@dimen/_14sdp"
+                    android:layout_marginRight="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                 >
+
+                    <Spinner
+                        android:id="@+id/units_type_spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="2sp"
+                        android:background="@drawable/spinner_bg"
+                        android:gravity="left"
+                        android:popupBackground="#ffffff"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <ImageView
+                        android:id="@+id/balance_type_imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@android:drawable/btn_dropdown"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+
+
+            </LinearLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="left|center"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:lines="1"
+                android:visibility="gone"
+                android:longClickable="false"
+                app:hintTextAppearance="@style/CustomTextAppearance">
+
+                <EditText
+                    android:id="@+id/price_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:fontFamily="sans-serif"
+                    android:hint="Price"
+                    android:imeOptions="actionNext"
+                    android:inputType="number|textNoSuggestions"
+                    android:lines="1"
+                    android:longClickable="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkGray"
+                    android:textCursorDrawable="@drawable/green_cursor"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="left|center"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:lines="1"
+                android:longClickable="false"
+                app:hintTextAppearance="@style/CustomTextAppearance">
+
+                <EditText
+                    android:id="@+id/comment_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_37sdp"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:fontFamily="sans-serif"
+                    android:hint="Comment"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:longClickable="false"
+                    android:maxLines="4"
+                    android:minLines="2"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkGray"
+                    android:textCursorDrawable="@drawable/green_cursor"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/expiry_date_title_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:text="Expiry Date:"
+                android:textColor="@color/darkGray"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/expiry_date_value_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edittext_gray_border"
+                android:gravity="center_vertical"
+                android:hint="Expiry Date"
+                android:paddingBottom="@dimen/_6sdp"
+                android:paddingLeft="@dimen/_8sdp"
+                android:paddingTop="@dimen/_6sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"></TextView>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:clipToPadding="false"
+                android:gravity="left|center"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:lines="1"
+                android:longClickable="false"
+                app:hintTextAppearance="@style/CustomTextAppearance">
+
+                <EditText
+                    android:id="@+id/rejectedQuantity_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:fontFamily="sans-serif"
+                    android:hint="Rejected Quantity"
+                    android:imeOptions="actionDone"
+                    android:inputType="number|textNoSuggestions"
+                    android:lines="1"
+                    android:longClickable="false"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkGray"
+                    android:textCursorDrawable="@drawable/green_cursor"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:clipToPadding="false"
+                android:gravity="left|center"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:lines="1"
+                android:longClickable="false"
+                app:hintTextAppearance="@style/CustomTextAppearance">
+
+                <EditText
+                    android:id="@+id/reasonRejection_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:fontFamily="sans-serif"
+                    android:hint="Reason for rejection"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:longClickable="false"
+                    android:maxLines="4"
+                    android:minLines="2"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkGray"
+                    android:textCursorDrawable="@drawable/green_cursor"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/_15sdp"
+                android:paddingTop="@dimen/_15sdp">
+
+                <TextView
+                    android:id="@+id/textView_add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:background="@color/blue"
+                    android:gravity="center"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:lines="1"
+                    android:longClickable="false"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_12sdp"
+                    android:paddingRight="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:text="@string/add_item"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textView_back"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:background="@color/red"
+                    android:gravity="center"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:lines="1"
+                    android:longClickable="false"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_12sdp"
+                    android:paddingRight="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:text="@string/back_selection"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11sdp"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

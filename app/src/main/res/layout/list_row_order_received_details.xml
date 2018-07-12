@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:longClickable="false"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_6sdp"
+    android:paddingTop="@dimen/_5sdp">
+
+    <LinearLayout
+        android:id="@+id/titles_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/items_sr_no_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:paddingLeft="@dimen/_3sdp"
+            android:paddingRight="@dimen/_3sdp"
+            android:text="#"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/items_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:gravity="left"
+            android:paddingLeft="@dimen/_3sdp"
+            android:paddingRight="@dimen/_3sdp"
+            android:textColor="@color/gray_order"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/purchaseOrderQuantity_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/_3sdp"
+            android:paddingRight="@dimen/_3sdp"
+            android:textColor="@color/gray_order"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/receiveQuantity_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/_3sdp"
+            android:paddingRight="@dimen/_3sdp"
+            android:textColor="@color/gray_order"
+            android:textSize="@dimen/_10sdp" />
+    </LinearLayout>
+</LinearLayout>

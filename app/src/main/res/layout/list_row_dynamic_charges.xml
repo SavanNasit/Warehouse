@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/dynamic_charges_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:clipToPadding="false"
+        android:gravity="left|center"
+        app:hintTextAppearance="@style/CustomTextAppearance">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/dynamic_charges_value"
+            style="@style/EditTextCustomHolo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textColor="@color/darkGray"
+            android:textColorHint="@color/gray"
+            android:textCursorDrawable="@drawable/cursor_primary"
+            android:textSize="@dimen/_10sdp"
+            android:theme="@style/EditTextCustomHolo" />
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

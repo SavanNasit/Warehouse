@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.accrete.warehouse.fragment.receiveConsignment.POReceiveConsignmentActivity"
+    >
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nested_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_55sdp">
+
+            <TextView
+                android:id="@+id/edit_consignment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Consignment Inventory List"
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp" />
+
+            <View
+                android:id="@+id/edit_consignment_view"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@color/green" />
+
+            <LinearLayout
+                android:id="@+id/edit_consignment_layout_container_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Container ID : "
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_text_container_id"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.52"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_consignment_layout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_14sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Purchase date : "
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_text_date"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.52"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_consignment_layout_vendor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_14sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Vendor : "
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_text_vendor"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.52"
+                    android:gravity="left|center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/edit_consignment_layout_authorized_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_14sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Authorized By : "
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_text_authorized_by"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.52"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/edit_consignment_layout_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_12sdp"
+                android:layout_marginRight="@dimen/_14sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.48"
+                    android:gravity="left|center"
+                    android:text="Status : "
+                    android:textColor="#8D8D8D"
+                    android:textSize="@dimen/_10sdp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.52"
+                    android:gravity="left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/edit_consignment_text_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8sdp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/edit_consignment_layout_title_vendor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/vendor_details_title"
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/edit_consignment_sub_title_vendor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="You will be selecting Vendor details"
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="visible" />
+
+            <View
+                android:id="@+id/edit_consignment_vendor_view"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@color/green" />
+
+            <TextView
+                android:id="@+id/edit_consignment_title_vendor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:text="@string/vendor_title"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:visibility="visible">
+
+                <EditText
+                    android:id="@+id/edit_consignment_edittext_vendor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/search_vendor"
+                    android:longClickable="false"
+                    android:textSize="@dimen/_10sdp"
+                    android:theme="@style/Autocomplete" />
+
+                <ImageButton
+                    android:id="@+id/edit_consignment_img_btn_clear"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@android:drawable/ic_menu_close_clear_cancel" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/edit_consignment_title_purchase_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/purchase_details"
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/edit_consignment_sub_title_purchase_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/inputing_purchase_details"
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_11sdp" />
+
+            <View
+                android:id="@+id/edit_consignment_view_purchase_details"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@color/green" />
+
+            <TextView
+                android:id="@+id/edit_consignment_text_title_receive_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:text="@string/receive_date_title"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/edit_consignment_text_receive_date"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@drawable/edittext_gray_border"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"></TextView>
+
+            <TextView
+                android:id="@+id/edit_consignment_text_title_invoice_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:text="@string/invoice_number_title"
+                android:textSize="@dimen/_10sdp" />
+
+            <EditText
+                android:id="@+id/edit_consignment_text_invoice_number"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@drawable/edittext_gray_border"
+                android:gravity="center_vertical"
+                android:hint="Invoice Number"
+                android:paddingLeft="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@drawable/green_cursor"
+                android:textSize="@dimen/_9sdp" />
+
+            <TextView
+                android:id="@+id/edit_consignment_text_title_invoice_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:text="@string/invoice_date_title"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/edit_consignment_text_invoice_date"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/edittext_gray_border"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp" />
+
+
+            <TextView
+                android:id="@+id/edit_consignment_title_authorized_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:text="@string/authorizedBy_title"
+                android:textSize="@dimen/_10sdp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp">
+
+                <EditText
+                    android:id="@+id/edit_consignment_edit_text_authorized_by"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/authorizedBy_title"
+                    android:longClickable="false"
+                    android:textSize="@dimen/_10sdp"
+                    android:theme="@style/Autocomplete" />
+
+                <ImageButton
+                    android:id="@+id/edit_consignment_img_btn_clear_authorized_by"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@android:drawable/ic_menu_close_clear_cancel" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/edit_consignment_layout_title_consignment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/list_items_consignment_title"
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/edit_consignment_layout_sub_title_consignment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/list_items_consignment_subTitle"
+                android:textColor="@color/home_page_text_gray"
+                android:textSize="@dimen/_10sdp" />
+
+            <View
+                android:id="@+id/edit_consignment_view_consignment"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@color/green" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <EditText
+                    android:id="@+id/edit_consignment_edit_text_search_item_consignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Search item"
+                    android:longClickable="false"
+                    android:textSize="@dimen/_10sdp"
+                    android:theme="@style/Autocomplete" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/edit_consignment_item_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"></android.support.v7.widget.RecyclerView>
+
+            <CheckBox
+                android:id="@+id/edit_consignment_checkbox_transportation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:buttonTint="@color/green"
+                android:text="Add transportation details "
+                android:textSize="@dimen/_12sdp"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/edit_consignment_layout_transportation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/edit_consignment_title_transportation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/transportation_details_title"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_sub_title_transportation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:text="@string/transportation_details_subtitle"
+                    android:textColor="@color/home_page_text_gray"
+                    android:textSize="@dimen/_10sdp" />
+
+                <View
+                    android:id="@+id/edit_consignment_view_transportation"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@color/green" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_title_transporter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_3sdp"
+                    android:text="@string/transporter_title"
+                    android:textSize="@dimen/_10sdp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp">
+
+                    <TextView
+                        android:id="@+id/edit_consignment_text_transporter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/transporter_title"
+                        android:textSize="@dimen/_9sdp"
+                        android:theme="@style/Autocomplete" />
+
+                    <ImageButton
+                        android:id="@+id/edit_consignment_img_btn_clear_transporter"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height= "@dimen/_20sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@android:drawable/ic_menu_close_clear_cancel" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/weight_title_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_3sdp"
+                    android:text="@string/weight"
+                    android:textSize="@dimen/_10sdp" />
+
+                <EditText
+                    android:id="@+id/edit_consignment_edittext_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:hint="@string/weight"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_9sdp"
+                    android:theme="@style/Autocomplete" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_3sdp"
+                    android:text="@string/lr_number"
+                    android:textSize="@dimen/_10sdp" />
+
+                <EditText
+                    android:id="@+id/edit_consignment_edittext_lr_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:hint="@string/lr_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_9sdp"
+                    android:theme="@style/Autocomplete" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_3sdp"
+                    android:text="@string/vehicle_number"
+                    android:textSize="@dimen/_10sdp" />
+
+                <EditText
+                    android:id="@+id/edit_consignment_edittext_vehicle_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:hint="@string/vehicle_number"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_9sdp"
+                    android:theme="@style/Autocomplete" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_title_expected_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_3sdp"
+                    android:text="@string/expected_date_title"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/edit_consignment_edittext_expected_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edittext_gray_border"
+                    android:gravity="center_vertical"
+                    android:hint="Expected Date"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9sdp"></TextView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/edit_consignment_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/red"
+                android:longClickable="false"
+                android:paddingBottom="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_25sdp"
+                android:paddingRight="@dimen/_25sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:text="Receive Items"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.constraint.ConstraintLayout>

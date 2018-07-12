@@ -1,0 +1,234 @@
+<resources>
+
+    <string name="app_name">Warehouse</string>
+    <string name="wifi_enabled">Wifi enabled</string>
+    <string name="mobile_enabled">Mobile data enabled</string>
+    <string name="not_connected_to_internet">Not connected to Internet</string>
+    <string name="error_domain">Couldn\'t connect to server</string>
+    <string name="login_success">You have been successfully logged in</string>
+
+    <!--tasks-->
+    <string name="domain">check_service</string>
+    <string name="login">login</string>
+    <string name="invalid_domain">Please enter valid domain</string>
+
+    <!--domain activity-->
+    <string name="enter_domain">Please enter domain</string>
+    <string name="email">email</string>
+    <string name="valid_email_error">Please enter valid Email Id</string>
+    <string name="username_error">Please enter your Email Id</string>
+    <string name="password_error">Please enter your password</string>
+    <string name="credential_error">Email and Password does not matched</string>
+    <string name="intent">intent</string>
+    <string name="password">Password</string>
+    <string name="logout_sucessfully">Logout successfully</string>
+
+    <!--password activity-->
+    <string name="try_again">Try again</string>
+    <string name="reset_password">forgot-password/forgot-password-submit</string>
+    <string name="password_change_success">Password successfully changed</string>
+    <string name="craete_password_text">Create new password to access your account</string>
+    <string name="enter_email_for_password">Enter your email address below and we\'ll send a special reset password link to your inbox</string>
+
+
+    <string name="connected_to">You\'re connected to :</string>
+    <string name="running_orders_fragment">Running Orders</string>
+    <string name="running_orders_tab_title">Orders</string>
+    <string name="select_warehouse">Select Warehouse</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="home_fragment">Home</string>
+    <string name="no_data_available">No data available</string>
+    <string name="running_orders_execute_fragment">Execution For  </string>
+    <string name="scan">Scan bar code</string>
+    <string name="order_item">Select Order Item</string>
+    <string name="upload"><u>Upload Documents</u></string>
+    <string name="dialog_from">dialogFrom</string>
+    <string name="manage_packages_fragment">Manage Packages</string>
+    <string name="actions">Actions</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="upload_doc">Upload a File</string>
+    <string name="package_history">Package History</string>
+    <string name="manage_gatepass_fragment">Manage GatePass</string>
+    <string name="manage_consignment_fragment">Manage Consignment</string>
+    <string name="receive_consignment_fragment">Receive Consignment</string>
+    <string name="items_inside_package">Items inside package</string>
+    <string name="click_back_to_exit">Please press again to close warehouse</string>
+    <string name="package_order_status">Package Order Status</string>
+    <string name="cancel_gatepass">Cancel Gatepass</string>
+    <string name="cancel_gatepass_message">Are you sure to cancel this gatepass?</string>
+    <string name="phone_number_not_valid_error">Phone number is not valid</string>
+    <string name="view_consignment">View Consignment</string>
+    <string name="add">Add</string>
+    <string name="deliver">Deliver</string>
+    <string name="warehouse_list_task">warehouse/warehouse_list</string>
+    <string name="running_order_list_task">warehouse/running_orders</string>
+    <string name="permission_required">Permission Required:</string>
+    <string name="request_permission_from_settings">Kindly allow Permission From App Settings</string>
+    <string name="execute_order_task">warehouse/execute_order_info</string>
+    <string name="email_error">Email Id is not present</string>
+    <string name="mail_to">mailto</string>
+    <string name="choose_email_client">Choose an Email client :</string>
+    <string name="last_updated_date">1970-1-1</string>
+    <string name="no_internet_try_later">There is no internet connection right now. Please try again later.</string>
+    <string name="packed_packages_list_task">warehouse/packed_packages</string>
+    <string name="network_error">Please connect to internet</string>
+    <string name="isvid">isvid</string>
+    <string name="isid">isid</string>
+    <string name="iid">iid</string>
+    <string name="qty">qty</string>
+    <string name="oiid">oiid</string>
+    <string name="meaid">meaid</string>
+    <string name="name">name</string>
+    <string name="variation">variation</string>
+    <string name="unit">unit</string>
+    <string name="create_package_task">warehouse/create_package</string>
+    <string name="error_message_create_package">Please add one or more items to create package</string>
+    <string name="Rs">\u20B9</string>
+    <string name="receive_directly">Receive Directly</string>
+    <string name="receive_po">Receive Against PO</string>
+    <string name="add_items">Add Items</string>
+    <string name="select_shipping_company">Select Shipping Company</string>
+    <string name="create_gatepass">Create Gatepass</string>
+    <string name="create">Create</string>
+    <string name="confirm_gatepass">Package Gate-Pass Authentication</string>
+    <string name="confirm">Confirm</string>
+    <string name="package_selection">Package Selection</string>
+    <string name="confirm_gatepass_fragment">Confirm Gatepass</string>
+    <string name="search">Search here..</string>
+    <string name="shipping_form_data">warehouse/fetch_shipping_form_data</string>
+    <string name="task_delivery_user">warehouse/search_delivery_users</string>
+
+    <!-- Manage Consignments -->
+    <string name="fetch_consignments">warehouse/fetch_consignments</string>
+    <string name="iscid">iscid</string>
+    <string name="consignment_info">warehouse/fetch_consignment_info</string>
+    <string name="gatepass_shipping_company_info">warehouse/fetch_package_shipping_companyInfo</string>
+    <string name="create_gatepass_task">warehouse/create_gatepass</string>
+    <string name="fetch_consignment_inventories">warehouse/fetch_receive_consignment_inventories</string>
+    <string name="download_consignment_receipt">warehouse/print_consignment_goods_receipt</string>
+    <string name="download_goods_receipt">Download GRIN</string>
+    <string name="download_receipt_confirm_msg">Are you sure to download?</string>
+    <string name="yes">Yes</string>
+    <string name="no_cancel">No, cancel</string>
+
+    <!-- Manage Packages -->
+    <string name="fetch_packages">warehouse/fetch_packages</string>
+    <string name="packed_packages">warehouse/packed_packages</string>
+    <string name="fetch_shipped_packages">warehouse/fetch_package_shipped</string>
+    <string name="download_invoice_confirm_msg">Are you sure to download invoice?</string>
+    <string name="download_loading_slip_confirm_msg">Are you sure to download loading slip?</string>
+    <string name="download_delivery_challan_confirm_msg">Are you sure to download delivery challan?</string>
+    <string name="download_invoice_task">customer/pending_invoice_print</string>
+    <string name="download_delivery_challan_task">warehouse/print_delivery_challan</string>
+    <string name="download_loading_slip_task">warehouse/print_loading_slip</string>
+    <string name="invoice">invoice</string>
+    <string name="add_file">addfile</string>
+    <string name="challan">challan</string>
+    <string name="gatepass">gatepass</string>
+    <string name="loading_slip">loadingSlip</string>
+    <string name="fetch_package_status_form_data_task">warehouse/fetch_package_status_form_data</string>
+
+    <!-- Receive Consignments -->
+    <string name="fetch_purchase_orders">purchase_order/fetch_purchase_orders</string>
+    <string name="fa_truck">&#xf0d1;</string>
+    <string name="title_activity_poreceive_consignment">Receive Consignment</string>
+    <string name="purchaseOrder_details_title">Purchase Order details</string>
+    <string name="purchaseOrder_details_subtitle">Purchase Order information</string>
+    <string name="vendor_title">Vendor:</string>
+    <string name="authorizedBy_title">Authorized by:</string>
+    <string name="purchase_details">Purchase Details</string>
+    <string name="inputing_purchase_details">You will be inputing purchase details</string>
+    <string name="receive_date_title">Receive Date:</string>
+    <string name="expected_date_title">Expected Date:</string>
+    <string name="invoice_number_title">Invoice Number:</string>
+    <string name="invoice_date_title">Invoice Date:</string>
+    <string name="list_items_consignment_title">List of Items in Consignment</string>
+    <string name="list_items_consignment_subTitle">You will be inputing all items information receiving in this consignment</string>
+    <string name="transportation_details_title">Transportation Details</string>
+    <string name="transportation_details_subtitle">Add transportation vendor details and payment amount</string>
+    <string name="transporter_title">Transporter</string>
+    <string name="weight">Weight</string>
+    <string name="lr_number">LR Number</string>
+    <string name="search_vendor">Search Vendor</string>
+    <string name="vehicle_number">Vehicle Number</string>
+    <string name="fetch_receive_consignment_prefilled_data">warehouse/fetch_receive_consignment_formdata</string>
+    <string name="vendor_search_task">vendor/search_vendor</string>
+    <string name="authorized_user_search_task">warehouse/search_user</string>
+    <string name="quotation_search_item">quotation/search_item</string>
+    <string name="task_products_details">warehouse/fetch_selected_consignment_item_info</string>
+    <string name="task_receive_consignment">warehouse/receive_consignment</string>
+    <string name="back_selection">Back to selection</string>
+    <string name="add_item">Add item</string>
+
+    <!-- Purchase Order -->
+    <string name="vendor_details_title">Vendor Details</string>
+    <string name="vendor_details_subtitle">Details of the vendor</string>
+    <string name="order_details_title">Purchase Order Details</string>
+    <string name="order_details_subtitle">Details of the purchase order</string>
+    <string name="received_details_title">Received Item Details</string>
+    <string name="received_details_subtitle">Details of the ordered items, which are received</string>
+    <string name="consignment_details_title">Consignment Details</string>
+    <string name="consignment_details_subtitle">List of the consignments related to the PO</string>
+    <string name="task_manage_gatepass">warehouse/fetch_gatepass_list</string>
+    <string name="task_cancel_gatepass">warehouse/cancel_gatepass</string>
+    <string name="purOrId">purchaseOrderId</string>
+    <string name="fetch_purchase_order_info">purchase_order/fetch_purchase_order_info</string>
+    <string name="download_gatepass">warehouse/print_gatepass</string>
+    <string name="download_gatepass_confirm_msg">Are you sure to download gatepass?</string>
+    <string name="gatepass_download_title">Download Gatepass</string>
+    <string name="view_packages">View Packages</string>
+    <string name="view_gatepass_list_task">warehouse/fetch_gatepass_info</string>
+    <string name="download_gatepass_invoice_task">customer/pending_invoice_print</string>
+    <string name="customer_info_gatepass_task">warehouse/fetch_package_customer_info</string>
+    <string name="invoice_download_title">Download Invoice</string>
+    <string name="download_gatepass_invoice_confirm_msg">Are you sure to download invoice?</string>
+    <string name="package_history_gatepass_list_task">warehouse/fetch_package_history</string>
+    <string name="receive">Swipe right to receive</string>
+    <string name="pacId">pacid</string>
+    <string name="pacdelgatpacid">pacdelgatpacid</string>
+    <string name="revert_package_task">warehouse/revert_package_delivery</string>
+    <string name="title_activity_change_package_attempt_failed_status">
+        ChangePackageAttemptFailedStatus
+    </string>
+    <string name="task_cancel_package">warehouse/cancel_package</string>
+
+    <string name="change_package_order_status_task">warehouse/change_gatepass_status</string>
+    <string name="reattempt_task">warehouse/package_reAttempt</string>
+    <string name="task_already_created_packages">warehouse/fetch_order_packages</string>
+    <string name="delivery_failed_task">warehouse/package_delivery_failed_submit</string>
+    <string name="something_wrong">Something went wrong</string>
+    <string name="verify_email_to_forgot_password">forgot-password/forgot-password-link</string>
+    <string name="email_link_success">We have sent an email.</string>
+
+
+    <string name="manage_packages_file_upload_task">warehouse/package_file_upload_submit</string>
+    <string name="create_package">Create Package</string>
+    <string name="continue_text">Continue</string>
+    <string name="allot_qty">Allot Quantity</string>
+    <string name="comment">Comment</string>
+    <string name="rejected_qty">Rejected Quantity</string>
+    <string name="rejected_reason">Reason for rejection</string>
+    <string name="btn_go_back">Go to manage packages</string>
+    <string name="running_stock_request_list_task">warehouse/running_stock_request</string>
+    <string name="title_already_created_packages">Already Created Packages</string>
+    <string name="edit_package">Edit Package</string>
+    <string name="add_transporter_name_error">not found</string>
+    <string name="task_transporter_name_search">chkorder/account_ledger_search</string>
+    <string name="fetch_info_for_edit_packages_task">warehouse/edit_package_formData</string>
+    <string name="edit_packages_task">warehouse/edit_package_submit</string>
+    <string name="task_scan_item_info">pos/fetch_barcode_data</string>
+    <string name="create_package_upload_doc_api">warehouse/upload_document_package_submit</string>
+    <string name="task_create_packe_upload_doc_new">warehouse/package_file_upload</string>
+    <string name="allocation">Allocation</string>
+    <string name="task_allocation">warehouse/fetch_consignment_allocations</string>
+    <string name="choose_events_for_manage_consignment_fragment">ChooseEventsForManageConsignmentFragment</string>
+    <string name="task_consumption">warehouse/fetch_consignment_consumption</string>
+    <string name="consumption">Consumption</string>
+    <string name="stock_request_list">Stock Request List</string>
+    <string name="task_stock_request_list">warehouse/fetch_stock_requests</string>
+    <string name="edit_consignment">Edit Consignment</string>
+    <string name="approve_consignment">Approve Consignment</string>
+    <string name="task_uploaded_docs">warehouse/fetch_package_files</string>
+
+</resources>
