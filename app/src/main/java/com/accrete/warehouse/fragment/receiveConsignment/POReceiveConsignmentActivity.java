@@ -240,10 +240,10 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         /*if (flagToShow.equals("stockRequest")) {
             receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
                     this, "stockRequest");*/
-      //  } else {
-            receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
-                    this, "PurchaseOrder");
-       // }
+        //  } else {
+        receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
+                this, "PurchaseOrder");
+        // }
 
         mLayoutManager = new LinearLayoutManager(this);
         itemsRecyclerView.setLayoutManager(mLayoutManager);
@@ -764,7 +764,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         }
 */
         //Vendor Name
-        if(purchaseOrderData.getName()!= null && !purchaseOrderData.getName().isEmpty()){
+        if (purchaseOrderData.getName() != null && !purchaseOrderData.getName().isEmpty()) {
             vendorValueEditText.setText(purchaseOrderData.getName());
             vendorId = purchaseOrderData.getVenid();
         }
@@ -1197,7 +1197,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             editTextHSNCode.setText(consignmentItem.getHsnCode());
             receiveQuantityEdittext.setText(consignmentItem.getReceiveQuantity());
 
-            if (operationType.equals("edit")){
+            if (operationType.equals("edit")) {
                 receiveQuantityEdittext.setText(value);
                 commentEdittext.setText(consignmentItem.getComment());
                 reasonRejectionEdittext.setText(consignmentItem.getReasonRejection());
@@ -1366,12 +1366,16 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
 
         private String getString() {
             // TODO Auto-generated method stub
-
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("invoice", strInvoiceNumber);
                 jsonObject.put("vendor", vendorId);
-                jsonObject.put("purorid", strPurchaseOrderId);
+                if (flagToShow.equals("stockRequest")) {
+                    jsonObject.put("request", purOrId);
+                }else{
+                    jsonObject.put("purorid", strPurchaseOrderId);
+                }
+
                 jsonObject.put("purchase_date", strPurchaseDate);
                 jsonObject.put("chkid", strChkId);
                 jsonObject.put("vendor-transportation-check_new", strTransportationCheckBoxValue);
@@ -1469,9 +1473,17 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
 
             URL obj = null;
             HttpURLConnection con = null;
+            String task;
+
+            if (flagToShow.equals("stockRequest")) {
+                task = context.getString(R.string.task_stock_submit_consignment);
+            } else {
+                task = context.getString(R.string.task_receive_consignment);
+            }
+
             try {
                 obj = new URL(AppPreferences.getLastDomain(context, AppUtils.DOMAIN)
-                        + "?urlq=service" + "&version=1.0&key=123&task=" + context.getString(R.string.task_receive_consignment)
+                        + "?urlq=service" + "&version=1.0&key=123&task=" + task
                         + "&user_id=" + AppPreferences.getUserId(context, AppUtils.USER_ID)
                         + "&access_token=" + AppPreferences.getAccessToken(context, AppUtils.ACCESS_TOKEN));
                 con = (HttpURLConnection) obj.openConnection();

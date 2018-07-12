@@ -21,8 +21,6 @@ public class TransportMode implements Parcelable {
     @SerializedName("modes")
     @Expose
     private List<Mode> modes = null;
-    
-
 
     protected TransportMode(Parcel in) {
         type = in.readString();
