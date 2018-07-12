@@ -930,7 +930,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                         consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
                         consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
                         consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
-                        consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
+                        consignmentItem.setMeasurementUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
                         consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
                         consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
                         if (operationType.equals("edit")) {

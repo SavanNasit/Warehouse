@@ -145,6 +145,11 @@ public class DeliveryFailedFragment extends Fragment implements OutForDeliveryAd
     }
 
     @Override
+    public void onClickUrlToDownload(int position) {
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_attempt_failed, container, false);
         findViews(rootView);

@@ -557,6 +557,22 @@ public interface ApiInterface {
                                        @Query("purorid")
                                                String purOrId);
 
+    @GET("?urlq=service")
+    Call<ApiResponse> fetchStockDetails(@Query("version")
+                                               String version,
+                                       @Query("key")
+                                               String key,
+                                       @Query("task")
+                                               String task,
+                                       @Query("user_id")
+                                               String userid,
+                                       @Query("access_token")
+                                               String accessToken,
+                                       @Query("chkid")
+                                               String chkid,
+                                       @Query("stockreqid")
+                                               String stockReqId);
+
 
     @GET("?urlq=service")
     Call<ApiResponse> cancelGatepass(@Query("version")
@@ -1016,5 +1032,17 @@ public interface ApiInterface {
                                                         String iscid);
 
 
-
+    @GET("?urlq=service")
+    Call<ApiResponse> cancelPackageStock(@Query("version")
+                                            String version,
+                                    @Query("key")
+                                            String key,
+                                    @Query("task")
+                                            String task,
+                                    @Query("user_id")
+                                            String userid,
+                                    @Query("access_token")
+                                            String accessToken,
+                                    @Query("pacid")
+                                            String pacid);
 }

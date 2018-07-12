@@ -144,6 +144,12 @@ public class ReAttemptFragment extends Fragment implements OutForDeliveryAdapter
             textViewEmpty.setText("No file selected");
         }
     }
+
+    @Override
+    public void onClickUrlToDownload(int position) {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_attempt_failed, container, false);

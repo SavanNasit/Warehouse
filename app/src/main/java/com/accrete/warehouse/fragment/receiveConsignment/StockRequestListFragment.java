@@ -460,6 +460,7 @@ public class StockRequestListFragment extends Fragment implements
         // Toast.makeText(getActivity(), "Print coming soon..", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), POReceiveConsignmentActivity.class);
         intent.putExtra(getString(R.string.purOrId), stockRequestLists.get(position).getStockreqid());
+        intent.putExtra(getString(R.string.flag_stock),"stockRequest");
         startActivity(intent);
         stockRequestListAdapter.notifyDataSetChanged();
     }

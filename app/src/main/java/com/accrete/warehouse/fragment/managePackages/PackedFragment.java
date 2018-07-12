@@ -110,23 +110,60 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     //Remove file/document from list
     @Override
     public void onClickedDeleteBtn(int position) {
-        if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
-            viewUploadDocuments.remove(position);
-            documentUploaderAdapter.notifyDataSetChanged();
-            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
-            textViewEmpty.setVisibility(View.GONE);
+        try {
             if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                if (uploadDocumentList.size() >= position) {
+                    uploadDocumentList.remove(position);
+                } else if (fileUploadList.size() >= position) {
+                    fileUploadList.remove(position - uploadDocumentList.size());
+                }
+                viewUploadDocuments.remove(position);
+
+                documentUploaderAdapter.notifyDataSetChanged();
                 dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
                 textViewEmpty.setVisibility(View.GONE);
+                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                    dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+                    textViewEmpty.setVisibility(View.GONE);
+                } else {
+                    dialogUploadDocRecyclerView.setVisibility(View.GONE);
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                    textViewEmpty.setText("No file selected");
+                }
             } else {
                 dialogUploadDocRecyclerView.setVisibility(View.GONE);
                 textViewEmpty.setVisibility(View.VISIBLE);
                 textViewEmpty.setText("No file selected");
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClickUrlToDownload(int position) {
+     //   Toast.makeText(getActivity(), "Please help", Toast.LENGTH_SHORT).show();
+      if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+           // alertDialog.dismiss();
+            //Download a file and display in phone's download folder
+              Environment
+                      .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                      .mkdirs();
+              downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+              String url = viewUploadDocuments.get(position).getFileUrl();
+              Uri uri = Uri.parse(url);
+              DownloadManager.Request request = null;
+
+
+              request = new DownloadManager.Request(uri)
+                      .setTitle(viewUploadDocuments.get(position).getName() + "")
+                      .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                              viewUploadDocuments.get(position).getName() + "")
+                      .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+              downloadManager.enqueue(request);
         } else {
-            dialogUploadDocRecyclerView.setVisibility(View.GONE);
-            textViewEmpty.setVisibility(View.VISIBLE);
-            textViewEmpty.setText("No file selected");
+            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -548,7 +585,13 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 .setCancelable(false);
         dialogUploadDoc = builder.create();
         dialogUploadDoc.setCanceledOnTouchOutside(false);
-
+        if (viewUploadDocuments.size() > 0) {
+            viewUploadDocuments.clear();
+        } else if (uploadDocumentList.size() > 0) {
+            uploadDocumentList.clear();
+        } else if (fileUploadList.size() > 0) {
+            fileUploadList.clear();
+        }
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
         dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);
         btnAddImageView = (TextView) dialogView.findViewById(R.id.select_file_textView);
@@ -563,13 +606,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
 
-        if (viewUploadDocuments.size() > 0) {
-            viewUploadDocuments.clear();
-        }else if (uploadDocumentList.size()>0){
-            uploadDocumentList.clear();
-        }else if (fileUploadList.size()>0){
-            fileUploadList.clear();
-        }
 
         downloadUploadedDocs(pacId, position);
 
@@ -969,7 +1005,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         uploadDocument.setFileUrl(selectedFilePath);
         uploadDocument.setType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
         fileUploadList.add(uploadDocument);
-        viewUploadDocuments.addAll(fileUploadList);
+        viewUploadDocuments.add(uploadDocument);
         documentUploaderAdapter.notifyDataSetChanged();
 
         if (viewUploadDocuments.size() > 0) {
@@ -1153,23 +1189,9 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                         if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
                             // dialogUploadDoc.dismiss();
                             uploadDocumentList.addAll(apiResponse.getData().getPackageFiles());
-                            viewUploadDocuments.addAll(uploadDocumentList);
+                            viewUploadDocuments.addAll(apiResponse.getData().getPackageFiles());
                             documentUploaderAdapter.notifyDataSetChanged();
-                            //Download a file and display in phone's download folder
-                        /*    Environment
-                                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                                    .mkdirs();
-                            downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
-                            String url = apiResponse.getData().getFilename();
-                            Uri uri = Uri.parse(url);
-                            DownloadManager.Request request = null;
-                            request = new DownloadManager.Request(uri)
-                                        .setTitle(apiResponse.getData().getPackageFiles().get(postionForDownload).getActualName() + "" + "")
-                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                                                apiResponse.getData().getPackageFiles().get(postionForDownload).getActualName()  + "" + "")
-                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
-                            downloadManager.enqueue(request);*/
                         } else {
                             Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         }

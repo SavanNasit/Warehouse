@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PackageFile;
-import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.utils.Constants;
@@ -32,7 +31,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -56,32 +54,29 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
     private TextView textViewCancel;
 
     public FilesUploadingAsyncTask(Activity activity, List<PackageFile> documentList, String pacId,
-                                   AlertDialog alertDialog, ImageView imageViewLoader, TextView btnCancel,List<PackageFile> oldDocuments) {
+                                   AlertDialog alertDialog, ImageView imageViewLoader, TextView btnCancel, List<PackageFile> oldDocuments) {
         this.activity = activity;
         this.uploadDocumentList = documentList;
         this.pacId = pacId;
         this.alertDialog = alertDialog;
         this.imageView = imageViewLoader;
-        this.textViewCancel= btnCancel;
+        this.textViewCancel = btnCancel;
         this.oldDocumentList = oldDocuments;
-
     }
-
 
     private String mainFunction() {
         MultipartUtility utility;
         try {
 
             JSONArray jsonArrayOldFiles = new JSONArray();
-
-                Log.e("packageUploadDocDetails", String.valueOf(oldDocumentList.size()));
-                if (oldDocumentList != null && oldDocumentList.size() > 0) {
-                    for (int i = 0; i < oldDocumentList.size(); i++) {
-                        JSONObject jsonObjectUploadDocDetails = new JSONObject();
-                        jsonObjectUploadDocDetails.put("id", oldDocumentList.get(i).getPacfid());
-                        jsonArrayOldFiles.put(jsonObjectUploadDocDetails);
-                    }
+            Log.e("packageUploadDocDetails", String.valueOf(oldDocumentList.size()));
+            if (oldDocumentList != null && oldDocumentList.size() > 0) {
+                for (int i = 0; i < oldDocumentList.size(); i++) {
+                    JSONObject jsonObjectUploadDocDetails = new JSONObject();
+                    jsonObjectUploadDocDetails.put("id", oldDocumentList.get(i).getPacfid());
+                    jsonArrayOldFiles.put(jsonObjectUploadDocDetails);
                 }
+            }
 
             utility = new MultipartUtility(new URL("http://" + AppPreferences.getLastDomain(activity, AppUtils.LAST_DOMAIN)
                     + "/?urlq=service" + "&version=" + Constants.version
@@ -90,19 +85,23 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
                     + "&user_id=" + AppPreferences.getUserId(activity, AppUtils.USER_ID)
                     + "&pacid=" + pacId
                     + "&access_token=" + AppPreferences.getAccessToken(activity, AppUtils.ACCESS_TOKEN)));
-        //    utility.addFormField("pacid", pacId);
-            utility.addFormField("old_files", String.valueOf(jsonArrayOldFiles));
+            //    utility.addFormField("pacid", pacId);
+            Log.d("old file size", String.valueOf(jsonArrayOldFiles.length()));
 
-
+            JSONObject jsonObjectOldFiles = new JSONObject();
+            jsonObjectOldFiles.put("old_files",jsonArrayOldFiles);
+            utility.addFormField("data", jsonObjectOldFiles);
 
             for (int i = 0; i < uploadDocumentList.size(); i++) {
-                utility.addFilePart("files[]", new File(uploadDocumentList.get(i).getFileUrl()));
+                Log.d("file size", uploadDocumentList.get(i).getFileUrl());
+                utility.addFilePart("files[]", new File(uploadDocumentList.get(i).getFileUrl())) ;
             }
 
             byte[] response = utility.finish();
             Log.d("result1", new String(response) + " " + utility.url);
 
             return new String(response);
+
         } catch (IOException ex) {
             Toast.makeText(activity, "Upload Failed! Please try again", Toast.LENGTH_SHORT).show();
             ex.printStackTrace();
@@ -118,6 +117,7 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
         }
 
     }
+
 
     @Override
     protected void onPreExecute() {
@@ -137,16 +137,26 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
         // dismiss progress dialog and update ui
         Log.d("result", result);
 
+        if (uploadDocumentList.size() > 0) {
+            uploadDocumentList.clear();
+        } else if (oldDocumentList.size() > 0) {
+            oldDocumentList.clear();
+        }
+
         try {
             JSONObject jsonObject = new JSONObject(result);
             Log.d("result", result);
             boolean status = jsonObject.getBoolean("success");
+
             if (status) {
+
                 Toast.makeText(activity, jsonObject.getString("message") + "", Toast.LENGTH_SHORT).show();
                 if (alertDialog != null && alertDialog.isShowing()) {
                     alertDialog.dismiss();
                 }
+
             } else {
+
                 Toast.makeText(activity, jsonObject.getString("message") + "", Toast.LENGTH_SHORT).show();
                 if (alertDialog != null && alertDialog.isShowing()) {
                     alertDialog.dismiss();
@@ -156,38 +166,38 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
             if (imageView != null && imageView.getVisibility() == View.VISIBLE) {
                 imageView.setVisibility(View.GONE);
             }
+
             //Enable Touch Back
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             textViewCancel.setEnabled(true);
+
         } catch (Exception e) {
+
             e.printStackTrace();
 
             if (imageView != null && imageView.getVisibility() == View.VISIBLE) {
                 imageView.setVisibility(View.GONE);
             }
+
             //Enable Touch Back
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             textViewCancel.setEnabled(true);
+
         }
 
     }
 
     public static class MultipartUtility {
-
         private static final Logger log = Logger.getLogger(MultipartUtility.class
                 .getSimpleName());
-
         private static final String CRLF = "\r\n";
         private static final String CHARSET = "UTF-8";
-
         private static final int CONNECT_TIMEOUT = 50000;
         private static final int READ_TIMEOUT = 50000;
-
         private final HttpURLConnection connection;
         private final OutputStream outputStream;
         private final PrintWriter writer;
         private final String boundary;
-
         // for log formatting only
         private final URL url;
         private final long start;
@@ -214,12 +224,12 @@ public class FilesUploadingAsyncTask extends AsyncTask<String, String, String> {
                     true);
         }
 
-        public void addFormField(final String name, final String value) {
+        public void addFormField(final String name, final JSONObject value) {
             writer.append("--").append(boundary).append(CRLF)
                     .append("Content-Disposition: form-data; name=\"").append(name)
                     .append("\"").append(CRLF)
                     .append("Content-Type: text/plain; charset=").append(CHARSET)
-                    .append(CRLF).append(CRLF).append(value).append(CRLF);
+                    .append(CRLF).append(CRLF).append(value.toString()).append(CRLF);
         }
 
         public void addFilePart(final String fieldName, final File uploadFile)

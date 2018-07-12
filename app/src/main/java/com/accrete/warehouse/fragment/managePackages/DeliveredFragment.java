@@ -509,6 +509,11 @@ public class DeliveredFragment extends Fragment implements OutForDeliveryAdapter
         }
     }
 
+    @Override
+    public void onClickUrlToDownload(int position) {
+
+    }
+
     public void askStoragePermission(int position, String type) {
         if (checkPermissionWithRationale(getActivity(), new PackedAgainstStockFragment(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, REQUEST_CODE_ASK_STORAGE_PERMISSIONS)) {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

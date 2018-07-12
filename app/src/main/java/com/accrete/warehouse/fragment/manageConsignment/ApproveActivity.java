@@ -937,7 +937,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                         consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
                         consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
                         consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
-                        consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
+                        consignmentItem.setMeasurementUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
                         consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
                         consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
                         if (operationType.equals("edit")) {

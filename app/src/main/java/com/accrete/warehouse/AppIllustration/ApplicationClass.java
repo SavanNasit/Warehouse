@@ -50,7 +50,7 @@ public class ApplicationClass extends MultiDexApplication implements Application
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        Fabric.with(this, new Crashlytics());
+       // Fabric.with(this, new Crashlytics());
         /*Crashlytics crashlyticsKit = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build();
