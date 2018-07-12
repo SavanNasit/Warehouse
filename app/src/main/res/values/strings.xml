@@ -234,4 +234,7 @@
     <string name="fetch_stock_receive_consignment_prefilled_data">warehouse/fetch_running_stock_request_receive_item_form_data</string>
     <string name="flag_stock">flagStock</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
