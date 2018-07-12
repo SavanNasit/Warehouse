@@ -32,14 +32,6 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
     private String type;
     private String strUnit;
 
-    public ReceiveConsignmentItemsAdapter(Activity activity, List<ConsignmentItem> consignmentItemList,
-                                          ReceiveConsignmentItemsAdapterListener listener, String type,List<ItemList> itemLists) {
-        this.activity = activity;
-        this.consignmentItemList = consignmentItemList;
-        this.listener = listener;
-        this.type = type;
-        this.itemLists = itemLists;
-    }
 
     public ReceiveConsignmentItemsAdapter(Activity activity, List<ConsignmentItem> consignmentItemList, ReceiveConsignmentItemsAdapterListener listener, String type) {
         this.activity = activity;
@@ -172,12 +164,7 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
 
     @Override
     public int getItemCount() {
-        if(type.equals("stockRequest")){
-            return itemLists.size();
-        }else{
-            return consignmentItemList.size();
-        }
-
+        return consignmentItemList.size();
     }
 
     public int getItemViewType(int position) {
