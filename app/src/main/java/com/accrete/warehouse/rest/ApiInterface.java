@@ -28,7 +28,8 @@ public interface ApiInterface {
             @Query("key") String key,
             @Query("task") String task,
             @Query("email") String email,
-            @Query("password") String password
+            @Query("password") String password,
+            @Query("app_flag") String flag
     );
 
     @GET("?urlq=service")
@@ -559,19 +560,19 @@ public interface ApiInterface {
 
     @GET("?urlq=service")
     Call<ApiResponse> fetchStockDetails(@Query("version")
-                                               String version,
-                                       @Query("key")
-                                               String key,
-                                       @Query("task")
-                                               String task,
-                                       @Query("user_id")
-                                               String userid,
-                                       @Query("access_token")
-                                               String accessToken,
-                                       @Query("chkid")
-                                               String chkid,
-                                       @Query("stockreqid")
-                                               String stockReqId);
+                                                String version,
+                                        @Query("key")
+                                                String key,
+                                        @Query("task")
+                                                String task,
+                                        @Query("user_id")
+                                                String userid,
+                                        @Query("access_token")
+                                                String accessToken,
+                                        @Query("chkid")
+                                                String chkid,
+                                        @Query("stockreqid")
+                                                String stockReqId);
 
 
     @GET("?urlq=service")
@@ -1004,45 +1005,71 @@ public interface ApiInterface {
                                               String type);
 
 
-
     @GET("?urlq=service")
     Call<ApiResponse> getAllocationConsignments(@Query("version")
-                                                  String version,
-                                          @Query("key")
-                                                  String key,
-                                          @Query("task")
-                                                  String task,
-                                          @Query("user_id")
-                                                  String userid,
-                                          @Query("access_token")
-                                                  String accessToken,
-                                          @Query("chkid")
-                                                  String chkid,
-                                          @Query("last_fetch")
-                                                  String lastFetch,
-                                          @Query("traversal")
-                                                  String traversal,
-                                          @Query("search")
-                                                  String search,
-                                          @Query("start_date")
-                                                  String startDate,
-                                          @Query("end_date")
-                                                  String endDate,
+                                                        String version,
+                                                @Query("key")
+                                                        String key,
+                                                @Query("task")
+                                                        String task,
+                                                @Query("user_id")
+                                                        String userid,
+                                                @Query("access_token")
+                                                        String accessToken,
+                                                @Query("chkid")
+                                                        String chkid,
+                                                @Query("last_fetch")
+                                                        String lastFetch,
+                                                @Query("traversal")
+                                                        String traversal,
+                                                @Query("search")
+                                                        String search,
+                                                @Query("start_date")
+                                                        String startDate,
+                                                @Query("end_date")
+                                                        String endDate,
                                                 @Query("iscid")
                                                         String iscid);
 
 
     @GET("?urlq=service")
     Call<ApiResponse> cancelPackageStock(@Query("version")
-                                            String version,
-                                    @Query("key")
-                                            String key,
-                                    @Query("task")
-                                            String task,
-                                    @Query("user_id")
-                                            String userid,
-                                    @Query("access_token")
-                                            String accessToken,
-                                    @Query("pacid")
-                                            String pacid);
+                                                 String version,
+                                         @Query("key")
+                                                 String key,
+                                         @Query("task")
+                                                 String task,
+                                         @Query("user_id")
+                                                 String userid,
+                                         @Query("access_token")
+                                                 String accessToken,
+                                         @Query("pacid")
+                                                 String pacid);
+
+    @GET("?urlq=service")
+    Call<ApiResponse> getToBeApprovedConsignmentLists(@Query("version")
+                                                              String version,
+                                                      @Query("key")
+                                                              String key,
+                                                      @Query("task")
+                                                              String task,
+                                                      @Query("user_id")
+                                                              String userid,
+                                                      @Query("access_token")
+                                                              String accessToken,
+                                                      @Query("chkid")
+                                                              String chkid,
+                                                      @Query("last_fetch")
+                                                              String lastFetch,
+                                                      @Query("traversal")
+                                                              String traversal,
+                                                      @Query("search")
+                                                              String search,
+                                                      @Query("start_date")
+                                                              String startDate,
+                                                      @Query("end_date")
+                                                              String endDate,
+                                                      @Query("status")
+                                                              String status);
+
 }

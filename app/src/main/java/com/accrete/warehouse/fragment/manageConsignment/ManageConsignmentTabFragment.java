@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.utils.AppPreferences;
+import com.accrete.warehouse.utils.AppUtils;
 import com.accrete.warehouse.widgets.SmartFragmentStatePagerAdapter;
 
 import java.util.ArrayList;
@@ -143,7 +145,11 @@ public class ManageConsignmentTabFragment extends Fragment {
         toBeApprovedConsignmentFragment.setArguments(bundle);
 
         String[] title_arr;
-        title_arr = new String[]{"All Consignments", "To Be Approved"};
+        if (AppPreferences.getBoolean(getActivity(), AppUtils.CONSIGNMENT_APPROVE_PERMISSION)) {
+            title_arr = new String[]{"All Consignments", "To Be Approved"};
+        } else {
+            title_arr = new String[]{"All Consignments"};
+        }
 
 
         for (int i = 0; i < title_arr.length; i++) {

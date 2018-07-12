@@ -78,26 +78,9 @@ public class Data {
     @SerializedName("packages")
     @Expose
     private List<AlreadyCreatedPackages> packages = null;
-
-    public List<AlreadyCreatedPackages> getPackages() {
-        return packages;
-    }
-
-    public void setPackages(List<AlreadyCreatedPackages> packages) {
-        this.packages = packages;
-    }
-
     @SerializedName("pacid")
     @Expose
     private String pacid;
-
-    public String getPacid() {
-        return pacid;
-    }
-
-    public void setPacid(String pacid) {
-        this.pacid = pacid;
-    }
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -113,18 +96,15 @@ public class Data {
     @SerializedName("maskconfig")
     @Expose
     private List<String> maskconfig = null;
-
     @SerializedName("waid")
     @Expose
     private String waid;
     @SerializedName("running_orders")
     @Expose
     private List<RunningOrder> runningOrders = null;
-
     @SerializedName("running_order_count")
     @Expose
     private String runningOrderCount;
-
     // TODO Both have same type of data so we are using same Model class for both
     @SerializedName("packageShippedData")
     @Expose
@@ -237,6 +217,37 @@ public class Data {
     @SerializedName("orderData")
     @Expose
     private List<OrderData> orderData = null;
+    //TODO Added on 12th July 2k18
+    @SerializedName("permission")
+    @Expose
+    private List<Permission> permission = null;
+    @SerializedName("profile")
+    @Expose
+    private ProfileInfo profile;
+
+    public List<AlreadyCreatedPackages> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<AlreadyCreatedPackages> packages) {
+        this.packages = packages;
+    }
+
+    public String getPacid() {
+        return pacid;
+    }
+
+    public void setPacid(String pacid) {
+        this.pacid = pacid;
+    }
+
+    public List<Permission> getPermission() {
+        return permission;
+    }
+
+    public void setPermission(List<Permission> permission) {
+        this.permission = permission;
+    }
 
     public List<OrderData> getOrderData() {
         return orderData;
@@ -269,10 +280,6 @@ public class Data {
     public void setProfile(ProfileInfo profile) {
         this.profile = profile;
     }
-
-    @SerializedName("profile")
-    @Expose
-    private ProfileInfo profile;
 
     public List<User> getUsers() {
         return users;
@@ -658,6 +665,7 @@ public class Data {
     public OrderData getItemInfo() {
         return itemInfo;
     }
+
     public void setItemInfo(OrderData itemInfo) {
         this.itemInfo = itemInfo;
     }
