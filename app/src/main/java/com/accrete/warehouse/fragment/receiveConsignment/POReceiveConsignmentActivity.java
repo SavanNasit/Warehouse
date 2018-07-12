@@ -239,10 +239,10 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         //Items RecyclerView
         if (flagToShow.equals("stockRequest")) {
             receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
-                    this, "stockRequest",itemLists);
+                    this, "stockRequest");
         } else {
             receiveConsignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
-                    this, "PurchaseOrder",itemLists);
+                    this, "PurchaseOrder");
         }
 
         mLayoutManager = new LinearLayoutManager(this);
@@ -492,11 +492,14 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 final ApiResponse apiResponse = (ApiResponse) response.body();
                 try {
                     if (apiResponse.getSuccess()) {
-                        setDataForStock(apiResponse.getData().getPurchaseData());
+                        setData(apiResponse.getData().getPurchaseOrderData(),
+                                apiResponse.getData().getPurchaseDetails(),
+                                apiResponse.getData().getTransportationData(),
+                                apiResponse.getData().getIsExistTransportationDetails());
 
-                        for (final ItemList itemList : apiResponse.getData().getItemList()) {
-                            if (itemList != null) {
-                                itemLists.add(itemList);
+                        for (final ConsignmentItem consignmentItem : apiResponse.getData().getConsignmentItems()) {
+                            if (consignmentItem != null) {
+                                consignmentItemList.add(consignmentItem);
                             }
                         }
 
