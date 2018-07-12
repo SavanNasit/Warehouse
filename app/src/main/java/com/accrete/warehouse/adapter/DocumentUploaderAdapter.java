@@ -1,6 +1,8 @@
 package com.accrete.warehouse.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,8 +41,25 @@ public class DocumentUploaderAdapter extends RecyclerView.Adapter<DocumentUpload
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        PackageFile packageFile = documentList.get(position);
+        final PackageFile packageFile = documentList.get(position);
         holder.docNameTextView.setText("" + packageFile.getName());
+        if(packageFile.getSize()!=null && !packageFile.getSize().isEmpty()) {
+            holder.docNameTextView.setTextColor(Color.BLUE);
+            holder.docNameTextView.setPaintFlags(holder.docNameTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        }else{
+            holder.docNameTextView.setTextColor(Color.BLACK);
+        }
+
+
+        holder.docNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(packageFile.getSize()!=null && !packageFile.getSize().isEmpty()) {
+                    listener.onClickUrlToDownload(position);
+                }
+            }
+        });
         applyClickEvents(holder, position);
     }
 
@@ -58,14 +77,17 @@ public class DocumentUploaderAdapter extends RecyclerView.Adapter<DocumentUpload
             }
         });
 
+
+
     }
 
     public interface DocAdapterListener {
         void onClickedDeleteBtn(int position);
+        void onClickUrlToDownload(int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView docNameTextView;
+        public TextView docNameTextView;
         private ImageView deleteImageView;
 
         public MyViewHolder(View view) {

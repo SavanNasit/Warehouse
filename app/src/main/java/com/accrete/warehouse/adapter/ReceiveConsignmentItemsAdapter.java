@@ -3,6 +3,7 @@ package com.accrete.warehouse.adapter;
 import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.fragment.manageConsignment.EditConsignmentActivity;
+import com.accrete.warehouse.fragment.receiveConsignment.POReceiveConsignmentActivity;
 import com.accrete.warehouse.model.ConsignmentItem;
+import com.accrete.warehouse.model.ItemList;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -22,13 +26,14 @@ import java.util.List;
 
 public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<ReceiveConsignmentItemsAdapter.MyViewHolder> {
     private List<ConsignmentItem> consignmentItemList;
+    private List<ItemList> itemLists;
     private Activity activity;
     private ReceiveConsignmentItemsAdapterListener listener;
     private String type;
     private String strUnit;
 
-    public ReceiveConsignmentItemsAdapter(Activity activity, List<ConsignmentItem> consignmentItemList,
-                                          ReceiveConsignmentItemsAdapterListener listener, String type) {
+
+    public ReceiveConsignmentItemsAdapter(Activity activity, List<ConsignmentItem> consignmentItemList, ReceiveConsignmentItemsAdapterListener listener, String type) {
         this.activity = activity;
         this.consignmentItemList = consignmentItemList;
         this.listener = listener;
@@ -37,9 +42,7 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_receive_consignment_item, parent, false);
-        return new MyViewHolder(itemView);
+        return null;
     }
 
     @Override
@@ -60,94 +63,88 @@ public class ReceiveConsignmentItemsAdapter extends RecyclerView.Adapter<Receive
     }
 
     private void applyClickEvents(MyViewHolder holder, final int position) {
+        DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
         final ConsignmentItem consignmentItem = consignmentItemList.get(position);
 
-        DecimalFormat formatter = new DecimalFormat("#,##,##,##,###.##");
-
-        if (consignmentItem.getUnit() == null || consignmentItem.getUnit().isEmpty()) {
-            consignmentItem.setUnit("PCS");
-        }
-
-        if (consignmentItem.getName() != null && !consignmentItem.getName().isEmpty()) {
-            holder.receiveConsignmentItemName.setText(consignmentItem.getName().trim());
-        } else {
-            holder.receiveConsignmentItemName.setText("Item Name : NA");
-
-        }
-
-        if (consignmentItem.getInternalCode() != null && !consignmentItem.getInternalCode().isEmpty()) {
-            holder.receiveConsignmentItemSkuCode.setText("SKU Code : " + consignmentItem.getInternalCode());
-        } else {
-            holder.receiveConsignmentItemSkuCode.setText("SKU Code : NA");
-        }
-
-        if (consignmentItem.getOrderQuantity() != null && !consignmentItem.getOrderQuantity().isEmpty()) {
-            holder.receiveConsignmentItemOrderedQty.setText("Ordered Qty : " + formatter.format(ParseDouble(consignmentItem.getOrderQuantity())) + " " + consignmentItem.getUnit());
-        } else {
-            holder.receiveConsignmentItemOrderedQty.setText("Ordered Qty : NA");
-        }
-
-        if (consignmentItem.getReceiveQuantity() != null && !consignmentItem.getReceiveQuantity().isEmpty()) {
-            holder.receiveConsignmentItemReceivedQty.setText("Received Qty : " + formatter.format(ParseDouble(consignmentItem.getReceiveQuantity())) + " " + consignmentItem.getUnit());
-        } else {
-            holder.receiveConsignmentItemReceivedQty.setText("Received Qty : NA");
-        }
-
-        if (consignmentItem.getComment() != null && !consignmentItem.getComment().isEmpty()) {
-            holder.receiveConsignmentItemComment.setText(consignmentItem.getComment());
-            holder.receiveConsignmentItemCommentLayout.setVisibility(View.VISIBLE);
-            holder.receiveConsignmentItemComment.setVisibility(View.VISIBLE);
-        } else {
-            holder.receiveConsignmentItemCommentLayout.setVisibility(View.GONE);
-            holder.receiveConsignmentItemComment.setVisibility(View.GONE);
-        }
-
-        if (consignmentItem.getExpiryDate() != null && !consignmentItem.getExpiryDate().isEmpty()) {
-            holder.receiveConsignmentItemExpDate.setText(consignmentItem.getExpiryDate());
-            holder.receiveConsignmentItemExpDate.setVisibility(View.VISIBLE);
-        } else {
-            holder.receiveConsignmentItemExpDate.setVisibility(View.GONE);
-        }
-
-
-        if (consignmentItem.getRejectedQuantity() != null && !consignmentItem.getRejectedQuantity().isEmpty()) {
-            holder.receiveConsignmentItemRejectedQuantity.setText(formatter.format(ParseDouble(consignmentItem.getRejectedQuantity())) + " " + consignmentItem.getUnit());
-            holder.receiveConsignmentItemRejectQuantityLayout.setVisibility(View.VISIBLE);
-            holder.receiveConsignmentItemRejectedQuantity.setVisibility(View.VISIBLE);
-            holder.receiveConsignmentItemReasonOfRejection.setText(consignmentItem.getReasonRejection());
-            holder.receiveConsignmentItemReasonOfRejection.setVisibility(View.VISIBLE);
-            holder.receiveConsignmentItemReasonOfRejectionLayout.setVisibility(View.VISIBLE);
-
-        } else {
-            holder.receiveConsignmentItemRejectedQuantity.setVisibility(View.GONE);
-            holder.receiveConsignmentItemRejectQuantityLayout.setVisibility(View.GONE);
-            holder.receiveConsignmentItemReasonOfRejection.setVisibility(View.GONE);
-            holder.receiveConsignmentItemReasonOfRejectionLayout.setVisibility(View.GONE);
-
-        }
-
-
-        // holder.priceEdittext.setText(formatter.format(ParseDouble(consignmentItem.getUnitPrice())));
-
-
-        //   holder.unitEdittext.setText(consignmentItem.getUnit());
-
-        if (type.equals("Directly")) {
-            // holder.receiveConsignmentItemSkuCode.setVisibility(View.GONE);
-            holder.receiveConsignmentItemOrderedQty.setVisibility(View.GONE);
-            holder.receiveConsignmentItemOrderedQty.setVisibility(View.GONE);
-
-        } else {
-            // holder.receiveConsignmentItemSkuCode.setVisibility(View.VISIBLE);
-            holder.receiveConsignmentItemOrderedQty.setVisibility(View.VISIBLE);
-        }
-
-        for (int i = 0; i > consignmentItem.getMeasurements().size(); i++) {
-            if (consignmentItem.getMeasurements().get(i).getSelected()) {
-                strUnit = consignmentItem.getMeasurements().get(i).getName();
+            if (consignmentItem.getMeasurements().get(0).getName() == null || consignmentItem.getMeasurements().get(0).getName() .isEmpty()) {
+                consignmentItem.setMeasurementUnit(consignmentItem.getMeasurements().get(0).getName());
             }
-        }
 
+            if (consignmentItem.getName() != null && !consignmentItem.getName().isEmpty()) {
+                holder.receiveConsignmentItemName.setText(consignmentItem.getName().trim());
+            } else {
+                holder.receiveConsignmentItemName.setText("Item Name : NA");
+            }
+
+            if (consignmentItem.getInternalCode() != null && !consignmentItem.getInternalCode().isEmpty()) {
+                holder.receiveConsignmentItemSkuCode.setText("SKU Code : " + consignmentItem.getInternalCode());
+            } else {
+                holder.receiveConsignmentItemSkuCode.setText("SKU Code : NA");
+            }
+
+            if (consignmentItem.getOrderQuantity() != null && !consignmentItem.getOrderQuantity().isEmpty()) {
+                holder.receiveConsignmentItemOrderedQty.setText("Ordered Qty : " + formatter.format(ParseDouble(consignmentItem.getOrderQuantity())) + " " + consignmentItem.getMeasurements().get(0).getName());
+            } else {
+                holder.receiveConsignmentItemOrderedQty.setText("Ordered Qty : NA");
+            }
+            if (consignmentItem.getReceiveQuantity() != null && !consignmentItem.getReceiveQuantity().isEmpty()) {
+                holder.receiveConsignmentItemReceivedQty.setText("Received Qty : " + formatter.format(ParseDouble(consignmentItem.getReceiveQuantity())) + " " + consignmentItem.getMeasurements().get(0).getName());
+            } else {
+                holder.receiveConsignmentItemReceivedQty.setText("Received Qty : NA");
+            }
+
+            if (consignmentItem.getComment() != null && !consignmentItem.getComment().isEmpty()) {
+                holder.receiveConsignmentItemComment.setText(consignmentItem.getComment());
+                holder.receiveConsignmentItemCommentLayout.setVisibility(View.VISIBLE);
+                holder.receiveConsignmentItemComment.setVisibility(View.VISIBLE);
+            } else {
+                holder.receiveConsignmentItemCommentLayout.setVisibility(View.GONE);
+                holder.receiveConsignmentItemComment.setVisibility(View.GONE);
+            }
+
+            if (consignmentItem.getExpiryDate() != null && !consignmentItem.getExpiryDate().isEmpty()) {
+                holder.receiveConsignmentItemExpDate.setText(consignmentItem.getExpiryDate());
+                holder.receiveConsignmentItemExpDate.setVisibility(View.VISIBLE);
+            } else {
+                holder.receiveConsignmentItemExpDate.setVisibility(View.GONE);
+            }
+
+
+            if (consignmentItem.getRejectedQuantity() != null && !consignmentItem.getRejectedQuantity().isEmpty()) {
+                holder.receiveConsignmentItemRejectedQuantity.setText(formatter.format(ParseDouble(consignmentItem.getRejectedQuantity())) + " " + consignmentItem.getMeasurements().get(0).getName());
+                holder.receiveConsignmentItemRejectQuantityLayout.setVisibility(View.VISIBLE);
+                holder.receiveConsignmentItemRejectedQuantity.setVisibility(View.VISIBLE);
+                holder.receiveConsignmentItemReasonOfRejection.setText(consignmentItem.getReasonRejection());
+                holder.receiveConsignmentItemReasonOfRejection.setVisibility(View.VISIBLE);
+                holder.receiveConsignmentItemReasonOfRejectionLayout.setVisibility(View.VISIBLE);
+            } else {
+                holder.receiveConsignmentItemRejectedQuantity.setVisibility(View.GONE);
+                holder.receiveConsignmentItemRejectQuantityLayout.setVisibility(View.GONE);
+                holder.receiveConsignmentItemReasonOfRejection.setVisibility(View.GONE);
+                holder.receiveConsignmentItemReasonOfRejectionLayout.setVisibility(View.GONE);
+            }
+
+            //holder.priceEdittext.setText(formatter.format(ParseDouble(consignmentItem.getUnitPrice())));
+            //holder.unitEdittext.setText(consignmentItem.getUnit());
+
+            if (type.equals("Directly")) {
+                // holder.receiveConsignmentItemSkuCode.setVisibility(View.GONE);
+                holder.receiveConsignmentItemOrderedQty.setVisibility(View.GONE);
+                holder.receiveConsignmentItemOrderedQty.setVisibility(View.GONE);
+            } else if(type.equals("stockRequest")){
+                //holder.receiveConsignmentItemSkuCode.setVisibility(View.VISIBLE);
+                //holder.receiveConsignmentItemOrderedQty.setVisibility(View.VISIBLE);
+                holder.receiveConsignmentItemOrderedQty.setVisibility(View.VISIBLE);
+            }else {
+                holder.receiveConsignmentItemOrderedQty.setVisibility(View.VISIBLE);
+            }
+
+            for (int i = 0; i > consignmentItem.getMeasurements().size(); i++) {
+                if (consignmentItem.getMeasurements().get(i).getSelected()) {
+                    strUnit = consignmentItem.getMeasurements().get(i).getName();
+                }
+            }
+    
         holder.removeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

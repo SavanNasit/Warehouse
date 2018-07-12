@@ -153,6 +153,15 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 && getIntent().getStringExtra("flagToManage").equals("true")) {
             Fragment managePackagesFragment = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, managePackagesFragment).commitAllowingStateLoss();
+            if(getIntent().getStringExtra("flagToRedirect").equals("runningOrder")) {
+               Bundle bundleData = new Bundle();
+               bundleData.putString("flagToRedirect","runningOrder");
+                managePackagesFragment.setArguments(bundleData);
+            }else{
+                Bundle bundleData = new Bundle();
+                bundleData.putString("flagToRedirect","stockRequest");
+                managePackagesFragment.setArguments(bundleData);
+            }
         }
 
         if (getIntent().getStringExtra("flagToManageGatepass") != null

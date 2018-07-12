@@ -258,6 +258,11 @@ public class AttemptFailedFragment extends Fragment implements OutForDeliveryAda
         }
     }
 
+    @Override
+    public void onClickUrlToDownload(int position) {
+
+    }
+
     private void findViews(View rootView) {
         attemptFailedRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.attempt_failed_refresh_layout);
         attemptFailedRecyclerView = (RecyclerView) rootView.findViewById(R.id.attempt_failed_recycler_view);

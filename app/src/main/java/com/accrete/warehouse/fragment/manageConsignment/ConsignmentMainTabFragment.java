@@ -127,7 +127,6 @@ public class ConsignmentMainTabFragment extends Fragment {
     }
 
 
-
     public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {
         private static final String KEY_TITLE = "fragment_title";
         private static final String KEY_FRAGMENT = "fragment";

@@ -153,6 +153,7 @@ public class EditConsignmentActivity extends AppCompatActivity implements View.O
     private Dialog dialog, productsDialog, authorizedByDialog;
     private ArrayList<Vendor> vendorArrayList = new ArrayList<>();
     private ArrayList<User> userArrayList = new ArrayList<>();
+    private ArrayList<ItemList> itemLists = new ArrayList<>();
     private String strDate;
     private AutoCompleteTextView vendorSearchAutoCompleteTextView, itemSearchAutoCompleteTextView, authorizedBySearchAutoCompleteTextView;
     private RecyclerView vendorsRecyclerView, itemsRecyclerView, itemsListRecyclerView, authorizedByRecyclerView;
@@ -940,7 +941,7 @@ public class EditConsignmentActivity extends AppCompatActivity implements View.O
                         consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
                         consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
                         consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
-                        consignmentItem.setUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
+                        consignmentItem.setMeasurementUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
                         consignmentItem.setUnitId(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getId());
                         consignmentItem.setReceiveQuantity(receiveQuantityEdittext.getText().toString().trim());
                         if (operationType.equals("edit")) {

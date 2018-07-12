@@ -230,5 +230,8 @@
     <string name="edit_consignment">Edit Consignment</string>
     <string name="approve_consignment">Approve Consignment</string>
     <string name="task_uploaded_docs">warehouse/fetch_package_files</string>
+    <string name="task_cancel_stock_package">warehouse/cancel_packed_request</string>
+    <string name="fetch_stock_receive_consignment_prefilled_data">warehouse/fetch_running_stock_request_receive_item_form_data</string>
+    <string name="flag_stock">flagStock</string>
 
 </resources>

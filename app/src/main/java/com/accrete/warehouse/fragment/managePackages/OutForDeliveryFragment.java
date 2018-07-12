@@ -259,6 +259,11 @@ public class OutForDeliveryFragment extends Fragment implements DocumentUploader
     }
 
     @Override
+    public void onClickUrlToDownload(int position) {
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_out_for_delivery, container, false);
         findViews(rootView);

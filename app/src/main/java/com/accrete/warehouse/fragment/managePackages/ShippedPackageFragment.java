@@ -744,6 +744,11 @@ private TextView textViewEmpty;
         }
     }
 
+    @Override
+    public void onClickUrlToDownload(int position) {
+
+    }
+
     public void addDocument(String selectedFilePath, String fileName) {
         PackageFile uploadDocument = new PackageFile();
         uploadDocument.setActualName(fileName);

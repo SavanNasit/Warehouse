@@ -37,7 +37,7 @@ import java.util.TimerTask;
 
 public class ManagePackagesFragment extends Fragment {
     private static final String KEY_TITLE = "ManagePackages";
-    private ViewPager viewPagerExecute;
+    public ViewPager viewPagerExecute;
     private TabLayout tabLayoutExecute;
     private ViewPagerAdapter viewPagerAdapter;
 
@@ -224,6 +224,14 @@ public class ManagePackagesFragment extends Fragment {
 
             }
         });
+
+        if(getArguments().getString("flagToRedirect")!=null &&
+                !getArguments().getString("flagToRedirect").isEmpty() &&
+                getArguments().getString("flagToRedirect").equals("runningOrders")){
+           viewPagerExecute.setCurrentItem(0);
+        }else {
+            viewPagerExecute.setCurrentItem(1);
+        }
     }
 
     private void refreshFragment(String stringSearchText) {

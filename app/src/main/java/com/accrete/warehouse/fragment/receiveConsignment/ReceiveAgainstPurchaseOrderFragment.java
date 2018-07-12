@@ -457,6 +457,7 @@ public class ReceiveAgainstPurchaseOrderFragment extends Fragment implements Pur
         if(!purchaseOrderList.get(position).getPurorsid().equals("3")) {
             Intent intent = new Intent(getActivity(), POReceiveConsignmentActivity.class);
             intent.putExtra(getString(R.string.purOrId), purchaseOrderList.get(position).getPurorid());
+            intent.putExtra(getString(R.string.flag_stock),"po");
             startActivity(intent);
             purchaseOrderAdapter.notifyDataSetChanged();
         }else {

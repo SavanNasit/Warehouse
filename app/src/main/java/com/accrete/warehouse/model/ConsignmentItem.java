@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class ConsignmentItem {
+
     @SerializedName("isvid")
     @Expose
     private String isvid;
@@ -22,6 +23,9 @@ public class ConsignmentItem {
     @SerializedName("type")
     @Expose
     private String type;
+    @SerializedName("hsn_code")
+    @Expose
+    private String hsnCode;
     @SerializedName("internal_code")
     @Expose
     private String internalCode;
@@ -31,49 +35,36 @@ public class ConsignmentItem {
     @SerializedName("receive_quantity")
     @Expose
     private String receiveQuantity;
-    @SerializedName("measurements")
+    @SerializedName("box_qty_str")
     @Expose
-    private List<Measurement> measurements = null;
-    @SerializedName("box_qnty")
+    private String boxQtyStr;
+    @SerializedName("box_quantity")
     @Expose
-    private String boxQnty;
-    @SerializedName("unit")
-    @Expose
-    private String unit;
-    @SerializedName("unit_price")
-    @Expose
-    private String unitPrice;
-
-
-    @SerializedName("hsn_code")
-    @Expose
-    private String hsnCode;
-    public String getMeasurementUnit() {
-        return measurementUnit;
-    }
-
-    public void setMeasurementUnit(String measurementUnit) {
-        this.measurementUnit = measurementUnit;
-    }
-
+    private Integer boxQuantity;
     @SerializedName("measurement_unit")
     @Expose
     private String measurementUnit;
-
+    @SerializedName("convertsionRate")
+    @Expose
+    private String convertsionRate;
+    @SerializedName("measurements")
+    @Expose
+    private List<Measurement> measurements = null;
+    @SerializedName("unit_price")
+    @Expose
+    private String unitPrice;
+    @SerializedName("barcode_mandatory")
+    @Expose
+    private String barcodeMandatory;
 
     private String price;
-    private String unitId;
-    private String comment;
-    private String expiryDate;
-    private String rejectedQuantity;
-    private String reasonRejection;
 
-    public String getUnitPrice() {
-        return unitPrice;
+    public String getPrice() {
+        return price;
     }
 
-    public void setUnitPrice(String unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getUnitId() {
@@ -82,14 +73,6 @@ public class ConsignmentItem {
 
     public void setUnitId(String unitId) {
         this.unitId = unitId;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public String getComment() {
@@ -124,21 +107,12 @@ public class ConsignmentItem {
         this.reasonRejection = reasonRejection;
     }
 
-    public String getBoxQnty() {
-        return boxQnty;
-    }
+    private String unitId;
+    private String comment;
+    private String expiryDate;
+    private String rejectedQuantity;
+    private String reasonRejection;
 
-    public void setBoxQnty(String boxQnty) {
-        this.boxQnty = boxQnty;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
 
     public String getIsvid() {
         return isvid;
@@ -172,6 +146,14 @@ public class ConsignmentItem {
         this.type = type;
     }
 
+    public String getHsnCode() {
+        return hsnCode;
+    }
+
+    public void setHsnCode(String hsnCode) {
+        this.hsnCode = hsnCode;
+    }
+
     public String getInternalCode() {
         return internalCode;
     }
@@ -196,6 +178,38 @@ public class ConsignmentItem {
         this.receiveQuantity = receiveQuantity;
     }
 
+    public String getBoxQtyStr() {
+        return boxQtyStr;
+    }
+
+    public void setBoxQtyStr(String boxQtyStr) {
+        this.boxQtyStr = boxQtyStr;
+    }
+
+    public Integer getBoxQuantity() {
+        return boxQuantity;
+    }
+
+    public void setBoxQuantity(Integer boxQuantity) {
+        this.boxQuantity = boxQuantity;
+    }
+
+    public String getMeasurementUnit() {
+        return measurementUnit;
+    }
+
+    public void setMeasurementUnit(String measurementUnit) {
+        this.measurementUnit = measurementUnit;
+    }
+
+    public String getConvertsionRate() {
+        return convertsionRate;
+    }
+
+    public void setConvertsionRate(String convertsionRate) {
+        this.convertsionRate = convertsionRate;
+    }
+
     public List<Measurement> getMeasurements() {
         return measurements;
     }
@@ -203,13 +217,21 @@ public class ConsignmentItem {
     public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
     }
-    public String getHsnCode() {
-        return hsnCode;
+
+    public String getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setHsnCode(String hsnCode) {
-        this.hsnCode = hsnCode;
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
+    public String getBarcodeMandatory() {
+        return barcodeMandatory;
+    }
+
+    public void setBarcodeMandatory(String barcodeMandatory) {
+        this.barcodeMandatory = barcodeMandatory;
+    }
 
 }
