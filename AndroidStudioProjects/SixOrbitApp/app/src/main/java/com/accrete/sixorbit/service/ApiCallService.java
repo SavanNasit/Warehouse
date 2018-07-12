@@ -475,6 +475,13 @@ public class ApiCallService extends IntentService {
                             protected Object doInBackground(Object... params) {
                                 if (apiResponse != null && apiResponse.getData().getLead() != null) {
                                     for (final Lead lead : apiResponse.getData().getLead()) {
+                                        //TODO Update Lead Status Id in Follow Ups
+                                        if (lead.getLeasid() != null &&
+                                                !lead.getLeasid().isEmpty() &&
+                                                lead.getLeasid().equals("4")) {
+                                            db.updateFollowUpsLeadStatus(lead.getLeaid(), "4");
+                                        }
+
                                         lead.setLeadSync("true");
                                         int localLeadId, localContacts;
                                         if (lead.getLeaid() != null) {

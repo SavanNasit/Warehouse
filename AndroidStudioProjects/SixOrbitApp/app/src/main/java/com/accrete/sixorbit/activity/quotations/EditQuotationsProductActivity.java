@@ -23,6 +23,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -271,6 +272,8 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
     private Spinner outletSpinner;
     private boolean isOutledtEnabled;
     private ArrayList<Outlet> outletArrayList = new ArrayList<>();
+    private LinearLayout layoutEmailTemplate;
+    private LinearLayout layoutSmsTemplate;
 
     private void updateExtensiveTaxChargesValue() {
         for (int i = 0; i < preChargesListArrayList.size(); i++) {
@@ -526,6 +529,8 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
         cardViewOutlet = (CardView) findViewById(R.id.cardView_outlet);
         outletTitleTextView = (TextView) findViewById(R.id.outlet_title_textView);
         outletSpinner = (Spinner) findViewById(R.id.outlet_spinner);
+        layoutSmsTemplate = (LinearLayout) findViewById(R.id.layout_sms_template);
+        layoutEmailTemplate = (LinearLayout) findViewById(R.id.layout_email_template);
 
         //TODO - Hiding layout of Customer's Info & decreasing top margin of quote's layout in case of editing Quotations
         cardViewInnerCustomer.setVisibility(View.VISIBLE);
@@ -985,8 +990,6 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
                 case R.id.addItem_textView:
                     addItemTextView.setEnabled(false);
 
-                    openProductSearchDialog();
-
                     //Enable Again
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -994,10 +997,20 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
                             addItemTextView.setEnabled(true);
                         }
                     }, 3000);
+                    openProductSearchDialog();
+
                     break;
                 case R.id.save_textView:
                     //Disable Button
                     saveTextView.setEnabled(false);
+                    //Enable Button
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            saveTextView.setEnabled(true);
+                        }
+                    }, 4000);
+
                     if (getPostData()) {
                         status = NetworkUtil.getConnectivityStatusString(this);
                         if (!status.equals(getString(R.string.not_connected_to_internet))) {
@@ -1007,33 +1020,24 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
                             Toast.makeText(EditQuotationsProductActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
                         }
                     }
-                    //Enable Button
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            saveTextView.setEnabled(true);
-                        }
-                    }, 4000);
+
                     break;
                 case R.id.add_search_quotation_item_show_sms_preview:
                     smsPreviewTextView.setEnabled(false);
-
-                    flag = "SMS";
-                    getPrefillDataForPreview();
-
-                    //Enable Again
+//Enable Again
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             smsPreviewTextView.setEnabled(true);
                         }
                     }, 4000);
+                    flag = "SMS";
+                    getPrefillDataForPreview();
+
+
                     break;
                 case R.id.add_search_quotation_item_show_email_preview:
                     emailPreviewTextView.setEnabled(false);
-                    flag = "Email";
-                    getPrefillDataForPreview();
-
                     //Enable Again
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -1041,6 +1045,10 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
                             emailPreviewTextView.setEnabled(true);
                         }
                     }, 4000);
+                    flag = "Email";
+                    getPrefillDataForPreview();
+
+
                     break;
             }
         } catch (Exception e) {
@@ -1079,7 +1087,7 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
     public boolean getPostData() {
 
         //TODO Added on 25th June
-        if (outletSpinner.getVisibility() == View.VISIBLE) {
+        if (cardViewOutlet.getVisibility() == View.VISIBLE) {
             if (outletSpinner.getSelectedItemPosition() == 0) {
                 Toast.makeText(EditQuotationsProductActivity.this, "Please select outlet first.",
                         Toast.LENGTH_SHORT).show();
@@ -1764,7 +1772,30 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
                                 cardViewOutlet.setVisibility(View.GONE);
                             }
                         } else {
+                            outletTitleTextView.setVisibility(View.GONE);
+                            outletSpinner.setVisibility(View.GONE);
                             cardViewOutlet.setVisibility(View.GONE);
+                        }
+
+                        //TODO Added on 12th July
+                        if (smsTemplateDataArrayList != null && smsTemplateDataArrayList.size() > 0) {
+                            layoutSmsTemplate.setVisibility(View.VISIBLE);
+                            if (smsCheckBox.isChecked()) {
+                                smsPreviewTextView.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            layoutSmsTemplate.setVisibility(View.GONE);
+                            smsPreviewTextView.setVisibility(View.GONE);
+                        }
+
+                        if (emailTemplateArrArrayList != null && emailTemplateArrArrayList.size() > 0) {
+                            layoutEmailTemplate.setVisibility(View.VISIBLE);
+                            if (emailCheckBox.isChecked()) {
+                                emailPreviewTextView.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            layoutEmailTemplate.setVisibility(View.GONE);
+                            emailPreviewTextView.setVisibility(View.GONE);
                         }
 
                     }
@@ -4230,7 +4261,7 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
 
     private void getBitmap(final String photoPath) {
         //updateUi(true);
-        new AsyncTask<Void, Void, Bitmap>() {
+        AsyncTaskCompat.executeParallel(new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... voids) {
                 return BitmapUtils.decodeSampledBitmapFromFile(photoPath, getResources().getDimensionPixelOffset(R.dimen._70sdp),
@@ -4251,7 +4282,7 @@ public class EditQuotationsProductActivity extends AppCompatActivity implements 
                     Toast.makeText(EditQuotationsProductActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
                 }
             }
-        };
+        });
     }
 
     private void updateItemsImage(Bitmap bmp, Dialog dialog) {

@@ -23,6 +23,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -324,6 +325,8 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
     private Bitmap bitmap;
     private boolean isConvertFromQuotation;
     private ImageView imageViewLoaderProductsDialog;
+    private LinearLayout layoutEmailTemplate;
+    private LinearLayout layoutSmsTemplate;
 
     @Override
     protected void onStop() {
@@ -670,6 +673,8 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
         saveTextView = (TextView) findViewById(R.id.save_textView);
         orderDealerPriceCheckBox = (CheckBox) findViewById(R.id.order_dealer_price_checkBox);
         imageViewLoader = (ImageView) findViewById(R.id.imageView_loader);
+        layoutSmsTemplate = (LinearLayout) findViewById(R.id.layout_sms_template);
+        layoutEmailTemplate = (LinearLayout) findViewById(R.id.layout_email_template);
 
         //Hide Edit button for customer in this case
         changeAddCustomerTextView.setEnabled(false);
@@ -1482,7 +1487,6 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
         return null;
     }
 
-
     private void setInputFiltersForAdditionalDiscount() {
         try {
             if (additionalDiscountTypeSpinner.getSelectedItemPosition() == 0) {
@@ -1975,7 +1979,7 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
 
     private void getBitmap(final String photoPath) {
         //updateUi(true);
-        new AsyncTask<Void, Void, Bitmap>() {
+        AsyncTaskCompat.executeParallel(new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... voids) {
                 return BitmapUtils.decodeSampledBitmapFromFile(photoPath, getResources().getDimensionPixelOffset(R.dimen._70sdp),
@@ -1996,7 +2000,7 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
                     Toast.makeText(EditOrderActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
                 }
             }
-        };
+        });
     }
 
     private void updateItemsImage(Bitmap bmp, Dialog dialog) {
@@ -2363,7 +2367,6 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
     private void dialogAddItems(Activity activity, final String sourceType, final ItemData itemData,
                                 final int positionToEdit) {
         productsDialog = new Dialog(EditOrderActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
@@ -2585,10 +2588,10 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
                                     .getValue()))) / 100))
                             .setScale(2, RoundingMode.HALF_UP).toPlainString());
 
-                    if (Constants.roundTwoDecimals(Constants.ParseDouble(discountEdittext.getText().toString().trim())) >
+                    /*if (Constants.roundTwoDecimals(Constants.ParseDouble(discountEdittext.getText().toString().trim())) >
                             Constants.roundTwoDecimals(Constants.ParseDouble(amountEditText.getText().toString().trim()))) {
                         discountEdittext.setText("0");
-                    }
+                    }*/
                 }
 
                 @Override
@@ -2799,10 +2802,10 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
                                         .getValue()))) / 100))
                                 .setScale(2, RoundingMode.HALF_UP).toPlainString());
 
-                        if (Constants.roundTwoDecimals(Constants.ParseDouble(discountEdittext.getText().toString().trim())) >
+                       /* if (Constants.roundTwoDecimals(Constants.ParseDouble(discountEdittext.getText().toString().trim())) >
                                 Constants.roundTwoDecimals(Constants.ParseDouble(amountEditText.getText().toString().trim()))) {
                             discountEdittext.setText("0");
-                        }
+                        }*/
 
                     } catch (NumberFormatException ex) {
                         discountEdittext.setText("");
@@ -2898,10 +2901,10 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
                                 (ParseDouble(taxArrayList.get(taxTypeSpinner.getSelectedItemPosition())
                                         .getValue()))) / 100))
                                 .setScale(2, RoundingMode.HALF_UP).toPlainString());
-                        if (Constants.roundTwoDecimals(Constants.ParseDouble(discountEdittext.getText().toString().trim())) >
+                        /*if (Constants.roundTwoDecimals(Constants.ParseDouble(discountEdittext.getText().toString().trim())) >
                                 Constants.roundTwoDecimals(Constants.ParseDouble(amountEditText.getText().toString().trim()))) {
                             discountEdittext.setText("0");
-                        }
+                        }*/
                         //}
                     } catch (NumberFormatException ex) {
                         priceEdittext.setText("");
@@ -4524,6 +4527,27 @@ public class EditOrderActivity extends AppCompatActivity implements View.OnClick
                         }
 
                         cardViewInnerQuotOptions.setVisibility(View.VISIBLE);
+
+                        //TODO Added on 12th July
+                        if (smsTemplateDataArrayList != null && smsTemplateDataArrayList.size() > 0) {
+                            layoutSmsTemplate.setVisibility(View.VISIBLE);
+                            if (smsCheckBox.isChecked()) {
+                                showSMSPreview.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            layoutSmsTemplate.setVisibility(View.GONE);
+                            showSMSPreview.setVisibility(View.GONE);
+                        }
+
+                        if (emailTemplateArrArrayList != null && emailTemplateArrArrayList.size() > 0) {
+                            layoutEmailTemplate.setVisibility(View.VISIBLE);
+                            if (emailCheckBox.isChecked()) {
+                                showEmailPreview.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            layoutEmailTemplate.setVisibility(View.GONE);
+                            showEmailPreview.setVisibility(View.GONE);
+                        }
                     }
                     //Order items are in warehouse
                     else if (apiResponse.getSuccessCode().equals("10001")) {

@@ -2119,7 +2119,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         if (leadId != null && leadId.equals("1")) {
-            selectQuery = selectQuery + "(" + KEY_FOLLOWUP_LEAD_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != ''" + ")";
+            selectQuery = selectQuery + "(" + KEY_FOLLOWUP_LEAD_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != ''" +
+                    "AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " != '' AND " +
+                    KEY_FOLLOWUP_LEAD_STATUS_ID + " NOT IN(3,4)" + ")" ;
         }
 
         if (enid != null && enid.equals("2")) {
@@ -2187,7 +2189,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     "( " + KEY_FOLLOW_UP_ENQUIRY_ID + " IS NOT NULL AND " + KEY_FOLLOW_UP_ENQUIRY_ID + " != '' )"
                     + " OR " + "( " + KEY_FOLLOW_UP_CUSTOMER_ORDER_ID + " IS NOT NULL AND " +
                     KEY_FOLLOW_UP_CUSTOMER_ORDER_ID + " != '' ))" + " AND "
-                    + " ((" + KEY_FOLLOWUP_LEAD_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != '' )" +
+                    + " ((" + KEY_FOLLOWUP_LEAD_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != ''" +
+                    "AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " != '' AND " +
+                    KEY_FOLLOWUP_LEAD_STATUS_ID + " NOT IN(3,4)" + ")" +
                     " OR (" + KEY_FOLLOW_UP_CUSTOMER_ORDER_ID + " IS NOT NULL AND " + KEY_FOLLOW_UP_CUSTOMER_ORDER_ID + " != ''  AND " +
                     KEY_FOLLOWUP_CHKORDER_STATUS_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_CHKORDER_STATUS_ID + " != '' AND " +
                     KEY_FOLLOWUP_CHKORDER_STATUS_ID + " NOT IN(5,6,7,10,11) )" +
@@ -2302,7 +2306,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String selectQuery = null;
             selectQuery = "SELECT  * FROM " + TABLE_FOLLOWUPS + " WHERE " + KEY_FOSID + "=" + type +
                     " AND date(datetime(scheduled_date)) = date('now')" +
-                    " AND ((" + KEY_FOLLOW_TYPE_STATUS_ID + " NOT IN(3,4) AND " + KEY_FOLLOWUP_LEAD_ID +
+                    " AND ((" + KEY_FOLLOWUP_LEAD_STATUS_ID + " NOT IN(3,4) AND " + KEY_FOLLOWUP_LEAD_ID +
                     " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != '' )" +
                     " OR (" + KEY_FOLLOW_UP_CUSTOMER_ORDER_ID + " IS NOT NULL AND " + KEY_FOLLOW_UP_CUSTOMER_ORDER_ID + " != '' AND " +
                     KEY_FOLLOWUP_CHKORDER_STATUS_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_CHKORDER_STATUS_ID + " != '' AND " +
@@ -2714,14 +2718,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(KEY_SERVICE, syncCheck.getService());
             values.put(KEY_CALL_TIME, syncCheck.getCallTime());
-            db.update(TABLE_API_SYNC, values, KEY_SERVICE + "=" +
-                    syncCheck.getService(), null);
+            /*db.update(TABLE_API_SYNC, values, KEY_SERVICE + "=" +
+                    syncCheck.getService(), null);*/
 
-        /*String sql = "UPDATE " + TABLE_API_SYNC + " SET " +
-                KEY_SERVICE + " = '" + syncCheck.getService() + "', " +
-                KEY_CALL_TIME + " = '" + syncCheck.getCallTime() + "' " +
-                " WHERE " + KEY_SERVICE + " = '" + syncCheck.getService() + "' ";
-        db.execSQL(sql);*/
+            String sql = "UPDATE " + TABLE_API_SYNC + " SET " +
+                    KEY_SERVICE + " = '" + syncCheck.getService() + "', " +
+                    KEY_CALL_TIME + " = '" + syncCheck.getCallTime() + "' " +
+                    " WHERE " + KEY_SERVICE + " = '" + syncCheck.getService() + "' ";
+            db.execSQL(sql);
             if (db != null && db.isOpen()) {
                 db.close();
             }
@@ -3452,7 +3456,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_FOLLOWUPS + " WHERE "
                 + " (( " + KEY_FOLLOW_TYPE_STATUS_ID + " NOT IN(3,4) AND " + KEY_FOLLOWUP_LEAD_ID
-                + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != '' )" + " OR " +
+                + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != '' " +
+                "AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " != '' AND " +
+                KEY_FOLLOWUP_LEAD_STATUS_ID + " NOT IN(3,4)" + ")" + " OR " +
                 "( " + KEY_FOLLOW_UP_QUOTATION_ID + " IS NOT NULL AND " + KEY_FOLLOW_UP_QUOTATION_ID + " != '' )" + " OR " +
                 "( " + KEY_FOLLOW_UP_ENQUIRY_ID + " IS NOT NULL AND " + KEY_FOLLOW_UP_ENQUIRY_ID + " != '' )"
                 + " OR " + "( " + KEY_FOLLOW_UP_CUSTOMER_ORDER_ID + " IS NOT NULL AND " +
@@ -5165,8 +5171,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(KEY_LEAD_CONTACTS_DESIGNATION, contacts.getDesignation());
             values.put(KEY_LEAD_CONTACTS_PHONE_NUMBER, contacts.getPhoneNo());
             values.put(KEY_LEAD_CONTACTS_EMAIL, contacts.getEmail());
-            db.insert(TABLE_CONTACTS_DETAILS, null, values);
-            db.close();
+            if (!checkCustomersContactPersonResult(contacts.getCodeid())) {
+                db.insert(TABLE_CONTACTS_DETAILS, null, values);
+            }
+        //    db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -5186,12 +5194,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } else {
                 exists = false;
             }
-            cursor.close();
+           // cursor.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (sqldb != null && sqldb.isOpen()) {
-                sqldb.close();
+            //    sqldb.close();
             }
         }
         return exists;
@@ -5360,6 +5368,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         // return followUps list
         return followUpList;
+    }
+
+
+    //TODO - Created on 11th July
+    //Update Lead Status in Follow Up
+    public void updateFollowUpsLeadStatus(String leadId, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_FOLLOWUP_LEAD_STATUS_ID, status);
+        db.update(TABLE_FOLLOWUPS, values, KEY_FOLLOWUP_LEAD_ID + "=" + leadId, null);
     }
 
 }

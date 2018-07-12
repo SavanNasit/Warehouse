@@ -39,6 +39,7 @@
         android:layout_weight="1"
         android:fontFamily="sans-serif-condensed"
         android:gravity="left"
+        android:paddingRight="@dimen/_3sdp"
         android:textColor="@color/black"
         android:visibility="gone" />
 

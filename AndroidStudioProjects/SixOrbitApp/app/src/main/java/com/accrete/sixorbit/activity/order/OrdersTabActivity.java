@@ -294,87 +294,91 @@ public class OrdersTabActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.imageView_info_edit:
-                if (AppPreferences.getBoolean(OrdersTabActivity.this, AppUtils.ISADMIN) ||
-                        databaseHandler.checkUsersPermission(getString(R.string.order_edit_permission))) {
-                    Intent intent = new Intent(OrdersTabActivity.this, EditOrderActivity.class);
-                    intent.putExtra(getString(R.string.order_id), orderId);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(OrdersTabActivity.this, "You have no permission to edit any order.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.layout_id_followUp:
-                String chkOSId = ((OrderDetailsMainTabFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.container)).orderDetails.getChkosid();
-
-                if (!AppPreferences.getBoolean(OrdersTabActivity.this, AppUtils.ISADMIN) &&
-                        !databaseHandler.checkUsersPermission(getString(R.string.followup_schedule_permission))) {
-                    Toast.makeText(OrdersTabActivity.this, "You have no permission to add any follow up.", Toast.LENGTH_SHORT).show();
-                } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("5")) {
-                    Toast.makeText(OrdersTabActivity.this,
-                            "Sorry, this order is delivered so you can't add follow up.",
-                            Toast.LENGTH_SHORT).show();
-                } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("6")) {
-                    Toast.makeText(OrdersTabActivity.this,
-                            "Sorry, this order is rejected so you can't add follow up.",
-                            Toast.LENGTH_SHORT).show();
-                } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("10")) {
-                    Toast.makeText(OrdersTabActivity.this,
-                            "Sorry, this order is cancelled so you can't add follow up.",
-                            Toast.LENGTH_SHORT).show();
-                } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("11")) {
-                    Toast.makeText(OrdersTabActivity.this,
-                            "Sorry, this order is in deleted so you can't add follow up.",
-                            Toast.LENGTH_SHORT).show();
-                } else if (orderId != null && !orderId.isEmpty() && !orderId.equals("null")) {
-                    if (alertDialog == null || !alertDialog.isShowing()) {
-                        dialogAddFollowUp();
-                    }
-                } else {
-                    Toast.makeText(OrdersTabActivity.this, "Quotation is not updated on server. Please check your internet connection", Toast.LENGTH_SHORT).show();
-                }
-
-                break;
-            case R.id.layout_id_call:
-                layoutIdCall.setEnabled(false);
-                if (mobileNumber != null && !mobileNumber.isEmpty()) {
-                    if (Build.VERSION.SDK_INT >= 23) {
-                        callIntent();
+        try {
+            switch (v.getId()) {
+                case R.id.imageView_info_edit:
+                    if (AppPreferences.getBoolean(OrdersTabActivity.this, AppUtils.ISADMIN) ||
+                            databaseHandler.checkUsersPermission(getString(R.string.order_edit_permission))) {
+                        Intent intent = new Intent(OrdersTabActivity.this, EditOrderActivity.class);
+                        intent.putExtra(getString(R.string.order_id), orderId);
+                        startActivity(intent);
                     } else {
-                        callAction();
+                        Toast.makeText(OrdersTabActivity.this, "You have no permission to edit any order.",
+                                Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(OrdersTabActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        layoutIdCall.setEnabled(true);
-                    }
-                }, 3000);
+                    break;
+                case R.id.layout_id_followUp:
+                    String chkOSId = ((OrderDetailsMainTabFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.container)).orderDetails.getChkosid();
 
-                break;
-            case R.id.layout_id_share:
-                layoutIdShare.setEnabled(false);
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
-                if (sharingTexts != null) {
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-                } else {
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "");
-                }
-                startActivity(Intent.createChooser(shareIntent, "Share"));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        layoutIdShare.setEnabled(true);
+                    if (!AppPreferences.getBoolean(OrdersTabActivity.this, AppUtils.ISADMIN) &&
+                            !databaseHandler.checkUsersPermission(getString(R.string.followup_schedule_permission))) {
+                        Toast.makeText(OrdersTabActivity.this, "You have no permission to add any follow up.", Toast.LENGTH_SHORT).show();
+                    } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("5")) {
+                        Toast.makeText(OrdersTabActivity.this,
+                                "Sorry, this order is delivered so you can't add follow up.",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("6")) {
+                        Toast.makeText(OrdersTabActivity.this,
+                                "Sorry, this order is rejected so you can't add follow up.",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("10")) {
+                        Toast.makeText(OrdersTabActivity.this,
+                                "Sorry, this order is cancelled so you can't add follow up.",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (chkOSId != null && !chkOSId.isEmpty() && chkOSId.equals("11")) {
+                        Toast.makeText(OrdersTabActivity.this,
+                                "Sorry, this order is in deleted so you can't add follow up.",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (orderId != null && !orderId.isEmpty() && !orderId.equals("null")) {
+                        if (alertDialog == null || !alertDialog.isShowing()) {
+                            dialogAddFollowUp();
+                        }
+                    } else {
+                        Toast.makeText(OrdersTabActivity.this, "Quotation is not updated on server. Please check your internet connection", Toast.LENGTH_SHORT).show();
                     }
-                }, 3000);
-                break;
+
+                    break;
+                case R.id.layout_id_call:
+                    layoutIdCall.setEnabled(false);
+                    if (mobileNumber != null && !mobileNumber.isEmpty()) {
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            callIntent();
+                        } else {
+                            callAction();
+                        }
+                    } else {
+                        Toast.makeText(OrdersTabActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
+                    }
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutIdCall.setEnabled(true);
+                        }
+                    }, 3000);
+
+                    break;
+                case R.id.layout_id_share:
+                    layoutIdShare.setEnabled(false);
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
+                    if (sharingTexts != null) {
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                    } else {
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "");
+                    }
+                    startActivity(Intent.createChooser(shareIntent, "Share"));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutIdShare.setEnabled(true);
+                        }
+                    }, 3000);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -884,7 +888,7 @@ public class OrdersTabActivity extends AppCompatActivity implements View.OnClick
         }
 
         //strContactPerson = contactPersonAutoComplete.getText().toString();
-        if (strContactPerson.equals(getString(R.string.nothing_selected))) {
+        if (contactPersonAutoComplete.getText().toString().equals(getString(R.string.nothing_selected))) {
             strContactPerson = "";
         }
 

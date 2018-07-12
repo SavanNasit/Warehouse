@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.sixorbit.R;
-import com.accrete.sixorbit.fragment.Drawer.followups.FollowUpsFragment;
 import com.accrete.sixorbit.fragment.Drawer.customer.CustomerDetailTabFragment;
 import com.accrete.sixorbit.fragment.Drawer.customer.CustomerInvoiceTabFragment;
 import com.accrete.sixorbit.fragment.Drawer.customer.CustomerOrderFragment;
@@ -35,6 +34,7 @@ import com.accrete.sixorbit.fragment.Drawer.customer.CustomerPendingInvoiceTabFr
 import com.accrete.sixorbit.fragment.Drawer.customer.CustomerQuotationFragment;
 import com.accrete.sixorbit.fragment.Drawer.customer.CustomerWalletTabFragment;
 import com.accrete.sixorbit.fragment.Drawer.customer.CustomersQuotationMainFragment;
+import com.accrete.sixorbit.fragment.Drawer.followups.FollowUpsFragment;
 import com.accrete.sixorbit.interfaces.PassMobileListener;
 import com.accrete.sixorbit.interfaces.PassUsersDetailListener;
 import com.accrete.sixorbit.widgets.SmartFragmentStatePagerAdapter;
@@ -75,65 +75,73 @@ public class CustomerMainActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        if (v == layoutIdCall) {
-            layoutIdCall.setEnabled(false);
-            if (mobileNumber != null && !mobileNumber.isEmpty()) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    callIntent();
+        try {
+            if (v == layoutIdCall) {
+                layoutIdCall.setEnabled(false);
+                if (mobileNumber != null && !mobileNumber.isEmpty()) {
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        callIntent();
+                    } else {
+                        callAction();
+                    }
                 } else {
-                    callAction();
+                    Toast.makeText(CustomerMainActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(CustomerMainActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
-            }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    layoutIdCall.setEnabled(true);
-                }
-            }, 3000);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        layoutIdCall.setEnabled(true);
+                    }
+                }, 3000);
 
-        } else if (v == layoutIdEmail) {
-            layoutIdEmail.setEnabled(false);
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-            emailIntent.setData(Uri.parse("mailto:"));
-            if (emailAddress != null && !emailAddress.isEmpty()) {
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+            } else if (v == layoutIdEmail) {
+                layoutIdEmail.setEnabled(false);
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:"));
+                if (emailAddress != null && !emailAddress.isEmpty()) {
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+                }
+                //emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
+                //emailIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                startActivity(Intent.createChooser(emailIntent, "Send email"));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        layoutIdEmail.setEnabled(true);
+                    }
+                }, 3000);
+            } else if (v == layoutIdShare) {
+                layoutIdShare.setEnabled(false);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
+                if (sharingTexts != null) {
+                    intent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                } else {
+                    intent.putExtra(Intent.EXTRA_TEXT, "");
+                }
+                startActivity(Intent.createChooser(intent, "Share"));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        layoutIdShare.setEnabled(true);
+                    }
+                }, 3000);
+            } else if (v == imageViewInfoEdit) {
+                imageViewInfoEdit.setEnabled(false);
+                Intent intent = new Intent(CustomerMainActivity.this, AddCustomerActivity.class);
+                intent.putExtra(getString(R.string.cuid), cuId);
+                intent.putExtra("task", "edit");
+                startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageViewInfoEdit.setEnabled(true);
+                    }
+                }, 3000);
             }
-            //emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
-            //emailIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-            startActivity(Intent.createChooser(emailIntent, "Send email"));
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    layoutIdEmail.setEnabled(true);
-                }
-            }, 3000);
-        } else if (v == layoutIdShare) {
-            layoutIdShare.setEnabled(false);
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
-            intent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-            startActivity(Intent.createChooser(intent, "Share"));
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    layoutIdShare.setEnabled(true);
-                }
-            }, 3000);
-        } else if (v == imageViewInfoEdit) {
-            imageViewInfoEdit.setEnabled(false);
-            Intent intent = new Intent(CustomerMainActivity.this, AddCustomerActivity.class);
-            intent.putExtra(getString(R.string.cuid), cuId);
-            intent.putExtra("task", "edit");
-            startActivity(intent);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    imageViewInfoEdit.setEnabled(true);
-                }
-            }, 3000);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

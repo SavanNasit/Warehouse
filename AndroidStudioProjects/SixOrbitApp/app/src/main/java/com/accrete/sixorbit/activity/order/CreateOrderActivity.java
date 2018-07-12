@@ -24,6 +24,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -327,6 +328,8 @@ public class CreateOrderActivity extends AppCompatActivity implements View.OnCli
     private Bitmap bitmap;
     private int clickedItemPos;
     private ImageView imageViewLoaderProductsDialog;
+    private LinearLayout layoutEmailTemplate;
+    private LinearLayout layoutSmsTemplate;
 
     private void updatePreCharges() {
         try {
@@ -660,6 +663,8 @@ public class CreateOrderActivity extends AppCompatActivity implements View.OnCli
             saveTextView = (TextView) findViewById(R.id.save_textView);
             orderDealerPriceCheckBox = (CheckBox) findViewById(R.id.order_dealer_price_checkBox);
             imageViewLoader = (ImageView) findViewById(R.id.imageView_loader);
+            layoutSmsTemplate = (LinearLayout) findViewById(R.id.layout_sms_template);
+            layoutEmailTemplate = (LinearLayout) findViewById(R.id.layout_email_template);
 
             orderItemsAdapter = new OrderItemsAdapter(CreateOrderActivity.this, itemDataArrayList, this,
                     strFlagDealerPrice);
@@ -1863,7 +1868,7 @@ public class CreateOrderActivity extends AppCompatActivity implements View.OnCli
 
     private void getBitmap(final String photoPath) {
         //updateUi(true);
-        new AsyncTask<Void, Void, Bitmap>() {
+        AsyncTaskCompat.executeParallel(new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... voids) {
                 return BitmapUtils.decodeSampledBitmapFromFile(photoPath, getResources().getDimensionPixelOffset(R.dimen._70sdp),
@@ -1884,7 +1889,7 @@ public class CreateOrderActivity extends AppCompatActivity implements View.OnCli
                     Toast.makeText(CreateOrderActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
                 }
             }
-        };
+        });
     }
 
     private void updateItemsImage(Bitmap bmp, Dialog dialog) {
@@ -3969,6 +3974,27 @@ public class CreateOrderActivity extends AppCompatActivity implements View.OnCli
                         }
 
                         cardViewInnerQuotOptions.setVisibility(View.VISIBLE);
+
+                        //TODO Added on 12th July
+                        if (smsTemplateDataArrayList != null && smsTemplateDataArrayList.size() > 0) {
+                            layoutSmsTemplate.setVisibility(View.VISIBLE);
+                            if (smsCheckBox.isChecked()) {
+                                showSMSPreview.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            layoutSmsTemplate.setVisibility(View.GONE);
+                            showSMSPreview.setVisibility(View.GONE);
+                        }
+
+                        if (emailTemplateArrArrayList != null && emailTemplateArrArrayList.size() > 0) {
+                            layoutEmailTemplate.setVisibility(View.VISIBLE);
+                            if (emailCheckBox.isChecked()) {
+                                showEmailPreview.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            layoutEmailTemplate.setVisibility(View.GONE);
+                            showEmailPreview.setVisibility(View.GONE);
+                        }
                     }
                     //Deleted User
                     else if (apiResponse.getSuccessCode().equals(Constants.WRONG_CREDENTIALS) ||

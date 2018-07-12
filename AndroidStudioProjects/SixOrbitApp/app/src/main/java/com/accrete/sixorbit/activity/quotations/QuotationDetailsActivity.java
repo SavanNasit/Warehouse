@@ -273,96 +273,100 @@ public class QuotationDetailsActivity extends AppCompatActivity implements View.
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.imageView_info_edit:
-                imageViewEdit.setEnabled(false);
-                if (AppPreferences.getBoolean(QuotationDetailsActivity.this, AppUtils.ISADMIN) ||
-                        databaseHandler.checkUsersPermission(getString(R.string.quotation_edit_permission))) {
-                    Intent intent = new Intent(QuotationDetailsActivity.this, EditQuotationsProductActivity.class);
-                    intent.putExtra(getString(R.string.qo_id), qoId);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(QuotationDetailsActivity.this, "You have no permission to edit any quotation.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                //Enable again
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageViewEdit.setEnabled(true);
-                    }
-                }, 4000);
-                break;
-            case R.id.layout_id_followUp:
-                layoutIdAddFollowUp.setEnabled(false);
-                String qosId = ((QuotationsDetailMainTabFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.container)).quotationDetails.getQosId();
-                if (!AppPreferences.getBoolean(QuotationDetailsActivity.this, AppUtils.ISADMIN) &&
-                        !databaseHandler.checkUsersPermission(getString(R.string.followup_schedule_permission))) {
-                    Toast.makeText(QuotationDetailsActivity.this,
-                            "You have no permission to add any follow up.", Toast.LENGTH_SHORT).show();
-                } else if (qosId != null && !qosId.isEmpty() && qosId.equals("3")) {
-                    Toast.makeText(QuotationDetailsActivity.this,
-                            "Sorry, this quotation is cancelled so you can't add follow up.",
-                            Toast.LENGTH_SHORT).show();
-                } else if (qosId != null && !qosId.isEmpty() && qosId.equals("1")) {
-                    Toast.makeText(QuotationDetailsActivity.this,
-                            "Sorry, this quotation is in converted state so you can't add follow up.",
-                            Toast.LENGTH_SHORT).show();
-                } else if (qoId != null && !qoId.isEmpty() && !qoId.equals("null")) {
-                    if (alertDialog == null || !alertDialog.isShowing()) {
-                        dialogAddFollowUp();
-                    }
-                } else {
-                    Toast.makeText(QuotationDetailsActivity.this, "Quotation is not updated on server. Please check your internet connection", Toast.LENGTH_SHORT).show();
-                }
-
-                //Enable again
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        layoutIdAddFollowUp.setEnabled(true);
-                    }
-                }, 4000);
-
-                break;
-            case R.id.layout_id_call:
-                layoutIdCall.setEnabled(false);
-                if (mobileNumber != null && !mobileNumber.isEmpty()) {
-                    if (Build.VERSION.SDK_INT >= 23) {
-                        callIntent();
+        try {
+            switch (v.getId()) {
+                case R.id.imageView_info_edit:
+                    imageViewEdit.setEnabled(false);
+                    if (AppPreferences.getBoolean(QuotationDetailsActivity.this, AppUtils.ISADMIN) ||
+                            databaseHandler.checkUsersPermission(getString(R.string.quotation_edit_permission))) {
+                        Intent intent = new Intent(QuotationDetailsActivity.this, EditQuotationsProductActivity.class);
+                        intent.putExtra(getString(R.string.qo_id), qoId);
+                        startActivity(intent);
                     } else {
-                        callAction();
+                        Toast.makeText(QuotationDetailsActivity.this, "You have no permission to edit any quotation.",
+                                Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(QuotationDetailsActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        layoutIdCall.setEnabled(true);
+                    //Enable again
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageViewEdit.setEnabled(true);
+                        }
+                    }, 4000);
+                    break;
+                case R.id.layout_id_followUp:
+                    layoutIdAddFollowUp.setEnabled(false);
+                    String qosId = ((QuotationsDetailMainTabFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.container)).quotationDetails.getQosId();
+                    if (!AppPreferences.getBoolean(QuotationDetailsActivity.this, AppUtils.ISADMIN) &&
+                            !databaseHandler.checkUsersPermission(getString(R.string.followup_schedule_permission))) {
+                        Toast.makeText(QuotationDetailsActivity.this,
+                                "You have no permission to add any follow up.", Toast.LENGTH_SHORT).show();
+                    } else if (qosId != null && !qosId.isEmpty() && qosId.equals("3")) {
+                        Toast.makeText(QuotationDetailsActivity.this,
+                                "Sorry, this quotation is cancelled so you can't add follow up.",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (qosId != null && !qosId.isEmpty() && qosId.equals("1")) {
+                        Toast.makeText(QuotationDetailsActivity.this,
+                                "Sorry, this quotation is in converted state so you can't add follow up.",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (qoId != null && !qoId.isEmpty() && !qoId.equals("null")) {
+                        if (alertDialog == null || !alertDialog.isShowing()) {
+                            dialogAddFollowUp();
+                        }
+                    } else {
+                        Toast.makeText(QuotationDetailsActivity.this, "Quotation is not updated on server. Please check your internet connection", Toast.LENGTH_SHORT).show();
                     }
-                }, 3000);
 
-                break;
-            case R.id.layout_id_share:
-                layoutIdShare.setEnabled(false);
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
-                if (sharingTexts != null) {
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-                } else {
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "");
-                }
-                startActivity(Intent.createChooser(shareIntent, "Share"));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        layoutIdShare.setEnabled(true);
+                    //Enable again
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutIdAddFollowUp.setEnabled(true);
+                        }
+                    }, 4000);
+
+                    break;
+                case R.id.layout_id_call:
+                    layoutIdCall.setEnabled(false);
+                    if (mobileNumber != null && !mobileNumber.isEmpty()) {
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            callIntent();
+                        } else {
+                            callAction();
+                        }
+                    } else {
+                        Toast.makeText(QuotationDetailsActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
                     }
-                }, 3000);
-                break;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutIdCall.setEnabled(true);
+                        }
+                    }, 3000);
+
+                    break;
+                case R.id.layout_id_share:
+                    layoutIdShare.setEnabled(false);
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
+                    if (sharingTexts != null) {
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                    } else {
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "");
+                    }
+                    startActivity(Intent.createChooser(shareIntent, "Share"));
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            layoutIdShare.setEnabled(true);
+                        }
+                    }, 3000);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

@@ -2,8 +2,6 @@ package com.accrete.sixorbit.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +20,6 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by agt on 22/12/17.
@@ -72,6 +68,8 @@ public class QuotationChargesTwoListAdapter extends RecyclerView.Adapter<Quotati
                             } else {
                                 listener.onQuotationChargeTwoDiscount(position, holder.edittext.getText().toString().trim(), chargesList2);
                             }
+                        } else {
+                            listener.onQuotationChargeTwoDiscount(position, "0.00", chargesList2);
                         }
                     }
                 }

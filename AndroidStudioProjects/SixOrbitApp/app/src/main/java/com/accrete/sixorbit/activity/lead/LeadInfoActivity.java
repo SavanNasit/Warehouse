@@ -734,7 +734,7 @@ public class LeadInfoActivity extends AppCompatActivity implements View.OnClickL
             }
 
             //strContactPerson = contactPersonAutoComplete.getText().toString();
-            if (strContactPerson.equals(getString(R.string.nothing_selected))) {
+            if (contactPersonAutoComplete.getText().toString().equals(getString(R.string.nothing_selected))) {
                 strContactPerson = "";
             }
             //    strCommunicatedModeId = addLeadCommunicationModeAutoComplete.getText().toString();

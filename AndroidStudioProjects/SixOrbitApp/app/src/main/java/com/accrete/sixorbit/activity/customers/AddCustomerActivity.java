@@ -205,7 +205,7 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
     private EmailValidator emailValidator;
     private GSTINValidator gstinValidator;
     private PANValidator panValidator;
-    private TextView contactTypeTextView;
+    private TextView contactTypeTitleTextView;
     private List<Contacts> contactsList = new ArrayList<>();
     private List<String> leadContactsPersonList = new ArrayList<>();
     private AddCustomerContactsAdapter mAdapter;
@@ -400,7 +400,7 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
         siteAddressTypeTextView = (TextView) findViewById(R.id.site_address_type_textView);
         siteAddressTypeSpinner = (Spinner) findViewById(R.id.site_address_type_spinner);
         saveTextView = (TextView) findViewById(R.id.save_textView);
-        contactTypeTextView = (TextView) findViewById(R.id.contact_type_textView);
+        contactTypeTitleTextView = (TextView) findViewById(R.id.contact_type_textView);
         addNewReferenceLayout = (LinearLayout) findViewById(R.id.add_new_reference_layout);
         referredByTitleTextView = (TextView) findViewById(R.id.referred_by_title_textView);
         referredByValueEditText = (EditText) findViewById(R.id.referred_by_value_editText);
@@ -1552,9 +1552,9 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
                         contactPersonTypeArrayList.add(0, referralAddContact);
 
                         if (contactPersonTypeArrayList != null && contactPersonTypeArrayList.size() > 1) {
-                            contactTypeTextView.setVisibility(View.VISIBLE);
+                            contactTypeTitleTextView.setVisibility(View.VISIBLE);
                         } else {
-                            contactTypeTextView.setVisibility(View.GONE);
+                            contactTypeTitleTextView.setVisibility(View.GONE);
                         }
 
                         //defaultGroupId = apiResponse.getData().getDefaultAccountGroupId();

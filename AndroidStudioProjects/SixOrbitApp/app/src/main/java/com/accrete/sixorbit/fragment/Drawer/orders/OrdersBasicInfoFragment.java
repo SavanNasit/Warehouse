@@ -92,7 +92,9 @@ public class OrdersBasicInfoFragment extends Fragment {
     private LinearLayout updatedByLayout;
     private TextView updatedByTextView;
     private TextView updatedByValueTextView;
-
+    private LinearLayout shippingAddressLayout;
+    private TextView shippingAddressTextView;
+    private TextView shippingAddressValueTextView;
     public OrdersBasicInfoFragment() {
         // Required empty public constructor
     }
@@ -181,6 +183,9 @@ public class OrdersBasicInfoFragment extends Fragment {
         mobileTextView = (TextView) view.findViewById(R.id.mobile_textView);
         mobileValueTextView = (TextView) view.findViewById(R.id.mobile_value_textView);
         emptyTextView = (TextView) view.findViewById(R.id.empty_textView);
+        shippingAddressLayout = (LinearLayout)view.findViewById( R.id.shipping_address_layout );
+        shippingAddressTextView = (TextView)view.findViewById( R.id.shipping_address_textView );
+        shippingAddressValueTextView = (TextView)view.findViewById( R.id.shipping_address_value_textView );
 
         layoutOrderInfo.setVisibility(View.GONE);
     }
@@ -340,7 +345,7 @@ public class OrdersBasicInfoFragment extends Fragment {
                     || (orderDetailsInfo.getShippingAddressCity() != null && !orderDetailsInfo.getShippingAddressCity().isEmpty())
                     || (orderDetailsInfo.getShippingAddressZipcode() != null && !orderDetailsInfo.getShippingAddressZipcode().isEmpty())
                     || (orderDetailsInfo.getShippingAddressCountry() != null && !orderDetailsInfo.getShippingAddressCountry().isEmpty())) {
-                currentAddressLayout.setVisibility(View.VISIBLE);
+                shippingAddressLayout.setVisibility(View.VISIBLE);
                 layoutOrderInfo.setVisibility(View.VISIBLE);
 
                 String currentAddress = "";
@@ -386,10 +391,10 @@ public class OrdersBasicInfoFragment extends Fragment {
                     currentAddress = currentAddress + orderDetailsInfo.getShippingAddressCountry() + " ";
                 }
 
-                currentAddressValueTextView.setText(currentAddress + "");
+                shippingAddressValueTextView.setText(currentAddress + "");
 
             } else {
-                currentAddressLayout.setVisibility(View.GONE);
+                shippingAddressLayout.setVisibility(View.GONE);
             }
 
             //Current Address
@@ -456,7 +461,7 @@ public class OrdersBasicInfoFragment extends Fragment {
                     || (orderDetailsInfo.getBillingAddressCity() != null && !orderDetailsInfo.getBillingAddressCity().isEmpty())
                     || (orderDetailsInfo.getBillingAddressZipcode() != null && !orderDetailsInfo.getBillingAddressZipcode().isEmpty())
                     || (orderDetailsInfo.getBillingAddressCountry() != null && !orderDetailsInfo.getBillingAddressCountry().isEmpty())) {
-                siteAddressLayout.setVisibility(View.VISIBLE);
+                billingAddressLayout.setVisibility(View.VISIBLE);
                 layoutOrderInfo.setVisibility(View.VISIBLE);
 
                 String siteAddress = "";
@@ -503,11 +508,10 @@ public class OrdersBasicInfoFragment extends Fragment {
                     siteAddress = siteAddress + orderDetailsInfo.getBillingAddressCountry() + " ";
                 }
 
-                siteAddressValueTextView.setText(siteAddress + "");
-                siteAddressTextView.setText("Billing Address :");
+                billingAddressValueTextView.setText(siteAddress + "");
 
             } else {
-                siteAddressLayout.setVisibility(View.GONE);
+                billingAddressLayout.setVisibility(View.GONE);
             }
 
             //Site Address

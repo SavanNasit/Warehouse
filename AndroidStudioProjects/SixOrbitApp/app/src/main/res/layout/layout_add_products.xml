@@ -901,6 +901,7 @@
 
 
                             <LinearLayout
+                                android:id="@+id/layout_sms_template"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_8sdp"
@@ -942,6 +943,7 @@
                                 android:textStyle="normal" />
 
                             <LinearLayout
+                                android:id="@+id/layout_email_template"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_8sdp"

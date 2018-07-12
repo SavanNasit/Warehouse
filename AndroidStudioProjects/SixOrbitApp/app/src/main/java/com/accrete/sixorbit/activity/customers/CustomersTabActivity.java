@@ -80,69 +80,77 @@ public class CustomersTabActivity extends AppCompatActivity implements PassMobil
 
     @Override
     public void onClick(View v) {
-        if (v == layoutIdCall) {
-            layoutIdCall.setEnabled(false);
-            if (mobileNumber != null && !mobileNumber.isEmpty()) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    callIntent();
+        try {
+            if (v == layoutIdCall) {
+                layoutIdCall.setEnabled(false);
+                if (mobileNumber != null && !mobileNumber.isEmpty()) {
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        callIntent();
+                    } else {
+                        callAction();
+                    }
                 } else {
-                    callAction();
+                    Toast.makeText(CustomersTabActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(CustomersTabActivity.this, "This customer has no mobile number.", Toast.LENGTH_SHORT).show();
-            }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    layoutIdCall.setEnabled(true);
-                }
-            }, 3000);
-        } else if (v == layoutIdEmail) {
-            layoutIdEmail.setEnabled(false);
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-            emailIntent.setData(Uri.parse("mailto:"));
-            if (emailAddress != null && !emailAddress.isEmpty()) {
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
-            }
-            // emailIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-            startActivity(Intent.createChooser(emailIntent, "Send email"));
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    layoutIdEmail.setEnabled(true);
-                }
-            }, 3000);
-        } else if (v == layoutIdShare) {
-            layoutIdShare.setEnabled(false);
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
-            intent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-            startActivity(Intent.createChooser(intent, "Share"));
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    layoutIdShare.setEnabled(true);
-                }
-            }, 3000);
-        } else if (v == imageViewInfoEdit) {
-            imageViewInfoEdit.setEnabled(false);
-            if (AppPreferences.getBoolean(CustomersTabActivity.this, AppUtils.ISADMIN) ||
-                    databaseHandler.checkUsersPermission(getString(R.string.customers_view_details_permission))) {
-                Intent intent = new Intent(CustomersTabActivity.this, AddCustomerActivity.class);
-                intent.putExtra(getString(R.string.cuid), cuId);
-                intent.putExtra("task", "edit");
-                //startActivity(intent);
-                startActivityForResult(intent, 111);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        imageViewInfoEdit.setEnabled(true);
+                        layoutIdCall.setEnabled(true);
                     }
                 }, 3000);
-            } else {
-                Toast.makeText(CustomersTabActivity.this, "Sorry, you've no permission to edit a customer.", Toast.LENGTH_SHORT).show();
+            } else if (v == layoutIdEmail) {
+                layoutIdEmail.setEnabled(false);
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:"));
+                if (emailAddress != null && !emailAddress.isEmpty()) {
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+                }
+                // emailIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                startActivity(Intent.createChooser(emailIntent, "Send email"));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        layoutIdEmail.setEnabled(true);
+                    }
+                }, 3000);
+            } else if (v == layoutIdShare) {
+                layoutIdShare.setEnabled(false);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Customer's info");
+                if (sharingTexts != null) {
+                    intent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                } else {
+                    intent.putExtra(Intent.EXTRA_TEXT, "");
+                }
+                startActivity(Intent.createChooser(intent, "Share"));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        layoutIdShare.setEnabled(true);
+                    }
+                }, 3000);
+            } else if (v == imageViewInfoEdit) {
+                imageViewInfoEdit.setEnabled(false);
+                if (AppPreferences.getBoolean(CustomersTabActivity.this, AppUtils.ISADMIN) ||
+                        databaseHandler.checkUsersPermission(getString(R.string.customers_view_details_permission))) {
+                    Intent intent = new Intent(CustomersTabActivity.this, AddCustomerActivity.class);
+                    intent.putExtra(getString(R.string.cuid), cuId);
+                    intent.putExtra("task", "edit");
+                    //startActivity(intent);
+                    startActivityForResult(intent, 111);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageViewInfoEdit.setEnabled(true);
+                        }
+                    }, 3000);
+                } else {
+                    Toast.makeText(CustomersTabActivity.this, "Sorry, you've no permission to edit a customer.", Toast.LENGTH_SHORT).show();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

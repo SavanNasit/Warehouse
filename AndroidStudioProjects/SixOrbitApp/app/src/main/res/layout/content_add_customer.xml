@@ -990,6 +990,7 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-condensed"
                         android:gravity="left"
+                        android:paddingRight="@dimen/_3sdp"
                         android:text="Type"
                         android:textColor="@color/green"
                         android:textSize="@dimen/_10sdp" />

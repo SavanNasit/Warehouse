@@ -23,6 +23,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -458,7 +459,8 @@ public class QuotationsProductActivity extends AppCompatActivity implements View
         }
         startActivity(intent);
     }
-
+    private LinearLayout layoutEmailTemplate;
+    private LinearLayout layoutSmsTemplate;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -577,6 +579,8 @@ public class QuotationsProductActivity extends AppCompatActivity implements View
         showEmailPreview = (TextView) findViewById(R.id.add_search_quotation_item_show_email_preview);
         saveTextView = (TextView) findViewById(R.id.save_textView);
         imageViewLoader = (ImageView) findViewById(R.id.imageView_loader);
+        layoutSmsTemplate = (LinearLayout) findViewById(R.id.layout_sms_template);
+        layoutEmailTemplate = (LinearLayout) findViewById(R.id.layout_email_template);
 
         quotationItemsAdapter = new QuotationItemsAdapter(QuotationsProductActivity.this, itemDataArrayList, this);
 
@@ -1427,7 +1431,7 @@ public class QuotationsProductActivity extends AppCompatActivity implements View
     private void getBitmap(final String photoPath) {
         try {
             //updateUi(true);
-            new AsyncTask<Void, Void, Bitmap>() {
+            AsyncTaskCompat.executeParallel(new AsyncTask<Void, Void, Bitmap>() {
                 @Override
                 protected Bitmap doInBackground(Void... voids) {
                     return BitmapUtils.decodeSampledBitmapFromFile(photoPath, getResources().getDimensionPixelOffset(R.dimen._70sdp),
@@ -1448,7 +1452,7 @@ public class QuotationsProductActivity extends AppCompatActivity implements View
                         Toast.makeText(QuotationsProductActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
                     }
                 }
-            };
+            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -3619,6 +3623,27 @@ public class QuotationsProductActivity extends AppCompatActivity implements View
                                 quotationItemsAdapter.notifyDataSetChanged();
                                 showPricesCardView();
                                 updateAllMainValues();
+                            }
+
+                            //TODO Added on 12th July
+                            if (smsTemplateDataArrayList != null && smsTemplateDataArrayList.size() > 0) {
+                                layoutSmsTemplate.setVisibility(View.VISIBLE);
+                                if (smsCheckBox.isChecked()) {
+                                    showSMSPreview.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                layoutSmsTemplate.setVisibility(View.GONE);
+                                showSMSPreview.setVisibility(View.GONE);
+                            }
+
+                            if (emailTemplateArrArrayList != null && emailTemplateArrArrayList.size() > 0) {
+                                layoutEmailTemplate.setVisibility(View.VISIBLE);
+                                if (emailCheckBox.isChecked()) {
+                                    showEmailPreview.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                layoutEmailTemplate.setVisibility(View.GONE);
+                                showEmailPreview.setVisibility(View.GONE);
                             }
                         }
                         //Deleted User

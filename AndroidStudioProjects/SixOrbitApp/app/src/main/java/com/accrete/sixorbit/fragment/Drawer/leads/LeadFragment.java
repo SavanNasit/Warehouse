@@ -483,6 +483,13 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         if (apiResponse.getSuccess()) {
                             for (final Lead lead : apiResponse.getData().getLead()) {
                                 if (apiResponse.getData().getLead() != null) {
+                                    //TODO Update Lead Status Id in Follow Ups
+                                    if (lead.getLeasid() != null &&
+                                            !lead.getLeasid().isEmpty() &&
+                                            lead.getLeasid().equals("4")) {
+                                        db.updateFollowUpsLeadStatus(lead.getLeaid(), "4");
+                                    }
+
                                     lead.setLeadSync("true");
                                     int localLeadId, localContacts;
                                     boolean flagLeadForUpdate = db.checkLeadIdInLead(lead.getLeaid());

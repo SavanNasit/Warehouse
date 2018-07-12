@@ -70,6 +70,14 @@ public class AddCustomerContactsAdapter extends RecyclerView.Adapter<AddCustomer
                 }
             }
             holder.contactTypeTextView.setVisibility(View.VISIBLE);
+        } else if (contacts.isCheckOwner()) {
+            if (contacts.getName() != null && !contacts.getName().isEmpty()) {
+                if (contacts.getName().trim().length() > 10) {
+                    holder.textViewName.setText(contacts.getName().trim().substring(0, 8) + "..");
+                }
+            }
+            holder.textViewName.append("    [Owner]");
+            holder.contactTypeTextView.setVisibility(View.GONE);
         } else {
             holder.contactTypeTextView.setText("");
             holder.contactTypeTextView.setVisibility(View.GONE);

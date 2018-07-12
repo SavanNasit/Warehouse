@@ -75,32 +75,40 @@ public class VendorsTabActivity extends AppCompatActivity implements PassMobileL
 
     @Override
     public void onClick(View v) {
-        if (v == layoutIdCall) {
-            if (mobileNumber != null && !mobileNumber.isEmpty()) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    callIntent();
+        try {
+            if (v == layoutIdCall) {
+                if (mobileNumber != null && !mobileNumber.isEmpty()) {
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        callIntent();
+                    } else {
+                        callAction();
+                    }
                 } else {
-                    callAction();
+                    Toast.makeText(VendorsTabActivity.this, "This vendor has no mobile number.", Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(VendorsTabActivity.this, "This vendor has no mobile number.", Toast.LENGTH_SHORT).show();
-            }
-        } else if (v == layoutIdEmail) {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-            emailIntent.setData(Uri.parse("mailto:"));
-            if (emailAddress != null && !emailAddress.isEmpty()) {
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
-            }
-            //emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Vendor's info");
-            //emailIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-            startActivity(Intent.createChooser(emailIntent, "Send email"));
+            } else if (v == layoutIdEmail) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:"));
+                if (emailAddress != null && !emailAddress.isEmpty()) {
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+                }
+                //emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Vendor's info");
+                //emailIntent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                startActivity(Intent.createChooser(emailIntent, "Send email"));
 
-        } else if (v == layoutIdShare) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Vendor's info");
-            intent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
-            startActivity(Intent.createChooser(intent, "Share"));
+            } else if (v == layoutIdShare) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Vendor's info");
+                if (sharingTexts != null) {
+                    intent.putExtra(Intent.EXTRA_TEXT, "" + sharingTexts.toString());
+                } else {
+                    intent.putExtra(Intent.EXTRA_TEXT, "");
+                }
+                startActivity(Intent.createChooser(intent, "Share"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

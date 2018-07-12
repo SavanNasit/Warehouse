@@ -133,6 +133,15 @@ public class CustomerWiseCollectionsFragment extends Fragment
             if (imageView != null && imageView.getVisibility() == View.VISIBLE) {
                 imageView.setVisibility(View.GONE);
             }
+            getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (searchView != null) {
+                        searchView.setOnQueryTextListener(queryTextListener);
+                    }
+                }
+            });
             //Enable Touch Back
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
@@ -305,6 +314,15 @@ public class CustomerWiseCollectionsFragment extends Fragment
                         public void run() {
                             // do your actual work here
                             if (getActivity() != null && isAdded()) {
+                                getActivity().runOnUiThread(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        if (searchView != null) {
+                                            searchView.setOnQueryTextListener(null);
+                                        }
+                                    }
+                                });
                                 doRefresh(newText);
                             }
                         }

@@ -347,40 +347,49 @@ public class HomefollowUpViewPagerAdapter extends PagerAdapter {
             }
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
 
-            if (limitFollowUps.get(position).getCommid() != null
-                    && !limitFollowUps.get(position).getCommid().equals("null")
-                    && limitFollowUps.get(position).getContactPerson() != null && !limitFollowUps.get(position).getContactPerson().isEmpty()
-                    && !limitFollowUps.get(position).getContactPerson().equals("null")) {
+            try {
+                if (limitFollowUps.get(position).getCommid() != null
+                        && !limitFollowUps.get(position).getCommid().equals("null")
+                        && limitFollowUps.get(position).getContactPerson() != null && !limitFollowUps.get(position).getContactPerson().isEmpty()
+                        && !limitFollowUps.get(position).getContactPerson().equals("null")) {
 
-                if (limitFollowUps.get(position).getContactPerson().trim().length() > 8) {
-                    textviewfollowupviewPagerDate.setText(" " + communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1)
-                            + " " + context.getString(R.string.with) + " "
-                            + limitFollowUps.get(position).getContactPerson().trim().substring(0, 8) + "..");
+                    if (limitFollowUps.get(position).getContactPerson().trim().length() > 8) {
+                        textviewfollowupviewPagerDate.setText(" " + communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1)
+                                + " " + context.getString(R.string.with) + " "
+                                + limitFollowUps.get(position).getContactPerson().trim().substring(0, 8) + "..");
+                    } else {
+                        textviewfollowupviewPagerDate.setText(" " + communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1)
+                                + " " + context.getString(R.string.with) + " "
+                                + limitFollowUps.get(position).getContactPerson().trim());
+                    }
+
+                } else if (limitFollowUps.get(position).getCommid() != null
+                        && !limitFollowUps.get(position).getCommid().equals("null")
+                        && limitFollowUps.get(position).getContactPerson() == null) {
+                    textviewfollowupviewPagerDate.setText("" + communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1));
+                } else if (limitFollowUps.get(position).getCommid() == null
+                        && limitFollowUps.get(position).getContactPerson() != null
+                        && !limitFollowUps.get(position).getContactPerson().isEmpty()
+                        && !limitFollowUps.get(position).getContactPerson().equals("null")) {
+
+                    if (limitFollowUps.get(position).getContactPerson().trim().length() > 8) {
+                        textviewfollowupviewPagerDate.setText(context.getString(R.string.call) + " " + context.getString(R.string.with) + " "
+                                + limitFollowUps.get(position).getContactPerson().trim().substring(0, 8) + "..");
+                    } else {
+                        textviewfollowupviewPagerDate.setText(context.getString(R.string.call) + " " + context.getString(R.string.with) + " "
+                                + limitFollowUps.get(position).getContactPerson().trim());
+                    }
+                } else if (limitFollowUps.get(position).getCommid() != null) {
+                    if (communicationModeList.size() > Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1) {
+                        textviewfollowupviewPagerDate.setText(communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1) + "");
+                    } else {
+                        textviewfollowupviewPagerDate.setText(context.getString(R.string.call) + "");
+                    }
                 } else {
-                    textviewfollowupviewPagerDate.setText(" " + communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1)
-                            + " " + context.getString(R.string.with) + " "
-                            + limitFollowUps.get(position).getContactPerson().trim());
+                    textviewfollowupviewPagerDate.setText(context.getString(R.string.call) + "");
                 }
-
-            } else if (limitFollowUps.get(position).getCommid() != null
-                    && !limitFollowUps.get(position).getCommid().equals("null")
-                    && limitFollowUps.get(position).getContactPerson() == null) {
-                textviewfollowupviewPagerDate.setText("" + communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1));
-            } else if (limitFollowUps.get(position).getCommid() == null
-                    && limitFollowUps.get(position).getContactPerson() != null
-                    && !limitFollowUps.get(position).getContactPerson().isEmpty()
-                    && !limitFollowUps.get(position).getContactPerson().equals("null")) {
-
-                if (limitFollowUps.get(position).getContactPerson().trim().length() > 8) {
-                    textviewfollowupviewPagerDate.setText(context.getString(R.string.call) + " " + context.getString(R.string.with) + " "
-                            + limitFollowUps.get(position).getContactPerson().trim().substring(0, 8) + "..");
-                } else {
-                    textviewfollowupviewPagerDate.setText(context.getString(R.string.call) + " " + context.getString(R.string.with) + " "
-                            + limitFollowUps.get(position).getContactPerson().trim());
-                }
-            } else if (limitFollowUps.get(position).getCommid() != null) {
-                textviewfollowupviewPagerDate.setText(communicationModeList.get(Integer.parseInt(limitFollowUps.get(position).getCommid()) - 1) + "");
-            } else {
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
                 textviewfollowupviewPagerDate.setText(context.getString(R.string.call) + "");
             }
 
