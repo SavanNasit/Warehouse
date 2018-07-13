@@ -75,7 +75,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -820,8 +819,13 @@ public class QuotationDetailsActivity extends AppCompatActivity implements View.
                 e.printStackTrace();
             }
 
-            if (strCommunicatedModeId != null) {
-                strComMode = communicationModeList.get(Integer.parseInt(strCommunicatedModeId) - 1).getName();
+            try {
+                if (strCommunicatedModeId != null) {
+                    strComMode = communicationModeList.get(Integer.parseInt(strCommunicatedModeId) - 1).getName();
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                strComMode = "1";
             }
         } catch (Exception e) {
             e.printStackTrace();

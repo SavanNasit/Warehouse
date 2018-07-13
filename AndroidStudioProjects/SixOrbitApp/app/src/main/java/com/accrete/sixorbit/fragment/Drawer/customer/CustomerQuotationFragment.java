@@ -863,19 +863,22 @@ public class CustomerQuotationFragment extends Fragment implements SwipeRefreshL
     }
 
     @Override
-    public void onMessageRowClicked(int position, String qoId, String qoText) {
+    public void onMessageRowClicked(int position, String qoId, String qoText, String qosId) {
        /* Intent intent = new Intent(getActivity(), CustomerQuotationDetailsActivity.class);
         intent.putExtra(getString(R.string.cuid), cuid);
         intent.putExtra(getString(R.string.qo_id), qoId);
         intent.putExtra(getString(R.string.qo_id_text), qoText);
         startActivity(intent);*/
-        navigateToQuotationsDetails(position, qoId, qoText);
+        navigateToQuotationsDetails(position, qoId, qoText, qosId);
     }
 
-    private void navigateToQuotationsDetails(int position, String qoId, String qoText) {
+    private void navigateToQuotationsDetails(int position, String qoId, String qoText,
+                                             String qosId) {
         Intent intent = new Intent(getActivity(), QuotationDetailsActivity.class);
         intent.putExtra(getString(R.string.qo_id), qoId);
-        intent.putExtra(getString(R.string.edit), getString(R.string.edit));
+        if (qosId != null && !qosId.isEmpty() && qosId.equals("2")) {
+            intent.putExtra(getString(R.string.edit), getString(R.string.edit));
+        }
         intent.putExtra(getString(R.string.cuid), cuid);
         intent.putExtra(getString(R.string.qo_id_text), qoText);
         startActivity(intent);

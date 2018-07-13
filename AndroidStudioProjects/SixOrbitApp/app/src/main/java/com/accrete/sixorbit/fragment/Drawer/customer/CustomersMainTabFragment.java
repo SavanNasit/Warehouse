@@ -72,8 +72,10 @@ public class CustomersMainTabFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                getActivity().supportInvalidateOptionsMenu();
-                refreshFragment();
+                if (getActivity() != null && isAdded()) {
+                    getActivity().supportInvalidateOptionsMenu();
+                    refreshFragment();
+                }
             }
 
             @Override

@@ -1096,7 +1096,8 @@ public class CustomerInvoiceTabFragment extends Fragment implements
         }
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ApiResponse> call = apiService.downloadCustomerWalletPDF(version, key, task, userId, accessToken, cuId, fromDate, toDate);
+        Call<ApiResponse> call = apiService.downloadCustomerInvoicePDF(version, key, task, userId,
+                accessToken, cuId, fromDate, toDate,"1");
         Log.d("Request", String.valueOf(call));
         Log.d("url", String.valueOf(call.request().url()));
         call.enqueue(new Callback<ApiResponse>() {

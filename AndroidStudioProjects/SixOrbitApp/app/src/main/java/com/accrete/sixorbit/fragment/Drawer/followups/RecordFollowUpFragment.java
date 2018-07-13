@@ -57,7 +57,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -613,10 +612,11 @@ public class RecordFollowUpFragment extends Fragment implements View.OnClickList
 
     private void setContactedPerson() {
         try {
-            if (getActivity() != null && isAdded() && arrayContactPerson!= null) {
-            adapterContactedPerson = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, arrayContactPerson);
-            adapterContactedPerson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            contactedPersonSpinner.setAdapter(adapterContactedPerson);}
+            if (getActivity() != null && isAdded() && arrayContactPerson != null) {
+                adapterContactedPerson = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, arrayContactPerson);
+                adapterContactedPerson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                contactedPersonSpinner.setAdapter(adapterContactedPerson);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1165,8 +1165,13 @@ public class RecordFollowUpFragment extends Fragment implements View.OnClickList
         strSchedule = "";
 
 //        strOutcome = String.valueOf(spinnerOutcome.getSelectedItemPosition() + 1);
-        strCommunicatedMode = communicationModeList.get
-                (communicatedModeSpinner.getSelectedItemPosition()).getCommid();
+        try {
+            strCommunicatedMode = communicationModeList.get
+                    (communicatedModeSpinner.getSelectedItemPosition()).getCommid();
+        } catch (Exception e) {
+            e.printStackTrace();
+            strCommunicatedMode = "1";
+        }
         strDescription = editTextInfo.getText().toString();
         strReason = editTextReason.getText().toString();
         if (outcome.length > 0) {
@@ -1229,8 +1234,13 @@ public class RecordFollowUpFragment extends Fragment implements View.OnClickList
                 }
 
                 //Communication Mode
-                strCommunicationMode = communicationModeList.get(communicationModeSpinner.getSelectedItemPosition())
-                        .getCommid();
+                try {
+                    strCommunicationMode = communicationModeList.get(communicationModeSpinner.getSelectedItemPosition())
+                            .getCommid();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    strCommunicationMode = "1";
+                }
                 strScheduleDate = editTextScheduledTime.getText().toString();
                 strAlertTime = editTextAlertTime.getText().toString();
                 if (checkboxSendMail.isChecked() && !checkboxSendSms.isChecked())

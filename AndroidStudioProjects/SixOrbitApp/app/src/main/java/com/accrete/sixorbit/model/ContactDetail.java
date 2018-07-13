@@ -42,6 +42,17 @@ public class ContactDetail {
     @Expose
     private String extraAttributeValue;
     private boolean selected;
+    @SerializedName("is_owner")
+    @Expose
+    private Boolean isOwner;
+
+    public Boolean getOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(Boolean owner) {
+        isOwner = owner;
+    }
 
     public String getExtraAttributeId() {
         return extraAttributeId;

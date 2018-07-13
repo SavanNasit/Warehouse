@@ -2557,7 +2557,9 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
                                             // contacts.setType(contactDetail.getExtraAttributeValue());
                                             contacts.setType(contactDetail.getContactTypeValue());
                                         }
-
+                                        if (contactDetail.getOwner() != null) {
+                                            contacts.setCheckOwner(contactDetail.getOwner());
+                                        }
                                         addContactDetailsLayout.setVisibility(View.VISIBLE);
                                         contactsList.add(contacts);
                                     }

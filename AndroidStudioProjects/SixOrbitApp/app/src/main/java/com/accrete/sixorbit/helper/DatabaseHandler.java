@@ -2541,19 +2541,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // get single api sync timeTextView
 
     public int addLeadContacts(Contacts contacts, String leadId, String syncId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_LEAD_CONTACTS_LEAID, leadId);
-        values.put(KEY_LEAD_CONTACTS_CODE_ID, contacts.getCodeid());
-        values.put(KEY_LEAD_CONTACTS_NAME, contacts.getName());
-        values.put(KEY_LEAD_CONTACTS_DESIGNATION, contacts.getDesignation());
-        values.put(KEY_LEAD_CONTACTS_EMAIL, contacts.getEmail());
-        values.put(KEY_LEAD_CONTACTS_PHONE_NUMBER, contacts.getPhoneNo());
-        values.put(KEY_LEAD_CONTACTS_SYNC_ID, syncId);
-        values.put(KEY_LEAD_CONTACTS_IS_OWNER, contacts.getIsOwner());
-        int id = (int) db.insert(TABLE_CONTACTS_DETAILS, null, values);
-        db.close();
-        return id;
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(KEY_LEAD_CONTACTS_LEAID, leadId);
+            values.put(KEY_LEAD_CONTACTS_CODE_ID, contacts.getCodeid());
+            values.put(KEY_LEAD_CONTACTS_NAME, contacts.getName());
+            values.put(KEY_LEAD_CONTACTS_DESIGNATION, contacts.getDesignation());
+            values.put(KEY_LEAD_CONTACTS_EMAIL, contacts.getEmail());
+            values.put(KEY_LEAD_CONTACTS_PHONE_NUMBER, contacts.getPhoneNo());
+            values.put(KEY_LEAD_CONTACTS_SYNC_ID, syncId);
+            values.put(KEY_LEAD_CONTACTS_IS_OWNER, contacts.getIsOwner());
+            int id = (int) db.insert(TABLE_CONTACTS_DETAILS, null, values);
+
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+            return id;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 
     //TODO - Created on 2nd May

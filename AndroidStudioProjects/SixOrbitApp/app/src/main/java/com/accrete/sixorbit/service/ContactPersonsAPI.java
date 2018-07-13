@@ -63,6 +63,7 @@ public class ContactPersonsAPI {
                     try {
 
                         if (apiResponse.getSuccess()) {
+
                             if (apiResponse.getData().getContactPersonArr() != null) {
                                 for (ContactPerson contactPerson : apiResponse.getData().getContactPersonArr()) {
                                     if (contactPerson != null) {

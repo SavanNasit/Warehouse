@@ -94,7 +94,8 @@ public class QuotationAdapter extends RecyclerView.Adapter<QuotationAdapter.MyVi
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    applyClickEvents(holder, position, quotation.getQoid(), quotation.getQuotationID());
+                    applyClickEvents(holder, position, quotation.getQoid(), quotation.getQuotationID(),
+                            quotation.getQosid());
                 }
             });
 
@@ -138,11 +139,13 @@ public class QuotationAdapter extends RecyclerView.Adapter<QuotationAdapter.MyVi
         }
     }
 
-    private void applyClickEvents(MyViewHolder holder, final int position, final String qoId, final String qoText) {
+    private void applyClickEvents(MyViewHolder holder, final int position, final String qoId,
+                                  final String qoText, final String qosId) {
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onMessageRowClicked(position, qoId, qoText);
+                listener.onMessageRowClicked(position, qoId, qoText,
+                        qosId);
             }
         });
     }
@@ -153,7 +156,7 @@ public class QuotationAdapter extends RecyclerView.Adapter<QuotationAdapter.MyVi
     }
 
     public interface CustomerQuotationAdapterListener {
-        void onMessageRowClicked(int position, String qoId, String qoText);
+        void onMessageRowClicked(int position, String qoId, String qoText,String qosId);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

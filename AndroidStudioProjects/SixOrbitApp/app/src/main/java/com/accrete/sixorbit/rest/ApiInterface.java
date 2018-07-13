@@ -2453,4 +2453,27 @@ public interface ApiInterface {
             @Query("enid")
                     String enid);
 
+
+    @GET("?urlq=service")
+    Call<ApiResponse> downloadCustomerInvoicePDF(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("cuid")
+                    String cuid,
+            @Query("start_date")
+                    String startDate,
+            @Query("end_date")
+                    String endDate,
+            @Query("pending_flag")
+                    String pending_flag
+    );
+
 }

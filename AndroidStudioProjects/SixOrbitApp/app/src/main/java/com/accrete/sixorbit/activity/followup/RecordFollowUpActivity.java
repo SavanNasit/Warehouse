@@ -55,7 +55,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -1156,7 +1155,12 @@ public class RecordFollowUpActivity extends AppCompatActivity implements View.On
         strSchedule = "";
 
 
-        strCommunicatedMode = communicationModeList.get(communicatedModeSpinner.getSelectedItemPosition()).getCommid();
+        try {
+            strCommunicatedMode = communicationModeList.get(communicatedModeSpinner.getSelectedItemPosition()).getCommid();
+        } catch (Exception e) {
+            e.printStackTrace();
+            strCommunicatedMode = "1";
+        }
         strDescription = editTextInfo.getText().toString();
         strReason = editTextReason.getText().toString();
         if (outcome.length > 0) {
@@ -1221,7 +1225,12 @@ public class RecordFollowUpActivity extends AppCompatActivity implements View.On
                 }
 
                 //Communication Mode
-                strCommunicationMode = communicationModeList.get(communicationModeSpinner.getSelectedItemPosition()).getCommid();
+                try {
+                    strCommunicationMode = communicationModeList.get(communicationModeSpinner.getSelectedItemPosition()).getCommid();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    strCommunicationMode = "1";
+                }
                 strScheduleDate = editTextScheduledTime.getText().toString();
                 strAlertTime = editTextAlertTime.getText().toString();
                 if (checkboxSendMail.isChecked() && !checkboxSendSms.isChecked())

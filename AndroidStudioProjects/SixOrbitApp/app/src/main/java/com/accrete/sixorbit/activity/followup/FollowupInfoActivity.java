@@ -520,6 +520,8 @@ public class FollowupInfoActivity extends AppCompatActivity implements View.OnCl
                         if (chatContacts.getName() != null && !chatContacts.getName().isEmpty()) {
                             assignedToValueTextView.setText(chatContacts.getName());
                             assignedToLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            assignedToLayout.setVisibility(View.VISIBLE);
                         }
                     } else {
                         JSONObject jsonObject = new JSONObject(followUp.getAssignedUser());
@@ -527,12 +529,16 @@ public class FollowupInfoActivity extends AppCompatActivity implements View.OnCl
                         if (assignedUser != null && !assignedUser.isEmpty()) {
                             assignedToValueTextView.setText(assignedUser);
                             assignedToLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            assignedToLayout.setVisibility(View.VISIBLE);
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (followUp.getAssignedUser() != null && !followUp.getAssignedUser().isEmpty()) {
                         assignedToValueTextView.setText(followUp.getAssignedUser());
+                        assignedToLayout.setVisibility(View.VISIBLE);
+                    } else {
                         assignedToLayout.setVisibility(View.VISIBLE);
                     }
                 }
@@ -547,6 +553,8 @@ public class FollowupInfoActivity extends AppCompatActivity implements View.OnCl
                 ChatContacts chatContacts = databaseHandler.getUserData(Integer.parseInt(followUp.getAssignedUid()));
                 if (chatContacts.getName() != null && !chatContacts.getName().isEmpty()) {
                     assignedToValueTextView.setText(chatContacts.getName());
+                    assignedToLayout.setVisibility(View.VISIBLE);
+                } else {
                     assignedToLayout.setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
