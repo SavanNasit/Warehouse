@@ -49,6 +49,7 @@ import com.accrete.sixorbit.adapter.ReferenceByAutoCompleteAdapter;
 import com.accrete.sixorbit.adapter.ReferredByCustomersAdapter;
 import com.accrete.sixorbit.fragment.Drawer.AllDatePickerFragment;
 import com.accrete.sixorbit.helper.Constants;
+import com.accrete.sixorbit.helper.DatabaseHandler;
 import com.accrete.sixorbit.helper.DividerItemDecoration;
 import com.accrete.sixorbit.helper.NetworkUtil;
 import com.accrete.sixorbit.helper.PassDateToCounsellor;
@@ -68,6 +69,7 @@ import com.accrete.sixorbit.model.SearchRefferedDatum;
 import com.accrete.sixorbit.model.StateList;
 import com.accrete.sixorbit.rest.ApiClient;
 import com.accrete.sixorbit.rest.ApiInterface;
+import com.accrete.sixorbit.service.ContactPersonsAPI;
 import com.accrete.sixorbit.utils.AppPreferences;
 import com.accrete.sixorbit.utils.AppUtils;
 import com.accrete.sixorbit.utils.EmailValidator;
@@ -257,6 +259,7 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
     private ReferredByCustomersAdapter referredByCustomersAdapter;
     private ArrayList<SearchRefferedDatum> customerSearchArrayList = new ArrayList<>();
     private int quotationRequestCode = 0;
+    private DatabaseHandler databaseHandler;
 
     //Validate Website URL
     public static boolean isURL(String url) {
@@ -292,6 +295,8 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        databaseHandler = new DatabaseHandler(AddCustomerActivity.this);
 
         if (getIntent() != null && getIntent().hasExtra(getString(R.string.request_code_string))) {
             quotationRequestCode = getIntent().getIntExtra(getString(R.string.request_code_string), 0);
@@ -2850,6 +2855,11 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
                         contactsJsonObject.put("cp-phone-no", contactsList.get(i).getPhoneNo() + "");
                         contactsJsonObject.put("cp-contact-type-id", contactsList.get(i).getContactTypeId() + "");
                         contactsJsonObject.put("cp-contact-type-value", contactsList.get(i).getContactTypeValue() + "");
+                        if (contactsList.get(i).isCheckOwner()) {
+                            contactsJsonObject.put("cp-is-owner", "1");
+                        } else {
+                            contactsJsonObject.put("cp-is-owner", "0");
+                        }
                         contactsJsonObject.put("cp-attribute-" + contactsList.get(i).getContactTypeId() + "",
                                 contactsList.get(i).getContactTypeValue());
                         if (contactsList.get(i).getExtraAttribute() != null && !contactsList.get(i).getExtraAttribute().isEmpty()) {
@@ -3049,6 +3059,11 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
                         contactsJsonObject.put("cp-designation", contactsList.get(i).getDesignation());
                         contactsJsonObject.put("cp-email", contactsList.get(i).getEmail());
                         contactsJsonObject.put("cp-phone-no", contactsList.get(i).getPhoneNo());
+                        if (contactsList.get(i).isCheckOwner()) {
+                            contactsJsonObject.put("cp-is-owner", "1");
+                        } else {
+                            contactsJsonObject.put("cp-is-owner", "0");
+                        }
                         contactsJsonObject.put("cp-contact-type-id", contactsList.get(i).getContactTypeId() + "");
                         contactsJsonObject.put("cp-contact-type-value", contactsList.get(i).getContactTypeValue() + "");
                         if (contactsList.get(i).getContactTypeId() != null &&
@@ -3142,6 +3157,15 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
                     String message = jsonObject.getString("message");
 
                     if (status) {
+                        if (!NetworkUtil.getConnectivityStatusString(context).equals
+                                (context.getString(R.string.not_connected_to_internet))) {
+                            ContactPersonsAPI contactPersonsAPI = new ContactPersonsAPI
+                                    (context);
+                            contactPersonsAPI.getCustomersContactPersons
+                                    (context, "", "", "", "", customerId,
+                                            "", "");
+                        }
+
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.putExtra(getResources().getString(R.string.email), strEmail);

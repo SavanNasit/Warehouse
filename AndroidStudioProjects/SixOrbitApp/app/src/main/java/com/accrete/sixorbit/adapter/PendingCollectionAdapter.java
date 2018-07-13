@@ -57,7 +57,12 @@ public class PendingCollectionAdapter extends RecyclerView.Adapter<PendingCollec
             DecimalFormat amountFormatter = new DecimalFormat("#,##,##,##,###");
 
             holder.transactionIdTextView.setText(transactionData.getTransactionID());
-            holder.ledgerNameTextView.setText(transactionData.getLedger());
+            if (transactionData.getLedger() != null && !transactionData.getLedger().isEmpty()) {
+                holder.ledgerNameTextView.setText(transactionData.getLedger());
+                holder.ledgerNameTextView.setVisibility(View.VISIBLE);
+            } else {
+                holder.ledgerNameTextView.setVisibility(View.GONE);
+            }
 
             if (transactionData.getCreatedUser() != null && !transactionData.getCreatedUser().isEmpty()) {
                 holder.createdByTextView.setText("By: " + transactionData.getCreatedUser());

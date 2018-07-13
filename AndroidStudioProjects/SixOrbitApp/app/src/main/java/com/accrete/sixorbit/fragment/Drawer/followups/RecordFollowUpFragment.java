@@ -57,6 +57,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -520,6 +521,7 @@ public class RecordFollowUpFragment extends Fragment implements View.OnClickList
                         if (followUp.getCuid() != null && !followUp.getCuid().isEmpty()) {
                             contactArrayList.addAll(databaseHandler.getCustomersContactPersonsList(followUp.getCuid()));
                         }
+
                     }
 
                     //Contact Person Name

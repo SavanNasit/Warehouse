@@ -2121,7 +2121,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (leadId != null && leadId.equals("1")) {
             selectQuery = selectQuery + "(" + KEY_FOLLOWUP_LEAD_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_ID + " != ''" +
                     "AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " IS NOT NULL AND " + KEY_FOLLOWUP_LEAD_STATUS_ID + " != '' AND " +
-                    KEY_FOLLOWUP_LEAD_STATUS_ID + " NOT IN(3,4)" + ")" ;
+                    KEY_FOLLOWUP_LEAD_STATUS_ID + " NOT IN(3,4)" + ")";
         }
 
         if (enid != null && enid.equals("2")) {
@@ -5174,7 +5174,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (!checkCustomersContactPersonResult(contacts.getCodeid())) {
                 db.insert(TABLE_CONTACTS_DETAILS, null, values);
             }
-        //    db.close();
+            //    db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -5194,12 +5194,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } else {
                 exists = false;
             }
-           // cursor.close();
+            // cursor.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (sqldb != null && sqldb.isOpen()) {
-            //    sqldb.close();
+                //    sqldb.close();
             }
         }
         return exists;
@@ -5242,6 +5242,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     contacts.setEmail(cursor.getString(5));
                     contacts.setPhoneNo(cursor.getString(6));
                     contacts.setDesignation(cursor.getString(7));
+                    contacts.setCuId(cursor.getString(8));
                     // Adding contacts to list
                     contactsList.add(contacts);
                 } while (cursor.moveToNext());
@@ -5378,6 +5379,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_FOLLOWUP_LEAD_STATUS_ID, status);
         db.update(TABLE_FOLLOWUPS, values, KEY_FOLLOWUP_LEAD_ID + "=" + leadId, null);
+    }
+
+    //TODO - Created on 13th July 2k18
+    public void deleteCustomersContactPersons(String cuId) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_CONTACTS_DETAILS, KEY_LEAD_CONTACTS_CUID + "=" +
+                    cuId, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

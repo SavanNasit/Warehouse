@@ -63,7 +63,18 @@ public class ContactPersonsAPI {
                     try {
 
                         if (apiResponse.getSuccess()) {
-
+                            if (apiResponse.getData().getContactPersonArr() != null) {
+                                for (ContactPerson contactPerson : apiResponse.getData().getContactPersonArr()) {
+                                    if (contactPerson != null) {
+                                        if (contactPerson.getCuid() != null && !contactPerson.getCuid().isEmpty()) {
+                                            if (databaseHandler != null) {
+                                                databaseHandler.deleteCustomersContactPersons(contactPerson.getCuid());
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             if (apiResponse.getData().getContactPersonArr() != null) {
                                 for (ContactPerson contactPerson : apiResponse.getData().getContactPersonArr()) {
                                     if (contactPerson != null) {
