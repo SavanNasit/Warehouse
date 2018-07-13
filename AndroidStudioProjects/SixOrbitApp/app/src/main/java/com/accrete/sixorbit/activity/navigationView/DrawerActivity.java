@@ -398,10 +398,10 @@ public class DrawerActivity extends AppCompatActivity implements ApiResultReceiv
                     !databaseHandler.checkUsersPermission(getString(R.string.collections_permission_menu_second))) {
                 drawer.removeItem(13);
             }
-           if (!AppPreferences.getBoolean(DrawerActivity.this, AppUtils.ISADMIN) &&
-                    !databaseHandler.checkUsersPermission(getString(R.string.enquiry_permission_menu))) {
+           /*if (!AppPreferences.getBoolean(DrawerActivity.this, AppUtils.ISADMIN) &&
+                    !databaseHandler.checkUsersPermission(getString(R.string.enquiry_permission_menu))) {*/
                 drawer.removeItem(15);
-            }
+            //}
 
             //Get Intent Data
             if (getIntent().hasExtra(getString(R.string.back_to_chat_list))) {
