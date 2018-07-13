@@ -1072,4 +1072,20 @@ public interface ApiInterface {
                                                       @Query("status")
                                                               String status);
 
+    @GET("?urlq=service")
+    Call<ApiResponse> deleteConsignment(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("iscid")
+                    String iscId
+    );
+
 }

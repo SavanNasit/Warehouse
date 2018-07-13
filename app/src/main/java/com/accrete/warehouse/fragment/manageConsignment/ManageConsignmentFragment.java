@@ -2,11 +2,11 @@ package com.accrete.warehouse.fragment.manageConsignment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.accrete.warehouse.ManageConsignmentDetailsActivity;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.ManageConsignmentAdapter;
 import com.accrete.warehouse.model.ApiResponse;
@@ -53,7 +54,8 @@ import static com.accrete.warehouse.utils.Constants.version;
  * Created by poonam on 12/5/17.
  */
 
-public class ManageConsignmentFragment extends Fragment implements ManageConsignmentAdapter.ManageConsignmentAdapterListener,
+public class ManageConsignmentFragment extends Fragment implements
+        ManageConsignmentAdapter.ManageConsignmentAdapterListener,
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String KEY_TITLE = "ManageConsignment";
@@ -92,12 +94,14 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
             inflater.inflate(R.menu.search_view, menu);
             MenuItem searchItem = menu.findItem(R.id.action_search);
             searchItem.setVisible(true);
-            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+            SearchManager searchManager = (SearchManager) getActivity()
+                    .getSystemService(Context.SEARCH_SERVICE);
 
             if (searchItem != null) {
                 searchView = (SearchView) searchItem.getActionView();
             }
-            AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            AutoCompleteTextView searchTextView = (AutoCompleteTextView)
+                    searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
             if (searchTextView != null) {
                 searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
@@ -355,23 +359,31 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
 
     @Override
     public void onMessageRowClicked(int position) {
-    /*    Intent intentView = new Intent(getActivity(), ViewConsignmentActivity.class);
+        Intent intentView = new Intent(getActivity(), ManageConsignmentDetailsActivity.class);
         intentView.putExtra("iscid", consignmentList.get(position).getIscid());
-        startActivity(intentView);*/
-        ChooseEventsForManageConsignmentFragment chooseEventsForManageConsignmentFragment = new ChooseEventsForManageConsignmentFragment();
+        intentView.putExtra("iscsid", consignmentList.get(position).getIscsid());
+        startActivity(intentView);
+        /*ChooseEventsForManageConsignmentFragment chooseEventsForManageConsignmentFragment =
+                new ChooseEventsForManageConsignmentFragment();
         //  getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveDirectlyFragment).commitAllowingStateLoss();
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.manage_consignment_container, chooseEventsForManageConsignmentFragment).addToBackStack(null).commit();
+                .replace(R.id.manage_consignment_container, chooseEventsForManageConsignmentFragment)
+                .addToBackStack(null).commit();
 
         Bundle bundle = new Bundle();
         bundle.putString("iscid", consignmentList.get(position).getIscid());
         bundle.putString("iscsid", consignmentList.get(position).getIscsid());
-        chooseEventsForManageConsignmentFragment.setArguments(bundle);
+        chooseEventsForManageConsignmentFragment.setArguments(bundle);*/
     }
 
     @Override
-    public void onExecute() {
+    public void refreshData() {
+        if (consignmentList != null && consignmentList.size() > 0) {
+            consignmentList.clear();
+            manageConsignmentAdapter.notifyDataSetChanged();
+        }
+        doRefresh();
     }
 
     private void getConsignmentsList(String chkId, final String time, final String traversalValue, String searchValue, String startDate, String endDate) {
@@ -515,4 +527,5 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
             manageConsignmentSwipeRefreshLayout.setRefreshing(false);
         }
     }
+
 }

@@ -285,7 +285,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Draw
                 break;
             case R.id.home_receive_consignment_layout:
 
-                ReceiveConsignmentFragment receiveConsignmentFragment = (ReceiveConsignmentFragment) getFragmentManager().findFragmentByTag(getString(R.string.receive_consignment_fragment));
+                ReceiveConsignmentFragment receiveConsignmentFragment = (ReceiveConsignmentFragment) getFragmentManager()
+                        .findFragmentByTag(getString(R.string.receive_consignment_fragment));
                 if (receiveConsignmentFragment != null && receiveConsignmentFragment.isVisible()) {
                     //DO STUFF
                 } else {

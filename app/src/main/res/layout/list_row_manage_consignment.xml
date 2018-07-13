@@ -1,133 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/linear_layout_manage_consignment"
+<com.accrete.warehouse.utils.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/swipe_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/_2sdp">
+    app:dragEdge="right"
+    app:mode="same_level">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view_outer"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:background="@color/red"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/red"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_white_delete" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_manage_consignment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        card_view:cardBackgroundColor="#f7f7f7"
-        card_view:cardCornerRadius="0dp"
-        card_view:cardElevation="@dimen/_3sdp">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_2sdp">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card_view_inner"
+            android:id="@+id/card_view_outer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_3sdp"
-            android:layout_marginLeft="@dimen/_7sdp"
-            android:layout_marginRight="@dimen/_7sdp"
-            android:layout_marginTop="@dimen/_4sdp"
-            card_view:cardBackgroundColor="@color/white"
-            card_view:cardCornerRadius="@dimen/_4sdp"
-            card_view:cardElevation="0dp">
+            card_view:cardBackgroundColor="#f7f7f7"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="@dimen/_3sdp">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_inner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_3sdp"
+                android:layout_marginLeft="@dimen/_7sdp"
+                android:layout_marginRight="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/_4sdp"
+                card_view:cardElevation="0dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_2sdp"
-                    android:paddingTop="@dimen/_4sdp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/list_row_manage_consignment_vendor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:id="@+id/list_row_manage_consignment_received_on"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:paddingRight="@dimen/_10sdp"
-                        android:textColor="#999"
-                        android:textSize="@dimen/_10sdp" />
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:layout_marginLeft="@dimen/_6sdp"
-                    android:layout_marginRight="@dimen/_6sdp"
-                    android:background="@color/black"></View>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_3sdp"
-                    android:paddingTop="@dimen/_4sdp">
-
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_75sdp"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/_4sdp">
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:paddingTop="@dimen/_4sdp">
 
                         <TextView
-                            android:id="@+id/list_row_manage_consignment_consignment_id"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/blueTurquoise"
-                            android:textSize="@dimen/_9sdp" />
-
-                        <TextView
-                            android:id="@+id/list_row_manage_consignment_invoice_number"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/_3sdp"
-                            android:textColor="#7f7f7f"
-                            android:textSize="@dimen/_8sdp" />
-
-                        <TextView
-                            android:id="@+id/list_row_manage_consignment_purchase_order"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/_3sdp"
-                            android:textColor="#7f7f7f"
-                            android:textSize="@dimen/_8sdp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/list_row_manage_consignment_status"
+                            android:id="@+id/list_row_manage_consignment_vendor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_1sdp"
-                            android:gravity="right"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_8sdp"
-                            android:textStyle="bold" />
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
 
-                    </LinearLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/list_row_manage_consignment_received_on"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:textColor="#999"
+                            android:textSize="@dimen/_10sdp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_marginLeft="@dimen/_6sdp"
+                        android:layout_marginRight="@dimen/_6sdp"
+                        android:background="@color/black"></View>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/_3sdp"
+                        android:paddingTop="@dimen/_4sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_75sdp"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_4sdp">
+
+                            <TextView
+                                android:id="@+id/list_row_manage_consignment_consignment_id"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/blueTurquoise"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/list_row_manage_consignment_invoice_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/_3sdp"
+                                android:textColor="#7f7f7f"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <TextView
+                                android:id="@+id/list_row_manage_consignment_purchase_order"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="@dimen/_3sdp"
+                                android:textColor="#7f7f7f"
+                                android:textSize="@dimen/_8sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/list_row_manage_consignment_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_1sdp"
+                                android:gravity="right"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_8sdp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
         </android.support.v7.widget.CardView>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+    </LinearLayout>
+</com.accrete.warehouse.utils.SwipeRevealLayout>

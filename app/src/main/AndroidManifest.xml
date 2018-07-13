@@ -72,11 +72,13 @@
         <activity android:name=".fragment.creategatepass.ItemsInsidePackageActivity" />
         <activity android:name=".fragment.managePackages.ChangePackageStatusActivity" />
         <activity android:name=".fragment.manageConsignment.ViewConsignmentActivity" />
-        <activity android:name=".fragment.manageConsignment.AllocationActivity"
-            android:theme="@style/ActivityTheme"/>
+        <activity
+            android:name=".fragment.manageConsignment.AllocationActivity"
+            android:theme="@style/ActivityTheme" />
         <activity android:name=".fragment.manageConsignment.ApproveActivity" />
-        <activity android:name=".fragment.manageConsignment.ConsumptionActivity"
-            android:theme="@style/ActivityTheme"/>
+        <activity
+            android:name=".fragment.manageConsignment.ConsumptionActivity"
+            android:theme="@style/ActivityTheme" />
         <activity android:name=".fragment.manageConsignment.EditConsignmentActivity" />
         <activity android:name=".fragment.createpackage.CreatePackageActivity" />
         <activity
@@ -93,16 +95,18 @@
         <activity
             android:name=".fragment.managePackages.ChangePackageAttemptFailedStatusActivity"
             android:theme="@style/MyMaterialTheme" />
-
-        <activity android:name=".fragment.createpackage.AlreadyCreatedPackagesActivity"></activity>
-        <activity android:name=".fragment.runningorders.RunningOrdersExecuteActivity"></activity>
-        <activity android:name=".fragment.managePackages.EditPackageActivity"></activity>
-
-
+        <activity android:name=".fragment.createpackage.AlreadyCreatedPackagesActivity" />
+        <activity android:name=".fragment.runningorders.RunningOrdersExecuteActivity" />
+        <activity android:name=".fragment.managePackages.EditPackageActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" />
+
+        <activity
+            android:name=".ManageConsignmentDetailsActivity"
+            android:label="@string/title_activity_manage_consignment_details"
+            android:theme="@style/MyMaterialTheme"></activity>
     </application>
 
 </manifest>

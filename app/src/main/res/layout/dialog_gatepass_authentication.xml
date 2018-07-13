@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_vertical"
     android:background="@android:color/transparent">
 
@@ -25,6 +25,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/_10sdp"
             android:fontFamily="sans-serif"
+            android:inputType="textMultiLine"
             android:text="@string/confirm_gatepass"
             android:textAllCaps="false"
             android:textColor="@color/blueTurquoise"
@@ -35,8 +36,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/_12sdp"
             android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp"
             android:clipToPadding="false"
             android:gravity="left|center"
             app:hintTextAppearance="@style/CustomTextAppearance">
@@ -53,8 +54,7 @@
                 android:maxLines="1"
                 android:textColor="@color/darkGray"
                 android:textColorHint="@color/gray"
-                android:textSize="@dimen/_10sdp"
-                />
+                android:textSize="@dimen/_10sdp" />
 
         </android.support.design.widget.TextInputLayout>
 
