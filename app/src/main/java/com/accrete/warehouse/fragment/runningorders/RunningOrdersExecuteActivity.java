@@ -53,7 +53,6 @@ import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.PackageDetailsList;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
-import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AppPreferences;

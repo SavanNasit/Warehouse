@@ -34,7 +34,6 @@ import com.accrete.warehouse.adapter.ReferredByTransporterNameAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.ShippingCompany;
 import com.accrete.warehouse.model.ShippingType;
-import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.model.TransporterNameSearchDatum;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;

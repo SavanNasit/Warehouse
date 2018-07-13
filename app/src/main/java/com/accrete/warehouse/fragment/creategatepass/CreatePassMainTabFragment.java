@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PackedItem;
 import com.accrete.warehouse.model.ShippingType;
-import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.utils.NonSwipeableViewPager;
 import com.accrete.warehouse.widgets.SmartFragmentStatePagerAdapter;
 
