@@ -53,7 +53,8 @@ import static com.accrete.warehouse.utils.Constants.version;
  * Created by poonam on 12/5/17.
  */
 
-public class ManageConsignmentFragment extends Fragment implements ManageConsignmentAdapter.ManageConsignmentAdapterListener,
+public class ManageConsignmentFragment extends Fragment implements
+        ManageConsignmentAdapter.ManageConsignmentAdapterListener,
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String KEY_TITLE = "ManageConsignment";
@@ -92,12 +93,14 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
             inflater.inflate(R.menu.search_view, menu);
             MenuItem searchItem = menu.findItem(R.id.action_search);
             searchItem.setVisible(true);
-            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+            SearchManager searchManager = (SearchManager) getActivity()
+                    .getSystemService(Context.SEARCH_SERVICE);
 
             if (searchItem != null) {
                 searchView = (SearchView) searchItem.getActionView();
             }
-            AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            AutoCompleteTextView searchTextView = (AutoCompleteTextView)
+                    searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
 
             if (searchTextView != null) {
                 searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
