@@ -53,7 +53,7 @@ public class Data {
     private String interStateFlag;
     @SerializedName("package_upload_data")
     @Expose
-    private List<ImagesUpload> packageUploadData = null;
+    private List<PackageFile> packageUploadData = null;
     @SerializedName("item_info")
     @Expose
     private OrderData itemInfo = null;
@@ -662,11 +662,11 @@ public class Data {
         this.itemInfo = itemInfo;
     }
 
-    public List<ImagesUpload> getPackageUploadData() {
+    public List<PackageFile> getPackageUploadData() {
         return packageUploadData;
     }
 
-    public void setPackageUploadData(List<ImagesUpload> packageUploadData) {
+    public void setPackageUploadData(List<PackageFile> packageUploadData) {
         this.packageUploadData = packageUploadData;
     }
 

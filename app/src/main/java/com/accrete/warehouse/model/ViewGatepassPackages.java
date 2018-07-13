@@ -42,6 +42,18 @@ public class ViewGatepassPackages {
     @Expose
     public String chkoid;
 
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    @SerializedName("invoice_number")
+    @Expose
+    public String invoiceNumber;
+
     public String getChkoid() {
         return chkoid;
     }

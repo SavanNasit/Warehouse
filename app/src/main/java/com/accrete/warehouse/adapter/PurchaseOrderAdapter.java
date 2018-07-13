@@ -94,6 +94,11 @@ public class PurchaseOrderAdapter extends RecyclerView.Adapter<PurchaseOrderAdap
             holder.vendorNameTextView.setText(capitalize(purchaseOrder.getVendorName()));
         }
 
+        if (purchaseOrder.getCreatedBy() != null && !purchaseOrder.getCreatedBy().isEmpty()) {
+            holder.createdByTextView.setText("Created by :"+capitalize(purchaseOrder.getCreatedBy()));
+            holder.createdByTextView.setVisibility(View.VISIBLE);
+        }
+
         holder.wareHouseTextView.setText(purchaseOrder.getWarehouseName());
         holder.wareHouseTextView.setVisibility(View.GONE);
 

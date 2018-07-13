@@ -10,7 +10,9 @@ import java.util.List;
  */
 
 public class ConsignmentItem {
-
+    @SerializedName("oiid")
+    @Expose
+    private String oiid;
     @SerializedName("isvid")
     @Expose
     private String isvid;
@@ -53,6 +55,15 @@ public class ConsignmentItem {
     @SerializedName("barcode_mandatory")
     @Expose
     private String barcodeMandatory;
+
+    private String barcode;
+    private String manufacturingDate;
+    private String expiryDate;
+    private String rejectedQuantity;
+    private String reasonRejection;
+    private String price;
+    private String unitId;
+    private String comment;
 
     public String getIsvid() {
         return isvid;
@@ -166,8 +177,6 @@ public class ConsignmentItem {
         this.barcodeMandatory = barcodeMandatory;
     }
 
-    private String unitId;
-    private String comment;
 
     public String getUnitId() {
         return unitId;
@@ -201,9 +210,6 @@ public class ConsignmentItem {
         this.reasonRejection = reasonRejection;
     }
 
-    private String expiryDate;
-    private String rejectedQuantity;
-    private String reasonRejection;
 
     public String getPrice() {
         return price;
@@ -213,7 +219,6 @@ public class ConsignmentItem {
         this.price = price;
     }
 
-    private String price;
 
 
     public String getExpiryDate() {
@@ -225,5 +230,29 @@ public class ConsignmentItem {
     }
 
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public String getManufacturingDate() {
+        return manufacturingDate;
+    }
+
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public void setManufacturingDate(String manufacturingDate) {
+        this.manufacturingDate = manufacturingDate;
+    }
+
+    public String getOiid() {
+        return oiid;
+    }
+
+    public void setOiid(String oiid) {
+        this.oiid = oiid;
+    }
 
 }

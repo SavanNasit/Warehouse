@@ -20,6 +20,7 @@ public class PurchaseData {
     @SerializedName("invoice_date")
     @Expose
     private String invoiceDate;
+    private String authorizedBy;
 
     public String getVenid() {
         return venid;
@@ -53,6 +54,9 @@ public class PurchaseData {
         this.invoiceDate = invoiceDate;
     }
 
+    public String getAuthorizedBy() {
+        return authorizedBy;
+    }
 }
 
 

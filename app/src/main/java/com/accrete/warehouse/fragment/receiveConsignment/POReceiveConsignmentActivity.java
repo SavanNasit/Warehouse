@@ -38,17 +38,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.warehouse.R;
+import com.accrete.warehouse.adapter.AuthorizedByUserAdapter;
 import com.accrete.warehouse.adapter.ItemsVariationAdapter;
 import com.accrete.warehouse.adapter.ReceiveConsignmentItemsAdapter;
 import com.accrete.warehouse.adapter.VendorsAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.ConsignmentItem;
+import com.accrete.warehouse.model.ItemLabels;
 import com.accrete.warehouse.model.ItemList;
 import com.accrete.warehouse.model.Measurements;
 import com.accrete.warehouse.model.PurchaseData;
 import com.accrete.warehouse.model.PurchaseDetails;
 import com.accrete.warehouse.model.PurchaseOrderData;
 import com.accrete.warehouse.model.TransportationData;
+import com.accrete.warehouse.model.User;
 import com.accrete.warehouse.model.Vendor;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
@@ -92,7 +95,8 @@ import static com.accrete.warehouse.utils.Constants.version;
 public class POReceiveConsignmentActivity extends AppCompatActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, VendorsAdapter.VendorsAdapterListener, PassDateToCounsellor,
         ReceiveConsignmentItemsAdapter.ReceiveConsignmentItemsAdapterListener,
-        ItemsVariationAdapter.ItemsVariationAdapterListener {
+        ItemsVariationAdapter.ItemsVariationAdapterListener, AuthorizedByUserAdapter.AuthorizedByUserAdapterListener {
+
     DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -143,25 +147,34 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
     private TextView expectedDateTitleTextView;
     private TextView expectedDateValueTextView;
     private TextView saveTextView;
+    private TextView authorizedByTitleTextView;
+    private EditText authorizedByValueEditText;
+    private ImageButton clearAuthorizedByImageButton;
     private String purOrId, status, vendorId, transporterId;
-    private Dialog dialog, productsDialog;
-    private AutoCompleteTextView vendorSearchAutoCompleteTextView, itemSearchAutoCompleteTextView;
-    private RecyclerView vendorsRecyclerView, itemsRecyclerView, itemsListRecyclerView;
+    private Dialog dialog, productsDialog, authorizedByDialog;
+    private AutoCompleteTextView vendorSearchAutoCompleteTextView, itemSearchAutoCompleteTextView, authorizedBySearchAutoCompleteTextView;
+    private RecyclerView vendorsRecyclerView, itemsRecyclerView, itemsListRecyclerView, authorizedByRecyclerView;
     private ArrayList<Vendor> vendorArrayList = new ArrayList<>();
     private ArrayList<ItemList> itemListArrayList = new ArrayList<>();
+    private ItemLabels itemLabels = new ItemLabels();
     private VendorsAdapter vendorsAdapter;
     private AllDatePickerFragment datePickerFragment;
     private String strDate;
     private List<ConsignmentItem> consignmentItemList = new ArrayList<>();
+    private List<ItemLabels> itemLabelsList = new ArrayList<>();
     private List<ItemList> itemLists = new ArrayList<>();
     private ReceiveConsignmentItemsAdapter receiveConsignmentItemsAdapter;
     private LinearLayoutManager mLayoutManager;
     private ItemsVariationAdapter itemsVariationAdapter;
     private String strInvoiceNumber, strVendor, strPurchaseOrderId, strChkId, strWeight, strExpectedDate, strPurchaseDate,
-            strInvoiceDate, strTransportationCheckBoxValue, strLRNumber, strVehicleNumber;
+            strInvoiceDate, strTransportationCheckBoxValue, strLRNumber, strVehicleNumber, strHsn, strAuthorizedById;
     private TextView expiryDateValueTextView;
     private String flagForInvoiceNumber;
     private String flagToShow;
+    private AuthorizedByUserAdapter authorizedByUserAdapter;
+    private ArrayList<User> userArrayList = new ArrayList<>();
+    private TextView manufactureDateValueTextView;
+    private TextView barcodeEdittext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +205,9 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         purchaseOrderDetailsView = (View) findViewById(R.id.purchaseOrderDetails_view);
         poIdLayout = (LinearLayout) findViewById(R.id.poId_layout);
         poIdTextView = (TextView) findViewById(R.id.poId_textView);
+        authorizedByTitleTextView = (TextView) findViewById(R.id.authorizedBy_title_textView);
+        authorizedByValueEditText = (EditText) findViewById(R.id.authorizedBy_value_editText);
+        clearAuthorizedByImageButton = (ImageButton) findViewById(R.id.clear_authorizedBy_imageButton);
         authorizedByLayout = (LinearLayout) findViewById(R.id.authorizedBy_layout);
         authorizedByTextView = (TextView) findViewById(R.id.authorizedBy_textView);
         statusLayout = (LinearLayout) findViewById(R.id.status_layout);
@@ -257,6 +273,8 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         clearTransporterInfoImageButton.setOnClickListener(this);
         addTransportationCheckBoxTextView.setOnCheckedChangeListener(this);
         vendorValueEditText.setOnClickListener(this);
+        authorizedByValueEditText.setOnClickListener(this);
+        clearAuthorizedByImageButton.setOnClickListener(this);
         transporterValueEditText.setOnClickListener(this);
         receiveDateValueTextView.setOnClickListener(this);
         invoiceDateValueTextView.setOnClickListener(this);
@@ -268,8 +286,12 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
         datePickerFragment = new AllDatePickerFragment();
         datePickerFragment.setListener(this);
 
-
         if (flagToShow.equals("stockRequest")) {
+            authorizedByTitleTextView.setVisibility(View.VISIBLE);
+            authorizedByValueEditText.setVisibility(View.VISIBLE);
+            clearAuthorizedByImageButton.setVisibility(View.VISIBLE);
+
+
             if (!NetworkUtil.getConnectivityStatusString(POReceiveConsignmentActivity.this).equals(getString(R.string.not_connected_to_internet))) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -281,6 +303,11 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 Toast.makeText(POReceiveConsignmentActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
             }
         } else {
+
+            authorizedByTitleTextView.setVisibility(View.GONE);
+            authorizedByValueEditText.setVisibility(View.GONE);
+            clearAuthorizedByImageButton.setVisibility(View.GONE);
+
             if (!NetworkUtil.getConnectivityStatusString(POReceiveConsignmentActivity.this).equals(getString(R.string.not_connected_to_internet))) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -313,6 +340,15 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.clear_authorizedBy_imageButton:
+                authorizedByValueEditText.setText("");
+                strAuthorizedById = "";
+                break;
+            case R.id.authorizedBy_value_editText:
+                if (authorizedByValueEditText.getText().toString().trim().length() == 0) {
+                    openAuthorizedBySearchDialog("authorizedBy");
+                }
+                break;
             case R.id.clear_vendorInfo_imageButton:
                 vendorValueEditText.setText("");
                 vendorId = "";
@@ -440,6 +476,8 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                                 apiResponse.getData().getPurchaseDetails(),
                                 apiResponse.getData().getTransportationData(),
                                 apiResponse.getData().getIsExistTransportationDetails());
+                        itemLabels = apiResponse.getData().getItemLabels();
+
 
                         for (final ConsignmentItem consignmentItem : apiResponse.getData().getConsignmentItems()) {
                             if (consignmentItem != null) {
@@ -494,6 +532,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 try {
                     if (apiResponse.getSuccess()) {
                         setDataForStock(apiResponse.getData().getPurchaseData());
+                        itemLabels = apiResponse.getData().getItemLabels();
 
                         for (final ConsignmentItem consignmentItem : apiResponse.getData().getConsignmentItems()) {
                             if (consignmentItem != null) {
@@ -672,6 +711,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
 
     public void setDataForStock(PurchaseData purchaseOrderData) {
 
+
         //   strPurchaseOrderId = purchaseOrderData.getPurorid();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -685,6 +725,14 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 e.printStackTrace();
             }
         }
+
+      /*  //Authorized By
+        if (purchaseOrderData.getAuthorizedBy() != null && !purchaseOrderData.getAuthorizedBy().isEmpty()) {
+            authorizedByLayout.setVisibility(View.VISIBLE);
+            authorizedByTextView.setText(purchaseOrderData.getAuthorizedBy());
+        } else {
+            authorizedByLayout.setVisibility(View.GONE);
+        }*/
 
 
         //Receive Date
@@ -1027,6 +1075,8 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 invoiceDateValueTextView.setText(s);
             } else if (datePickerFragment.getTag().equals("expiryDate")) {
                 expiryDateValueTextView.setText(s);
+            } else if (datePickerFragment.getTag().equals("manufactureDate")) {
+                manufactureDateValueTextView.setText(s);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -1178,7 +1228,10 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             final EditText priceEdittext = (EditText) productsDialog.findViewById(R.id.price_edittext);
             final EditText commentEdittext = (EditText) productsDialog.findViewById(R.id.comment_edittext);
             final TextView expiryDateTitleTextView = (TextView) productsDialog.findViewById(R.id.expiry_date_title_textView);
+            final TextView manufactureDateTitleTextView = (TextView) productsDialog.findViewById(R.id.manufacturing_date_title_textView);
             expiryDateValueTextView = (TextView) productsDialog.findViewById(R.id.expiry_date_value_textView);
+            manufactureDateValueTextView = (TextView) productsDialog.findViewById(R.id.manufacturing_date_value_textView);
+            barcodeEdittext = (TextView) productsDialog.findViewById(R.id.barcode_edittext);
             final EditText reasonRejectionEdittext = (EditText) productsDialog.findViewById(R.id.reasonRejection_edittext);
             final EditText rejectedQuantityEdittext = (EditText) productsDialog.findViewById(R.id.rejectedQuantity_edittext);
             final TextView textViewAdd = (TextView) productsDialog.findViewById(R.id.textView_add);
@@ -1191,11 +1244,70 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 value = df2.format(Double.valueOf(consignmentItem.getReceiveQuantity()));
             }
 
+
+            if (itemLabels != null) {
+                if (itemLabels.getItemVariation() != null &&
+                        !itemLabels.getItemVariation()) {
+                    productNameEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getHsnCode() != null &&
+                        !itemLabels.getHsnCode()) {
+                    editTextHSNCode.setVisibility(View.GONE);
+                } else if (itemLabels.getSkuCode() != null &&
+                        !itemLabels.getSkuCode()) {
+                    skuCodeEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getOrderQuantity() != null &&
+                        !itemLabels.getOrderQuantity()) {
+                    orderQuantityEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getReceivingQuantity() != null &&
+                        !itemLabels.getReceivingQuantity()) {
+                    receiveQuantityEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getUnit() != null &&
+                        !itemLabels.getUnit()) {
+                    unitsTypeSpinner.setVisibility(View.GONE);
+                } else if (itemLabels.getPrice() != null &&
+                        !itemLabels.getPrice()) {
+                    priceEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getComment() != null &&
+                        !itemLabels.getComment()) {
+                    commentEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getBoxQty() != null &&
+                        !itemLabels.getBoxQty()) {
+
+                } else if (itemLabels.getManufacturingDate() != null &&
+                        !itemLabels.getManufacturingDate()) {
+                    manufactureDateValueTextView.setVisibility(View.GONE);
+                    manufactureDateTitleTextView.setVisibility(View.GONE);
+
+                } else if (itemLabels.getExpiryDate() != null &&
+                        !itemLabels.getExpiryDate()) {
+                    expiryDateValueTextView.setVisibility(View.GONE);
+                    expiryDateTitleTextView.setVisibility(View.GONE);
+                } else if (itemLabels.getBarcodeTitle() != null &&
+                        !itemLabels.getBarcodeTitle()) {
+                    barcodeEdittext.setVisibility(View.GONE);
+
+                } else if (itemLabels.getReasonForRejection() != null &&
+                        !itemLabels.getReasonForRejection()) {
+                    reasonRejectionEdittext.setVisibility(View.GONE);
+
+                } else if (itemLabels.getRejectedQuantity() != null &&
+                        !itemLabels.getRejectedQuantity()) {
+                    rejectedQuantityEdittext.setVisibility(View.GONE);
+                }
+            }
+
             productNameEdittext.setText(consignmentItem.getName());
             skuCodeEdittext.setText(consignmentItem.getInternalCode());
             orderQuantityEdittext.setText(consignmentItem.getOrderQuantity());
             editTextHSNCode.setText(consignmentItem.getHsnCode());
             receiveQuantityEdittext.setText(consignmentItem.getReceiveQuantity());
+            barcodeEdittext.setHint(itemLabels.getBarcodeTitleName());
+
+            if (editTextHSNCode.getText().toString() != null && !editTextHSNCode.getText().toString().isEmpty()) {
+                editTextHSNCode.setEnabled(false);
+            } else {
+                editTextHSNCode.setEnabled(true);
+            }
 
             if (operationType.equals("edit")) {
                 receiveQuantityEdittext.setText(value);
@@ -1203,6 +1315,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 reasonRejectionEdittext.setText(consignmentItem.getReasonRejection());
                 expiryDateValueTextView.setText(consignmentItem.getExpiryDate());
                 rejectedQuantityEdittext.setText(consignmentItem.getRejectedQuantity());
+
                 // unitsTypeSpinner.setSelection(consignmentItem.getUnit());
             }
 
@@ -1230,6 +1343,14 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                 }
             });
 
+            manufactureDateValueTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    datePickerFragment.show(getSupportFragmentManager(), "manufactureDate");
+                }
+            });
+
+
             //Add Item
             textViewAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1240,6 +1361,7 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                         consignmentItem.setPrice(priceEdittext.getText().toString().trim());
                         consignmentItem.setComment(commentEdittext.getText().toString().trim());
                         consignmentItem.setExpiryDate(expiryDateValueTextView.getText().toString().trim());
+                        consignmentItem.setManufacturingDate(manufactureDateValueTextView.getText().toString().trim());
                         consignmentItem.setRejectedQuantity(rejectedQuantityEdittext.getText().toString().trim());
                         consignmentItem.setReasonRejection(reasonRejectionEdittext.getText().toString().trim());
                         consignmentItem.setMeasurementUnit(measurementArrayList.get(unitsTypeSpinner.getSelectedItemPosition()).getName());
@@ -1345,6 +1467,146 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
 
     }
 
+    @Override
+    public void onAuthorizedUserClick(int position, String userType) {
+
+        User selected = userArrayList.get(position);
+        if (selected.getName() != null && !selected.getName().toString().trim().isEmpty()) {
+            authorizedByValueEditText.setText(selected.getName().toString().trim());
+            //Get Authorized User's ID
+            strAuthorizedById = selected.getId();
+        }
+
+        if (authorizedByDialog != null && authorizedByDialog.isShowing()) {
+            authorizedByDialog.dismiss();
+        }
+
+    }
+
+    //Open Dialog to select Authorized By
+    public void openAuthorizedBySearchDialog(final String userType) {
+        authorizedByDialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+        authorizedByDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        authorizedByDialog.setContentView(R.layout.dialog_search_vendor);
+        Window window = authorizedByDialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+
+        authorizedBySearchAutoCompleteTextView = (AutoCompleteTextView) authorizedByDialog.findViewById(R.id.search_autoCompleteTextView);
+        authorizedByRecyclerView = (RecyclerView) authorizedByDialog.findViewById(R.id.recyclerView);
+
+        //Customers RecyclerView
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        authorizedByUserAdapter = new AuthorizedByUserAdapter(this,
+                userArrayList, this, userType);
+
+        authorizedByRecyclerView.setLayoutManager(mLayoutManager);
+        authorizedByRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        authorizedByRecyclerView.setAdapter(authorizedByUserAdapter);
+        authorizedByRecyclerView.setNestedScrollingEnabled(false);
+
+        authorizedBySearchAutoCompleteTextView.setHint("Authorized by");
+        authorizedBySearchAutoCompleteTextView.setThreshold(1);
+        authorizedBySearchAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (authorizedBySearchAutoCompleteTextView.isPerformingCompletion()) {
+
+                } else {
+                    status = NetworkUtil.getConnectivityStatusString(POReceiveConsignmentActivity.this);
+                    if (!status.equals(getString(R.string.not_connected_to_internet))) {
+                        searchAuthorizedUser(s.toString().trim(), userType);
+                    } else {
+                        Toast.makeText(POReceiveConsignmentActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+        window.setAttributes(wlp);
+        authorizedByDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        authorizedByDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        authorizedByDialog.show();
+    }
+
+    //Refreshing data after getting input from openAuthorizedBySearchDialog
+    private void refreshAuthorizedRecyclerView(final String userType) {
+        authorizedByUserAdapter.notifyDataSetChanged();
+        authorizedBySearchAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                User selected = (User) arg0.getAdapter().getItem(arg2);
+                if (selected.getName() != null && !selected.getName().toString().trim().isEmpty()) {
+                    authorizedByValueEditText.setText(selected.getName().toString().trim());
+
+                    //Get Authorized By User Id
+                    strAuthorizedById = selected.getId();
+                }
+                if (authorizedByDialog != null && authorizedByDialog.isShowing()) {
+                    authorizedByDialog.dismiss();
+                }
+            }
+        });
+
+    }
+
+    //Searching Authorized By User from API after getting input from openAuthorizedBySearchDialog
+    public void searchAuthorizedUser(String str, final String userType) {
+        task = getString(R.string.authorized_user_search_task);
+        if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+            userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+            accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+            ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+        }
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ApiResponse> call = apiService.searchAuthorizedByUser(version, key, task, userId, accessToken, str);
+        Log.d("url", String.valueOf(call.request().url()));
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                // leadList.clear();
+                Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                final ApiResponse apiResponse = (ApiResponse) response.body();
+                try {
+                    if (apiResponse.getSuccess()) {
+                        if (userArrayList != null && userArrayList.size() > 0) {
+                            userArrayList.clear();
+                        }
+                        for (final User user : apiResponse.getData().getUsers()) {
+                            if (user != null) {
+                                userArrayList.add(user);
+                            }
+                        }
+                        refreshAuthorizedRecyclerView(userType);
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            }
+        });
+
+    }
+
     //AsyncTask to Receive Items
     public class ReceiveItemsAsyncTask extends AsyncTask<Void, Void, String> {
         private Activity context;
@@ -1370,9 +1632,11 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
             try {
                 jsonObject.put("invoice", strInvoiceNumber);
                 jsonObject.put("vendor", vendorId);
+
                 if (flagToShow.equals("stockRequest")) {
                     jsonObject.put("request", purOrId);
-                }else{
+                    jsonObject.put("user", strAuthorizedById);
+                } else {
                     jsonObject.put("purorid", strPurchaseOrderId);
                 }
 
@@ -1396,6 +1660,42 @@ public class POReceiveConsignmentActivity extends AppCompatActivity implements V
                         productsItemJsonObject.put("rejected-qty", consignmentItemList.get(i).getRejectedQuantity());
                     } else {
                         productsItemJsonObject.put("rejected-qty", "0");
+                    }
+
+                    if (consignmentItemList.get(i).getHsnCode() != null &&
+                            !consignmentItemList.get(i).getHsnCode().isEmpty()) {
+                        productsItemJsonObject.put("item-hsn-code", consignmentItemList.get(i).getHsnCode());
+                    } else {
+                        productsItemJsonObject.put("item-hsn-code", "0");
+                    }
+
+                    if (consignmentItemList.get(i).getOrderQuantity() != null &&
+                            !consignmentItemList.get(i).getOrderQuantity().isEmpty()) {
+                        productsItemJsonObject.put("item-qty-origin", consignmentItemList.get(i).getOrderQuantity());
+                    } else {
+                        productsItemJsonObject.put("item-qty-origin", "0");
+                    }
+
+
+                    if (consignmentItemList.get(i).getOiid() != null &&
+                            !consignmentItemList.get(i).getOiid().isEmpty()) {
+                        productsItemJsonObject.put("oiid", consignmentItemList.get(i).getOiid());
+                    } else {
+                        productsItemJsonObject.put("oiid", "0");
+                    }
+
+                    if (consignmentItemList.get(i).getManufacturingDate() != null &&
+                            !consignmentItemList.get(i).getManufacturingDate().isEmpty()) {
+                        productsItemJsonObject.put("manufacturing-date", consignmentItemList.get(i).getManufacturingDate());
+                    } else {
+                        productsItemJsonObject.put("manufacturing-date", "0");
+                    }
+
+                    if (consignmentItemList.get(i).getBarcode() != null &&
+                            !consignmentItemList.get(i).getBarcode().isEmpty()) {
+                        productsItemJsonObject.put("barcode", consignmentItemList.get(i).getBarcode());
+                    } else {
+                        productsItemJsonObject.put("barcode", "0");
                     }
 
                     if (consignmentItemList.get(i).getReceiveQuantity() != null &&

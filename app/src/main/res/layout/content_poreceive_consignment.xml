@@ -391,6 +391,50 @@
                 android:textSize="@dimen/_9sdp" />
 
             <TextView
+                android:id="@+id/authorizedBy_title_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:text="@string/authorizedBy_title"
+                android:textSize="@dimen/_10sdp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp">
+
+                <EditText
+                    android:id="@+id/authorizedBy_value_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/authorizedBy_title"
+                    android:visibility="gone"
+                    android:longClickable="false"
+                    android:textSize="@dimen/_10sdp"
+                    android:theme="@style/Autocomplete" />
+
+                <ImageButton
+                    android:id="@+id/clear_authorizedBy_imageButton"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:background="@android:drawable/ic_menu_close_clear_cancel" />
+            </RelativeLayout>
+
+            <TextView
                 android:id="@+id/consignmentItemsListTitle_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

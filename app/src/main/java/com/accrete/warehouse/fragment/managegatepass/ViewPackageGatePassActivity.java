@@ -82,7 +82,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
     private ProgressBar progressBar;
     private String strCuid, strInvid;
     private List<ItemsInsidePackage> itemList = new ArrayList<>();
-    private String strOrderId;
+    private String strOrderId,strCustomerName,strInvoiceNumber;
 
 
     @Override
@@ -294,7 +294,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
             @Override
             public void onClick(View v) {
                 dialogSelectEvent.dismiss();
-                downloadPdfDialog(cuid, invid,packageList.get(position).getOrderID());
+                downloadPdfDialog(cuid, invid,packageList.get(position).getOrderID(),packageList.get(position).getCustomerName(), packageList.get(position).getInvoiceNumber());
             }
         });
 
@@ -355,7 +355,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
         });
     }
 
-    public void downloadPdfDialog(final String cuid, final String invid, final String orderId) {
+    public void downloadPdfDialog(final String cuid, final String invid, final String orderId, final String customerName, final String invoiceNumber) {
         final View dialogView = View.inflate(this, R.layout.dialog_download_receipt, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView)
@@ -365,6 +365,8 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
         strCuid = cuid;
         strInvid = invid;
         strOrderId = orderId;
+        strCustomerName=customerName;
+        strInvoiceNumber = invoiceNumber;
         TextView textViewTitle = (TextView) dialogView.findViewById(R.id.title_textView);
         TextView downloadConfirmMessage = (TextView) dialogView.findViewById(R.id.download_confirm_message);
         final TextView btnYes = (TextView) dialogView.findViewById(R.id.btn_yes);
@@ -390,7 +392,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
                     if (android.os.Build.VERSION.SDK_INT >= 23) {
                         askStoragePermission();
                     } else {
-                        downloadPdf(cuid, invid,orderId);
+                        downloadPdf(cuid, invid,orderId,customerName, invoiceNumber);
 
                     }
 
@@ -410,7 +412,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
         alertDialog.show();
     }
 
-    private void downloadPdf(final String cuid, final String invid, final String orderId) {
+    private void downloadPdf(final String cuid, final String invid, final String orderId, final String customerName, final String invoiceNumber) {
         task = getString(R.string.download_gatepass_invoice_task);
         if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
             userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
@@ -440,9 +442,9 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
                             String url = apiResponse.getData().getFilename();
                             Uri uri = Uri.parse(url);
                             DownloadManager.Request request = new DownloadManager.Request(uri)
-                                    .setTitle(orderId + "_invoice" + ".pdf")
+                                    .setTitle(customerName.replaceAll(" ","_")+ "_"+invoiceNumber + ".pdf")
                                     .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                                            orderId + "_invoice" + ".pdf")
+                                            customerName.replaceAll(" ","_") + "_invoice" + ".pdf")
                                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                             downloadManager.enqueue(request);
                         } else {
@@ -503,7 +505,7 @@ public class ViewPackageGatePassActivity extends AppCompatActivity implements Vi
                     // Check for contacts permissions
 
                     if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        downloadPdf(strCuid, strInvid, strOrderId);
+                        downloadPdf(strCuid, strInvid, strOrderId, strCustomerName, strInvoiceNumber);
                     } else {
                         //permission is denied (this is the first timeTextView, when "never ask again" is not checked) so ask again explaining the usage of permission
                         // shouldShowRequestPermissionRationale will return true

@@ -199,7 +199,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private String strEwayNumber;
     private TextView btnAddImageView;
     private TextView btnUpload;
-    private ArrayList<ImagesUpload> packageUploadDocDetails = new ArrayList<>();
+    private ArrayList<PackageFile> packageUploadDocDetails = new ArrayList<>();
     private ImageView imageViewLoader;
     private CardView cardViewTransporters, cardViewPackageDeliveryDetails;
     private TextView textViewEmpty;
@@ -819,9 +819,9 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         View dialogView = View.inflate(CreatePackageActivity.this, R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(CreatePackageActivity.this);
         builder.setView(dialogView)
-                .setCancelable(true);
+                .setCancelable(false);
         dialogUploadDoc = builder.create();
-        dialogUploadDoc.setCanceledOnTouchOutside(true);
+        dialogUploadDoc.setCanceledOnTouchOutside(false);
 
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
         dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);

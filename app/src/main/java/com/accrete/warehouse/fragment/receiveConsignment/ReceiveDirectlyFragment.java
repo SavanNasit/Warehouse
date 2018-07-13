@@ -43,6 +43,7 @@ import com.accrete.warehouse.adapter.ReceiveConsignmentItemsAdapter;
 import com.accrete.warehouse.adapter.VendorsAdapter;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.ConsignmentItem;
+import com.accrete.warehouse.model.ItemLabels;
 import com.accrete.warehouse.model.ItemList;
 import com.accrete.warehouse.model.Measurements;
 import com.accrete.warehouse.model.User;
@@ -151,6 +152,10 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
     private AuthorizedByUserAdapter authorizedByUserAdapter;
     private TextView weightTitleTextView;
     private String flagForInvoiceNumber;
+    private ItemLabels itemLabels = new ItemLabels();
+    private TextView manufactureDateValueTextView;
+    private TextView barcodeEdittext;
+
 
     public static ReceiveDirectlyFragment newInstance(String title) {
         ReceiveDirectlyFragment f = new ReceiveDirectlyFragment();
@@ -824,6 +829,7 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                     if (apiResponse.getSuccess()) {
                         ConsignmentItem consignmentItem = apiResponse.getData().getConsignmentItem();
                         openDialogAddEditItems(getActivity(), "add", 0, consignmentItem);
+                        itemLabels = apiResponse.getData().getItemLabels();
 
                     }
 
@@ -873,12 +879,23 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
             final TextView textViewAdd = (TextView) productsDialog.findViewById(R.id.textView_add);
             final TextView textViewBack = (TextView) productsDialog.findViewById(R.id.textView_back);
             final EditText editTextHSNCode = (EditText) productsDialog.findViewById(R.id.hsn_edittext);
+            final TextView manufactureDateTitleTextView = (TextView) productsDialog.findViewById(R.id.manufacturing_date_title_textView);
+            manufactureDateValueTextView = (TextView) productsDialog.findViewById(R.id.manufacturing_date_value_textView);
+            barcodeEdittext = (TextView) productsDialog.findViewById(R.id.barcode_edittext);
+
+            if (editTextHSNCode.getText().toString() != null && !editTextHSNCode.getText().toString().isEmpty()) {
+                editTextHSNCode.setEnabled(false);
+            } else {
+                editTextHSNCode.setEnabled(true);
+            }
+
 
             productNameEdittext.setText(consignmentItem.getName());
             skuCodeEdittext.setText(consignmentItem.getInternalCode());
             orderQuantityEdittext.setText(consignmentItem.getOrderQuantity());
             editTextHSNCode.setText(consignmentItem.getHsnCode());
             receiveQuantityEdittext.setText("");
+            barcodeEdittext.setHint(itemLabels.getBarcodeTitleName());
 
             if (operationType.equals("edit")) {
                 receiveQuantityEdittext.setText(value);
@@ -888,6 +905,59 @@ public class ReceiveDirectlyFragment extends Fragment implements View.OnClickLis
                 rejectedQuantityEdittext.setText(consignmentItem.getRejectedQuantity());
                 // unitsTypeSpinner.setSelection(consignmentItem.getUnit());
             }
+
+
+            if (itemLabels != null) {
+                if (itemLabels.getItemVariation() != null &&
+                        !itemLabels.getItemVariation()) {
+                    productNameEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getHsnCode() != null &&
+                        !itemLabels.getHsnCode()) {
+                    editTextHSNCode.setVisibility(View.GONE);
+                } else if (itemLabels.getSkuCode() != null &&
+                        !itemLabels.getSkuCode()) {
+                    skuCodeEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getOrderQuantity() != null &&
+                        !itemLabels.getOrderQuantity()) {
+                    orderQuantityEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getReceivingQuantity() != null &&
+                        !itemLabels.getReceivingQuantity()) {
+                    receiveQuantityEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getUnit() != null &&
+                        !itemLabels.getUnit()) {
+                    unitsTypeSpinner.setVisibility(View.GONE);
+                } else if (itemLabels.getPrice() != null &&
+                        !itemLabels.getPrice()) {
+                    priceEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getComment() != null &&
+                        !itemLabels.getComment()) {
+                    commentEdittext.setVisibility(View.GONE);
+                } else if (itemLabels.getBoxQty() != null &&
+                        !itemLabels.getBoxQty()) {
+
+                } else if (itemLabels.getManufacturingDate() != null &&
+                        !itemLabels.getManufacturingDate()) {
+                    manufactureDateValueTextView.setVisibility(View.GONE);
+                    manufactureDateTitleTextView.setVisibility(View.GONE);
+
+                } else if (itemLabels.getExpiryDate() != null &&
+                        !itemLabels.getExpiryDate()) {
+                    expiryDateValueTextView.setVisibility(View.GONE);
+                    expiryDateTitleTextView.setVisibility(View.GONE);
+                } else if (itemLabels.getBarcodeTitle() != null &&
+                        !itemLabels.getBarcodeTitle()) {
+                    barcodeEdittext.setVisibility(View.GONE);
+
+                } else if (itemLabels.getReasonForRejection() != null &&
+                        !itemLabels.getReasonForRejection()) {
+                    reasonRejectionEdittext.setVisibility(View.GONE);
+
+                } else if (itemLabels.getRejectedQuantity() != null &&
+                        !itemLabels.getRejectedQuantity()) {
+                    rejectedQuantityEdittext.setVisibility(View.GONE);
+                }
+            }
+
 
             //TODO Order Quantity and SKU Code fields will be hidden
             skuCodeEdittext.setVisibility(View.VISIBLE);

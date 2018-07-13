@@ -46,6 +46,13 @@ public class ManagePackagesFragment extends Fragment {
     private SearchView.OnQueryTextListener queryTextListener;
     private Timer timer;
 
+    public static ManagePackagesFragment newInstance(String title) {
+        ManagePackagesFragment f = new ManagePackagesFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_TITLE, title);
+        f.setArguments(args);
+        return (f);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,7 +122,6 @@ public class ManagePackagesFragment extends Fragment {
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -126,16 +132,6 @@ public class ManagePackagesFragment extends Fragment {
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
-    }
-
-
-
-    public static ManagePackagesFragment newInstance(String title) {
-        ManagePackagesFragment f = new ManagePackagesFragment();
-        Bundle args = new Bundle();
-        args.putString(KEY_TITLE, title);
-        f.setArguments(args);
-        return (f);
     }
 
     @Override
@@ -225,11 +221,13 @@ public class ManagePackagesFragment extends Fragment {
             }
         });
 
-        if(getArguments().getString("flagToRedirect")!=null &&
+        if (getArguments().getString("flagToRedirect") != null &&
                 !getArguments().getString("flagToRedirect").isEmpty() &&
-                getArguments().getString("flagToRedirect").equals("runningOrders")){
-           viewPagerExecute.setCurrentItem(0);
-        }else {
+                getArguments().getString("flagToRedirect").equals("runningOrders")) {
+            viewPagerExecute.setCurrentItem(0);
+        } else if (getArguments().getString("flagToRedirect") != null &&
+                !getArguments().getString("flagToRedirect").isEmpty() &&
+                getArguments().getString("flagToRedirect").equals("stockRequest")) {
             viewPagerExecute.setCurrentItem(1);
         }
     }
@@ -237,54 +235,54 @@ public class ManagePackagesFragment extends Fragment {
     private void refreshFragment(String stringSearchText) {
         final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(viewPagerExecute.getCurrentItem());
 
-            if (mFragment instanceof PackedFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((PackedFragment) mFragment).searchAPI(stringSearchText);
+        if (mFragment instanceof PackedFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((PackedFragment) mFragment).searchAPI(stringSearchText);
 
-                }
             }
+        }
 
-          if (mFragment instanceof PackedAgainstStockFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((PackedAgainstStockFragment) mFragment).searchAPI(stringSearchText);
-                }
+        if (mFragment instanceof PackedAgainstStockFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((PackedAgainstStockFragment) mFragment).searchAPI(stringSearchText);
             }
+        }
 
-            if (mFragment instanceof ShippedPackageFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((ShippedPackageFragment) mFragment).searchAPI(stringSearchText);
-                }
+        if (mFragment instanceof ShippedPackageFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((ShippedPackageFragment) mFragment).searchAPI(stringSearchText);
             }
+        }
 
-            if (mFragment instanceof OutForDeliveryFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((OutForDeliveryFragment) mFragment).searchAPI(stringSearchText);
-                }
+        if (mFragment instanceof OutForDeliveryFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((OutForDeliveryFragment) mFragment).searchAPI(stringSearchText);
             }
+        }
 
-            if (mFragment instanceof DeliveredFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((DeliveredFragment) mFragment).searchAPI(stringSearchText);
-                }
+        if (mFragment instanceof DeliveredFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((DeliveredFragment) mFragment).searchAPI(stringSearchText);
             }
+        }
 
-            if (mFragment instanceof AttemptFailedFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((AttemptFailedFragment) mFragment).searchAPI(stringSearchText);
-                }
+        if (mFragment instanceof AttemptFailedFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((AttemptFailedFragment) mFragment).searchAPI(stringSearchText);
             }
+        }
 
-            if (mFragment instanceof ReAttemptFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((ReAttemptFragment) mFragment).searchAPI(stringSearchText);
-                }
+        if (mFragment instanceof ReAttemptFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((ReAttemptFragment) mFragment).searchAPI(stringSearchText);
             }
+        }
 
-            if (mFragment instanceof DeliveryFailedFragment) {
-                if (mFragment != null && mFragment.isAdded()) {
-                    ((DeliveryFailedFragment) mFragment).searchAPI(stringSearchText);
-                }
+        if (mFragment instanceof DeliveryFailedFragment) {
+            if (mFragment != null && mFragment.isAdded()) {
+                ((DeliveryFailedFragment) mFragment).searchAPI(stringSearchText);
             }
+        }
     }
 
     private void setupViewPagerExecute(ViewPager viewPagerExecute) {
