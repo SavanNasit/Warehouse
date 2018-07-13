@@ -358,11 +358,13 @@ public class ManageConsignmentFragment extends Fragment implements ManageConsign
     /*    Intent intentView = new Intent(getActivity(), ViewConsignmentActivity.class);
         intentView.putExtra("iscid", consignmentList.get(position).getIscid());
         startActivity(intentView);*/
-        ChooseEventsForManageConsignmentFragment chooseEventsForManageConsignmentFragment = new ChooseEventsForManageConsignmentFragment();
+        ChooseEventsForManageConsignmentFragment chooseEventsForManageConsignmentFragment =
+                new ChooseEventsForManageConsignmentFragment();
         //  getFragmentManager().beginTransaction().replace(R.id.receive_consignment_container, receiveDirectlyFragment).commitAllowingStateLoss();
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.manage_consignment_container, chooseEventsForManageConsignmentFragment).addToBackStack(null).commit();
+                .replace(R.id.manage_consignment_container, chooseEventsForManageConsignmentFragment)
+                .addToBackStack(null).commit();
 
         Bundle bundle = new Bundle();
         bundle.putString("iscid", consignmentList.get(position).getIscid());
