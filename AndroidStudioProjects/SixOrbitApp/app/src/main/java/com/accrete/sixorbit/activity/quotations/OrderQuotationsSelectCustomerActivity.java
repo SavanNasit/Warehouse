@@ -1136,7 +1136,7 @@ public class OrderQuotationsSelectCustomerActivity extends AppCompatActivity imp
                                         contacts.setName(contactPerson.getName());
                                         contacts.setCuId(strCuid);
                                         databaseHandler.insertCustomersContactPersons(contacts);
-                                    }else if (databaseHandler != null &&
+                                    } else if (databaseHandler != null &&
                                             databaseHandler.checkCustomersContactPersonResult(contactPerson.getCodeid())) {
                                         Contacts contacts = new Contacts();
                                         contacts.setCodeid(contactPerson.getCodeid());
@@ -1149,7 +1149,8 @@ public class OrderQuotationsSelectCustomerActivity extends AppCompatActivity imp
                         }
 
                         //Get Customer Type
-                        if (apiResponse.getData().getCustomerType().equals("1")) {
+                        if (apiResponse.getData().getCustomerType() != null &&
+                                apiResponse.getData().getCustomerType().equals("1")) {
 
                             //Get All contact persons of customer
                             for (final ContactPerson contactPerson : apiResponse.getData().getContactPersonArr()) {
