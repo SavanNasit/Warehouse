@@ -53,4 +53,8 @@ public class Measurements {
         this.conversionRate = conversionRate;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

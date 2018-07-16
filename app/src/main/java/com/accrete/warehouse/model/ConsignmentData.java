@@ -48,6 +48,84 @@ public class ConsignmentData {
     @SerializedName("stockRequest")
     @Expose
     private String stockRequest;
+    //TODO Added on 16th July 2k18
+    @SerializedName("venid")
+    @Expose
+    private String venid;
+    @SerializedName("purchase_date")
+    @Expose
+    private String purchaseDate;
+    @SerializedName("receive_date")
+    @Expose
+    private String receiveDate;
+    @SerializedName("invoice_number")
+    @Expose
+    private String invoiceNumber;
+    @SerializedName("authorized_id")
+    @Expose
+    private String authorizedId;
+    @SerializedName("authorized_by")
+    @Expose
+    private String authorizedBy;
+    @SerializedName("iscsid")
+    @Expose
+    private String iscsid;
+
+    public String getIscsid() {
+        return iscsid;
+    }
+
+    public void setIscsid(String iscsid) {
+        this.iscsid = iscsid;
+    }
+
+    public String getVenid() {
+        return venid;
+    }
+
+    public void setVenid(String venid) {
+        this.venid = venid;
+    }
+
+    public String getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(String purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public String getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(String receiveDate) {
+        this.receiveDate = receiveDate;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public String getAuthorizedId() {
+        return authorizedId;
+    }
+
+    public void setAuthorizedId(String authorizedId) {
+        this.authorizedId = authorizedId;
+    }
+
+    public String getAuthorizedBy() {
+        return authorizedBy;
+    }
+
+    public void setAuthorizedBy(String authorizedBy) {
+        this.authorizedBy = authorizedBy;
+    }
 
     public String getCreatedBy() {
         return createdBy;

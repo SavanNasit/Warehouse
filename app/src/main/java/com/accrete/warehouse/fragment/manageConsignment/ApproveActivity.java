@@ -3,6 +3,7 @@ package com.accrete.warehouse.fragment.manageConsignment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -297,6 +298,13 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = df.format(c.getTime());
         editConsignmentTextReceiveDate.setText(formattedDate);
+
+        status = NetworkUtil.getConnectivityStatusString(this);
+        if (!status.equals(getString(R.string.not_connected_to_internet))) {
+            getApproveConsignmentData(chkId, iscId);
+        } else {
+            Toast.makeText(ApproveActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -1134,6 +1142,168 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    //TODO API to get Approve Consignment's Prefilled Data
+    public void getApproveConsignmentData(String chkId, String iscId) {
+        try {
+            task = getString(R.string.task_fetch_approve_consignment);
+            if (AppPreferences.getIsLogin(this, AppUtils.ISLOGIN)) {
+                userId = AppPreferences.getUserId(this, AppUtils.USER_ID);
+                accessToken = AppPreferences.getAccessToken(this, AppUtils.ACCESS_TOKEN);
+                ApiClient.BASE_URL = AppPreferences.getLastDomain(this, AppUtils.DOMAIN);
+            }
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<ApiResponse> call = apiService.approveConsignmentPrefilledData(version, key, task,
+                    userId, accessToken, chkId, iscId);
+            Log.d("url", String.valueOf(call.request().url()));
+            call.enqueue(new Callback<ApiResponse>() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    // leadList.clear();
+                    Log.d("Response", String.valueOf(new GsonBuilder().setPrettyPrinting().create().toJson(response.body())));
+                    final ApiResponse apiResponse = (ApiResponse) response.body();
+                    try {
+                        if (apiResponse.getSuccess()) {
+                            if (apiResponse.getData().getConsignmentData().getContainerID() != null
+                                    && !apiResponse.getData().getConsignmentData().getContainerID().isEmpty()) {
+                                editConsignmentTextContainerId.setText("" +
+                                        apiResponse.getData().getConsignmentData().getContainerID());
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getPurchaseDate() != null
+                                    && !apiResponse.getData().getConsignmentData().getPurchaseDate().isEmpty()) {
+                                editConsignmentTextDate.setText("" +
+                                        apiResponse.getData().getConsignmentData().getPurchaseDate());
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getVendorName() != null
+                                    && !apiResponse.getData().getConsignmentData().getVendorName().isEmpty()) {
+                                editConsignmentEdittextVendor.setText("" +
+                                        apiResponse.getData().getConsignmentData().getVendorName());
+                                editConsignmentTextVendor.setText("" +
+                                        apiResponse.getData().getConsignmentData().getVendorName());
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getAuthorizedBy() != null
+                                    && !apiResponse.getData().getConsignmentData().getAuthorizedBy().isEmpty()) {
+                                editConsignmentTextAuthorizedBy.setText("" +
+                                        apiResponse.getData().getConsignmentData().getAuthorizedBy());
+                                editConsignmentEdittextAuthorizedBy.setText("" +
+                                        apiResponse.getData().getConsignmentData().getAuthorizedBy());
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getStatus() != null
+                                    && !apiResponse.getData().getConsignmentData().getStatus().isEmpty()) {
+                                editConsignmentTextStatus.setText("" +
+                                        apiResponse.getData().getConsignmentData().getStatus());
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getVenid() != null
+                                    && !apiResponse.getData().getConsignmentData().getVenid().isEmpty()) {
+                                vendorId = apiResponse.getData().getConsignmentData().getVenid();
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getAuthorizedId() != null
+                                    && !apiResponse.getData().getConsignmentData().getAuthorizedId().isEmpty()) {
+                                strAuthorizedById = apiResponse.getData().getConsignmentData().getAuthorizedId();
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getInvoiceNumber() != null
+                                    && !apiResponse.getData().getConsignmentData().getInvoiceNumber().isEmpty()) {
+                                editConsignmentTextInvoiceNumber.setText("" +
+                                        apiResponse.getData().getConsignmentData().getInvoiceNumber());
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getReceiveDate() != null
+                                    && !apiResponse.getData().getConsignmentData().getReceiveDate().isEmpty()) {
+                                editConsignmentTextReceiveDate.setText("" +
+                                        parseDateToddMMyyyy(apiResponse.getData().getConsignmentData().getReceiveDate()));
+                            }
+
+                            if (apiResponse.getData().getConsignmentData().getInvoiceDate() != null
+                                    && !apiResponse.getData().getConsignmentData().getInvoiceDate().isEmpty()) {
+                                editConsignmentTextInvoiceDate.setText("" +
+                                        parseDateToddMMyyyy(apiResponse.getData().getConsignmentData().getInvoiceDate()));
+                            }
+
+                            //Statuses
+                            editConsignmentTextStatus.setBackgroundResource(R.drawable.tags_rounded_corner);
+
+                            GradientDrawable drawable = (GradientDrawable) editConsignmentTextStatus.getBackground();
+                            if (apiResponse.getData().getConsignmentData().getIscsid() != null) {
+                                if (apiResponse.getData().getConsignmentData().getIscsid().equals("1")) {
+                                    drawable.setColor(getResources().getColor(R.color.green_purchase_order));
+                                    editConsignmentTextStatus.setText("Active");
+                                } else if (apiResponse.getData().getConsignmentData().getIscsid().equals("2")) {
+                                    drawable.setColor(getResources().getColor(R.color.red_purchase_order));
+                                    editConsignmentTextStatus.setText("Inactive");
+                                } else if (apiResponse.getData().getConsignmentData().getIscsid().equals("3")) {
+                                    drawable.setColor(getResources().getColor(R.color.gray_order));
+                                    editConsignmentTextStatus.setText("Delete");
+                                } else if (apiResponse.getData().getConsignmentData().getIscsid().equals("4")) {
+                                    drawable.setColor(getResources().getColor(R.color.gray_order));
+                                    editConsignmentTextStatus.setText("Freezed");
+                                } else if (apiResponse.getData().getConsignmentData().getIscsid().equals("5")) {
+                                    drawable.setColor(getResources().getColor(R.color.blue_purchase_order));
+                                    editConsignmentTextStatus.setText("Payment Approved");
+                                } else if (apiResponse.getData().getConsignmentData().getIscsid().equals("6")) {
+                                    drawable.setColor(getResources().getColor(R.color.orange_to_be_approved));
+                                    editConsignmentTextStatus.setText("To be Approved");
+                                }
+                            }
+
+                            if (apiResponse.getData().getIsVendorTransportationShow() != null &&
+                                    !apiResponse.getData().getIsVendorTransportationShow().isEmpty() &&
+                                    apiResponse.getData().getIsVendorTransportationShow().equals("1")) {
+                                editConsignmentCheckboxTransportation.setVisibility(View.VISIBLE);
+                            } else {
+                                editConsignmentCheckboxTransportation.setVisibility(View.GONE);
+                                editConsignmentCheckboxTransportation.setChecked(false);
+                            }
+
+
+                            if (apiResponse.getData().getConsignmentItems() != null &&
+                                    !apiResponse.getData().getConsignmentItems().isEmpty()) {
+                                for (ConsignmentItem consignmentItem : apiResponse.getData().getConsignmentItems()) {
+                                    consignmentItemList.add(consignmentItem);
+                                }
+
+                                consignmentItemsAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ApiResponse> call, Throwable t) {
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public String parseDateToddMMyyyy(String time) {
+        String inputPattern = "yyyy-MM-dd";
+        String outputPattern = "dd-MM-yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
 
     //AsyncTask to Receive Items
     public class ReceiveItemsAsyncTask extends AsyncTask<Void, Void, String> {
@@ -1245,13 +1415,6 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
 
                     productItemJsonArray.put(productsItemJsonObject);
                 }
-
-               /* JSONArray productsJsonArray = new JSONArray();
-                JSONObject productsJsonObject = new JSONObject();
-                productsJsonObject.put("trooid", "1");
-                productsJsonObject.put("items", productItemJsonArray);
-
-                productsJsonArray.put(productsJsonObject);*/
 
                 //Array
                 jsonObject.put("received-item-grp", productItemJsonArray);

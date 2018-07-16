@@ -30,6 +30,17 @@ public class TransportationData {
     @SerializedName("vendor_id")
     @Expose
     private String vendorId;
+    @SerializedName("purorid")
+    @Expose
+    private String purorid;
+
+    public String getPurorid() {
+        return purorid;
+    }
+
+    public void setPurorid(String purorid) {
+        this.purorid = purorid;
+    }
 
     public String getPurotransdid() {
         return purotransdid;

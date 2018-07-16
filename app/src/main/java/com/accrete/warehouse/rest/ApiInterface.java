@@ -1088,4 +1088,22 @@ public interface ApiInterface {
                     String iscId
     );
 
+    @GET("?urlq=service")
+    Call<ApiResponse> approveConsignmentPrefilledData(
+            @Query("version")
+                    String version,
+            @Query("key")
+                    String key,
+            @Query("task")
+                    String task,
+            @Query("user_id")
+                    String userid,
+            @Query("access_token")
+                    String accessToken,
+            @Query("chkid")
+                    String chkid,
+            @Query("iscid")
+                    String iscId
+    );
+
 }

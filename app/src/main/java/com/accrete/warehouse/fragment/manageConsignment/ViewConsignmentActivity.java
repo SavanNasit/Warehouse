@@ -21,10 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,18 +63,18 @@ public class ViewConsignmentActivity extends AppCompatActivity implements View.O
     private DownloadManager downloadManager;
     private ProgressBar progressBar;
     private Toolbar toolbar;
-   // private LinearLayout layoutActivityViewConsignmentGoodsReceiptFab;
+    // private LinearLayout layoutActivityViewConsignmentGoodsReceiptFab;
     private FloatingActionButton manageConsignmentGoodsReceiptPrint;
-   /* private LinearLayout layoutActivityViewConsignmentEditFab;
-    private FloatingActionButton activityViewConsignmentEditFab;
-    private LinearLayout layoutActivityViewConsignmentAllocationFab;
-    private FloatingActionButton activityViewConsignmentAllocationFab;
-    private LinearLayout activityViewConsignmentConsumptionFabLayout;
-    private FloatingActionButton activityViewConsignmentConsumptionFab;
-    private LinearLayout layoutActivityViewConsignmentFab;
-    private FloatingActionButton activityViewConsignmentFab;*/
+    /* private LinearLayout layoutActivityViewConsignmentEditFab;
+     private FloatingActionButton activityViewConsignmentEditFab;
+     private LinearLayout layoutActivityViewConsignmentAllocationFab;
+     private FloatingActionButton activityViewConsignmentAllocationFab;
+     private LinearLayout activityViewConsignmentConsumptionFabLayout;
+     private FloatingActionButton activityViewConsignmentConsumptionFab;
+     private LinearLayout layoutActivityViewConsignmentFab;
+     private FloatingActionButton activityViewConsignmentFab;*/
     private Boolean isFabOpen = false;
- //   private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    //   private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
 
     @Override
@@ -100,7 +96,7 @@ public class ViewConsignmentActivity extends AppCompatActivity implements View.O
 
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // layoutActivityViewConsignmentGoodsReceiptFab = (LinearLayout) findViewById(R.id.layout_activity_view_consignment_goods_receipt_fab);
+        // layoutActivityViewConsignmentGoodsReceiptFab = (LinearLayout) findViewById(R.id.layout_activity_view_consignment_goods_receipt_fab);
         manageConsignmentGoodsReceiptPrint = (FloatingActionButton) findViewById(R.id.manage_consignment_goods_receipt_print);
        /* layoutActivityViewConsignmentEditFab = (LinearLayout) findViewById(R.id.layout_activity_view_consignment_edit_fab);
         activityViewConsignmentEditFab = (FloatingActionButton) findViewById(R.id.activity_view_consignment_edit_fab);
@@ -333,14 +329,16 @@ public class ViewConsignmentActivity extends AppCompatActivity implements View.O
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 //Toast.makeText(this, "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                alertDialog.dismiss();
+                if (alertDialog != null && alertDialog.isShowing()) {
+                    alertDialog.dismiss();
+                }
             }
         });
     }
 
     @Override
     public void onClick(View v) {
-        if ( v == manageConsignmentGoodsReceiptPrint ) {
+        if (v == manageConsignmentGoodsReceiptPrint) {
             // Handle clicks for manageConsignmentGoodsReceiptPrint
 
             if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -349,8 +347,8 @@ public class ViewConsignmentActivity extends AppCompatActivity implements View.O
                 downloadReceiptDialog(iscId);
             }
 
-          //  isFabOpen = true;
-          //  animateFAB();
+            //  isFabOpen = true;
+            //  animateFAB();
         }/* else if ( v == activityViewConsignmentEditFab ) {
             // Handle clicks for activityViewConsignmentEditFab
             isFabOpen = true;

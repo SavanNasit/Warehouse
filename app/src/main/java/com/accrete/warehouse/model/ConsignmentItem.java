@@ -55,15 +55,78 @@ public class ConsignmentItem {
     @SerializedName("barcode_mandatory")
     @Expose
     private String barcodeMandatory;
-
-    private String barcode;
+    //TODO Added on 16th July 2k18
+    @SerializedName("manufacturing_date")
+    @Expose
     private String manufacturingDate;
-    private String expiryDate;
+    @SerializedName("expiring_date")
+    @Expose
+    private String expiringDate;
+    @SerializedName("barcode")
+    @Expose
+    private String barcode;
+    @SerializedName("rejected_reason")
+    @Expose
+    private String rejectedReason;
+    @SerializedName("rejected_quantity")
+    @Expose
     private String rejectedQuantity;
+    @SerializedName("iscpuiid")
+    @Expose
+    private String iscpuiid;
+    @SerializedName("isid")
+    @Expose
+    private String isid;
+    @SerializedName("consignment")
+    @Expose
+    private String consignment;
+    @SerializedName("comment")
+    @Expose
+    private String comment;
+    private String expiryDate;
     private String reasonRejection;
     private String price;
     private String unitId;
-    private String comment;
+
+    public String getExpiringDate() {
+        return expiringDate;
+    }
+
+    public void setExpiringDate(String expiringDate) {
+        this.expiringDate = expiringDate;
+    }
+
+    public String getRejectedReason() {
+        return rejectedReason;
+    }
+
+    public void setRejectedReason(String rejectedReason) {
+        this.rejectedReason = rejectedReason;
+    }
+
+    public String getIscpuiid() {
+        return iscpuiid;
+    }
+
+    public void setIscpuiid(String iscpuiid) {
+        this.iscpuiid = iscpuiid;
+    }
+
+    public String getIsid() {
+        return isid;
+    }
+
+    public void setIsid(String isid) {
+        this.isid = isid;
+    }
+
+    public String getConsignment() {
+        return consignment;
+    }
+
+    public void setConsignment(String consignment) {
+        this.consignment = consignment;
+    }
 
     public String getIsvid() {
         return isvid;
@@ -220,7 +283,6 @@ public class ConsignmentItem {
     }
 
 
-
     public String getExpiryDate() {
         return expiryDate;
     }
@@ -234,13 +296,12 @@ public class ConsignmentItem {
         return barcode;
     }
 
-    public String getManufacturingDate() {
-        return manufacturingDate;
-    }
-
-
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public String getManufacturingDate() {
+        return manufacturingDate;
     }
 
     public void setManufacturingDate(String manufacturingDate) {
