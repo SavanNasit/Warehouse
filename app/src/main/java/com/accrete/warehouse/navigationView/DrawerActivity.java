@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -33,7 +32,7 @@ import com.accrete.warehouse.R;
 import com.accrete.warehouse.adapter.SelectWarehouseAdapter;
 import com.accrete.warehouse.domain.DomainActivity;
 import com.accrete.warehouse.fragment.manageConsignment.ChooseEventsForManageConsignmentFragment;
-import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentFragment;
+import com.accrete.warehouse.fragment.manageConsignment.ManageConsignmentTabFragment;
 import com.accrete.warehouse.fragment.managePackages.ManagePackagesFragment;
 import com.accrete.warehouse.fragment.managegatepass.ManageGatePassFragment;
 import com.accrete.warehouse.fragment.receiveConsignment.ReceiveAgainstPurchaseOrderFragment;
@@ -153,13 +152,13 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 && getIntent().getStringExtra("flagToManage").equals("true")) {
             Fragment managePackagesFragment = ManagePackagesFragment.newInstance(getString(R.string.manage_packages_fragment));
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, managePackagesFragment).commitAllowingStateLoss();
-            if(getIntent().getStringExtra("flagToRedirect").equals("runningOrder")) {
-               Bundle bundleData = new Bundle();
-               bundleData.putString("flagToRedirect","runningOrder");
-                managePackagesFragment.setArguments(bundleData);
-            }else{
+            if (getIntent().getStringExtra("flagToRedirect").equals("runningOrder")) {
                 Bundle bundleData = new Bundle();
-                bundleData.putString("flagToRedirect","stockRequest");
+                bundleData.putString("flagToRedirect", "runningOrder");
+                managePackagesFragment.setArguments(bundleData);
+            } else {
+                Bundle bundleData = new Bundle();
+                bundleData.putString("flagToRedirect", "stockRequest");
                 managePackagesFragment.setArguments(bundleData);
             }
         }
@@ -221,7 +220,8 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                                 Fragment manageGatePassFragment = ManageGatePassFragment.newInstance(getString(R.string.manage_gatepass_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, manageGatePassFragment).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 5) {
-                                Fragment manageConsignmentFragment = ManageConsignmentFragment.newInstance(getString(R.string.manage_consignment_fragment));
+                                Fragment manageConsignmentFragment = ManageConsignmentTabFragment
+                                        .newInstance(getString(R.string.manage_consignment_fragment));
                                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, manageConsignmentFragment).commitAllowingStateLoss();
                             } else if (drawerItem.getIdentifier() == 6) {
                                 Fragment receiveConsignmentFragment = ReceiveConsignmentFragment.newInstance(getString(R.string.receive_consignment_fragment));
@@ -340,7 +340,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 } else if (currentFragment instanceof ManageGatePassFragment) {
                     drawer.setSelection(4);
                     hideSoftKeyboard(DrawerActivity.this);
-                } else if (currentFragment instanceof ManageConsignmentFragment) {
+                } else if (currentFragment instanceof ManageConsignmentTabFragment) {
                     drawer.setSelection(5);
                     hideSoftKeyboard(DrawerActivity.this);
                 } else if (currentFragment instanceof ReceiveConsignmentFragment) {
@@ -473,7 +473,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
                 return;*//*
                 getSupportFragmentManager().popBackStack();
 
-            }*/ else if (currentFragment instanceof ManageConsignmentFragment) {
+            }*/ else if (currentFragment instanceof ManageConsignmentTabFragment) {
                 if (currentManageFragment instanceof ChooseEventsForManageConsignmentFragment) {
                     toolbar.setTitle(R.string.manage_consignment_fragment);
                     super.onBackPressed();
@@ -530,7 +530,7 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
             }
 
 
-            if(currentFragment instanceof HomeFragment) {
+            if (currentFragment instanceof HomeFragment) {
                 Intent intent = new Intent("notifyCount");
                 // You can also include some extra data.
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
