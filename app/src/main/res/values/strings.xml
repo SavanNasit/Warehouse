@@ -244,5 +244,6 @@
     <string name="task_stock_submit_consignment">warehouse/stock_request_receive_item_submit</string>
 
     <string name="task_fetch_approve_consignment">warehouse/approve_consignment_form_data</string>
+    <string name="task_approve_consignment_submit">warehouse/approve_consignment_submit</string>
 
 </resources>

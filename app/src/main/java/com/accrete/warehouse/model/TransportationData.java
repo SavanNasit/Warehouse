@@ -33,6 +33,29 @@ public class TransportationData {
     @SerializedName("purorid")
     @Expose
     private String purorid;
+    //TODO Added on 16th July
+    @SerializedName("isctrandid")
+    @Expose
+    private String isctrandid;
+    @SerializedName("isExistTransportationDetails")
+    @Expose
+    private String isExistTransportationDetails;
+
+    public String getIsctrandid() {
+        return isctrandid;
+    }
+
+    public void setIsctrandid(String isctrandid) {
+        this.isctrandid = isctrandid;
+    }
+
+    public String getIsExistTransportationDetails() {
+        return isExistTransportationDetails;
+    }
+
+    public void setIsExistTransportationDetails(String isExistTransportationDetails) {
+        this.isExistTransportationDetails = isExistTransportationDetails;
+    }
 
     public String getPurorid() {
         return purorid;

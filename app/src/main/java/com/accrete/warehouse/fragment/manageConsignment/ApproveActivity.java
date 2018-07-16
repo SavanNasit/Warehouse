@@ -53,6 +53,7 @@ import com.accrete.warehouse.rest.ApiInterface;
 import com.accrete.warehouse.utils.AllDatePickerFragment;
 import com.accrete.warehouse.utils.AppPreferences;
 import com.accrete.warehouse.utils.AppUtils;
+import com.accrete.warehouse.utils.Constants;
 import com.accrete.warehouse.utils.NetworkUtil;
 import com.accrete.warehouse.utils.PassDateToCounsellor;
 import com.google.gson.GsonBuilder;
@@ -159,7 +160,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
     private RecyclerView vendorsRecyclerView, itemsRecyclerView, itemsListRecyclerView, authorizedByRecyclerView;
     private VendorsAdapter vendorsAdapter;
     private String strInvoiceNumber, strAuthorizedById, strPurchaseOrderId, strChkId, strWeight, strExpectedDate, strPurchaseDate,
-            strInvoiceDate, strTransporatationCheckBoxValue, strLRNumber, strVehicleNumber;
+            strInvoiceDate, strTransporatationCheckBoxValue, strLRNumber, strVehicleNumber, isctrandid = "";
     private ItemsVariationAdapter itemsVariationAdapter;
     private AuthorizedByUserAdapter authorizedByUserAdapter;
     private TextView weightTitleTextView;
@@ -447,7 +448,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
             strInvoiceDate = "";
         }
 
-        if (itemListArrayList == null || itemListArrayList.size() == 0) {
+        if (consignmentItemList == null || consignmentItemList.size() == 0) {
             Toast.makeText(this, "Please add atleast one item first.", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -1256,6 +1257,54 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                                     !apiResponse.getData().getIsVendorTransportationShow().isEmpty() &&
                                     apiResponse.getData().getIsVendorTransportationShow().equals("1")) {
                                 editConsignmentCheckboxTransportation.setVisibility(View.VISIBLE);
+
+                                if (apiResponse.getData().getTransportationData().getWeight() != null &&
+                                        !apiResponse.getData().getTransportationData().getWeight().isEmpty()) {
+                                    editConsignmentEdittextWeight.setText("" +
+                                            Constants.ParseDouble(apiResponse.getData().getTransportationData().getWeight()));
+                                }
+
+                                if (apiResponse.getData().getTransportationData().getLrNumber() != null &&
+                                        !apiResponse.getData().getTransportationData().getLrNumber().isEmpty()) {
+                                    editConsignmentEdittextLrNumber.setText("" +
+                                            apiResponse.getData().getTransportationData().getLrNumber());
+                                }
+
+                                if (apiResponse.getData().getTransportationData().getVehicleNumber() != null &&
+                                        !apiResponse.getData().getTransportationData().getVehicleNumber().isEmpty()) {
+                                    editConsignmentEdittextVehicleNumber.setText("" +
+                                            apiResponse.getData().getTransportationData().getVehicleNumber());
+                                }
+
+                                if (apiResponse.getData().getTransportationData().getExpectedDate() != null &&
+                                        !apiResponse.getData().getTransportationData().getExpectedDate().isEmpty()) {
+                                    editConsignmentEdittextExpectedDate.setText("" +
+                                            parseDateToddMMyyyy(apiResponse.getData().getTransportationData().getExpectedDate()));
+                                }
+
+                                if (apiResponse.getData().getTransportationData().getIsctrandid() != null &&
+                                        !apiResponse.getData().getTransportationData().getIsctrandid().isEmpty()) {
+                                    isctrandid = apiResponse.getData().getTransportationData().getIsctrandid();
+                                }
+
+                                if (apiResponse.getData().getTransportationData().getVendorName() != null &&
+                                        !apiResponse.getData().getTransportationData().getVendorName().isEmpty()) {
+                                    editConsignmentTextTransporter.setText("" +
+                                            apiResponse.getData().getTransportationData().getVendorName());
+                                }
+
+                                if (apiResponse.getData().getTransportationData().getVendorId() != null &&
+                                        !apiResponse.getData().getTransportationData().getVendorId().isEmpty()) {
+                                    transporterId =
+                                            apiResponse.getData().getTransportationData().getVendorId();
+                                }
+
+                                if (apiResponse.getData().getTransportationData().getIsExistTransportationDetails() != null &&
+                                        !apiResponse.getData().getTransportationData().getIsExistTransportationDetails().isEmpty() &&
+                                        apiResponse.getData().getTransportationData().getIsExistTransportationDetails().equals("1")) {
+                                    editConsignmentCheckboxTransportation.setChecked(true);
+                                }
+
                             } else {
                                 editConsignmentCheckboxTransportation.setVisibility(View.GONE);
                                 editConsignmentCheckboxTransportation.setChecked(false);
@@ -1279,6 +1328,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
 
                 @Override
                 public void onFailure(Call<ApiResponse> call, Throwable t) {
+                    Toast.makeText(ApproveActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception ex) {
@@ -1332,6 +1382,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                 jsonObject.put("invoice", strInvoiceNumber);
                 jsonObject.put("vendor", vendorId);
                 jsonObject.put("purorid", "");
+                jsonObject.put("consignment", iscId);
                 if (strAuthorizedById != null && !strAuthorizedById.isEmpty()) {
                     jsonObject.put("user", strAuthorizedById);
                 } else {
@@ -1344,7 +1395,11 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                 jsonObject.put("weight", strWeight + "");
                 jsonObject.put("expected_date", strExpectedDate + "");
                 jsonObject.put("invoice-date", strInvoiceDate + "");
-                jsonObject.put("isctrandid", "");
+                if (strTransporatationCheckBoxValue.equals("1")) {
+                    jsonObject.put("isctrandid", isctrandid);
+                } else {
+                    jsonObject.put("isctrandid", "");
+                }
                 jsonObject.put("lr_number", strLRNumber + "");
                 jsonObject.put("vehicle_number", strVehicleNumber + "");
 
@@ -1429,7 +1484,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
             HttpURLConnection con = null;
             try {
                 obj = new URL(AppPreferences.getLastDomain(context, AppUtils.DOMAIN)
-                        + "?urlq=service" + "&version=1.0&key=123&task=" + context.getString(R.string.task_receive_consignment)
+                        + "?urlq=service" + "&version=1.0&key=123&task=" + context.getString(R.string.task_approve_consignment_submit)
                         + "&user_id=" + AppPreferences.getUserId(context, AppUtils.USER_ID)
                         + "&access_token=" + AppPreferences.getAccessToken(context, AppUtils.ACCESS_TOKEN));
                 con = (HttpURLConnection) obj.openConnection();
