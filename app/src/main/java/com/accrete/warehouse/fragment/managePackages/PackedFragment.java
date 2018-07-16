@@ -107,65 +107,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private ImageView imageViewLoader;
     private String stringSearchText;
 
-    //Remove file/document from list
-    @Override
-    public void onClickedDeleteBtn(int position) {
-        try {
-            if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
-                if (uploadDocumentList.size() >= position) {
-                    uploadDocumentList.remove(position);
-                } else if (fileUploadList.size() >= position) {
-                    fileUploadList.remove(position - uploadDocumentList.size());
-                }
-                viewUploadDocuments.remove(position);
-
-                documentUploaderAdapter.notifyDataSetChanged();
-                dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
-                textViewEmpty.setVisibility(View.GONE);
-                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
-                    dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
-                    textViewEmpty.setVisibility(View.GONE);
-                } else {
-                    dialogUploadDocRecyclerView.setVisibility(View.GONE);
-                    textViewEmpty.setVisibility(View.VISIBLE);
-                    textViewEmpty.setText("No file selected");
-                }
-            } else {
-                dialogUploadDocRecyclerView.setVisibility(View.GONE);
-                textViewEmpty.setVisibility(View.VISIBLE);
-                textViewEmpty.setText("No file selected");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onClickUrlToDownload(int position) {
-     //   Toast.makeText(getActivity(), "Please help", Toast.LENGTH_SHORT).show();
-      if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-           // alertDialog.dismiss();
-            //Download a file and display in phone's download folder
-              Environment
-                      .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                      .mkdirs();
-              downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
-              String url = viewUploadDocuments.get(position).getFileUrl();
-              Uri uri = Uri.parse(url);
-              DownloadManager.Request request = null;
-
-
-              request = new DownloadManager.Request(uri)
-                      .setTitle(viewUploadDocuments.get(position).getName() + "")
-                      .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
-                              viewUploadDocuments.get(position).getName() + "")
-                      .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-              downloadManager.enqueue(request);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -577,131 +518,7 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    //Opening Dialog to Upload Documents
-    private void openDialogUploadDoc(final Activity activity, final String pacId, int position) {
-        final View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(dialogView)
-                .setCancelable(false);
-        dialogUploadDoc = builder.create();
-        dialogUploadDoc.setCanceledOnTouchOutside(false);
-        if (viewUploadDocuments.size() > 0) {
-            viewUploadDocuments.clear();
-        } else if (uploadDocumentList.size() > 0) {
-            uploadDocumentList.clear();
-        } else if (fileUploadList.size() > 0) {
-            fileUploadList.clear();
-        }
-        linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
-        dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);
-        btnAddImageView = (TextView) dialogView.findViewById(R.id.select_file_textView);
-        btnUpload = (TextView) dialogView.findViewById(R.id.btn_upload);
-        dialogUploadProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_upload_progress_bar);
-        final TextView btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
-        textViewEmpty = (TextView) dialogView.findViewById(R.id.dialog_upload_doc_empty_view);
-        final ImageView imageView = (ImageView) dialogView.findViewById(R.id.imageView_loader);
-        documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), viewUploadDocuments, this);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
-        dialogUploadDocRecyclerView.setLayoutManager(mLayoutManager);
-        dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-        dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
 
-
-        downloadUploadedDocs(pacId, position);
-
-
-        btnCancel.setEnabled(true);
-
-        //Upload files and dismiss dialog
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
-                    if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
-                        if (dialogUploadDoc != null) {
-
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (imageView.getVisibility() == View.GONE) {
-                                                imageView.setVisibility(View.VISIBLE);
-                                            }
-                                            //Disable Touch
-                                            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                            btnCancel.setEnabled(false);
-                                            Ion.with(imageView)
-                                                    .animateGif(AnimateGifMode.ANIMATE)
-                                                    .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
-                                                    .withBitmapInfo();
-                                        }
-                                    });
-                                }
-                            });
-
-                            thread.start();
-                        }
-
-                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, fileUploadList, pacId, dialogUploadDoc, imageView, btnCancel, uploadDocumentList);
-                        filesUploadingAsyncTask.execute();
-
-                    } else {
-                        Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        //Dismiss dialog
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
-                    viewUploadDocuments.clear();
-                }
-                if (getActivity() != null) {
-                    if (imageView != null && imageView.getVisibility() == View.VISIBLE) {
-                        imageView.setVisibility(View.GONE);
-                    }
-
-                    //Enable Touch Back
-                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                }
-                dialogUploadDoc.dismiss();
-            }
-        });
-
-        //Call Intent to select file and add into List
-        btnAddImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectFile();
-            }
-        });
-        dialogUploadDoc.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        if (!dialogUploadDoc.isShowing()) {
-            dialogUploadDoc.show();
-        }
-    }
-
-    //Intent to select file
-    private void selectFile() {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            askStoragePermission(0, getString(R.string.add_file));
-            typeForPrint = getString(R.string.add_file);
-            //postionForPrint = position;
-        } else {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
-        }
-    }
 
     @Override
     public void onExecute(ArrayList<String> packageIdList) {
@@ -998,26 +815,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
     }
 
-    //Add Document into List
-    public void addDocument(String selectedFilePath, String fileName) {
-        PackageFile uploadDocument = new PackageFile();
-        uploadDocument.setName(fileName);
-        uploadDocument.setFileUrl(selectedFilePath);
-        uploadDocument.setType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
-        fileUploadList.add(uploadDocument);
-        viewUploadDocuments.add(uploadDocument);
-        documentUploaderAdapter.notifyDataSetChanged();
-
-        if (viewUploadDocuments.size() > 0) {
-            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
-            textViewEmpty.setVisibility(View.GONE);
-        } else {
-            dialogUploadDocRecyclerView.setVisibility(View.GONE);
-            textViewEmpty.setVisibility(View.VISIBLE);
-            textViewEmpty.setText("No file selected");
-        }
-    }
-
     //Cancel Package
     private void cancelPackedPackage(String pacid) {
         task = getString(R.string.task_cancel_package);
@@ -1122,7 +919,6 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     public void searchAPI(final String searchText) {
-
         stringSearchText = searchText;
 
         Thread thread = new Thread(new Runnable() {
@@ -1224,5 +1020,214 @@ public class PackedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
         });
     }
+
+    //Add Document into List
+    public void addDocument(String selectedFilePath, String fileName) {
+        PackageFile uploadDocument = new PackageFile();
+        uploadDocument.setName(fileName);
+        uploadDocument.setFileUrl(selectedFilePath);
+        uploadDocument.setType(selectedFilePath.substring(selectedFilePath.lastIndexOf(".") + 1, selectedFilePath.length()));
+        fileUploadList.add(uploadDocument);
+        viewUploadDocuments.add(uploadDocument);
+        documentUploaderAdapter.notifyDataSetChanged();
+
+        if (viewUploadDocuments.size() > 0) {
+            dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+            textViewEmpty.setVisibility(View.GONE);
+        } else {
+            dialogUploadDocRecyclerView.setVisibility(View.GONE);
+            textViewEmpty.setVisibility(View.VISIBLE);
+            textViewEmpty.setText("No file selected");
+        }
+    }
+
+    //Intent to select file
+    private void selectFile() {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            askStoragePermission(0, getString(R.string.add_file));
+            typeForPrint = getString(R.string.add_file);
+            //postionForPrint = position;
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            getActivity().startActivityForResult(intent, PICK_FILE_RESULT_CODE);
+        }
+    }
+
+
+    //Remove file/document from list
+    @Override
+    public void onClickedDeleteBtn(int position) {
+        try {
+            if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                if (uploadDocumentList.size() >= position) {
+                    uploadDocumentList.remove(position);
+                } else if (fileUploadList.size() >= position) {
+                    fileUploadList.remove(position - uploadDocumentList.size());
+                }
+                viewUploadDocuments.remove(position);
+
+                documentUploaderAdapter.notifyDataSetChanged();
+                dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+                textViewEmpty.setVisibility(View.GONE);
+                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                    dialogUploadDocRecyclerView.setVisibility(View.VISIBLE);
+                    textViewEmpty.setVisibility(View.GONE);
+                } else {
+                    dialogUploadDocRecyclerView.setVisibility(View.GONE);
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                    textViewEmpty.setText("No file selected");
+                }
+            } else {
+                dialogUploadDocRecyclerView.setVisibility(View.GONE);
+                textViewEmpty.setVisibility(View.VISIBLE);
+                textViewEmpty.setText("No file selected");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClickUrlToDownload(int position) {
+        //   Toast.makeText(getActivity(), "Please help", Toast.LENGTH_SHORT).show();
+        if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+            // alertDialog.dismiss();
+            //Download a file and display in phone's download folder
+            Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                    .mkdirs();
+            downloadManager = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+            String url = viewUploadDocuments.get(position).getFileUrl();
+            Uri uri = Uri.parse(url);
+            DownloadManager.Request request = null;
+
+
+            request = new DownloadManager.Request(uri)
+                    .setTitle(viewUploadDocuments.get(position).getName() + "")
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,
+                            viewUploadDocuments.get(position).getName() + "")
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+            downloadManager.enqueue(request);
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //Opening Dialog to Upload Documents
+    private void openDialogUploadDoc(final Activity activity, final String pacId, int position) {
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_upload_doc, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setCancelable(false);
+        dialogUploadDoc = builder.create();
+        dialogUploadDoc.setCanceledOnTouchOutside(false);
+        if (viewUploadDocuments.size() > 0) {
+            viewUploadDocuments.clear();
+        } else if (uploadDocumentList.size() > 0) {
+            uploadDocumentList.clear();
+        } else if (fileUploadList.size() > 0) {
+            fileUploadList.clear();
+        }
+        linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
+        dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);
+        btnAddImageView = (TextView) dialogView.findViewById(R.id.select_file_textView);
+        btnUpload = (TextView) dialogView.findViewById(R.id.btn_upload);
+        dialogUploadProgressBar = (ProgressBar) dialogView.findViewById(R.id.dialog_upload_progress_bar);
+        final TextView btnCancel = (TextView) dialogView.findViewById(R.id.btn_cancel);
+        textViewEmpty = (TextView) dialogView.findViewById(R.id.dialog_upload_doc_empty_view);
+        final ImageView imageView = (ImageView) dialogView.findViewById(R.id.imageView_loader);
+        documentUploaderAdapter = new DocumentUploaderAdapter(getActivity(), viewUploadDocuments, this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
+        dialogUploadDocRecyclerView.setLayoutManager(mLayoutManager);
+        dialogUploadDocRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        dialogUploadDocRecyclerView.setAdapter(documentUploaderAdapter);
+
+
+        downloadUploadedDocs(pacId, position);
+
+
+        btnCancel.setEnabled(true);
+
+        //Upload files and dismiss dialog
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                    if (!NetworkUtil.getConnectivityStatusString(getActivity()).equals(getString(R.string.not_connected_to_internet))) {
+                        if (dialogUploadDoc != null) {
+
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (imageView.getVisibility() == View.GONE) {
+                                                imageView.setVisibility(View.VISIBLE);
+                                            }
+                                            //Disable Touch
+                                            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                            btnCancel.setEnabled(false);
+                                            Ion.with(imageView)
+                                                    .animateGif(AnimateGifMode.ANIMATE)
+                                                    .load("android.resource://" + getActivity().getPackageName() + "/" + R.raw.loader)
+                                                    .withBitmapInfo();
+                                        }
+                                    });
+                                }
+                            });
+
+                            thread.start();
+                        }
+
+                        FilesUploadingAsyncTask filesUploadingAsyncTask = new FilesUploadingAsyncTask(activity, fileUploadList, pacId, dialogUploadDoc, imageView, btnCancel, uploadDocumentList);
+                        filesUploadingAsyncTask.execute();
+
+                    } else {
+                        Toast.makeText(getActivity(), getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Please upload atleast one doc.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //Dismiss dialog
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewUploadDocuments != null && viewUploadDocuments.size() > 0) {
+                    viewUploadDocuments.clear();
+                }
+                if (getActivity() != null) {
+                    if (imageView != null && imageView.getVisibility() == View.VISIBLE) {
+                        imageView.setVisibility(View.GONE);
+                    }
+
+                    //Enable Touch Back
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                }
+                dialogUploadDoc.dismiss();
+            }
+        });
+
+        //Call Intent to select file and add into List
+        btnAddImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectFile();
+            }
+        });
+        dialogUploadDoc.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (!dialogUploadDoc.isShowing()) {
+            dialogUploadDoc.show();
+        }
+    }
+
+
 
 }

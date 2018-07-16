@@ -121,6 +121,8 @@ public class PackedAgainstStockFragment extends Fragment implements PackedAgains
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_attempt_failed, container, false);

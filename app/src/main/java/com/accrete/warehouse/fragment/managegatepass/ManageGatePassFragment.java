@@ -720,12 +720,12 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
 
 
     public void doRefresh() {
-        if (gatepassList != null && gatepassList.size() == 0) {
-            status = NetworkUtil.getConnectivityStatusString(getActivity());
-            if(!status.equals(getString(R.string.not_connected_to_internet))){
+        try {
+            if (gatepassList != null && gatepassList.size() == 0) {
+                status = NetworkUtil.getConnectivityStatusString(getActivity());
+                if (!status.equals(getString(R.string.not_connected_to_internet))) {
               /*  if (getActivity()!=null && !loading && isAdded()
                     && isVisible()) {*/
-
                     loading = true;
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -734,13 +734,16 @@ public class ManageGatePassFragment extends Fragment implements ManageGatepassAd
                             getManageGatepassList(chkId, getString(R.string.last_updated_date), "1", "", "", "");
                         }
                     }, 200);
-               // }
-            } else {
-                manageGatepassRecyclerView.setVisibility(View.GONE);
-                manageGatepassEmptyView.setVisibility(View.VISIBLE);
-                manageGatepassEmptyView.setText(getString(R.string.no_internet_try_later));
-                manageGatepassSwipeRefreshLayout.setRefreshing(false);
+                    // }
+                } else {
+                    manageGatepassRecyclerView.setVisibility(View.GONE);
+                    manageGatepassEmptyView.setVisibility(View.VISIBLE);
+                    manageGatepassEmptyView.setText(getString(R.string.no_internet_try_later));
+                    manageGatepassSwipeRefreshLayout.setRefreshing(false);
+                }
             }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 

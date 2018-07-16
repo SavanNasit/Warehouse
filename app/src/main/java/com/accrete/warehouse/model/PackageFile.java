@@ -27,6 +27,40 @@ public class PackageFile {
     @SerializedName("file_url")
     @Expose
     private String fileUrl;
+    @SerializedName("tmp_name")
+    @Expose
+    private String tmpName;
+    @SerializedName("error")
+    @Expose
+    private Integer error;
+
+    public String getTmpName() {
+        return tmpName;
+    }
+
+    public void setTmpName(String tmpName) {
+        this.tmpName = tmpName;
+    }
+
+    public Integer getError() {
+        return error;
+    }
+
+    public void setError(Integer error) {
+        this.error = error;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    @SerializedName("filepath")
+    @Expose
+    private String filepath;
 
     public String getPacfid() {
         return pacfid;

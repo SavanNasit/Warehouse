@@ -48,7 +48,7 @@ import com.accrete.warehouse.fragment.createpackage.AlreadyCreatedPackagesActivi
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Charge;
 import com.accrete.warehouse.model.CustomerInfo;
-import com.accrete.warehouse.model.Measurement;
+import com.accrete.warehouse.model.Measurements;
 import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.PackageDetailsList;
 import com.accrete.warehouse.model.PendingItems;
@@ -110,7 +110,7 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
     private int posToupdate;
     private boolean flagScan;
     private ArrayList<String> measurementNameArrayList = new ArrayList<>();
-    private ArrayList<Measurement> measurementsArrayList = new ArrayList<>();
+    private ArrayList<Measurements> measurementsArrayList = new ArrayList<>();
     private double previousConversionRate;
     private String flagToCallApi;
     private FloatingActionButton floatingActionButtonAlreadyCreatedPackage;
@@ -560,7 +560,7 @@ public class RunningOrdersExecuteActivity extends AppCompatActivity implements R
             }
             for (int i = 0; i < orderDataList.getMeasurements().size(); i++) {
                 measurementNameArrayList.add(orderDataList.getMeasurements().get(i).getName());
-                measurementsArrayList.add(orderDataList.getMeasurements().get(i));
+                measurementsArrayList.addAll(orderDataList.getMeasurements());
             }
 
             final ArrayAdapter measurementArrayAdapter =

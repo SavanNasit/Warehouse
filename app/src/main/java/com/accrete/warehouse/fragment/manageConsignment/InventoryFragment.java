@@ -83,9 +83,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.Inve
         //inventoryRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         inventoryRecyclerView.setNestedScrollingEnabled(false);
         inventoryRecyclerView.setAdapter(inventoryAdapter);
-
         doRefresh();
-
         //Scroll Listener
         inventoryRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

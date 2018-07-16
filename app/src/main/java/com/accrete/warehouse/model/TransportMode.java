@@ -9,19 +9,16 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by poonam on 6/7/18.
+ * Created by poonam on 7/13/18.
  */
 
-
 public class TransportMode implements Parcelable {
-
     @SerializedName("type")
     @Expose
     private String type;
     @SerializedName("modes")
     @Expose
     private List<Mode> modes = null;
-
 
     protected TransportMode(Parcel in) {
         type = in.readString();

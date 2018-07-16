@@ -50,7 +50,7 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PackageFile;
-import com.accrete.warehouse.rest.FilesUploadingAsyncTask;
+import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.utils.ScalingUtilities;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.DynamicChargeAdapter;
@@ -61,14 +61,11 @@ import com.accrete.warehouse.navigationView.HomeFragment;
 import com.accrete.warehouse.model.AlreadyCreatedPackages;
 import com.accrete.warehouse.model.ApiResponse;
 import com.accrete.warehouse.model.Charge;
-import com.accrete.warehouse.model.ImagesUpload;
 import com.accrete.warehouse.model.OrderData;
 import com.accrete.warehouse.model.PackageDetailsList;
 import com.accrete.warehouse.model.PendingItems;
 import com.accrete.warehouse.model.SelectOrderItem;
-import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.model.TransporterNameSearchDatum;
-import com.accrete.warehouse.model.UploadDocument;
 import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.rest.ApiClient;
 import com.accrete.warehouse.rest.ApiInterface;
@@ -199,7 +196,7 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
     private String strEwayNumber;
     private TextView btnAddImageView;
     private TextView btnUpload;
-    private ArrayList<ImagesUpload> packageUploadDocDetails = new ArrayList<>();
+    private ArrayList<PackageFile> packageUploadDocDetails = new ArrayList<>();
     private ImageView imageViewLoader;
     private CardView cardViewTransporters, cardViewPackageDeliveryDetails;
     private TextView textViewEmpty;
@@ -819,9 +816,9 @@ public class CreatePackageActivity extends AppCompatActivity implements PackageD
         View dialogView = View.inflate(CreatePackageActivity.this, R.layout.dialog_upload_doc, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(CreatePackageActivity.this);
         builder.setView(dialogView)
-                .setCancelable(true);
+                .setCancelable(false);
         dialogUploadDoc = builder.create();
-        dialogUploadDoc.setCanceledOnTouchOutside(true);
+        dialogUploadDoc.setCanceledOnTouchOutside(false);
 
         linearLayout = (LinearLayout) dialogView.findViewById(R.id.linearLayout);
         dialogUploadDocRecyclerView = (RecyclerView) dialogView.findViewById(R.id.dialog_upload_doc_recycler_view);

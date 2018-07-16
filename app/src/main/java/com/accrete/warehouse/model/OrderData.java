@@ -63,7 +63,7 @@ public class OrderData implements Parcelable {
     private String meaid;
     @SerializedName("measurements")
     @Expose
-    private List<Measurement> measurements = null;
+    private List<Measurements> measurements = null;
     @SerializedName("image")
     @Expose
     private String image;
@@ -236,11 +236,11 @@ public class OrderData implements Parcelable {
         this.meaid = meaid;
     }
 
-    public List<Measurement> getMeasurements() {
+    public List<Measurements> getMeasurements() {
         return measurements;
     }
 
-    public void setMeasurements(List<Measurement> measurements) {
+    public void setMeasurements(List<Measurements> measurements) {
         this.measurements = measurements;
     }
 
