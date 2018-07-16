@@ -1273,14 +1273,7 @@ public class OrderQuotationsSelectCustomerActivity extends AppCompatActivity imp
         if (addressList.getCity() != null && !addressList.getCity().toString().trim().isEmpty()) {
             addressText = addressText + addressList.getCity().toString().trim() + ", ";
         }
-        /*if (addressList.getZipCode() != null && !addressList.getZipCode().toString().trim().isEmpty()
-                && (addressList.getCity() == null || !addressList.getCity().toString().trim().isEmpty())) {
-            addressText = addressText + addressList.getZipCode().toString().trim() + "\n";
-        } else {
-            if (addressList.getZipCode() != null && !addressList.getZipCode().toString().trim().isEmpty()) {
-                addressText = addressText + " - " + addressList.getZipCode().toString().trim() + "\n";
-            }
-        }*/
+       
         if (addressList.getState() != null && !addressList.getState().toString().trim().isEmpty()) {
             addressText = addressText + addressList.getState().toString().trim() + ", ";
         }
