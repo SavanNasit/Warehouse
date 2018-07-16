@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 
 import com.accrete.warehouse.R;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by poonam on 7/3/18.
  */
@@ -140,9 +142,24 @@ public class ChooseEventsForManageConsignmentFragment extends Fragment {
             public void onClick(View v) {
                 Intent intentView = new Intent(getActivity(), ApproveActivity.class);
                 intentView.putExtra("iscid", iscid);
-                startActivity(intentView);
+                startActivityForResult(intentView, 1);
             }
         });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String flag = data.getStringExtra("finish");
+                if (flag != null && !flag.isEmpty() && flag.equals("yes")) {
+
+                    if (getActivity() != null && isAdded()) {
+                        getActivity().finish();
+                    }
+                }
+            }
+        }
     }
 
 }

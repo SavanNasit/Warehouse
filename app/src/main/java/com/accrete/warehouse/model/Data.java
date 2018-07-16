@@ -224,6 +224,17 @@ public class Data {
     @SerializedName("profile")
     @Expose
     private ProfileInfo profile;
+    @SerializedName("purorid")
+    @Expose
+    private String purorid;
+
+    public String getPurorid() {
+        return purorid;
+    }
+
+    public void setPurorid(String purorid) {
+        this.purorid = purorid;
+    }
 
     public List<AlreadyCreatedPackages> getPackages() {
         return packages;

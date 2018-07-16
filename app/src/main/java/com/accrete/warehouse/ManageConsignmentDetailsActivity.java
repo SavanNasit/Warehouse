@@ -1,5 +1,6 @@
 package com.accrete.warehouse;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -62,6 +63,18 @@ public class ManageConsignmentDetailsActivity extends AppCompatActivity {
         if (currentFragment instanceof ChooseEventsForManageConsignmentFragment) {
             super.onBackPressed();
             return;
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String flag = data.getStringExtra("finish");
+                if (flag != null && !flag.isEmpty() && flag.equals("yes")) {
+                    finish();
+                }
+            }
         }
     }
 }

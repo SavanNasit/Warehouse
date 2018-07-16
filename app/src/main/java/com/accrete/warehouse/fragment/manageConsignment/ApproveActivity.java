@@ -2,6 +2,7 @@ package com.accrete.warehouse.fragment.manageConsignment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
@@ -250,6 +251,9 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
         imageButtonClearAuthorizedBy = (ImageButton) findViewById(R.id.edit_consignment_img_btn_clear_authorized_by);
         editConsignmentTitleWeight = (TextView) findViewById(R.id.weight_title_textView);
 
+        editConsignmentSubmit.setText("Submit");
+        editConsignmentSubmit.setBackgroundColor(getResources().getColor(R.color.green));
+
 
         //Items RecyclerView
         consignmentItemsAdapter = new ReceiveConsignmentItemsAdapter(this, consignmentItemList,
@@ -306,6 +310,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             Toast.makeText(ApproveActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
         }
+        
     }
 
     @Override
@@ -363,9 +368,9 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                                 || editConsignmentTextInvoiceNumber.getText().toString().isEmpty() && flagForInvoiceNumber != null && flagForInvoiceNumber.equals("1")) {
                             Toast.makeText(ApproveActivity.this, "Please enter invoice number", Toast.LENGTH_SHORT).show();
                         } else if (consignmentItemList != null && consignmentItemList.size() > 0) {
-                            ReceiveItemsAsyncTask receiveItemsAsyncTask =
-                                    new ReceiveItemsAsyncTask(this);
-                            receiveItemsAsyncTask.execute();
+                            SubmitApproveConsignmentAsyncTask submitApproveConsignmentAsyncTask =
+                                    new SubmitApproveConsignmentAsyncTask(this);
+                            submitApproveConsignmentAsyncTask.execute();
                         } else {
                             Toast.makeText(ApproveActivity.this, "Please add at least one item", Toast.LENGTH_SHORT).show();
                         }
@@ -424,14 +429,6 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
         strChkId = AppPreferences.getWarehouseDefaultCheckId(this, AppUtils.WAREHOUSE_CHK_ID);
         strWeight = editConsignmentEdittextWeight.getText().toString().trim();
 
-        //Expected Date
-        try {
-            strExpectedDate = targetFormat.format(dateFormatter.parse(editConsignmentEdittextExpectedDate.getText().toString().trim()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            strExpectedDate = "";
-        }
-
         //Receive Date
         try {
             strPurchaseDate = targetFormat.format(dateFormatter.parse(editConsignmentTextReceiveDate.getText().toString().trim()));
@@ -442,7 +439,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
 
         //Invoice Date
         try {
-            strInvoiceDate = targetFormat.format(dateFormatter.parse(editConsignmentTextTitleInvoiceDate.getText().toString().trim()));
+            strInvoiceDate = targetFormat.format(dateFormatter.parse(editConsignmentTextInvoiceDate.getText().toString().trim()));
         } catch (ParseException e) {
             e.printStackTrace();
             strInvoiceDate = "";
@@ -453,7 +450,8 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
             return false;
         }
 
-        if (editConsignmentCheckboxTransportation.isChecked()) {
+        if (editConsignmentCheckboxTransportation.getVisibility() == View.VISIBLE &&
+                editConsignmentCheckboxTransportation.isChecked()) {
             strTransporatationCheckBoxValue = "1";
             strLRNumber = editConsignmentEdittextLrNumber.getText().toString().trim();
             strVehicleNumber = editConsignmentEdittextVehicleNumber.getText().toString().trim();
@@ -470,6 +468,15 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, "Please select expected date.", Toast.LENGTH_SHORT).show();
                 return false;
             }
+
+            //Expected Date
+            try {
+                strExpectedDate = targetFormat.format(dateFormatter.parse(editConsignmentEdittextExpectedDate.getText().toString().trim()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                strExpectedDate = "";
+            }
+
         } else {
             strTransporatationCheckBoxValue = "0";
         }
@@ -1319,6 +1326,12 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
 
                                 consignmentItemsAdapter.notifyDataSetChanged();
                             }
+
+                            if (apiResponse.getData().getPurorid() != null
+                                    && !apiResponse.getData().getPurorid().isEmpty()) {
+                                purOrId = apiResponse.getData().getPurorid();
+                            }
+
                         }
 
                     } catch (Exception e) {
@@ -1356,10 +1369,10 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     //AsyncTask to Receive Items
-    public class ReceiveItemsAsyncTask extends AsyncTask<Void, Void, String> {
+    public class SubmitApproveConsignmentAsyncTask extends AsyncTask<Void, Void, String> {
         private Activity context;
 
-        public ReceiveItemsAsyncTask(Activity context) {
+        public SubmitApproveConsignmentAsyncTask(Activity context) {
             this.context = context;
         }
 
@@ -1381,7 +1394,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
             try {
                 jsonObject.put("invoice", strInvoiceNumber);
                 jsonObject.put("vendor", vendorId);
-                jsonObject.put("purorid", "");
+                jsonObject.put("purorid", purOrId);
                 jsonObject.put("consignment", iscId);
                 if (strAuthorizedById != null && !strAuthorizedById.isEmpty()) {
                     jsonObject.put("user", strAuthorizedById);
@@ -1407,6 +1420,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                 JSONArray productItemJsonArray = new JSONArray();
                 for (int i = 0; i < consignmentItemList.size(); i++) {
                     JSONObject productsItemJsonObject = new JSONObject();
+
                     if (consignmentItemList.get(i).getRejectedQuantity() != null &&
                             !consignmentItemList.get(i).getRejectedQuantity().isEmpty()) {
                         productsItemJsonObject.put("rejected-qty", consignmentItemList.get(i).getRejectedQuantity());
@@ -1430,7 +1444,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
 
                     if (consignmentItemList.get(i).getPrice() != null &&
                             !consignmentItemList.get(i).getPrice().isEmpty()) {
-                        productsItemJsonObject.put("item-mrp", "10");
+                        productsItemJsonObject.put("item-mrp", consignmentItemList.get(i).getPrice());
                     } else {
                         productsItemJsonObject.put("item-mrp", "10");
                     }
@@ -1454,6 +1468,34 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
                         productsItemJsonObject.put("rejected-reason", consignmentItemList.get(i).getReasonRejection());
                     } else {
                         productsItemJsonObject.put("rejected-reason", "");
+                    }
+
+                    if (consignmentItemList.get(i).getHsnCode() != null &&
+                            !consignmentItemList.get(i).getHsnCode().isEmpty()) {
+                        productsItemJsonObject.put("item-hsn-code", consignmentItemList.get(i).getHsnCode());
+                    } else {
+                        productsItemJsonObject.put("item-hsn-code", "");
+                    }
+
+                    if (consignmentItemList.get(i).getIscpuiid() != null &&
+                            !consignmentItemList.get(i).getIscpuiid().isEmpty()) {
+                        productsItemJsonObject.put("item-iscpuiid", consignmentItemList.get(i).getIscpuiid());
+                    } else {
+                        productsItemJsonObject.put("item-iscpuiid", "");
+                    }
+
+                    if (consignmentItemList.get(i).getManufacturingDate() != null &&
+                            !consignmentItemList.get(i).getManufacturingDate().isEmpty()) {
+                        productsItemJsonObject.put("manufacturing-date", consignmentItemList.get(i).getManufacturingDate());
+                    } else {
+                        productsItemJsonObject.put("manufacturing-date", "");
+                    }
+
+                    if (consignmentItemList.get(i).getBarcode() != null &&
+                            !consignmentItemList.get(i).getBarcode().isEmpty()) {
+                        productsItemJsonObject.put("barcode", consignmentItemList.get(i).getBarcode());
+                    } else {
+                        productsItemJsonObject.put("barcode", "");
                     }
 
                     if (consignmentItemList.get(i).getExpiryDate() != null &&
@@ -1533,8 +1575,11 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
 
                     if (status) {
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                        finish();
                         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                        Intent intent = new Intent();
+                        intent.putExtra("finish", "yes");
+                        setResult(RESULT_OK, intent);
+                        finish();
                     } else {
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                     }
