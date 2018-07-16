@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.login.LoginActivity;
 import com.accrete.warehouse.model.ApiResponse;
+import com.accrete.warehouse.model.Permission;
 import com.accrete.warehouse.model.WarehouseList;
 import com.accrete.warehouse.navigationView.DrawerActivity;
 import com.accrete.warehouse.rest.ApiClient;
@@ -506,7 +507,8 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setProgress(progressStatus);
         final ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call call = apiService.doValidateLogin(version, key, task, email, password);
+        //TODO Added on 12th July 2k18. Its static for warehouse app
+        Call call = apiService.doValidateLogin(version, key, task, email, password,"2");
         Log.v("Request", String.valueOf(call));
         Log.v("url", String.valueOf(call.request().url()));
 
@@ -524,6 +526,20 @@ public class PasswordActivity extends Activity implements View.OnClickListener, 
                     AppPreferences.setUserName(PasswordActivity.this, AppUtils.USER_NAME, apiResponse.getData().getName());
                     AppPreferences.setPhoto(PasswordActivity.this, AppUtils.USER_PHOTO, apiResponse.getData().getProfile().getPhoto());
                     AppPreferences.setCompanyCode(PasswordActivity.this, AppUtils.COMPANY_CODE, apiResponse.getData().getCompanyCode());
+
+                    //TODO Added on 12th July 2k18
+                    try {
+                        if (apiResponse != null && apiResponse.getData().getPermission() != null) {
+                            for (final Permission permission : apiResponse.getData().getPermission()) {
+                                if (permission.getName().equals(getString(R.string.permission_consignment_approve_str))) {
+                                    AppPreferences.setBoolean(PasswordActivity.this,
+                                            AppUtils.CONSIGNMENT_APPROVE_PERMISSION, true);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                   /*  ContentValues values = new ContentValues();
                     values.put(ContentProvider.login, "true");

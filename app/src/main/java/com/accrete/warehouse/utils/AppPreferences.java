@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Set;
 
@@ -263,4 +262,29 @@ public class AppPreferences {
         totalQty = Double.parseDouble(df.format(totalQty));
         return totalQty;
     }
+
+    public static String getString(Context ctx, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getString(key, null);
+    }
+
+    public static void setString(Context ctx, String key, String value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor edit = preference.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
+    public static Boolean getBoolean(Context ctx, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return preferences.getBoolean(key, false);
+    }
+
+    public static void setBoolean(Context ctx, String key, Boolean value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(ctx);
+        SharedPreferences.Editor edit = preference.edit();
+        edit.putBoolean(key, value);
+        edit.commit();
+    }
+
 }

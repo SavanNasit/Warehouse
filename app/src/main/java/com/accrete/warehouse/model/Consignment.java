@@ -66,6 +66,17 @@ public class Consignment {
     @SerializedName("purchase_orderID")
     @Expose
     private String purchaseOrderID;
+    @SerializedName("is_delete_consignment_enable")
+    @Expose
+    private String isDeleteConsignmentEnable;
+
+    public String getIsDeleteConsignmentEnable() {
+        return isDeleteConsignmentEnable;
+    }
+
+    public void setIsDeleteConsignmentEnable(String isDeleteConsignmentEnable) {
+        this.isDeleteConsignmentEnable = isDeleteConsignmentEnable;
+    }
 
     public String getIscid() {
         return iscid;
