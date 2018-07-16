@@ -254,29 +254,35 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Draw
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(R.string.navigation_view_activity);
         //Enable Touch Back
-        if (getActivity() != null) {
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        try {
+            if (getActivity() != null && isAdded()) {
+                getActivity().setTitle(R.string.navigation_view_activity);
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                try {
+                    if (dLeadCount.equals("0") || dLeadCount.equals("null")) {
+                        leadsCount.setText("" + nLeadCount);
+                        Log.e("dLC is Equals to 0 ", String.valueOf(nLeadCount));
+                    } else {
+                        leadsCount.setText("" + dLeadCount);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (dFollowUpCount.equals("0") || dFollowUpCount.equals("null")) {
+                        followupsCount.setText("" + nFollowUpCount);
+                        Log.e("dFC is Equals to 0 ", String.valueOf(nFollowUpCount));
+                    } else {
+                        followupsCount.setText("" + dFollowUpCount);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (dLeadCount.equals("0") || dLeadCount.equals("null")) {
-            leadsCount.setText(nLeadCount);
-//            followupsCount.setText(nFollowUpCount);
-            Log.e("dLC is Equals to 0 ", String.valueOf(nLeadCount));
-        } else {
-            leadsCount.setText(dLeadCount);
-//            followupsCount.setText(dFollowUpCount);
-        }
-        if (dFollowUpCount.equals("0") || dFollowUpCount.equals("null")) {
-
-            followupsCount.setText(nFollowUpCount);
-            Log.e("dFC is Equals to 0 ", String.valueOf(nFollowUpCount));
-        } else {
-
-            followupsCount.setText(dFollowUpCount);
-        }
-
 
         // leadsCount.setText(dLeadCount);
         // followupsCount.setText(dFollowUpCount);
