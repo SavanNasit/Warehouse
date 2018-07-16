@@ -50,6 +50,7 @@ import android.widget.Toast;
 
 import com.accrete.warehouse.R;
 import com.accrete.warehouse.model.PackageFile;
+import com.accrete.warehouse.model.TransportMode;
 import com.accrete.warehouse.utils.ScalingUtilities;
 import com.accrete.warehouse.adapter.DocumentUploaderAdapter;
 import com.accrete.warehouse.adapter.DynamicChargeAdapter;
