@@ -782,16 +782,25 @@ public class DrawerActivity extends AppCompatActivity implements SelectWarehouse
         alertDialog.show();
     }
 
+    //9743681187
     @Override
     protected void onRestart() {
         super.onRestart();
         //Enable Touch Back
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+        final Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
         if (currentFragment instanceof HomeFragment) {
             drawer.setSelection(0);
             hideSoftKeyboard(DrawerActivity.this);
 
+        } else if (currentFragment instanceof ManageConsignmentTabFragment) {
+            hideSoftKeyboard(DrawerActivity.this);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((ManageConsignmentTabFragment) currentFragment).refreshFragment();
+                }
+            }, 200);
         }
     }
 

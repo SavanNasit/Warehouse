@@ -310,7 +310,7 @@ public class ApproveActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             Toast.makeText(ApproveActivity.this, getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
         }
-        
+
     }
 
     @Override

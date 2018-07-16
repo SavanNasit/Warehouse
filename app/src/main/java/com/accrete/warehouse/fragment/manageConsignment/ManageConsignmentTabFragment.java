@@ -134,6 +134,29 @@ public class ManageConsignmentTabFragment extends Fragment {
 
     }
 
+    public void refreshFragment() {
+        final Fragment mFragment = viewPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem());
+        if (viewPager.getCurrentItem() == 1) {
+            if (mFragment instanceof ToBeApprovedConsignmentFragment) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ToBeApprovedConsignmentFragment) mFragment).refreshData();
+                    }
+                }, 200);
+            }
+        } else if (viewPager.getCurrentItem() == 0) {
+            if (mFragment instanceof ManageConsignmentFragment) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ManageConsignmentFragment) mFragment).refreshData();
+                    }
+                }, 200);
+            }
+        }
+    }
+
     private void setupViewPager(ViewPager viewPager, String iscId) {
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.iscid), iscId);
