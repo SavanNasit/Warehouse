@@ -1273,7 +1273,7 @@ public class OrderQuotationsSelectCustomerActivity extends AppCompatActivity imp
         if (addressList.getCity() != null && !addressList.getCity().toString().trim().isEmpty()) {
             addressText = addressText + addressList.getCity().toString().trim() + ", ";
         }
-       
+
         if (addressList.getState() != null && !addressList.getState().toString().trim().isEmpty()) {
             addressText = addressText + addressList.getState().toString().trim() + ", ";
         }
