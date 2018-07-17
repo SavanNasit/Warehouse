@@ -144,6 +144,7 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         holder.textViewEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //CustomisedToast.success(mContext, "email" + position).show();
                 if (lead.getEmail().isEmpty() || lead.getEmail() == null) {
                     //CustomisedToast.error(mContext,"No email Id available").show();
                     Snackbar snackbar = Snackbar
