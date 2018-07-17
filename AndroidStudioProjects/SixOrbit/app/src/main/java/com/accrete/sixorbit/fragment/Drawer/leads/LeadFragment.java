@@ -201,6 +201,11 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         public void run() {
                             // Stuff that updates the UI
                             mAdapter.notifyDataSetChanged();
+                            if (leadList != null && leadList.size() > 0) {
+                                textViewEmptyView.setVisibility(View.GONE);
+                            } else {
+                                textViewEmptyView.setVisibility(View.VISIBLE);
+                            }
                         }
                     });
                 }
@@ -220,6 +225,11 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 public void run() {
                     // Stuff that updates the UI
                     mAdapter.notifyDataSetChanged();
+                    if (leadList != null && leadList.size() > 0) {
+                        textViewEmptyView.setVisibility(View.GONE);
+                    } else {
+                        textViewEmptyView.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }
