@@ -128,7 +128,7 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         if (lead.getEmail() != null && !lead.getEmail().isEmpty()) {
             holder.textViewContactEmail.setText(lead.getEmail());
             holder.textViewContactEmail.setVisibility(View.VISIBLE);
-        } else {
+        } else { 
             holder.textViewContactEmail.setVisibility(View.GONE);
         }
 
