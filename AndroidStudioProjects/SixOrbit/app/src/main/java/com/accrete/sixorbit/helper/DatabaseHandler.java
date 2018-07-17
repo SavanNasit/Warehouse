@@ -2779,9 +2779,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = null;
         if (string != null && !string.isEmpty() && string.length() > 0) {
-            selectQuery = "SELECT * FROM " + TABLE_LEADS + " WHERE " + KEY_LEASID + " NOT IN(4) AND "
-                    + KEY_LEAD_NAME + " LIKE '" + string + "%'"
-                    + " ORDER BY " + KEY_LEAD_ID + " DESC limit " + count + " OFFSET " + start;
+            selectQuery = "SELECT * FROM " + TABLE_LEADS + " WHERE " + KEY_LEASID + " NOT IN(4) AND ("
+                    + KEY_LEAD_NAME + " LIKE '" + string + "%'" + " OR "
+                    + KEY_MOBILE + " LIKE '" + string + "%'" + " OR "
+                    + KEY_EMAIL + " LIKE '" + string + "%'"
+                    + ") ORDER BY " + KEY_LEAD_ID + " DESC limit " + count + " OFFSET " + start;
         } else {
             selectQuery = "SELECT * FROM " + TABLE_LEADS + " WHERE " + KEY_LEASID + " NOT IN(4) "
                     + " ORDER BY " + KEY_LEAD_ID + " DESC limit " + count + " OFFSET " + start;

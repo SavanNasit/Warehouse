@@ -194,7 +194,7 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     // Do something
                     // loading = true;
                     leadList.addAll(db.getAllLeads(leadList.size() + 1,
-                            getActivity().getResources().getInteger(R.integer.chat_items_count), searchText));
+                            getActivity().getResources().getInteger(R.integer.lead_items_count), searchText));
                     getActivity().runOnUiThread(new Runnable() {
 
                         @Override
@@ -212,7 +212,8 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void getDataFromDB() {
         if (db != null) {
             leadList.clear();
-            leadList.addAll(db.getAllLeads(0, 12, searchText));
+            leadList.addAll(db.getAllLeads(0,
+                    getActivity().getResources().getInteger(R.integer.lead_items_count), searchText));
             getActivity().runOnUiThread(new Runnable() {
 
                 @Override

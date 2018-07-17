@@ -3,4 +3,5 @@
     <integer name="comment_expand_collapse_duration">120</integer>
     <!-- chat -->
     <integer name="chat_items_count">40</integer>
+    <integer name="lead_items_count">25</integer>
 </resources>
