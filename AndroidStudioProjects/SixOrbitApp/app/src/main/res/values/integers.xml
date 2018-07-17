@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="comment_expand_collapse_duration">120</integer>
-    <!-- chat -->
-    <integer name="chat_items_count">40</integer>
-</resources>
