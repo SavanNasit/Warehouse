@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +23,12 @@ import android.widget.Toast;
 
 import com.accrete.sixorbit.R;
 import com.accrete.sixorbit.fragment.Drawer.followups.FollowUpsFragment;
-import com.accrete.sixorbit.interfaces.SyncLeadData;
-import com.accrete.sixorbit.interfaces.sendLeadMobileNumber;
 import com.accrete.sixorbit.helper.CustomisedToast;
 import com.accrete.sixorbit.helper.DatabaseHandler;
 import com.accrete.sixorbit.helper.SwipeRevealLayout;
 import com.accrete.sixorbit.helper.ViewBinderHelper;
+import com.accrete.sixorbit.interfaces.SyncLeadData;
+import com.accrete.sixorbit.interfaces.sendLeadMobileNumber;
 import com.accrete.sixorbit.model.Enquiry;
 import com.accrete.sixorbit.model.Lead;
 
@@ -66,10 +65,6 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         this.dtInterface = sendLeadMobileNumber;
     }
 
-    public LeadAdapter(SyncLeadData syncInvoiceData) {
-        this.syncLeadData = syncInvoiceData;
-    }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -84,17 +79,8 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         db = new DatabaseHandler(mContext);
         final Lead lead = leads.get(position);
 
-        //getSingleLead(lead.getSyncId());
         holder.imageViewSync.setEnabled(false);
-
-        // holder.textViewLeadId.setText(lead.getLeadLeaid());
         tf = Typeface.createFromAsset(mContext.getAssets(), "font/Corbert-Regular.otf");
-      /*  holder.textViewName.setTypeface(tf);
-        holder.textViewContactEmail.setTypeface(tf);
-        holder.textViewContactNumber.setTypeface(tf);
-        holder.textViewAlphabet.setTypeface(tf);
-*/
-
         if (sendLeads.getLeadSync() != null && sendLeads.getLeadSync().equals(mContext.getString(R.string.str_true))) {
             // holder.imageViewSync.setImageResource(R.drawable.ic_tick);
             //  holder.imageViewSync.setEnabled(false);
@@ -113,10 +99,12 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         //String strName = lead.getName().toString().trim();
 
         if (strNameTV.equals("")) {
+            holder.textViewAlphabet.setText("");
+            holder.textViewAlphabet.setVisibility(View.INVISIBLE);
         } else {
             if (strNameTV.length() > 0) {
                 holder.textViewAlphabet.setText(strNameTV.charAt(0) + "");
-                Log.e("tvAlphabet", strNameTV.charAt(0) + "");
+                holder.textViewAlphabet.setVisibility(View.VISIBLE);
             }
 
         }
@@ -147,6 +135,10 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         holder.imgProfile.setImageResource(R.drawable.bg_square);
         if (strNameTV.length() > 0) {
             holder.imgProfile.setColorFilter(getColor(strNameTV.substring(0, 1), mContext));
+            holder.imgProfile.setVisibility(View.VISIBLE);
+        } else {
+            holder.imgProfile.setColorFilter(getColor("", mContext));
+            holder.imgProfile.setVisibility(View.INVISIBLE);
         }
 
         holder.textViewEmail.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@ package com.accrete.sixorbit.fragment.Drawer.leads;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,10 +18,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -54,11 +57,14 @@ import com.accrete.sixorbit.utils.AppPreferences;
 import com.accrete.sixorbit.utils.AppUtils;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,10 +98,16 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     private Boolean isFabOpen = false;
-    private String phoneNumber, phonebookEmail;
+    private String phoneNumber, phonebookEmail, searchText = "";
     private DatabaseHandler db;
     private String status;
     private LeadShippingAddress leadShippingAddress = new LeadShippingAddress();
+    private int lastVisibleItem, totalItemCount, firstVisibleItem;
+    private boolean loading;
+    private int visibleThreshold = 2;
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
+    private Timer timer;
 
     public static LeadFragment newInstance(String title) {
         LeadFragment f = new LeadFragment();
@@ -103,11 +115,6 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         args.putString(KEY_TITLE, title);
         f.setArguments(args);
         return (f);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
     }
 
     @Override
@@ -151,7 +158,7 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
 
         mAdapter = new LeadAdapter(getActivity(), leadList, this, this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         // recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
@@ -172,22 +179,120 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         floatingActionButtonAddLead.setOnClickListener(this);
         floatingActionButtonPhonebook.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        //Scroll Listener
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                totalItemCount = mLayoutManager.getItemCount();
+                lastVisibleItem = mLayoutManager.findLastCompletelyVisibleItemPosition();
+                firstVisibleItem = mLayoutManager.findFirstCompletelyVisibleItemPosition();
+                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                    // End has been reached
+                    // Do something
+                    // loading = true;
+                    leadList.addAll(db.getAllLeads(leadList.size() + 1,
+                            getActivity().getResources().getInteger(R.integer.chat_items_count), searchText));
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // Stuff that updates the UI
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+
+        });
     }
 
     private void getDataFromDB() {
         if (db != null) {
             leadList.clear();
-            leadList.addAll(db.getAllLeads());
+            leadList.addAll(db.getAllLeads(0, 12, searchText));
+            getActivity().runOnUiThread(new Runnable() {
 
-            /*for (int i = 0; i < leadList.size(); i++) {
-                if (leadList.get(i).getLeaid() != null && !leadList.get(i).getLeaid().isEmpty()
-                        && !leadList.get(i).getLeaid().equals("null")) {
-                    db.deleteCancelledLead(leadList.get(i).getLeaid());
-                 *//*   leadList.remove(i);
-                    mAdapter.notifyDataSetChanged();*//*
+                @Override
+                public void run() {
+                    // Stuff that updates the UI
+                    mAdapter.notifyDataSetChanged();
                 }
-            }*/
+            });
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        try {
+            menu.clear();
+            inflater.inflate(R.menu.main_activity_actions, menu);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            searchItem.setVisible(true);
+            SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+            if (searchItem != null) {
+                searchView = (SearchView) searchItem.getActionView();
+            }
+
+            if (searchView != null) {
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+                try {
+                    Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+                    mCursorDrawableRes.setAccessible(true);
+                    mCursorDrawableRes.set(searchView, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+                } catch (Exception e) {
+                }
+            }
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    //  Log.e("OnTextChange", query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    //Log.e("OnTextChangeSubmit", newText);
+                    if (timer != null) {
+                        timer.cancel();
+                    }
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            // do your actual work here
+                            if (getActivity() != null && isAdded()) {
+                                searchText = newText;
+                                getDataFromDB();
+                            }
+                        }
+                    }, 600); // 600ms delay before the timer executes the „run“ method from TimerTask
+
+                    return false;
+                }
+
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+            super.onCreateOptionsMenu(menu, inflater);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                return false;
+            default:
+                break;
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
     }
 
     public void displayDataInView() {

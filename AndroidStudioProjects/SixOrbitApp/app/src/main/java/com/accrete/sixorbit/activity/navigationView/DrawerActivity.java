@@ -344,7 +344,7 @@ public class DrawerActivity extends AppCompatActivity implements ApiResultReceiv
                             drawerItemQuotation, drawerItemOrder, drawerItemCollections,
                             drawerItemCustomers, drawerItemVendors, drawerItemFeeds, drawerItemChat,
                             drawerItemSettings, drawerItemLogOut, drawerItemConnectedDomain,
-                            drawerItemCompanyName, drawerItemSwitchCompany, drawerItemBlank)
+                            drawerItemCompanyName, drawerItemSwitchCompany)
                     .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                         @Override
                         public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {

@@ -308,8 +308,8 @@
 
     <!--Drawer activity-->
     <string name="home">Home</string>
-    <string name="connected_to">You\'re connected to :</string>
-    <string name="your_company">Your Company :</string>
+    <string name="connected_to">You\'re connected to: </string>
+    <string name="your_company">Your Company: </string>
     <string name="lead_fragment_tag">LeadFragment</string>
     <string name="followup_fragment_tag">FollowUpsFragment</string>
     <string name="activityfeeds_fragment_tag">ActivityFeedsFragment</string>

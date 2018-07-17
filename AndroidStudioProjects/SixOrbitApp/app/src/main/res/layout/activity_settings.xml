@@ -82,7 +82,7 @@
                         android:paddingTop="@dimen/_10sdp"
                         android:text="@string/edit_profile"
                         android:textColor="@color/darkGray"
-                        android:textSize="@dimen/_11sdp"
+                        android:textSize="@dimen/_9sdp"
                         android:textStyle="normal" />
 
                     <View
@@ -107,7 +107,7 @@
                         android:paddingTop="@dimen/_10sdp"
                         android:text="@string/recent_login_history"
                         android:textColor="@color/darkGray"
-                        android:textSize="@dimen/_11sdp"
+                        android:textSize="@dimen/_9sdp"
                         android:textStyle="normal" />
 
                 </LinearLayout>
@@ -159,7 +159,7 @@
                         android:paddingTop="@dimen/_10sdp"
                         android:text="@string/password_management"
                         android:textColor="@color/darkGray"
-                        android:textSize="@dimen/_11sdp"
+                        android:textSize="@dimen/_9sdp"
                         android:textStyle="normal" />
 
                     <View
@@ -190,7 +190,7 @@
                             android:paddingTop="@dimen/_10sdp"
                             android:text="@string/two_step_verification"
                             android:textColor="@color/darkGray"
-                            android:textSize="@dimen/_11sdp"
+                            android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
 
                         <LinearLayout

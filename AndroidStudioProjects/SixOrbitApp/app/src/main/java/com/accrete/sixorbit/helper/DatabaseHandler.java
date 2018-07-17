@@ -2774,11 +2774,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // add Assignee spinner
 
     // Getting All Leads
-    public List<Lead> getAllLeads() {
+    public List<Lead> getAllLeads(int start, int count, String string) {
         List<Lead> leadList = new ArrayList<Lead>();
         // Select All Query
-        String selectQuery = "SELECT * FROM " + TABLE_LEADS + " WHERE " + KEY_LEASID + " NOT IN(4) "
-                + " ORDER BY " + KEY_LEAD_ID + " DESC ";
+        String selectQuery = null;
+        if (string != null && !string.isEmpty() && string.length() > 0) {
+            selectQuery = "SELECT * FROM " + TABLE_LEADS + " WHERE " + KEY_LEASID + " NOT IN(4) AND "
+                    + KEY_LEAD_NAME + " LIKE '" + string + "%'"
+                    + " ORDER BY " + KEY_LEAD_ID + " DESC limit " + count + " OFFSET " + start;
+        } else {
+            selectQuery = "SELECT * FROM " + TABLE_LEADS + " WHERE " + KEY_LEASID + " NOT IN(4) "
+                    + " ORDER BY " + KEY_LEAD_ID + " DESC limit " + count + " OFFSET " + start;
+        }
+        /*String selectQuery = "SELECT * FROM " + TABLE_LEADS + " WHERE " + KEY_LEASID + " NOT IN(4) "
+                + " ORDER BY " + KEY_LEAD_ID + " DESC ";*/
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // looping through all rows and adding to list
