@@ -1,0 +1,870 @@
+<resources>
+
+    <string name="app_name">6Orbit</string>
+    <string name="company_slogan">The Cloud Advantage</string>
+
+
+    <string name="action_filter">Filter</string>
+    <string name="action_delete">Delete</string>
+    <string name="transition_contenet_topic">Poonam</string>
+    <string name="action_skip">Skip</string>
+    <string name="btn_start">Start</string>
+    <string name="write_label">Introducing Process Automation Integrating Business Functions</string>
+    <string name="share_label">Share your important moments with friends and family.</string>
+    <string name="follow_label">Follow interesting genres and creators from around the world. </string>
+    <string name="device_text">Process Automation Software is typically a suite of integrated applications that a company can use to collect,
+                store, manage and interpret data from many business activities, including: Product planning, cost, manufacturing, service delivery, marketing and sales.</string>
+
+    <string name="title_activity_chat_message">Chat</string>
+    <!--error messages-->
+    <string name="username_error">Please enter your Email Id</string>
+    <string name="valid_email_error">Please enter valid Email Id</string>
+    <string name="contact_type_error">Please select a contact type</string>
+    <string name="password_error">Please enter your password</string>
+    <string name="chat_message_broadcast_event">Chat-Message-Broadcast-Event</string>
+    <string name="send_chat_message_broadcast_event">Send-Chat-Message-Broadcast-Event</string>
+    <string name="logout_user_broadcast_event">Logout-User-Broadcast-Event</string>
+    <string name="send_active_users_broadcast_event">Send-Active-Users-Broadcast-Event</string>
+    <string name="pdf_app_error">No application is available to view PDF file.</string>
+    <string name="excel_app_error">No application is available to view Excel file.</string>
+    <string name="connect_server_failed">Couldn\'t connect to server. Please try again later. </string>
+
+    <!--tasks-->
+    <string name="domain">check_service</string>
+    <string name="login">login</string>
+    <string name="mask_config">mask_config</string>
+    <string name="permission">permission</string>
+    <string name="valid_access_token">check_login</string>
+    <string name="follow_up_fetch">followup/fetch</string>
+    <string name="profile_fetch">profile_info/fetch</string>
+    <string name="notification">notification/feed</string>
+    <string name="notification_read">notification/read</string>
+    <string name="notification_update_read">notification/update_read</string>
+    <string name="lead">lead/fetch</string>
+    <string name="chat_contacts">chat/info</string>
+    <string name="chat_messages">chat/fetch_message</string>
+    <string name="send_message">chat/send_message</string>
+    <string name="lead_add">lead/add</string>
+    <string name="follow_up_add">followup/addFollowup</string>
+    <string name="record_follow_up_task">followup/add</string>
+    <string name="lead_edit">lead/edit</string>
+    <string name="post_comment">notification/add_comment</string>
+    <string name="chat_conversations">chat/chat_history</string>
+    <string name="chat_set_image">chat/set_image</string>
+    <string name="enquiry_task">enquiry/fetch</string>
+    <string name="quotation_fetch">quotation/fetch</string>
+    <string name="pending_invoice_task">customer/pending_invoice</string>
+    <string name="vender_pending_invoice_task">vendor/pending_invoice</string>
+    <string name="customer_fetch">customer/fetch</string>
+    <string name="customer_wallet_email">customer_wallet_email</string>
+    <string name="vendor_fetch">vendor/fetch</string>
+    <string name="vendor_wallet_download_voucher">vendor/vendor_voucher_print</string>
+    <string name="vendor_pending_invoice_download_voucher">vendor/pending_invoice_print</string>
+    <string name="vendor_purchase_order_download">vendor/purchase_order_print</string>
+    <string name="customer_wallet_download_voucher">customer/customer_wallet_print</string>
+    <string name="manage_quotation_download_quotation">quotation/print_quotation</string>
+    <string name="customer_pending_invoice_download_voucher">customer/pending_invoice_print</string>
+    <string name="customer_order_details">customer/order_details</string>
+    <string name="download_sales_order_task">customer/print_sales_order</string>
+    <string name="vendor_order_list">vendor/purchase_order_list</string>
+    <string name="vendor_consignment">vendor/consignment_list</string>
+    <string name="vendor_invoices">vendor/pending_exclusive_invoices</string>
+    <string name="customer_invoices">customer/pending_exclusive_invoices</string>
+    <string name="customer_order_info">customer/fetch_order_info</string>
+    <string name="customer_packages_info">customer/fetch_order_package_info</string>
+    <string name="customer_order_collection_info">customer/fetch_order_collection_info</string>
+    <string name="customer_order_items">customer/fetch_order_products</string>
+    <string name="add_customer_dynamic_fields">customer/fetch_addCustomer_form_data</string>
+    <string name="add_customer_referrence_search">customer/customer_reference_search</string>
+    <string name="add_customer_reference_contact_person">customer/reference_contact_person</string>
+    <string name="add_customer_add_contact_person">customer/contact_detail_add</string>
+    <string name="add_customer_get_cities">customer/get_cities</string>
+    <string name="add_customer">customer/add_customer</string>
+    <string name="quotation_details">quotation/quotation_details</string>
+    <string name="vendor_consignment_info">vendor/consignment_info</string>
+    <string name="quotation_products_task">quotation/quotation_products</string>
+    <string name="vendor_inventory_items">vendor/consignment_items</string>
+    <string name="edit_customer_task">customer/edit_customer</string>
+    <string name="fetch_mobile_numbers">otp/otp-mobile-fetch</string>
+    <string name="fetch_email_addresses">otp/otp-email-fetch</string>
+    <string name="update_customer_details_task">customer/update_customer</string>
+    <string name="quotation_search_item">quotation/search_item</string>
+    <string name="quotation_product_details">quotation/load_item_data</string>
+    <string name="products_details_scan_qr_code">quotation/fetch_barcode_data</string>
+    <string name="customer_address_list">customer/customer_address_list</string>
+    <string name="quotation_tax_charges_data">quotation/fetch_quotation_form_data</string>
+    <string name="add_quotation">quotation/add_quotation</string>
+    <string name="edit_quotation">quotation/quotation_edit_submit</string>
+    <string name="quotation_templates">quotation/fetch_quotation_templates</string>
+    <string name="order_templates_task">chkorder/fetch_order_templates</string>
+    <string name="account_ledger_search_task">chkorder/account_ledger_search</string>
+    <string name="create_order_task">chkorder/create_order_submit</string>
+    <string name="followups_contact_person">followup/fetch_contact_person</string>
+
+    <string name="order_prefilled_data_task">chkorder/fetch_order_formData</string>
+    <string name="edit_order_info_task">chkorder/fetch_edit_order_info</string>
+    <string name="convert_quotation_into_order_task">chkorder/fetch_order_formData_by_qoid</string>
+    <string name="credential_error">Email and Password does not matched</string>
+    <string name="toast_message">Toast Message</string>
+    <string name="login_success">You have been successfully logged in</string>
+    <string name="profile_edit_success">Profile successfully saved</string>
+    <string name="password_change_success">Password successfully changed</string>
+    <string name="email_added_successfully">Email is added successfully</string>
+    <string name="phone_number_added_successfully">Phone Number is updated successfully</string>
+    <string name="phone_number_verified_successfully">Phone Number is verified successfully</string>
+    <string name="email_verified_successfully">Email is verified successfully</string>
+    <string name="search_title">Search...</string>
+    <string name="search_hint">Search.</string>
+    <string name="fastscroller_track">FastScroller track</string>
+    <string name="fastscroller_handle">FastScroller handle</string>
+    <string name="item_string">Item %1$d</string>
+    <string name="invalid_domain">Please enter valid domain</string>
+    <string name="no_data_available">No data available</string>
+    <string name="date_error">To date must be greater than the From date or it can\'t be empty</string>
+    <string name="lbl_cancel">cancel</string>
+    <string name="follow_up_fragment">Follow-Ups</string>
+    <string name="navigation_view_activity">Home</string>
+    <string name="record_follow_up">Record Follow Up</string>
+    <string name="notification_fragment">Notification</string>
+    <string name="chat_fragment">Chat</string>
+    <string name="lead_fragment">Leads</string>
+    <string name="contact">Contact</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="activity_feeds">Activity Feeds</string>
+    <string name="enquiry">Enquiry</string>
+
+    <string name="add_customer_title">Add Customer</string>
+    <string name="add_new_customer_title">Add a new Customer</string>
+    <string name="lead_details">Lead Details</string>
+    <string name="ledger_details">Ledger Details</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="contact_details">+ Add Contact</string>
+    <string name="add_bank_details">+ Add Bank Details</string>
+    <string name="add_details">Address Details</string>
+    <string name="font_awesome">fontawesome-webfont.ttf</string>
+    <integer name="scroll_duration">1000</integer>
+
+    <string name="follow_up_alert_title">Follow-Up Alert</string>
+    <string name="lead_info_title">Lead Info</string>
+    <string name="order_details_title">Order Info</string>
+    <string name="quotation_info_title">Quotation Info</string>
+    <string name="enquiry_info_title">Enquiry Info</string>
+    <string name="record_follow_up_title">Record Follow up</string>
+    <string name="activity_feed_error_msg">There is no feed right now.</string>
+    <string name="mine">Mine</string>
+    <string name="all">All</string>
+    <string name="section_format">Page %1$d</string>
+    <string name="cuid">cuid</string>
+    <string name="alid">alid</string>
+    <string name="order_id">orderId</string>
+    <string name="qo_id">quotationId</string>
+    <string name="en_id">enquiryId</string>
+    <string name="order_id_text">orderIdText</string>
+    <string name="qo_id_text">quotationIdText</string>
+    <string name="enquiry_id_text">enquiryIdText</string>
+    <string name="venid">venid</string>
+    <string name="consignment_id_text">consignmentText</string>
+    <string name="consignment_id">consignmentId</string>
+    <string name="qosid">quotationStatusId</string>
+    <string name="convert_from">convertFrom</string>
+
+    <!--font_awesome-->
+    <string name="fa_copy">&#xf0c5;</string>
+    <string name="fa_forward">&#xf054;</string>
+    <string name="fa_add">&#xf067;</string>
+    <string name="fa_paste">&#xf0ea;</string>
+    <string name="fa_share">&#xf1e0;</string>
+    <string name="fa_download">&#xf019;</string>
+    <string name="fa_mail">&#xf003;</string>
+    <string name="copy">Copy</string>
+    <string name="paste">Paste</string>
+    <string name="share">Share</string>
+    <string name="lead_info">Lead Info</string>
+    <string name="Call">Call</string>
+    <string name="fa_call">&#xf095;</string>
+    <string name="empty">No Followups available</string>
+    <string name="empty_contacts">No Contact available</string>
+    <string name="salutation">Salutation</string>
+    <string name="title_activity_contacts">Contacts</string>
+    <string name="title_activity_followup_info">Follow-Up Info</string>
+    <string name="str_true">true</string>
+    <string name="network_error">Please connect to internet</string>
+    <string name="error_domain">Couldn\'t connect to server</string>
+
+    <!--chat message activity-->
+    <string name="online_status">online</string>
+    <string name="message_hint">Message @</string>
+    <string name="add_photo">Add Photo!</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_file">Select File</string>
+    <string name="delete_photo">Remove Photo</string>
+    <string name="empty_chat_message">You\'ve not done chat with this person yet.</string>
+
+    <!--domain activity-->
+    <string name="enter_domain">Please enter domain</string>
+
+    <!--followup Info activity-->
+
+    <string name="share_using">Share using</string>
+    <string name="your_data">Your Data</string>
+    <string name="data_copied">Your Data is copied</string>
+    <string name="lead_title">Lead :</string>
+    <string name="taken_on_title">Taken on :</string>
+    <string name="schedule_date_title">Scheduled date :</string>
+    <string name="alert_on_title">Alert time :</string>
+    <string name="comment_title">Comment : </string>
+    <string name="feedback_title">Feedback :</string>
+    <string name="contact_person_title">Contact person :</string>
+    <string name="communication_mode_title">Communication mode :</string>
+    <string name="parent_id_title">Parent followup :</string>
+    <string name="outcome_title">Outcome :</string>
+    <string name="reason_title">Reason :</string>
+    <string name="status_title">Status :</string>
+    <string name="createdby_title">Created by :</string>
+    <string name="updatedby_title">Updated by :</string>
+    <string name="assignedto_title">Attendee :</string>
+    <string name="createdtime_title">Created time :</string>
+    <string name="updatedtime_title">Updated time :</string>
+    <string name="alertmode_title">Alert mode :</string>
+    <string name="followup_status_pending">Pending</string>
+    <string name="followup_status_taken">Taken</string>
+    <string name="permission_required">Permission Required:</string>
+    <string name="request_permission_from_settings">Kindly allow Permission From App Settings</string>
+    <string name="ok">OK</string>
+
+    <!--Record Followup activity-->
+    <string name="not_intrested">Not interested</string>
+    <string name="call_later">Call Later</string>
+    <string name="price_high">Price too High</string>
+    <string name="wrong_contact">Wrong Contact</string>
+    <string name="no_response">No Response</string>
+    <string name="mail">Mail</string>
+    <string name="phone_call">Phone Call</string>
+    <string name="skype_call">Skype Call</string>
+    <string name="dailogue_from">dialogFrom</string>
+    <string name="dailogue_to">dailogueTo</string>
+    <string name="company">Company :</string>
+    <string name="customer">Customer :</string>
+    <string name="invoice_number">Invoice Number :</string>
+    <string name="customer_name_title">Customer Name</string>
+    <string name="account_number">Account No :</string>
+    <string name="account_holder">Account Holder :</string>
+    <string name="bank_name">Bank Name :</string>
+    <string name="address_title">Address :</string>
+    <string name="branch_name">Branch Name :</string>
+    <string name="ifsc_code">IFSC Code :</string>
+    <string name="account_type">Account Type :</string>
+    <string name="select_schedule_time">Please select scheduled time.</string>
+    <string name="select_alert_time">Please select alert time.</string>
+    <string name="scheduletime_more_than_alerttime">Scheduled time should be more than alert time.</string>
+    <string name="scheduletime_more_than_currenttime">Scheduled time should be more than current time.</string>
+    <string name="alerttime_more_than_currenttime">Alert time should be more than current time.</string>
+    <string name="not_connected_to_internet">Not connected to Internet</string>
+    <string name="taken_from">TimePickerFrom</string>
+    <string name="taken_to">TimePickerTo</string>
+    <string name="string_title_upload_progressbar_">Uploading.. Wait for a while...</string>
+    <string name="referred_by">Referred By</string>
+    <!--Activity _feeds_comment activity-->
+    <string name="no_comments">No Comments</string>
+
+    <!--Add_Lead activity-->
+    <string name="add_lead_title">Add Lead</string>
+    <string name="edit_mode">editLead</string>
+    <string name="individual_mode">individual</string>
+    <string name="company_mode">company</string>
+    <string name="edit_lead_title">Edit Lead</string>
+    <string name="phonebook_mode">phonebook</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="nothing_selected">Nothing Selected</string>
+    <string name="phone_call_comm_mode">Phone Call</string>
+    <string name="person_meeting">In-Person Meeting</string>
+    <string name="followup_status_progress">Progress</string>
+    <string name="schedule_and_alert_time_cant_be_empty">Schedule and/or alert times can\'t be empty</string>
+    <string name="uncheck_followup_details">Please uncheck follow up details</string>
+    <string name="something_wrong">Something went wrong</string>
+    <string name="alert_time_less_than_schedule_time">Alert time should be less than schedule time</string>
+    <string name="alert_date_less_than_schedule_date">Alert date should be less than schedule date</string>
+    <string name="date_greater_than_curren_date">Date should  be greater than  or equal to current date</string>
+    <string name="select_time_greater_than_curren_time">Selected time should be greater than current time</string>
+    <string name="select_date_and_time_properly">Select Date and Time properly</string>
+    <string name="enter_first_name">Please enter your first name</string>
+    <string name="enter_name">Please enter name</string>
+    <string name="enter_phone_number">Please enter phone number</string>
+
+
+    <!--lead_info activity-->
+    <string name="lead_name">Lead Name:</string>
+    <string name="lead_email">Email:</string>
+    <string name="lead_phone">Phone No:</string>
+    <string name="find_data_error">Could\'nt find data to share</string>
+    <string name="phone_number_not_valid_error">Phone number is not valid</string>
+    <string name="phone_number_error">Phone number doesn\'t exist</string>
+    <string name="choose_email_client">Choose an email client :</string>
+
+
+    <!--Drawer activity-->
+    <string name="home">Home</string>
+    <string name="connected_to">You\'re connected to: </string>
+    <string name="your_company">Your Company: </string>
+    <string name="lead_fragment_tag">LeadFragment</string>
+    <string name="followup_fragment_tag">FollowUpsFragment</string>
+    <string name="activityfeeds_fragment_tag">ActivityFeedsFragment</string>
+    <string name="enquiry_fragment_tag">EnquiryFragment</string>
+    <string name="chatlist_fragment_tag">ChatListFragment</string>
+    <string name="logout_sucessfully">Logout successfully</string>
+    <!--<string name="click_back_to_exit">Please click BACK again to exit</string>-->
+    <string name="click_back_to_exit">Press again to close 6Orbit</string>
+    <string name="quotation_fragment_tag">QuotationFragment</string>
+
+
+    <!--password activity-->
+    <string name="try_again">Try again</string>
+
+    <!--Activity feeds pager adapter-->
+    <string name="seconds_ago">seconds ago</string>
+    <string name="minutes_ago">minutes ago</string>
+    <string name="hours_ago">hours ago</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="o_sec_later">0 seconds ago</string>
+    <string name="seconds_later">second later</string>
+    <string name="minute_later">minute later</string>
+    <string name="minutes_later">minutes later</string>
+    <string name="hour_later">hour later</string>
+    <string name="hours_later">hours later</string>
+    <string name="tommorow">Tomorrow</string>
+    <string name="comment">Comment</string>
+    <string name="comment_small">comment</string>
+    <string name="comments">Comments</string>
+
+
+    <!--Activity feeds pager adapter-->
+    <string name="share_post">Share Post using</string>
+    <string name="today">Today</string>
+    <string name="load_more">Load More</string>
+    <string name="second_ago">second ago</string>
+    <string name="minute_ago">minute ago</string>
+    <string name="hour_ago">hour ago</string>
+
+
+    <!--followup  adapter-->
+    <string name="record_follow_up_fragment_tag">RecordFollowUpFragment</string>
+    <string name="email_error">Email Id is not present</string>
+    <string name="call">Call</string>
+    <string name="with">with</string>
+    <string name="today_at">today at</string>
+    <string name="tommorow_at">tomorrow at</string>
+    <string name="no_contacts">No contacts available</string>
+
+
+    <string name="no_feed">There is no feed right now</string>
+    <string name="no_quotations">There is no quotation right now</string>
+    <string name="select_title">Select Title</string>
+
+    <string name="not_done_chat_with_anyone">You\'ve not done chat with anyone yet.</string>
+    <!--followup  fragment-->
+    <string name="start_date">Start Date..</string>
+    <string name="end_date">End Date..</string>
+    <string name="date_title">Date :</string>
+    <string name="range">Range</string>
+    <string name="select_either_taken_or_pending">Please check atleast one option from taken and pending status.</string>
+
+
+    <string name="no_internet_try_later">There is no internet connection right now. Please try again later.</string>
+    <string name="password">Password</string>
+    <string name="contact_has_no_number">This contact has no phone number</string>
+    <string name="wifi_enabled">Wifi enabled</string>
+    <string name="mobile_enabled">Mobile data enabled</string>
+    <string name="followup_alert">Follow Up Alert</string>
+    <string name="offline_status">offline</string>
+    <string name="contac_for_support">Please contact to Support</string>
+    <string name="fetch">fetch</string>
+
+
+    <!--Intent values strings-->
+    <string name="update">update</string>
+    <string name="insert">insert</string>
+    <string name="chatid">chatId</string>
+    <string name="updated_ui_ftime">updateUIFirstTime</string>
+    <string name="followup">followUp</string>
+    <string name="back_to_chat_list">backToChatList</string>
+    <string name="fname">fname</string>
+    <string name="fName">fName</string>
+    <string name="uid">uid</string>
+    <string name="image">image</string>
+    <string name="receiver_userId">receiver_userId</string>
+    <string name="receiver">receiver</string>
+    <string name="action">action</string>
+    <string name="timestamp">timeStamp</string>
+    <string name="message">message</string>
+    <string name="to">to</string>
+    <string name="sync_id">sync_id</string>
+    <string name="mobile">mobile</string>
+    <string name="foid">foid</string>
+    <string name="name">name</string>
+    <string name="sync">sync</string>
+    <string name="post_message">post_message</string>
+    <string name="post_time">post_time</string>
+    <string name="uaid">uaid</string>
+    <string name="uName">uName</string>
+    <string name="activity_by">Activity by</string>
+    <string name="sid">sid</string>
+    <string name="post_uid">post_uid</string>
+    <string name="syncid">syncId</string>
+    <string name="syncID">syncID</string>
+    <string name="codeid">codeid</string>
+    <string name="email">email</string>
+    <string name="phone">phone</string>
+    <string name="designation">designation</string>
+    <string name="Designation">Designation</string>
+    <string name="mode">mode</string>
+    <string name="phoneNumber">phoneNumber</string>
+    <string name="lName">lName</string>
+    <string name="id">id</string>
+    <string name="leaid">leaid</string>
+    <string name="company_small">company</string>
+    <string name="notify_id">notify_id</string>
+    <string name="enter_company_name">Please enter your company name</string>
+    <string name="share_contact_using">Share Contact Using</string>
+    <string name="lead_id">lead_id</string>
+    <string name="intent">intent</string>
+    <string name="just_now">Just Now</string>
+    <string name="mail_to">mailto</string>
+    <string name="owner">(Owner)</string>
+    <string name="last_updated_date">1970-01-01</string>
+    <string name="city_name">cityName</string>
+    <string name="_id">_id</string>
+    <string name="userId">userId</string>
+    <string name="access_token">accessToken</string>
+    <string name="contacts">Contacts</string>
+    <string name="chat">Chat</string>
+    <string name="update_list">update_list</string>
+    <string name="is_first_run">is_first_run</string>
+    <string name="bitmap">bitmap</string>
+    <string name="array">array</string>
+    <string name="mdcolor">mdcolor_</string>
+    <string name="in_detail">In Detail</string>
+    <string name="refresh_followups">refresh_followups</string>
+    <string name="receiver_user_id">receiver_userId</string>
+    <string name="send">send</string>
+    <string name="add_attatchments">Add attachments!</string>
+    <string name="add_files">Add files</string>
+    <string name="no_sync_id">noSyncId</string>
+    <string name="file_not_found">File Not Found</string>
+    <string name="url_error">URL error!</string>
+    <string name="cannot_read_write">Cannot Read/Write File!</string>
+    <string name="source_file_dexixt">Source File Doesn\'t Exist:</string>
+    <string name="city_title">City :</string>
+
+    <!--state strings-->
+    <string name="state_andhra_pradesh">Andhra Pradesh</string>
+    <string name="state_arunachala_pradesh">Arunchal Pradesh</string>
+    <string name="state_assam">Assam</string>
+    <string name="state_bihar">Bihar</string>
+    <string name="state_chattisgarh">Chhattisgarh</string>
+    <string name="state_goa">Goa</string>
+    <string name="state_gujarat">Gujarat</string>
+    <string name="state_haryana">Haryana</string>
+    <string name="state_himachal_pradesh">Himachal Pradesh</string>
+    <string name="state_jammu_and_kashmir">Jammu and Kashmir</string>
+    <string name="state_jarkhand">Jharkhand</string>
+    <string name="state_kerala">Kerala</string>
+    <string name="state_madya_pradesh">Madya Pradesh</string>
+    <string name="state_orissa">Orissa</string>
+    <string name="state_maharashta">Maharashtra</string>
+    <string name="state_manipur">Manipur</string>
+    <string name="state_meghalaya">Meghalaya</string>
+    <string name="state_mizoram">Mizoram</string>
+    <string name="state_nagaland">Nagaland</string>
+    <string name="state_punjab">Punjab</string>
+    <string name="state_sikkim">Sikkim</string>
+    <string name="state_tamilnadu">Tamil Nadu</string>
+    <string name="state_tripura">Tripura</string>
+    <string name="state_uttaranchal">Uttaranchal</string>
+    <string name="state_west_bengal">West Bengal</string>
+    <string name="state_andaman_and_nicobar">Andaman and Nicobar Islands</string>
+    <string name="state_chandigarh">Chandigarh</string>
+    <string name="state_dadar_and_nagar">Dadar and Nagar Haveli</string>
+    <string name="state_daman_diu">Daman and Diu</string>
+    <string name="state_delhi">Delhi</string>
+    <string name="state_lakshadeep">Lakshadeep</string>
+    <string name="state_pondicherry">Pondicherry</string>
+    <string name="state_karnataka">Karnataka</string>
+    <string name="state_uttar_pradesh">Uttar Pradesh</string>
+
+
+    <string name="phone_number_verified">Phone number verified successfully</string>
+    <string name="email_verified">Email Id verified successfully</string>
+    <string name="leasid">leasid</string>
+    <string name="title_settings">Settings</string>
+    <string name="personal">PERSONAL</string>
+    <string name="security">SECURITY</string>
+    <string name="edit_profile">Edit your personal information</string>
+    <string name="password_management">Change Password</string>
+    <string name="two_step_verification">Two Step Verification</string>
+    <string name="title_edit_profile">Edit Profile</string>
+    <string name="recent_login_history">Recent Login History</string>
+    <string name="task_edit_profile">profile_info/edit</string>
+    <string name="task_change_password">profile_info/change_password</string>
+    <string name="task_recent_login">profile_info/fetch-recent-login</string>
+    <string name="title_recent_login">Recent Login History</string>
+    <string name="select_profle_image">Select Profile Image</string>
+    <string name="add_email">otp/add-email</string>
+    <string name="add_phone">otp/add-mobile</string>
+    <string name="verify_phone">verify phone</string>
+    <string name="reset_password">forgot-password/forgot-password-submit</string>
+    <string name="verify_email_to_forgot_password">forgot-password/forgot-password-link</string>
+    <string name="title_verify_phone">Please enter OTP to verify your Phone</string>
+    <string name="title_verify_email">Please enter OTP to verify your Email</string>
+    <string name="admin">Admin</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="customer_information_title">Customer Information</string>
+    <string name="basic_details_title">Basic Details</string>
+    <string name="extra_information_title">Extra Information</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="employment_details">Employment Details</string>
+    <string name="emp_id">Employee Id</string>
+    <string name="report_to">Report To</string>
+    <string name="account_details">Account Details</string>
+    <string name="joined">Joined</string>
+    <string name="last_seen">Last Seen</string>
+    <string name="real_name">Real Name</string>
+    <string name="roles">Roles</string>
+    <string name="converted_toast">Lead is converted . You can\'t edit the lead</string>
+    <string name="cancelled_toast">Lead is cancelled . You can\'t edit the lead</string>
+    <string name="enter_email_for_password">Enter your email address below and we\'ll send a special reset password link to your inbox</string>
+    <string name="craete_password_text">Create new password to access your account</string>
+    <string name="email_link_success">We have sent an email.</string>
+    <string name="download_pdf_success">Pdf downloaded successful.</string>
+    <string name="otp_verify_confirm">otp/otp-verification-confirm</string>
+    <string name="send_mobile_otp">otp/otp-verification-send</string>
+    <string name="email_already_verified">Your Email Id is already verified</string>
+    <string name="mobile_already_verified">Your Mobile Number is already verified</string>
+    <string name="otp_verified">OTP verified successfully</string>
+    <string name="otp_sent">OTP is already sent</string>
+    <string name="quotation">Quotation</string>
+    <string name="order">Order</string>
+    <string name="collections">Collections</string>
+    <string name="create_collection">Create Collection</string>
+    <string name="create_quotation">Create Quotation</string>
+    <string name="manage_quotation">Manage Quotation</string>
+    <string name="my_transaction">My Transactions</string>
+    <string name="my_collections">Invoice Wise Outstanding</string>
+    <string name="customerwise_outstanding">Customer Wise Outstanding</string>
+    <string name="create_order">Create Order</string>
+    <string name="manage_order">Manage Order</string>
+    <string name="manage_enquiry">Manage Enquiry</string>
+    <string name="purchase_order">Purchase Order</string>
+    <string name="jobcard">Job Card</string>
+    <string name="title_sales">Sales</string>
+    <string name="others">Others</string>
+    <string name="vendors">Vendors</string>
+    <string name="customer_fragment">Customers</string>
+    <string name="customer_info">Customer Info</string>
+    <string name="send_two_step_verification_status">otp/otp-setting</string>
+    <string name="two_step_verification_enabled">Your changes were Saved</string>
+    <string name="title_login">Please enter OTP to Login</string>
+    <string name="resend_otp"><u>Resend OTP</u></string>
+    <string name="delete_email">otp/delete-email</string>
+    <string name="email_deleted">Email deleted Successfully</string>
+    <string name="email_edited">Email Updated Successfully</string>
+    <string name="delete_mobile">otp/delete-mobile</string>
+    <string name="mobile_deleted">Mobile Number deleted Successfully</string>
+    <string name="title_delete_mobile">Are you sure to delete mobile number ? </string>
+    <string name="main_title_delete_mobile">Delete Mobile</string>
+    <string name="edit_email">otp/edit-email</string>
+    <string name="edit_mobile">otp/edit-mobile</string>
+    <string name="mobile_edited">Mobile Number Updated Successfully</string>
+    <string name="primary_status_email">otp/update-primary-email</string>
+    <string name="changes_done">Changes were saved</string>
+    <string name="primary_status_mobile">otp/update-primary-mobile</string>
+    <string name="title_non_primary">Are you sure to change email as non primary ?</string>
+    <string name="title_change_primary_email">Are you sure to change email as primary ?</string>
+    <string name="title_make_primary_email">Are you sure to make email as primary ?</string>
+    <string name="title_non_primary_mobile_number">Are you sure to change mobile number as non primary ?</string>
+    <string name="title_primary_mobile_number">Are you sure to change mobile number as primary ?</string>
+    <string name="primary_status">Primary Number</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add_email_title">Add Email</string>
+    <string name="add_email_address">Add email address</string>
+    <string name="email_caps">Email</string>
+    <string name="add">Add</string>
+    <string name="add_cart">Add to quote</string>
+    <string name="back_selection">Back to selection</string>
+    <string name="verify">Verify</string>
+    <string name="enter_otp_to_verify">Please enter OTP to verify your</string>
+    <string name="Otp">OTP</string>
+    <string name="problem_receiving_otp">Problem in receiving OTP ?</string>
+    <string name="add_phone_title">Add Phone</string>
+    <string name="update_mobile">Update Mobile</string>
+    <string name="enter_mobile_number">Enter mobile Number</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="update_email">Update Email</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="delete_email_title">Delete Email</string>
+    <string name="delete_email_sure_warning">Are you sure to delete email ?</string>
+    <string name="add_mobile">Add Mobile</string>
+    <string name="mobile_numbers">Mobile Numbers</string>
+    <string name="emails">Emails</string>
+    <string name="Rs">\u20B9</string>
+    <string name="title_activity_customer_main">Customer Details</string>
+    <string name="title_activity_vendors_main">Vendor Details</string>
+    <string name="customer_data_fetched">Customer data fetched</string>
+    <string name="customer_information">customer/info</string>
+    <string name="vendor_information">vendor/info</string>
+    <string name="vendor_recent_transaction">vendor/recent_transaction</string>
+    <string name="telephone">Telephone :</string>
+    <string name="gst_reg">GST Registered :</string>
+    <string name="refferal_type">Referral Type :</string>
+    <string name="contact_person">Contact Person :</string>
+    <string name="refferal_name">Referral Name :</string>
+    <string name="gstin">GSTIN :</string>
+    <string name="pan">Customer Pan :</string>
+    <string name="gst_tin">TIN :</string>
+    <string name="cst">CST :</string>
+    <string name="website">Website :</string>
+    <string name="customer_name">Customer :</string>
+    <string name="type">Type :</string>
+    <string name="created_on">Created On :</string>
+    <string name="customer_mobile">Mobile :</string>
+    <string name="department">Department :</string>
+    <string name="customer_email">Email :</string>
+    <string name="address_deleted">Selected Address is removed from list</string>
+    <string name="wallet_recent_transaction">customer/recent_transaction</string>
+    <string name="send_email">Send Email</string>
+    <string name="customer_email_id">customerEmail</string>
+    <string name="customer_wallet_send_email">customer/send_customer_wallet_info</string>
+    <string name="vendor_wallet_send_email">vendor/send_vendor_wallet_info</string>
+    <string name="customer_pending_invoice_send_email">customer/send_customer_pending_invoice_info</string>
+    <string name="vendor_pending_invoice_send_email">vendor/send_vendor_pending_invoice_info</string>
+    <string name="download">Download</string>
+    <string name="add_followup">Add Follow-Up</string>
+    <string name="date_of_birth_error">Please select valid date</string>
+    <string name="enter_email">Please enter email address</string>
+    <string name="enter_date">Please select both date</string>
+    <string name="wallet_balance">Wallet Balance</string>
+    <string name="delete_profile_image">profile_info/delete_image</string>
+    <string name="download_voucher">Download Voucher</string>
+    <string name="download_quotation">Download Quotation</string>
+    <string name="download_order">Download Order</string>
+    <string name="download_voucher_confirm_msg">Are you sure to download voucher?</string>
+    <string name="download_quotation_confirm_msg">Are you sure to download quotation?</string>
+    <string name="download_order_confirm_msg">Are you sure to download order?</string>
+    <string name="download_purchase_order_confirm_msg">Are you sure to download purchase order?</string>
+    <string name="convert_quotation_to_order">Convert Quotation to Order</string>
+    <string name="convert_quotation_to_order_confirm_msg">Are you sure to convert quotation into order?</string>
+    <string name="yes">Yes</string>
+    <string name="no_cancel">No, cancel</string>
+    <string name="scan">Scan</string>
+    <string name="site_address">Site Address</string>
+    <string name="switch_company">Switch Company</string>
+
+    <!-- Customer Order Details -->
+    <string name="order_details">Order Details</string>
+    <string name="order_id_title">Order Id :</string>
+    <string name="order_date_title">Order Date :</string>
+    <string name="due_date_title">Due Date :</string>
+    <string name="po_no_title">P.O. No :</string>
+    <string name="po_date_title">P.O. Date :</string>
+    <string name="quotation_id_title">Quotation Id :</string>
+    <string name="enquiry_id_title">Enquiry Id :</string>
+    <string name="created_date_title">Created Date :</string>
+    <string name="created_by_title">Created By :</string>
+    <string name="updated_by_title">Updated By :</string>
+    <string name="last_updated_time_title">Last Updated Time :</string>
+    <string name="customer_sale_type_title">Customer Sale Type :</string>
+    <string name="order_type_title">Order Type :</string>
+    <string name="assigned_to_title">Assigned To :</string>
+    <string name="order_status_title">Order Status :</string>
+    <string name="billing_address_title">Billing Address :</string>
+    <string name="delivery_address_title">Delivery Address :</string>
+    <string name="site_address_title">Site Address :</string>
+    <string name="current_address_title">Current Address :</string>
+    <string name="quotation_remarks_title">Quotation Remarks :</string>
+    <string name="remarks_title">Remarks :</string>
+
+    <!-- Consignment -->
+    <string name="consignment_details">Consignment Details</string>
+    <string name="container_id_title">Container Id :</string>
+    <string name="authorized_by_title">Authorized By :</string>
+    <string name="purchase_order_title">Purchase Order :</string>
+    <string name="purchased_on_title">Purchased On :</string>
+    <string name="invoice_number_title">Invoice Number :</string>
+    <string name="invoice_date_title">Invoice Date :</string>
+    <string name="vendor_title">Vendor :</string>
+    <string name="warehouse_title">Warehouse :</string>
+    <string name="received_on_title">Received On :</string>
+    <string name="consignment_status_title">Status :</string>
+
+    <!-- Permission Name -->
+    <string name="lead_permission_menu">USER_PERMISSION_LEAD</string>
+    <string name="lead_edit_permission">USER_PERMISSION_LEAD_EDIT</string>
+    <string name="lead_add_permission">USER_PERMISSION_LEAD_ADD</string>
+    <string name="lead_view_details_permission">USER_PERMISSION_LEAD_VIEW_DETAILS</string>
+    <string name="lead_view_permission">USER_PERMISSION_LEAD_VIEW</string>
+    <string name="lead_cancel_permission">USER_PERMISSION_LEAD_CANCEL</string>
+    <string name="lead_convert_permission">USER_PERMISSION_LEAD_CONVERT</string>
+
+    <string name="followup_permission_menu">USER_PERMISSION_FOLLOWUP</string>
+    <string name="followup_take_permission">USER_PERMISSION_FOLLOWUP_TAKE</string>
+    <string name="followup_view_permission">USER_PERMISSION_FOLLOWUP_VIEW</string>
+    <string name="followup_schedule_permission">USER_PERMISSION_FOLLOWUP_SCHEDULE</string>
+    <string name="followup_view_details_permission">USER_PERMISSION_FOLLOWUP_VIEW_DETAILS</string>
+
+    <string name="customers_permission_menu">USER_PERMISSION_CUSTOMER</string>
+    <string name="customers_view_permission">USER_PERMISSION_CUSTOMER_VIEW</string>
+    <string name="customer_add_permission">USER_PERMISSION_CUSTOMER_ADD</string>
+    <string name="customers_view_details_permission">USER_PERMISSION_CUSTOMER_VIEW_DETAILS</string>
+    <string name="customer_edit_permission">USER_PERMISSION_CUSTOMER_EDIT</string>
+
+    <string name="vendors_permission_menu">USER_PERMISSION_VENDOR</string>
+    <string name="vendors_view_permission">USER_PERMISSION_VENDOR_VIEW</string>
+    <string name="vendors_view_details_permission">USER_PERMISSION_VENDOR_VIEW_DETAILS</string>
+
+    <string name="quotation_permission_menu">USER_PERMISSION_QUOTATION</string>
+    <string name="quotation_edit_permission">USER_PERMISSION_QUOTATION_EDIT</string>
+    <string name="quotation_view_permission">USER_PERMISSION_QUOTATION_VIEW</string>
+    <string name="quotation_add_permission">USER_PERMISSION_QUOTATION_ADD</string>
+
+    <string name="order_permission_menu">USER_PERMISSION_ORDER</string>
+    <string name="order_view_permission">USER_PERMISSION_ORDER_VIEW</string>
+    <string name="order_add_permission">USER_PERMISSION_ORDER_ADD</string>
+    <string name="order_edit_permission">USER_PERMISSION_ORDER_EDIT</string>
+    <string name="order_show_approve_permission">USER_PERMISSION_ORDER_APPROVE</string>
+
+    <string name="enquiry_permission_menu">USER_PERMISSION_ENQUIRY</string>
+    <string name="enquiry_edit_permission">USER_PERMISSION_ENQUIRY_EDIT</string>
+
+    <!-- TODO Collections have two permissions for menu item  -->
+    <string name="collections_permission_menu_first">USER_PERMISSION_INVOICE_PAYMENT</string>
+    <string name="collections_permission_menu_second">USER_PERMISSION_INVOICE_TRANSACTION</string>
+
+    <!-- TODO Permission to Create Collection -->
+    <string name="collections_create_permission">USER_PERMISSION_INVOICE_PAYMENT_COLLECTION</string>
+
+    <!-- TODO Permission to show Manage Collections -->
+    <string name="my_transactions_permission">USER_PERMISSION_INVOICE_TRANSACTION</string>
+
+    <!-- TODO Permission to show My Collections -->
+    <string name="my_collections_permission">USER_PERMISSION_INVOICE_PAYMENT_VIEW</string>
+
+    <string name="title_activity_customer_order_details">CustomerOrderDetailsActivity</string>
+    <string name="title_activity_add_customer">AddCustomerActivity</string>
+
+    <!-- Quotations -->
+    <string name="quotation_details_title">Quotation Details</string>
+    <string name="name_title">Name:</string>
+    <string name="email_title">Email:</string>
+    <string name="mobile_title">Mobile:</string>
+    <string name="name_text_title">Name :</string>
+    <string name="shipping_address_title">Shipping Address:</string>
+    <string name="shipping_address_heading">Shipping Address :</string>
+    <string name="quotation_id">qotemid</string>
+    <string name="add_quotation_search_customer_task">quotation/quotation_search_customer</string>
+    <string name="request_code_string">request code</string>
+    <string name="task_edit_quotations_data">quotation/fetch_edit_quotation_form_data</string>
+    <string name="task_fetch_quotations_info">quotation/fetch_quotation_info</string>
+    <string name="approve_quotation_task">quotation/approve_quotation</string>
+    <string name="cancel_quotation_task">quotation/cancel_quotation</string>
+    <string name="cancel_quotation_title">Cancel Quotation</string>
+    <string name="cancel_quotation_confirm_message">Are you sure to cancel this quotation ?</string>
+    <string name="cancel_quotation_hint">Give reason for cancel this quotation</string>
+    <string name="quotation_history_task">quotation/quotation_history</string>
+    <string name="update_items_image">quotation/upload_item_image</string>
+
+    <!-- Purchase Orders -->
+    <string name="purchase_order_details_title">Purchase Order Details</string>
+    <string name="payable_title">Payable:</string>
+    <string name="subtotal_title">Subtotal:</string>
+    <string name="round_off_title">Round Off:</string>
+    <string name="contact_no_title">Contact No:</string>
+    <string name="add_address">+ Add Address</string>
+    <string name="change_add_address">Change or Add Address</string>
+    <string name="add_new_address">Add Address</string>
+    <string name="add_address_task">customer/add_customer_address</string>
+    <string name="add_contact_title">+ Add Contact</string>
+    <string name="add_new_reference_title">+ Add Reference</string>
+    <string name="quotation_preview">Quotation Preview</string>
+    <string name="sms_preview">Sms Preview</string>
+    <string name="email_preview">Email Preview</string>
+    <string name="sms_show_preview">Show SMS Preview</string>
+    <string name="email_show_preview">Show Email Preview</string>
+    <string name="manage_quotation_task">quotation/fetch_all_quotations</string>
+    <string name="send_call_log">customer/add_call_log</string>
+    <string name="title_activity_add_quotations">Create Quotation</string>
+    <string name="title_activity_add_orders">Create Order</string>
+    <string name="download_invoice_task">customer/pending_invoice_print</string>
+    <string name="download_delivery_challan_task">warehouse/print_delivery_challan</string>
+    <string name="invoice_custom_order_packages">customer order packages invoice</string>
+    <string name="challan_custom_order_packages">customer order packages challan</string>
+    <string name="download_invoice_confirm_msg">Are you sure to download invoice?</string>
+    <string name="download_delivery_challan_confirm_msg">Are you sure to download delivery challan?</string>
+    <string name="fetch_enquiry_products_task">enquiry/fetch_enquiry_products</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Order -->
+    <string name="cheque_date">Cheque Date</string>
+    <string name="purchase_order_date">Purchase Order Date</string>
+    <string name="delivery_date">Delivery Date</string>
+    <string name="due_date">Due Date</string>
+    <string name="select_date">Select Date</string>
+    <string name="fetch_approve_orders_task">chkorder/fetch_approve_orders</string>
+    <string name="task_fetch_order_info">chkorder/fetch_order_info</string>
+    <string name="task_fetch_order_history">chkorder/fetch_order_history</string>
+    <string name="actions">Actions</string>
+    <string name="cancel_order_task">chkorder/chkorder_cancel</string>
+    <string name="delete_order_task">chkorder/chkorder_delete</string>
+    <string name="approve_order_task">chkorder/chkorder_approve</string>
+    <string name="close_order_task">chkorder/chkorder_close</string>
+
+    <!-- Collections -->
+    <string name="collection_fetch_form_data">collection/fetch_create_collection_form_data</string>
+    <string name="collection_get_all_invoices">collection/fetch_invoice_list</string>
+    <string name="collection_create">collection/create_collection</string>
+    <string name="my_collections_order_invoices_task">collection/fetch_order_collection_list</string>
+    <string name="my_collections_jobcard_invoices_task">collection/fetch_jobcard_invoices</string>
+    <string name="my_collections_open_invoices_task">collection/fetch_invoice_collection_list</string>
+    <string name="collections_fetch_outlets">collection/fetch_outlets</string>
+    <string name="collections_fetch_myTransactions">collection/fetch_my_transactions</string>
+    <string name="collection_order_transaction_history">collection/fetch_collection_transaction_history</string>
+    <string name="collection_download_voucher">collection/print_voucher</string>
+    <string name="collection_invoice_detail">collection/fetch_invoice_detail</string>
+    <string name="collection_invoice_items_details">collection/fetch_invoice_item_detail</string>
+    <string name="collection_eway_bill_details">collection/fetch_invoice_eway_bill_data</string>
+    <string name="collection_fetch_order_reference">collection/fetch_order_reference</string>
+    <string name="collection_delete_transaction">collection/delete_transaction</string>
+    <string name="collection_order_collections">collection/fetch_order_collections</string>
+    <string name="undo_create_collection_task">collection/undo_create_collection</string>
+    <string name="customer_outstanding_collections_task">collection/customer_outstanding_collections</string>
+
+    <!-- Intent String -->
+    <string name="chkoid">chkoid</string>
+    <string name="invoice_id_text">InvoiceId</string>
+    <string name="jobcard_id_text">JobcardId</string>
+    <string name="jocid">jocid</string>
+    <string name="invid">invid</string>
+    <string name="title_activity_successful_collection">SuccessfulCollectionActivity</string>
+    <string name="title_activity_collections_view_invoice">CollectionsViewInvoiceActivity</string>
+    <string name="title_activity_enquiry_details">Enquiry Details</string>
+    <string name="title_activity_collections_order_references">CollectionsOrderReferencesActivity    </string>
+    <string name="pending_amount">pending_amount</string>
+
+    <!--Switch Company -->
+    <string name="select_company">Select Company</string>
+    <string name="submit">submit</string>
+    <string name="user_companies_task">user/fetch_user_companies</string>
+    <string name="submit_switch_company">user/assign_company</string>
+
+    <!-- Enquiry -->
+    <string name="fetch_enquiries_task">enquiry/fetch_enquiries</string>
+    <string name="fetch_enquiry_info_task">enquiry/fetch_enquiry_data</string>
+
+</resources>

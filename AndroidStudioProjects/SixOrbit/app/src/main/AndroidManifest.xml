@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.accrete.sixorbit">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+
+    <application
+        android:name=".activity.AppIllustration.ApplicationClass"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:resizeableActivity="false"
+        android:hardwareAccelerated="true"
+        android:supportsRtl="true"
+        android:theme="@style/MyMaterialTheme">
+        <activity android:name=".activity.splash.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity android:name=".activity.splash.LoginSplashActivity" />
+        <activity android:name=".activity.AppIllustration.AppIllustrationActivity" />
+        <activity
+            android:name=".activity.domain.DomainActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
+        <activity
+            android:name=".activity.login.LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible" />
+        <activity
+            android:name=".activity.password.PasswordActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="192.168.1.10"
+                    android:pathPattern="/..*"
+                    android:scheme="http" />
+                <data
+                    android:host="www.inside.accreteglobus.com"
+                    android:pathPattern="/..*"
+                    android:scheme="http" />
+                <data
+                    android:host="www.demo.sixorbit.com"
+                    android:pathPattern="/..*"
+                    android:scheme="http" />
+                <data
+                    android:host="test.sixorbit.com"
+                    android:pathPattern="/..*"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.lead.AddLeadActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.navigationView.DrawerActivity"
+            android:theme="@style/ActivityTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activity.Settings.ProfileActivity" />
+        <activity
+            android:name=".activity.lead.LeadInfoActivity"
+            android:parentActivityName=".activity.navigationView.DrawerActivity"
+            android:theme="@style/ActivityTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.navigationView.DrawerActivity" />
+        </activity>
+        <activity
+            android:name=".activity.lead.ActivityFeedsCommentActivity"
+            android:parentActivityName=".activity.navigationView.DrawerActivity"
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.navigationView.DrawerActivity" />
+        </activity>
+        <activity
+            android:name=".activity.chats.ChatMessageActivity"
+            android:exported="true"
+            android:label="@string/title_activity_chat_message"
+            android:parentActivityName=".activity.navigationView.DrawerActivity"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.chats.ContactsActivity"
+            android:label="@string/title_activity_contacts"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.followup.FollowupInfoActivity"
+            android:label="@string/title_activity_followup_info"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.followup.RecordFollowUpActivity"
+            android:label="@string/record_follow_up"
+            android:parentActivityName=".activity.navigationView.DrawerActivity"
+            android:theme="@style/ActivityTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.navigationView.DrawerActivity" />
+        </activity>
+        <activity
+            android:name=".activity.Settings.SettingsActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.Settings.EditProfileActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.Settings.TwoStepVerificationInfo"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.vendors.VendorsMainActivity"
+            android:label="@string/title_activity_vendors_main"
+            android:theme="@style/ActivityTheme" />
+        <!-- Declaring Service in Manifest -->
+        <service
+            android:name=".service.ApiCallService"
+            android:exported="false" />
+        <service
+            android:name=".service.ChatContactsService"
+            android:exported="false" />
+        <service
+            android:name=".service.GetChatHistoryMessagesAPIService"
+            android:exported="false" />
+        <service
+            android:name=".service.PostFeedsCommentsService"
+            android:exported="false" />
+        <service
+            android:name=".service.ChatService"
+            android:enabled="true"
+            android:exported="true" />
+        <service android:name=".service.PushNotificationsTimeService" />
+        <service android:name=".service.MyFirebaseInstanceService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.AppFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.accrete.sixorbit.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7feb39cbdc2eecf7a647a8588c9228d73aad6c2a" />
+
+        <activity android:name=".activity.Settings.RecentLoginListActivity" />
+
+        <receiver android:name=".receiver.IncomingSmsReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name=".utils.ContentProvider"
+            android:authorities="com.accrete.sixorbit.utils.ContentProvider"
+            android:exported="true"
+            android:multiprocess="true" />
+
+        <activity
+            android:name=".activity.customers.CustomerMainActivity"
+            android:label="@string/title_activity_customer_main"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.barCodeScanner.ScannerActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.customers.CustomerOrderDetailsActivity"
+            android:label="@string/title_activity_customer_order_details"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.vendors.VendorsConsignmentDetailsActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.customers.AddCustomerActivity"
+            android:label="@string/title_activity_add_customer"
+            android:theme="@style/ActivityTheme"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".activity.customers.CustomerQuotationDetailsActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.vendors.VendorsPurchaseOrderActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.vendors.VendorsTabActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.customers.CustomersTabActivity"
+            android:theme="@style/ActivityTheme" />
+        <activity
+            android:name=".activity.AddNewAddressActivity"
+            android:theme="@style/ActivityTheme" />
+
+        <!--
+          <receiver android:name=".service.ServiceReceiver"
+              android:enabled="true" >
+              <intent-filter android:priority="-1">
+                  <action android:name="android.intent.action.PHONE_STATE" />
+              </intent-filter>
+              <intent-filter>
+                  <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+              </intent-filter>
+          </receiver>
+
+          <service
+              android:name=".service.ServiceFloating"
+              android:exported="true">
+
+              <intent-filter>
+                  <action android:name=".ServiceFloating" />
+                  <action android:name="android.intent.action.MAIN" />
+              </intent-filter>
+
+          </service>
+        -->
+
+        <receiver android:name=".receiver.AppShortcutReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.CallLogBroadcastReceiver"
+            android:exported="true" />
+
+        <activity
+            android:name=".activity.quotations.OrderQuotationsSelectCustomerActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.quotations.QuotationsProductActivity"
+            android:label="@string/title_activity_add_quotations"
+            android:launchMode="standard"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.quotations.QuotationDetailsActivity"
+            android:label="Quotation Details"
+            android:launchMode="standard"
+            android:parentActivityName=".activity.navigationView.DrawerActivity"
+            android:theme="@style/MyMaterialTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.navigationView.DrawerActivity" />
+        </activity>
+        <activity
+            android:name=".activity.order.OrdersTabActivity"
+            android:label="Order Details"
+            android:launchMode="standard"
+            android:parentActivityName=".activity.navigationView.DrawerActivity"
+            android:theme="@style/MyMaterialTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.navigationView.DrawerActivity" />
+        </activity>
+        <activity
+            android:name=".activity.quotations.EditQuotationsProductActivity"
+            android:label="Edit Quotation"
+            android:launchMode="standard"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.order.CreateOrderActivity"
+            android:label="@string/title_activity_add_orders"
+            android:launchMode="standard"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.order.EditOrderActivity"
+            android:label="Edit Order"
+            android:launchMode="standard"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.quotations.QuotationHistoryActivity"
+            android:label="Edit Order"
+            android:launchMode="standard"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.collections.CreateCollectionsInvoiceActivity"
+            android:label="Create Collection"
+            android:launchMode="standard"
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.collections.CollectionOrderTransactionActivity"
+            android:launchMode="standard"
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.collections.SuccessfulCollectionActivity"
+            android:label="@string/title_activity_successful_collection"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.collections.CollectionsViewInvoiceActivity"
+            android:label="@string/title_activity_collections_view_invoice"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".activity.collections.CollectionsOrderReferencesActivity"
+            android:label="@string/title_activity_collections_order_references"
+            android:theme="@style/MyMaterialTheme"></activity>
+        <activity
+            android:name=".activity.collections.CollectPaymentCustomerActivity"
+            android:theme="@style/MyMaterialTheme"></activity>
+        <activity
+            android:name=".activity.company.SwitchingCompanyActivity"
+            android:theme="@style/MyMaterialTheme"></activity>
+        <activity
+            android:name=".activity.enquiry.EnquiryDetailActivity"
+            android:label="@string/title_activity_enquiry_details"
+            android:parentActivityName=".activity.navigationView.DrawerActivity"
+            android:theme="@style/MyMaterialTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.navigationView.DrawerActivity" />
+        </activity>
+    </application>
+
+</manifest>

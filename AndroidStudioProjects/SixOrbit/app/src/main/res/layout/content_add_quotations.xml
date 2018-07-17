@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.accrete.sixorbit.activity.quotations.OrderQuotationsSelectCustomerActivity"
+    tools:showIn="@layout/activity_add_quotations">
+
+    <RelativeLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fdededed"
+        android:orientation="vertical">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <RelativeLayout
+                android:id="@+id/parent_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="@dimen/_65sdp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_view_outer_outlet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    card_view:cardBackgroundColor="#fdd1d1d1"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardElevation="@dimen/_2sdp">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_8sdp">
+
+                            <TextView
+                                android:id="@+id/outlet_title_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:gravity="center_vertical"
+                                android:text="Outlet"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <Spinner
+                                android:id="@+id/outlet_spinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:background="@drawable/bg_spinner"></Spinner>
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_view_outer_outlet"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_8sdp">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/customer_cardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_8sdp"
+                            android:paddingTop="@dimen/_8sdp">
+
+                            <TextView
+                                android:id="@+id/customer_info_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:longClickable="false"
+                                android:text="Select Customer"
+                                android:textColor="@color/blue"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="visible" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:orientation="vertical"
+                                android:visibility="visible"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/customer_name_title_textView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/customer_name_title"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/customer_name_value_editText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:focusable="false"
+                                        android:focusableInTouchMode="false"
+                                        android:longClickable="false"
+                                        android:textSize="@dimen/_11sdp"
+                                        android:theme="@style/Autocomplete" />
+
+                                    <ImageButton
+                                        android:id="@+id/clear_customerInfo_imageButton"
+                                        android:layout_width="@dimen/_10sdp"
+                                        android:layout_height="@dimen/_10sdp"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:background="@drawable/ic_dialog_close_light" />
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:orientation="horizontal"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:id="@+id/mobile_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/mobile_textView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:longClickable="false"
+                                        android:text="Mobile"
+                                        android:textSize="@dimen/_10sdp" />
+
+                                    <EditText
+                                        android:id="@+id/mobile_value_editText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_2sdp"
+                                        android:longClickable="false"
+                                        android:textSize="@dimen/_11sdp"
+                                        android:theme="@style/Autocomplete" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/email_layout"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.5"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/email_textView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:longClickable="false"
+                                        android:text="Email"
+                                        android:textSize="@dimen/_10sdp" />
+
+                                    <EditText
+                                        android:id="@+id/email_value_editText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_2sdp"
+                                        android:ellipsize="end"
+                                        android:fadingEdge="horizontal"
+                                        android:focusable="true"
+                                        android:focusableInTouchMode="true"
+                                        android:longClickable="false"
+                                        android:marqueeRepeatLimit="marquee_forever"
+                                        android:scrollHorizontally="true"
+                                        android:scrollbars="horizontal"
+                                        android:singleLine="true"
+                                        android:textSize="@dimen/_11sdp"
+                                        android:theme="@style/Autocomplete" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:orientation="horizontal"
+                                android:visibility="visible"
+                                android:weightSum="1">
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:id="@+id/add_search_quotation_item_contact_person_text_input"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_8sdp"
+                                    android:layout_weight="1"
+                                    android:clipToPadding="false"
+                                    android:gravity="left|center"
+                                    android:visibility="gone"
+                                    app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+
+                                    <AutoCompleteTextView
+                                        android:id="@+id/add_search_quotation_item_contact_person"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="sans-serif"
+                                        android:gravity="left|center"
+                                        android:hint="Contact Person"
+                                        android:imeOptions="actionNext"
+                                        android:inputType="text|textNoSuggestions"
+                                        android:lines="1"
+                                        android:longClickable="false"
+                                        android:maxLines="1"
+                                        android:minHeight="@dimen/_32sdp"
+                                        android:textColor="@color/black"
+                                        android:textColorHint="@color/gray"
+                                        android:textSize="@dimen/_11sdp"
+                                        android:theme="@style/Autocomplete"
+                                        android:visibility="gone" />
+                                </android.support.design.widget.TextInputLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/current_address_add_contact"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginTop="0dp"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center"
+                                    android:text="@string/add_contact_title"
+                                    android:textColor="@color/blueTurquoise"
+                                    android:textSize="@dimen/_12sdp"
+                                    android:textStyle="normal" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <!--end-->
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/address_main_layout_current_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_8sdp"
+                            android:paddingTop="@dimen/_8sdp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:id="@+id/current_address_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/textView_currentAddress"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Current Address:"
+                                        android:textSize="@dimen/_10sdp" />
+                                </LinearLayout>
+
+                                <CheckBox
+                                    android:id="@+id/currentAddress_checkBox"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:layout_weight="1"
+                                    android:buttonTint="@color/green"
+                                    android:checked="false"
+                                    android:text="No current address"
+                                    android:textSize="@dimen/_9sdp"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/currentAddress_textView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/_1sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:lineSpacingExtra="@dimen/_3sdp"
+                                    android:padding="@dimen/_5sdp"
+                                    android:spinnerMode="dialog"></TextView>
+
+                                <LinearLayout
+                                    android:id="@+id/current_address_add_address"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="0dp"
+                                    android:layout_marginTop="@dimen/_1sdp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1">
+
+                                    <!--<TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:fontFamily="sans-serif"
+                                        android:gravity="center"
+                                        android:text="@string/add_address"
+                                        android:textColor="@color/blueTurquoise"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:textStyle="normal" />-->
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1"
+                                        android:background="@color/accent"
+                                        android:gravity="center"
+                                        android:longClickable="false"
+                                        android:paddingBottom="@dimen/_8sdp"
+                                        android:paddingTop="@dimen/_8sdp"
+                                        android:text="@string/change_add_address"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/_8sdp"
+                                        android:textStyle="bold" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/address_main_layout_site_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/_8sdp"
+                            android:paddingTop="@dimen/_8sdp">
+
+                            <LinearLayout
+                                android:id="@+id/site_address_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView_siteAddress"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Site Address:"
+                                    android:textSize="@dimen/_10sdp" />
+
+                            </LinearLayout>
+
+
+                            <CheckBox
+                                android:id="@+id/sameSiteAddress_checkBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:buttonTint="@color/green"
+                                android:checked="false"
+                                android:text="Site address is same as current address"
+                                android:textSize="@dimen/_9sdp"
+                                android:textStyle="italic" />
+
+                            <CheckBox
+                                android:id="@+id/noSiteAddress_checkBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/green"
+                                android:checked="false"
+                                android:text="No site address"
+                                android:textSize="@dimen/_9sdp"
+                                android:textStyle="italic" />
+
+                            <TextView
+                                android:id="@+id/siteAddress_textView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_4sdp"
+                                android:lineSpacingExtra="@dimen/_3sdp"
+                                android:padding="@dimen/_5sdp"
+                                android:paddingBottom="@dimen/_1sdp"
+                                android:spinnerMode="dialog"></TextView>
+
+                            <LinearLayout
+                                android:id="@+id/site_address_add_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginTop="@dimen/_1sdp"
+                                android:orientation="horizontal"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/accent"
+                                    android:gravity="center"
+                                    android:longClickable="false"
+                                    android:paddingBottom="@dimen/_8sdp"
+                                    android:paddingTop="@dimen/_8sdp"
+                                    android:text="@string/change_add_address"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_8sdp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:longClickable="false"
+                        android:visibility="invisible"
+                        card_view:cardBackgroundColor="@color/white"
+                        card_view:cardCornerRadius="@dimen/_2sdp"
+                        card_view:cardElevation="@dimen/_2sdp"></android.support.v7.widget.CardView>
+                </LinearLayout>
+
+
+                <!--           </android.support.v7.widget.CardView>
+                        </android.support.v7.widget.CardView>-->
+            </RelativeLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/addCustomer_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/green"
+            android:gravity="center"
+            android:longClickable="false"
+            android:paddingBottom="@dimen/_9sdp"
+            android:paddingTop="@dimen/_11sdp"
+            android:text="Continue"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_8sdp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/loader_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

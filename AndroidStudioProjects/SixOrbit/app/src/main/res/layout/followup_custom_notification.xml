@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="#f5f4f4">
+
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:padding="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/image"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                style="Custom Notification Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_8sdp" />
+
+            <TextView
+                android:id="@+id/text"
+                style="Custom Notification Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/app_name"
+                android:textColor="@color/Gray_LightSlateGray"
+                android:textSize="@dimen/_8sdp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/top_layout"
+        android:background="@color/notifications_btn_bg_color"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/view_lead_textView"
+            style="Custom Notification Title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:gravity="center"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@color/Blue_DarkSlateBlue"
+            android:textSize="@dimen/_9sdp" />
+
+        <TextView
+            android:id="@+id/record_followup_textView"
+            style="Custom Notification Text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:gravity="center"
+            android:padding="@dimen/_4sdp"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@color/Blue_DarkSlateBlue"
+            android:textSize="@dimen/_9sdp" />
+
+    </LinearLayout>
+</RelativeLayout>
