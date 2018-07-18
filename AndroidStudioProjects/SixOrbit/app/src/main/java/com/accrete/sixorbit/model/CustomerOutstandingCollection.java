@@ -29,6 +29,17 @@ public class CustomerOutstandingCollection {
     @SerializedName("wallet_balance")
     @Expose
     private String walletBalance;
+    @SerializedName("alid")
+    @Expose
+    private String alid;
+
+    public String getAlid() {
+        return alid;
+    }
+
+    public void setAlid(String alid) {
+        this.alid = alid;
+    }
 
     public String getWalletBalance() {
         return walletBalance;

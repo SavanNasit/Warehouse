@@ -16,6 +16,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -42,7 +43,6 @@ import com.accrete.sixorbit.adapter.LeadAdapter;
 import com.accrete.sixorbit.helper.Constants;
 import com.accrete.sixorbit.helper.CustomisedToast;
 import com.accrete.sixorbit.helper.DatabaseHandler;
-import com.accrete.sixorbit.helper.DividerItemDecoration;
 import com.accrete.sixorbit.helper.NetworkUtil;
 import com.accrete.sixorbit.interfaces.sendLeadMobileNumber;
 import com.accrete.sixorbit.model.ApiResponse;
@@ -94,6 +94,7 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public LinearLayout fabLayoutPhonebook, fabLayoutIndividual, fabLayoutCompany;
     public TextView textViewEmptyView;
     String leadMobileNumber;
+    private List<Lead> tempList = new ArrayList<>();
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
@@ -108,6 +109,7 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private Timer timer;
+    private LinearLayoutManager mLayoutManager;
 
     public static LeadFragment newInstance(String title) {
         LeadFragment f = new LeadFragment();
@@ -158,10 +160,11 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         rotate_backward = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate_backward);
 
         mAdapter = new LeadAdapter(getActivity(), leadList, this, this);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-        // recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        //  recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
         recyclerView.setAdapter(mAdapter);
         // show loader and fetch messages
@@ -192,37 +195,52 @@ public class LeadFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
                     // End has been reached
                     // Do something
-                    // loading = true;
-                    leadList.addAll(db.getAllLeads(leadList.size() + 1,
-                            getActivity().getResources().getInteger(R.integer.lead_items_count), searchText));
-                    getActivity().runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // Stuff that updates the UI
-                            mAdapter.notifyDataSetChanged();
-                            if (leadList != null && leadList.size() > 0) {
-                                textViewEmptyView.setVisibility(View.GONE);
-                            } else {
-                                textViewEmptyView.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
+                    loading = true;
+                    updateUIPeriodicallyFromDb();
                 }
             }
 
         });
     }
 
-    private void getDataFromDB() {
-        if (db != null) {
-            leadList.clear();
-            leadList.addAll(db.getAllLeads(0,
-                    getActivity().getResources().getInteger(R.integer.lead_items_count), searchText));
-            getActivity().runOnUiThread(new Runnable() {
+    private void updateUIPeriodicallyFromDb() {
+        /*leadList.addAll(db.getAllLeads(leadList.size() + 1,
+                getActivity().getResources().getInteger(R.integer.lead_items_count), searchText));*/
+                if (tempList != null && tempList.size() > 0) {
+                    tempList.clear();
+                }
+                tempList = db.getAllLeads(leadList.size() + 1,
+                        getActivity().getResources().getInteger(R.integer.lead_items_count), searchText);
+                for (int i = 0; i < tempList.size(); i++) {
+                    Lead lead = new Lead();
+                    lead = tempList.get(i);
+                    leadList.add(lead);
+                }
 
+                // Stuff that updates the UI
+                recyclerView.post(new Runnable() {
+                    public void run() {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                if (leadList != null && leadList.size() > 0) {
+                    textViewEmptyView.setVisibility(View.GONE);
+                } else {
+                    textViewEmptyView.setVisibility(View.VISIBLE);
+                }
+        loading = false;
+    }
+
+    private void getDataFromDB() {
+        if (db != null && getActivity() != null && isAdded()) {
+            getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    leadList.clear();
+                    leadList.addAll(db.getAllLeads(0,
+                            getActivity().getResources().getInteger(R.integer.lead_items_count), searchText));
+
                     // Stuff that updates the UI
                     mAdapter.notifyDataSetChanged();
                     if (leadList != null && leadList.size() > 0) {

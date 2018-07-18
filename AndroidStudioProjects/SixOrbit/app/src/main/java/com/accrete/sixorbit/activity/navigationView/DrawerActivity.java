@@ -400,7 +400,7 @@ public class DrawerActivity extends AppCompatActivity implements ApiResultReceiv
             }
            /*if (!AppPreferences.getBoolean(DrawerActivity.this, AppUtils.ISADMIN) &&
                     !databaseHandler.checkUsersPermission(getString(R.string.enquiry_permission_menu))) {*/
-                drawer.removeItem(15);
+            drawer.removeItem(15);
             //}
 
             //Get Intent Data
@@ -484,6 +484,17 @@ public class DrawerActivity extends AppCompatActivity implements ApiResultReceiv
                     Fragment f = HomeFragment.newInstance(getString(R.string.home));
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
                     openMyCollections();
+                }
+            } else if (view != null && view.equals("view_customer_wise")) {
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+                drawer.setSelection(13);
+                if (currentFragment instanceof CustomerWiseCollectionsFragment) {
+                    hideSoftKeyboard(DrawerActivity.this);
+                } else {
+                    hideSoftKeyboard(DrawerActivity.this);
+                    Fragment f = HomeFragment.newInstance(getString(R.string.home));
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, f).commitAllowingStateLoss();
+                    openCustomerWiseCollections();
                 }
             } else if (view != null && view.equals("create_collection")) {
                 Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
@@ -1427,6 +1438,23 @@ public class DrawerActivity extends AppCompatActivity implements ApiResultReceiv
         fragmentCollections.commitAllowingStateLoss();
     }
 
+    private void openCustomerWiseCollections() {
+        //Main Fragment of Collection
+        CollectionsMainFragment collectionsMainFragment = (CollectionsMainFragment) getSupportFragmentManager().
+                findFragmentByTag(getString(R.string.collections));
+        Fragment f = collectionsMainFragment.newInstance(getString(R.string.collections));
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_container, f).commitAllowingStateLoss();
+
+        //My Collections
+        FragmentManager fragmentManagerCollections = getSupportFragmentManager();
+        FragmentTransaction fragmentCollections = fragmentManagerCollections.beginTransaction();
+        fragmentCollections.add(R.id.frame_container, new CustomerWiseCollectionsFragment(),
+                getString(R.string.customerwise_outstanding));
+        fragmentCollections.addToBackStack(null);
+        fragmentCollections.commitAllowingStateLoss();
+    }
+
+
     private void openCreateNewCollection() {
         //Main Fragment of Collection
         CollectionsMainFragment collectionsMainFragment = (CollectionsMainFragment) getSupportFragmentManager().
@@ -1526,7 +1554,7 @@ public class DrawerActivity extends AppCompatActivity implements ApiResultReceiv
                 drawer.setSelection(5, false);
                 //Enable Touch Back
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            }else if (currentFragment instanceof CustomersMainTabFragment) {
+            } else if (currentFragment instanceof CustomersMainTabFragment) {
                 // add your code here
                 drawer.setSelection(5, false);
                 //Enable Touch Back

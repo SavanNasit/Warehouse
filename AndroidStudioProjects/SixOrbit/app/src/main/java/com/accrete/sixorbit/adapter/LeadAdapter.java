@@ -63,6 +63,9 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         this.listener = listener;
         binderHelper.setOpenOnlyOne(true);
         this.dtInterface = sendLeadMobileNumber;
+        if (mContext != null) {
+            tf = Typeface.createFromAsset(mContext.getAssets(), "font/Corbert-Regular.otf");
+        }
     }
 
     @Override
@@ -80,15 +83,6 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
         final Lead lead = leads.get(position);
 
         holder.imageViewSync.setEnabled(false);
-        tf = Typeface.createFromAsset(mContext.getAssets(), "font/Corbert-Regular.otf");
-        if (sendLeads.getLeadSync() != null && sendLeads.getLeadSync().equals(mContext.getString(R.string.str_true))) {
-            // holder.imageViewSync.setImageResource(R.drawable.ic_tick);
-            //  holder.imageViewSync.setEnabled(false);
-        } else {
-            // holder.imageViewSync.setImageResource(R.drawable.ic_sync);
-            // holder.imageViewSync.setEnabled(true);
-        }
-
 
         if (lead.getName().length() > 25) {
             holder.textViewName.setText(lead.getName().substring(0, 22) + "...");
@@ -157,8 +151,6 @@ public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.MyViewHolder> 
                 } else {
                     Intent email = new Intent(Intent.ACTION_SEND);
                     email.putExtra(Intent.EXTRA_EMAIL, new String[]{lead.getEmail()});
-                    // email.putExtra(Intent.EXTRA_SUBJECT, "subject");
-                    // email.putExtra(Intent.EXTRA_TEXT, "message");
                     email.setType("plain/text");
                     mContext.startActivity(Intent.createChooser(email, mContext.getString(R.string.choose_email_client)));
                 }

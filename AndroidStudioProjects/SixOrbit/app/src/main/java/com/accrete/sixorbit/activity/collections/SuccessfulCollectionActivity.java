@@ -68,6 +68,8 @@ public class SuccessfulCollectionActivity extends AppCompatActivity {
     private TextView downloadTitleMessage;
     private TextView btnYes;
     private TextView btnCancel;
+    private LinearLayout customerwiseCollectionLayout;
+    private TextView customerwiseCollectionTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,8 @@ public class SuccessfulCollectionActivity extends AppCompatActivity {
         nameTextView = (TextView) findViewById(R.id.name_textView);
         undoCollectionLayout = (LinearLayout) findViewById(R.id.undo_collection_layout);
         undoCollectionTextView = (TextView) findViewById(R.id.undo_collection_textView);
+        customerwiseCollectionLayout = (LinearLayout) findViewById(R.id.customerwise_collection_layout);
+        customerwiseCollectionTextView = (TextView) findViewById(R.id.customerwise_collection_textView);
 
         Typeface fontAwesomeFont = Typeface.createFromAsset(getAssets(), "font/fontawesome-webfont.ttf");
         anotherCollectionTextView.setTypeface(fontAwesomeFont);
@@ -113,13 +117,26 @@ public class SuccessfulCollectionActivity extends AppCompatActivity {
             }
         });
 
-        //My Collections
+        //Invoice wise Outstanding Collections
         myCollectionLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultIntent = new Intent(SuccessfulCollectionActivity.this,
                         DrawerActivity.class);
                 resultIntent.putExtra("manage_collections", "view_collections");
+                resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(resultIntent);
+                finish();
+            }
+        });
+
+        //Customer wise Outstanding Collections
+        customerwiseCollectionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent resultIntent = new Intent(SuccessfulCollectionActivity.this,
+                        DrawerActivity.class);
+                resultIntent.putExtra("manage_collections", "view_customer_wise");
                 resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(resultIntent);
                 finish();

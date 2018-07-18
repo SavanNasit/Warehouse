@@ -4,11 +4,13 @@ package com.accrete.sixorbit.fragment.Drawer.collections;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -26,8 +28,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.accrete.sixorbit.R;
+import com.accrete.sixorbit.activity.collections.CollectPaymentCustomerActivity;
 import com.accrete.sixorbit.activity.customers.CustomersTabActivity;
 import com.accrete.sixorbit.adapter.CustomerwiseCollectionsAdapter;
+import com.accrete.sixorbit.adapter.LongClickActionsAdapter;
 import com.accrete.sixorbit.helper.Constants;
 import com.accrete.sixorbit.helper.DatabaseHandler;
 import com.accrete.sixorbit.helper.NetworkUtil;
@@ -42,6 +46,8 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.builder.AnimateGifMode;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -62,7 +68,8 @@ import static com.accrete.sixorbit.helper.Constants.version;
  */
 public class CustomerWiseCollectionsFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener,
-        CustomerwiseCollectionsAdapter.CollectionsListener {
+        CustomerwiseCollectionsAdapter.CollectionsListener,
+        LongClickActionsAdapter.LongClickActionsAdapterListener {
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
     private Timer timer;
@@ -73,13 +80,16 @@ public class CustomerWiseCollectionsFragment extends Fragment
     private FloatingActionButton filterFab;
     private TextView textViewEmpty;
     private LinearLayout topLayout;
-    private LinearLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager, mActionsLayoutManager;
     private List<CustomerOutstandingCollection> outstandingCollectionArrayList =
             new ArrayList<CustomerOutstandingCollection>();
     private boolean loading;
     private CustomerwiseCollectionsAdapter adapter;
-    private String dataChanged, searchText;
+    private String dataChanged, internetStatus, searchText;
     private DatabaseHandler databaseHandler;
+    private AlertDialog dialogActions;
+    private LongClickActionsAdapter actionsAdapter;
+
 
     public CustomerWiseCollectionsFragment() {
         // Required empty public constructor
@@ -89,7 +99,6 @@ public class CustomerWiseCollectionsFragment extends Fragment
         super.onStart();
         getActivity().setTitle(getString(R.string.customerwise_outstanding));
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -387,7 +396,13 @@ public class CustomerWiseCollectionsFragment extends Fragment
 
     @Override
     public void onLongClicked(int position) {
-
+        if (dialogActions == null || !dialogActions.isShowing()) {
+            if (outstandingCollectionArrayList.get(position).getPendingAmount() != null &&
+                    !outstandingCollectionArrayList.get(position).getPendingAmount().isEmpty() &&
+                    Constants.ParseDouble(outstandingCollectionArrayList.get(position).getPendingAmount()) > 0) {
+                dialogActionsItems(position);
+            }
+        }
     }
 
     private void getCollectionsInvoices(String time, String traversalValue) {
@@ -497,4 +512,71 @@ public class CustomerWiseCollectionsFragment extends Fragment
         }
     }
 
+    private void dialogActionsItems(final int itemsPosition) {
+        View dialogView = View.inflate(getActivity(), R.layout.dialog_orders_actions, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setCancelable(true);
+        dialogActions = builder.create();
+        dialogActions.setCanceledOnTouchOutside(false);
+        ImageView imageViewBack;
+        RecyclerView recyclerView;
+        String[] actionsArr = null;
+
+        actionsArr = new String[]{"Collect Payment"};
+
+        recyclerView = (RecyclerView) dialogView.findViewById(R.id.recyclerView);
+        imageViewBack = (ImageView) dialogView.findViewById(R.id.image_back);
+
+        //Adapter
+        actionsAdapter = new LongClickActionsAdapter(getActivity(), actionsArr, this, itemsPosition);
+        mActionsLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mActionsLayoutManager);
+        recyclerView.setAdapter(actionsAdapter);
+
+        imageViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogActions.dismiss();
+            }
+        });
+
+        dialogActions.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (!dialogActions.isShowing()) {
+            dialogActions.show();
+        }
+    }
+
+
+    @Override
+    public void onActionsRowClicked(int rowPosition, int itemsPosition) {
+        if (rowPosition == 0) {
+            internetStatus = NetworkUtil.getConnectivityStatusString(getActivity());
+            if (!internetStatus.equals(getString(R.string.not_connected_to_internet))) {
+                if (dialogActions != null && dialogActions.isShowing()) {
+                    dialogActions.dismiss();
+                }
+                navigateCollectPaymentScreen(outstandingCollectionArrayList.get(itemsPosition).getCuid(),
+                        outstandingCollectionArrayList.get(itemsPosition).getCustomerName(),
+                        outstandingCollectionArrayList.get(itemsPosition).getAlid(),
+                        new BigDecimal(Constants.roundTwoDecimals(Constants.ParseDouble(
+                                outstandingCollectionArrayList.get(itemsPosition).getPendingAmount())))
+                                .setScale(2, RoundingMode.HALF_UP).toPlainString(),
+                        "");
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.no_internet_try_later), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void navigateCollectPaymentScreen(String cuId, String customerName, String alId,
+                                              String pendingAmount, String invId) {
+        Intent intent = new Intent(getActivity(), CollectPaymentCustomerActivity.class);
+        intent.putExtra(getString(R.string.cuid), cuId);
+        intent.putExtra(getString(R.string.customer), customerName);
+        intent.putExtra(getString(R.string.alid), alId);
+        intent.putExtra(getString(R.string.pending_amount), pendingAmount);
+        intent.putExtra(getString(R.string.invid), invId);
+        startActivity(intent);
+    }
 }
